@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { useState, useEffect, useRef } from "react"
-import { useRouter } from "next/navigation"
+import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import {
   Volume2,
   VolumeX,
@@ -15,88 +15,96 @@ import {
   Coffee,
   Terminal,
   Info,
-} from "lucide-react"
-import { Switch } from "@/components/ui/switch"
-import { Button } from "@/components/ui/button"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+} from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import Image from "next/image";
 
 export default function Dashboard() {
-  const [isMuted, setIsMuted] = useState(true)
+  const [isMuted, setIsMuted] = useState(true);
   const [skills, setSkills] = useState({
     security: true,
     business: true,
     webdev: true,
-  })
-  const router = useRouter()
-  const clickSoundRef = useRef<HTMLAudioElement | null>(null)
+  });
+  const router = useRouter();
+  const clickSoundRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     // Initialize audio elements with proper error handling
     try {
-      clickSoundRef.current = new Audio()
+      clickSoundRef.current = new Audio();
 
       // Set sources after creating the elements
       if (clickSoundRef.current) {
-        clickSoundRef.current.src = "/click.mp3"
-        clickSoundRef.current.preload = "auto"
+        clickSoundRef.current.src = "/click.mp3";
+        clickSoundRef.current.preload = "auto";
       }
     } catch (error) {
-      console.error("Error initializing audio:", error)
+      console.error("Error initializing audio:", error);
     }
 
     // Add entrance animation class to body
-    document.body.classList.add("animate-slideInRight")
+    document.body.classList.add("animate-slideInRight");
 
     // Remove animation class after animation completes
     const timer = setTimeout(() => {
-      document.body.classList.remove("animate-slideInRight")
-    }, 500)
+      document.body.classList.remove("animate-slideInRight");
+    }, 500);
 
     return () => {
-      clearTimeout(timer)
-      if (clickSoundRef.current) clickSoundRef.current.pause()
-    }
-  }, [])
+      clearTimeout(timer);
+      if (clickSoundRef.current) clickSoundRef.current.pause();
+    };
+  }, []);
 
   const toggleMute = () => {
-    setIsMuted(!isMuted)
-  }
+    setIsMuted(!isMuted);
+  };
 
   const toggleSkill = (skill: keyof typeof skills) => {
     // Play click sound if not muted
     if (!isMuted && clickSoundRef.current) {
-      clickSoundRef.current.currentTime = 0
-      clickSoundRef.current.play().catch((e) => console.error("Error playing sound:", e))
+      clickSoundRef.current.currentTime = 0;
+      clickSoundRef.current
+        .play()
+        .catch((e) => console.error("Error playing sound:", e));
     }
 
     setSkills((prev) => ({
       ...prev,
       [skill]: !prev[skill],
-    }))
-  }
+    }));
+  };
 
   const playClickSound = () => {
     if (!isMuted && clickSoundRef.current) {
       try {
-        clickSoundRef.current.currentTime = 0
-        const playPromise = clickSoundRef.current.play()
+        clickSoundRef.current.currentTime = 0;
+        const playPromise = clickSoundRef.current.play();
 
         if (playPromise !== undefined) {
           playPromise.catch((error) => {
-            console.log("Audio playback prevented:", error)
+            console.log("Audio playback prevented:", error);
             // Auto-play was prevented, we can safely ignore this error
-          })
+          });
         }
       } catch (error) {
-        console.error("Error playing sound:", error)
+        console.error("Error playing sound:", error);
       }
     }
-  }
+  };
 
   const navigateTo = (path: string) => {
-    playClickSound()
-    router.push(path)
-  }
+    playClickSound();
+    router.push(path);
+  };
 
   return (
     <main className="flex min-h-screen flex-col bg-[#121212] p-4 md:p-8 relative grid-dots">
@@ -127,7 +135,10 @@ export default function Dashboard() {
             <h2 className="text-[#2ed573] font-medium tracking-wide">ARAFAT</h2>
             <div className="ml-auto flex gap-1">
               {[...Array(6)].map((_, i) => (
-                <div key={i} className="w-[6px] h-[6px] bg-[#2ed573]/50 rounded-full"></div>
+                <div
+                  key={i}
+                  className="w-[6px] h-[6px] bg-[#2ed573]/50 rounded-full"
+                ></div>
               ))}
             </div>
           </div>
@@ -135,8 +146,15 @@ export default function Dashboard() {
           {/* Profile Image */}
           <div className="p-4">
             <div className="bg-[#0f0f0f] rounded-lg aspect-square flex items-center justify-center border border-[#2ed573]/20">
-              <div className="w-32 h-32 rounded-full bg-[#2a3942] flex items-center justify-center border-2 border-[#2ed573]/30">
-                <span className="text-5xl text-[#2ed573]">A</span>
+              <div className="w-full h-full bg-[#2a3942] flex items-center justify-center border-2 border-[#2ed573]/30 overflow-hidden">
+                <Image
+                  src="/images/profile.jpg"
+                  alt="Arafat's Profile"
+                  width={500}
+                  height={500}
+                  className="object-cover w-full h-full"
+                  priority
+                />
               </div>
             </div>
           </div>
@@ -173,7 +191,9 @@ export default function Dashboard() {
 
             <div className="space-y-4">
               <div className="bg-[#0f0f0f] p-3 rounded-lg flex items-center justify-between border border-[#2ed573]/20">
-                <span className="text-[#2ed573] font-medium">SECURITY ENGINEER</span>
+                <span className="text-[#2ed573] font-medium">
+                  SECURITY ENGINEER
+                </span>
                 <Switch
                   checked={skills.security}
                   onCheckedChange={() => toggleSkill("security")}
@@ -182,7 +202,9 @@ export default function Dashboard() {
               </div>
 
               <div className="bg-[#0f0f0f] p-3 rounded-lg flex items-center justify-between border border-[#2ed573]/20">
-                <span className="text-[#2ed573] font-medium">BUSINESS MINDSET</span>
+                <span className="text-[#2ed573] font-medium">
+                  BUSINESS MINDSET
+                </span>
                 <Switch
                   checked={skills.business}
                   onCheckedChange={() => toggleSkill("business")}
@@ -191,7 +213,9 @@ export default function Dashboard() {
               </div>
 
               <div className="bg-[#0f0f0f] p-3 rounded-lg flex items-center justify-between border border-[#2ed573]/20">
-                <span className="text-[#2ed573] font-medium">WEB DEVELOPER</span>
+                <span className="text-[#2ed573] font-medium">
+                  WEB DEVELOPER
+                </span>
                 <Switch
                   checked={skills.webdev}
                   onCheckedChange={() => toggleSkill("webdev")}
@@ -208,35 +232,66 @@ export default function Dashboard() {
           <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
             <TooltipProvider>
               {[
-                { name: "github", icon: <Github size={24} className="text-[#2ed573]" />, tooltip: "GitHub Projects" },
+                {
+                  name: "github",
+                  icon: <Github size={24} className="text-[#2ed573]" />,
+                  tooltip: "GitHub Projects",
+                  url: "https://github.com/mrx-arafat",
+                },
                 {
                   name: "linkedin",
                   icon: <Linkedin size={24} className="text-[#2ed573]" />,
                   tooltip: "LinkedIn Profile",
+                  url: "https://www.linkedin.com/in/e4rafat",
                 },
-                { name: "facebook", icon: <Facebook size={24} className="text-[#2ed573]" />, tooltip: "Facebook" },
-                { name: "instagram", icon: <Instagram size={24} className="text-[#2ed573]" />, tooltip: "Instagram" },
-                { name: "medium", icon: <BookOpen size={24} className="text-[#2ed573]" />, tooltip: "Medium Blog" },
+                {
+                  name: "facebook",
+                  icon: <Facebook size={24} className="text-[#2ed573]" />,
+                  tooltip: "Facebook",
+                  url: "https://www.facebook.com/e4rafat",
+                },
+                {
+                  name: "instagram",
+                  icon: <Instagram size={24} className="text-[#2ed573]" />,
+                  tooltip: "Instagram",
+                  url: "https://www.instagram.com/e4rafat/",
+                },
+                {
+                  name: "medium",
+                  icon: <BookOpen size={24} className="text-[#2ed573]" />,
+                  tooltip: "Medium Blog",
+                  url: "https://medium.com/@easinxarafat",
+                },
                 {
                   name: "tryhackme",
                   icon: <Shield size={24} className="text-[#2ed573]" />,
                   tooltip: "TryHackMe Profile",
+                  url: "https://tryhackme.com/p/KingBOB",
                 },
               ].map((platform) => (
                 <Tooltip key={platform.name}>
                   <TooltipTrigger asChild>
-                    <div
-                      className="bg-[#1e272e] rounded-2xl aspect-square flex items-center justify-center relative hover:bg-[#2a3942] transition-colors cursor-pointer border border-[#2ed573]/20 hover-glow"
-                      onClick={playClickSound}
+                    <a
+                      href={platform.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        playClickSound();
+                        window.open(platform.url, "_blank");
+                      }}
                     >
-                      <div className="w-12 h-12 rounded-full bg-[#0f0f0f] flex items-center justify-center">
-                        {platform.icon}
+                      <div className="bg-[#1e272e] rounded-2xl aspect-square flex items-center justify-center relative hover:bg-[#2a3942] transition-colors cursor-pointer border border-[#2ed573]/20 hover-glow">
+                        <div className="w-12 h-12 rounded-full bg-[#0f0f0f] flex items-center justify-center">
+                          {platform.icon}
+                        </div>
+                        <div className="absolute top-2 left-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
+                        <div className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
+                        <div className="absolute bottom-2 left-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
+                        <div className="absolute bottom-2 right-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
                       </div>
-                      <div className="absolute top-2 left-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
-                      <div className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
-                      <div className="absolute bottom-2 left-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
-                      <div className="absolute bottom-2 right-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
-                    </div>
+                    </a>
                   </TooltipTrigger>
                   <TooltipContent className="bg-[#0f0f0f] text-[#2ed573] border border-[#2ed573]/30">
                     {platform.tooltip}
@@ -255,7 +310,9 @@ export default function Dashboard() {
                   <div className="w-6 h-6 bg-[#ffdd59] rounded-md flex items-center justify-center">
                     <span className="text-[#0f0f0f] text-xs">📁</span>
                   </div>
-                  <span className="text-[#2ed573] font-medium">PROJECT SHOWCASE</span>
+                  <span className="text-[#2ed573] font-medium">
+                    PROJECT SHOWCASE
+                  </span>
                 </div>
               </div>
 
@@ -266,12 +323,16 @@ export default function Dashboard() {
                 <div className="mb-4">
                   <Github size={48} className="text-[#2ed573]/50 mx-auto" />
                 </div>
-                <h3 className="text-xl font-bold text-[#2ed573] mb-2">Explore My Projects</h3>
-                <p className="text-[#2ed573]/70 mb-6">Security tools, automation scripts, and web applications</p>
+                <h3 className="text-xl font-bold text-[#2ed573] mb-2">
+                  Explore My Projects
+                </h3>
+                <p className="text-[#2ed573]/70 mb-6">
+                  Security tools, automation scripts, and web applications
+                </p>
                 <Button
                   onClick={(e) => {
-                    e.stopPropagation()
-                    navigateTo("/projects")
+                    e.stopPropagation();
+                    navigateTo("/projects");
                   }}
                   className="bg-[#0f0f0f] hover:bg-[#2a3942] text-[#2ed573] border border-[#2ed573]/30"
                 >
@@ -298,12 +359,16 @@ export default function Dashboard() {
                 <div className="mb-4">
                   <BookOpen size={48} className="text-[#2ed573]/50 mx-auto" />
                 </div>
-                <h3 className="text-xl font-bold text-[#2ed573] mb-2">Read My Articles</h3>
-                <p className="text-[#2ed573]/70 mb-6">Security insights, tech tutorials, and business perspectives</p>
+                <h3 className="text-xl font-bold text-[#2ed573] mb-2">
+                  Read My Articles
+                </h3>
+                <p className="text-[#2ed573]/70 mb-6">
+                  Security insights, tech tutorials, and business perspectives
+                </p>
                 <Button
                   onClick={(e) => {
-                    e.stopPropagation()
-                    navigateTo("/blog")
+                    e.stopPropagation();
+                    navigateTo("/blog");
                   }}
                   className="bg-[#0f0f0f] hover:bg-[#2a3942] text-[#2ed573] border border-[#2ed573]/30"
                 >
@@ -320,7 +385,9 @@ export default function Dashboard() {
                 <div className="w-6 h-6 bg-[#ffdd59] rounded-md flex items-center justify-center">
                   <Coffee size={14} className="text-[#0f0f0f]" />
                 </div>
-                <span className="text-[#2ed573] font-medium">EXTRACURRICULAR</span>
+                <span className="text-[#2ed573] font-medium">
+                  EXTRACURRICULAR
+                </span>
               </div>
               <TooltipProvider>
                 <Tooltip>
@@ -330,8 +397,9 @@ export default function Dashboard() {
                     </button>
                   </TooltipTrigger>
                   <TooltipContent className="bg-[#0f0f0f] text-[#2ed573] border border-[#2ed573]/30 max-w-xs">
-                    Activities and interests outside of my professional work, including community involvement, hobbies,
-                    and personal projects.
+                    Activities and interests outside of my professional work,
+                    including community involvement, hobbies, and personal
+                    projects.
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
@@ -356,9 +424,12 @@ export default function Dashboard() {
 
                 {/* Extended tooltip that appears on hover */}
                 <div className="absolute inset-0 bg-[#0f0f0f]/90 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-4 text-center">
-                  <h4 className="text-[#2ed573] font-bold mb-2">Mountain Climbing</h4>
+                  <h4 className="text-[#2ed573] font-bold mb-2">
+                    Mountain Climbing
+                  </h4>
                   <p className="text-[#2ed573]/80 text-xs">
-                    Exploring heights and pushing physical limits. Conquered 3 major peaks in the last year.
+                    Exploring heights and pushing physical limits. Conquered 3
+                    major peaks in the last year.
                   </p>
                 </div>
               </div>
@@ -377,9 +448,12 @@ export default function Dashboard() {
 
                 {/* Extended tooltip that appears on hover */}
                 <div className="absolute inset-0 bg-[#0f0f0f]/90 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-4 text-center">
-                  <h4 className="text-[#2ed573] font-bold mb-2">CTF Competitions</h4>
+                  <h4 className="text-[#2ed573] font-bold mb-2">
+                    CTF Competitions
+                  </h4>
                   <p className="text-[#2ed573]/80 text-xs">
-                    Participating in cybersecurity challenges. Ranked in top 10% in recent HackTheBox competition.
+                    Participating in cybersecurity challenges. Ranked in top 10%
+                    in recent HackTheBox competition.
                   </p>
                 </div>
               </div>
@@ -398,9 +472,12 @@ export default function Dashboard() {
 
                 {/* Extended tooltip that appears on hover */}
                 <div className="absolute inset-0 bg-[#0f0f0f]/90 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-4 text-center">
-                  <h4 className="text-[#2ed573] font-bold mb-2">Competitive Gaming</h4>
+                  <h4 className="text-[#2ed573] font-bold mb-2">
+                    Competitive Gaming
+                  </h4>
                   <p className="text-[#2ed573]/80 text-xs">
-                    Strategic thinking and team coordination. Compete in weekend tournaments with friends.
+                    Strategic thinking and team coordination. Compete in weekend
+                    tournaments with friends.
                   </p>
                 </div>
               </div>
@@ -419,9 +496,12 @@ export default function Dashboard() {
 
                 {/* Extended tooltip that appears on hover */}
                 <div className="absolute inset-0 bg-[#0f0f0f]/90 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-4 text-center">
-                  <h4 className="text-[#2ed573] font-bold mb-2">Coffee Brewing</h4>
+                  <h4 className="text-[#2ed573] font-bold mb-2">
+                    Coffee Brewing
+                  </h4>
                   <p className="text-[#2ed573]/80 text-xs">
-                    Exploring different brewing methods and beans. Amateur barista with home setup.
+                    Exploring different brewing methods and beans. Amateur
+                    barista with home setup.
                   </p>
                 </div>
               </div>
@@ -448,6 +528,5 @@ export default function Dashboard() {
         ARAFAT © {new Date().getFullYear()} - ALL RIGHTS RESERVED
       </div>
     </main>
-  )
+  );
 }
-
