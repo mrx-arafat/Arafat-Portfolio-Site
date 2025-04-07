@@ -47,7 +47,7 @@ export default function Home() {
     "Application Security Engineer at Startise.",
     "Aspiring Entrepreneur.",
     "Focued on creating impactful solutions.",
-    "Let's dive into my portfolio.",
+    "okay! that's enough :')",
     "Initialize System...",
   ];
 
