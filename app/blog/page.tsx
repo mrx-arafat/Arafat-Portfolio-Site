@@ -1,165 +1,192 @@
-"use client"
+"use client";
 
-import { useState, useEffect, useRef } from "react"
-import Link from "next/link"
-import { ArrowLeft, ArrowRight, BookOpen, Calendar, Clock, ExternalLink } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
+import {
+  ArrowLeft,
+  ArrowRight,
+  BookOpen,
+  Calendar,
+  Clock,
+  ExternalLink,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface BlogPost {
-  id: string
-  title: string
-  description: string
-  publishDate: string
-  readTime: string
-  url: string
-  imageUrl: string
-  tags: string[]
+  id: string;
+  title: string;
+  description: string;
+  publishDate: string;
+  readTime: string;
+  url: string;
+  imageUrl: string;
+  tags: string[];
 }
 
 export default function Blog() {
-  const [posts, setPosts] = useState<BlogPost[]>([])
-  const [loading, setLoading] = useState(true)
-  const [isMuted, setIsMuted] = useState(true)
-  const [currentPost, setCurrentPost] = useState(0)
-  const clickSoundRef = useRef<HTMLAudioElement | null>(null)
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [isMuted, setIsMuted] = useState(true);
+  const [currentPost, setCurrentPost] = useState(0);
+  const clickSoundRef = useRef<HTMLAudioElement | null>(null);
 
   // Sample blog posts with more details
   const samplePosts = [
     {
       id: "1",
-      title: "Securing Modern Web Applications: Best Practices",
+      title:
+        "A Pound of Flesh: The Hidden Math Behind History's Most Infamous Loan",
       description:
-        "A comprehensive guide to implementing security best practices in modern web applications to protect against common vulnerabilities.",
-      publishDate: "Apr 15, 2023",
-      readTime: "8 min read",
-      url: "https://medium.com/@yourusername/securing-modern-web-applications",
-      imageUrl: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-nMMJJ5qd2sfOOA1DzaqKVeFpOHx8QZ.png",
-      tags: ["Security", "Web Development", "OWASP"],
+        "Exploring the mathematical and historical aspects of one of history's most famous loans.",
+      publishDate: "2024",
+      readTime: "3 min read",
+      url: "https://medium.com/@easinxarafat/a-pound-of-flesh-the-hidden-math-behind-historys-most-infamous-loan-6b1292cdd0be",
+      imageUrl:
+        "https://miro.medium.com/v2/resize:fit:1100/format:webp/0*2FoFS4Ls8oDXc0BW.jpg",
+      tags: ["Finance", "Money", "Loan", "Lending", "Shakespeare"],
     },
     {
       id: "2",
-      title: "The Entrepreneurial Security Engineer",
+      title:
+        "CVE-2024-4358 Critical Flaw Found in Progress Telerik Report Server",
       description:
-        "How security professionals can adopt an entrepreneurial mindset to drive innovation while maintaining robust security postures.",
-      publishDate: "Mar 22, 2023",
-      readTime: "6 min read",
-      url: "https://medium.com/@yourusername/entrepreneurial-security-engineer",
-      imageUrl: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-nMMJJ5qd2sfOOA1DzaqKVeFpOHx8QZ.png",
-      tags: ["Career", "Security", "Entrepreneurship"],
+        "Analysis of a critical security vulnerability discovered in Progress Telerik Report Server.",
+      publishDate: "2024",
+      readTime: "2 min read",
+      url: "https://medium.com/@easinxarafat/cve-2024-4358-critical-flaw-found-in-progress-telerik-report-server-0f379f844819",
+      imageUrl:
+        "https://miro.medium.com/v2/resize:fit:1100/format:webp/1*VcVd55_omagFT7jqxnaK9Q.png",
+      tags: ["Cybersecurity", "CVE"],
     },
     {
       id: "3",
-      title: "Automating Security Testing in CI/CD Pipelines",
+      title: "Understanding Dopamine: Your Brain's Motivation Engine",
       description:
-        "Learn how to integrate automated security testing into your CI/CD pipelines for continuous security validation.",
-      publishDate: "Feb 10, 2023",
-      readTime: "10 min read",
-      url: "https://medium.com/@yourusername/automating-security-testing",
-      imageUrl: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-nMMJJ5qd2sfOOA1DzaqKVeFpOHx8QZ.png",
-      tags: ["DevSecOps", "CI/CD", "Automation"],
+        "Exploring the role of dopamine in motivation and how understanding it can improve productivity and life quality.",
+      publishDate: "2024",
+      readTime: "4 min read",
+      url: "https://medium.com/@easinxarafat/understanding-dopamine-your-brains-motivation-engine-50b4d6d140a3",
+      imageUrl:
+        "https://miro.medium.com/v2/resize:fit:4800/format:webp/0*7pRQ1jIgUvyv-eO4.jpg",
+      tags: ["Self Improvement", "Dopamine Detox", "Productivity", "Life"],
     },
+
     {
       id: "4",
-      title: "Building a Security-First Development Culture",
+      title: "How I Learned to Turn Dreams into Action",
       description:
-        "Strategies for fostering a security-first mindset across development teams and integrating security into the SDLC.",
-      publishDate: "Jan 5, 2023",
-      readTime: "7 min read",
-      url: "https://medium.com/@yourusername/security-first-development",
-      imageUrl: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-nMMJJ5qd2sfOOA1DzaqKVeFpOHx8QZ.png",
-      tags: ["Culture", "Security", "Team Management"],
+        "Personal insights on transforming aspirations into concrete achievements.",
+      publishDate: "2024",
+      readTime: "2 min read",
+      url: "https://medium.com/@easinxarafat/how-i-learned-to-turn-dreams-into-action-c6b1b2977bdc",
+      imageUrl: "https://miro.medium.com/v2/format:webp/0*8soO8Po_PYnyok1D.jpg",
+      tags: ["Self Development", "Mindset"],
     },
     {
       id: "5",
-      title: "Understanding XSS Attacks and Prevention",
+      title:
+        "The Psychology Behind Social Media Posts: What We're Really Saying When We Post",
       description:
-        "A deep dive into Cross-Site Scripting vulnerabilities, how they work, and the most effective ways to prevent them.",
-      publishDate: "Dec 12, 2022",
-      readTime: "9 min read",
-      url: "https://medium.com/@yourusername/xss-prevention",
-      imageUrl: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-nMMJJ5qd2sfOOA1DzaqKVeFpOHx8QZ.png",
-      tags: ["XSS", "Web Security", "JavaScript"],
+        "Analyzing the deeper psychological motivations behind social media behavior.",
+      publishDate: "2024",
+      readTime: "3 min read",
+      url: "https://medium.com/@easinxarafat/the-psychology-behind-social-media-posts-what-were-really-saying-when-we-post-57855ba14667",
+      imageUrl:
+        "https://miro.medium.com/v2/resize:fit:640/format:webp/0*sntwdiLz_d-RsuSv.jpeg",
+      tags: ["Psychology", "Social Media", "Life", "Reality", "Facts"],
     },
     {
       id: "6",
-      title: "API Security Fundamentals",
+      title: "The Weight of Words: When Listening Becomes a One-Way Street",
       description:
-        "Essential security practices for designing, implementing, and maintaining secure APIs in modern applications.",
-      publishDate: "Nov 8, 2022",
-      readTime: "11 min read",
-      url: "https://medium.com/@yourusername/api-security",
-      imageUrl: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-nMMJJ5qd2sfOOA1DzaqKVeFpOHx8QZ.png",
-      tags: ["API", "Security", "REST"],
+        "Exploring the dynamics of communication and the importance of active listening.",
+      publishDate: "2024",
+      readTime: "7 min read",
+      url: "https://medium.com/@easinxarafat/the-weight-of-words-when-listening-becomes-a-one-way-street-24edafb0631b",
+      imageUrl:
+        "https://miro.medium.com/v2/resize:fit:4800/format:webp/0*o3I_Cj7tFaME2I19.jpg",
+      tags: ["Psychology", "Human Behavior"],
     },
-  ]
+    {
+      id: "7",
+      title: "That One Introspective Girl (My Girl)",
+      description: "A personal reflection on love and relationships.",
+      publishDate: "2024",
+      readTime: "3 min read",
+      url: "https://medium.com/@easinxarafat/that-one-introspective-girl-1b25ced83477",
+      imageUrl:
+        "https://miro.medium.com/v2/resize:fit:1100/format:webp/0*N6Ac81f0k8y9wsXS.jpg",
+      tags: ["Love", "My Girl"],
+    },
+  ];
 
   useEffect(() => {
     // Initialize audio elements with proper error handling
     try {
-      clickSoundRef.current = new Audio()
+      clickSoundRef.current = new Audio();
 
       // Set sources after creating the elements
       if (clickSoundRef.current) {
-        clickSoundRef.current.src = "/click.mp3"
-        clickSoundRef.current.preload = "auto"
+        clickSoundRef.current.src = "/click.mp3";
+        clickSoundRef.current.preload = "auto";
       }
     } catch (error) {
-      console.error("Error initializing audio:", error)
+      console.error("Error initializing audio:", error);
     }
 
     // Add entrance animation class to body
-    document.body.classList.add("animate-slideInRight")
+    document.body.classList.add("animate-slideInRight");
 
     // Remove animation class after animation completes
     const timer = setTimeout(() => {
-      document.body.classList.remove("animate-slideInRight")
-    }, 500)
+      document.body.classList.remove("animate-slideInRight");
+    }, 500);
 
     // In a real application, you would fetch from Medium API
     // For now, we'll use the sample data
     setTimeout(() => {
-      setPosts(samplePosts)
-      setLoading(false)
-    }, 1000)
+      setPosts(samplePosts);
+      setLoading(false);
+    }, 1000);
 
     return () => {
-      clearTimeout(timer)
-      if (clickSoundRef.current) clickSoundRef.current.pause()
-    }
-  }, [])
+      clearTimeout(timer);
+      if (clickSoundRef.current) clickSoundRef.current.pause();
+    };
+  }, []);
 
   const playClickSound = () => {
     if (!isMuted && clickSoundRef.current) {
       try {
-        clickSoundRef.current.currentTime = 0
-        const playPromise = clickSoundRef.current.play()
+        clickSoundRef.current.currentTime = 0;
+        const playPromise = clickSoundRef.current.play();
 
         if (playPromise !== undefined) {
           playPromise.catch((error) => {
-            console.log("Audio playback prevented:", error)
+            console.log("Audio playback prevented:", error);
             // Auto-play was prevented, we can safely ignore this error
-          })
+          });
         }
       } catch (error) {
-        console.error("Error playing sound:", error)
+        console.error("Error playing sound:", error);
       }
     }
-  }
+  };
 
   const nextPost = () => {
-    playClickSound()
-    setCurrentPost((prev) => (prev + 1) % posts.length)
-  }
+    playClickSound();
+    setCurrentPost((prev) => (prev + 1) % posts.length);
+  };
 
   const prevPost = () => {
-    playClickSound()
-    setCurrentPost((prev) => (prev - 1 + posts.length) % posts.length)
-  }
+    playClickSound();
+    setCurrentPost((prev) => (prev - 1 + posts.length) % posts.length);
+  };
 
   const openBlogPost = (url: string) => {
-    playClickSound()
-    window.open(url, "_blank")
-  }
+    playClickSound();
+    window.open(url, "_blank");
+  };
 
   return (
     <main className="min-h-screen bg-[#121212] text-[#2ed573] p-8 grid-dots">
@@ -177,14 +204,14 @@ export default function Blog() {
           <h1 className="text-3xl font-bold">My Blog Posts</h1>
           <div className="flex items-center gap-4">
             <a
-              href="https://medium.com/@yourusername"
+              href="https://medium.com/@easinxarafat"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-[#2ed573] hover:text-[#2ed573]/80"
               onClick={playClickSound}
             >
               <BookOpen size={18} />
-              View on Medium
+              Read All Blogs On Medium
             </a>
 
             <div className="flex gap-2">
@@ -216,29 +243,37 @@ export default function Blog() {
         ) : posts.length > 0 ? (
           <div className="bg-[#1e272e] rounded-2xl overflow-hidden border border-[#2ed573]/20">
             <div className="p-6 border-b border-[#2ed573]/10">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-2xl font-bold">{posts[currentPost].title}</h2>
-                <div className="flex items-center gap-4">
+              <div className="flex flex-col gap-2">
+                <h2 className="text-2xl font-bold">
+                  {posts[currentPost].title}
+                </h2>
+                <p className="text-[#2ed573]/80 mb-6">
+                  {posts[currentPost].description}
+                </p>
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {posts[currentPost].tags.map((tag, i) => (
+                    <span
+                      key={i}
+                      className="px-2 py-1 bg-[#0f0f0f] text-[#2ed573] rounded-full text-xs border border-[#2ed573]/20"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <div className="flex items-center gap-4 text-[#2ed573]/70 mb-6">
                   <div className="flex items-center gap-1">
-                    <Calendar size={14} className="text-[#2ed573]/70" />
-                    <span className="text-sm text-[#2ed573]/70">{posts[currentPost].publishDate}</span>
+                    <Calendar size={14} />
+                    <span className="text-sm">
+                      {posts[currentPost].publishDate}
+                    </span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <Clock size={14} className="text-[#2ed573]/70" />
-                    <span className="text-sm text-[#2ed573]/70">{posts[currentPost].readTime}</span>
+                    <Clock size={14} />
+                    <span className="text-sm">
+                      {posts[currentPost].readTime}
+                    </span>
                   </div>
                 </div>
-              </div>
-              <p className="text-[#2ed573]/80 mb-6">{posts[currentPost].description}</p>
-              <div className="flex flex-wrap gap-2 mb-6">
-                {posts[currentPost].tags.map((tag, i) => (
-                  <span
-                    key={i}
-                    className="px-2 py-1 bg-[#0f0f0f] text-[#2ed573] rounded-full text-xs border border-[#2ed573]/20"
-                  >
-                    {tag}
-                  </span>
-                ))}
               </div>
               <div className="flex flex-wrap gap-4">
                 <Button
@@ -251,8 +286,8 @@ export default function Blog() {
 
                 <Button
                   onClick={() => {
-                    navigator.clipboard.writeText(posts[currentPost].url)
-                    playClickSound()
+                    navigator.clipboard.writeText(posts[currentPost].url);
+                    playClickSound();
                   }}
                   className="inline-flex items-center gap-2 bg-[#0f0f0f] hover:bg-[#2a3942] text-[#2ed573] border border-[#2ed573]/30 px-4 py-2 rounded-lg"
                 >
@@ -267,7 +302,14 @@ export default function Blog() {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   >
-                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <rect
+                      x="9"
+                      y="9"
+                      width="13"
+                      height="13"
+                      rx="2"
+                      ry="2"
+                    ></rect>
                     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                   </svg>
                   Copy Link
@@ -275,9 +317,14 @@ export default function Blog() {
 
                 <Button
                   onClick={() => {
-                    const text = `Check out this article: ${posts[currentPost].title} - ${posts[currentPost].url}`
-                    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, "_blank")
-                    playClickSound()
+                    const text = `Check out this article: ${posts[currentPost].title} - ${posts[currentPost].url}`;
+                    window.open(
+                      `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                        text
+                      )}`,
+                      "_blank"
+                    );
+                    playClickSound();
                   }}
                   className="inline-flex items-center gap-2 bg-[#0f0f0f] hover:bg-[#2a3942] text-[#2ed573] border border-[#2ed573]/30 px-4 py-2 rounded-lg"
                 >
@@ -342,10 +389,12 @@ export default function Blog() {
               <button
                 key={index}
                 onClick={() => {
-                  playClickSound()
-                  setCurrentPost(index)
+                  playClickSound();
+                  setCurrentPost(index);
                 }}
-                className={`w-3 h-3 rounded-full mx-1 ${currentPost === index ? "bg-[#2ed573]" : "bg-[#1e272e]"}`}
+                className={`w-3 h-3 rounded-full mx-1 ${
+                  currentPost === index ? "bg-[#2ed573]" : "bg-[#1e272e]"
+                }`}
                 aria-label={`Go to post ${index + 1}`}
               />
             ))}
@@ -353,6 +402,5 @@ export default function Blog() {
         )}
       </div>
     </main>
-  )
+  );
 }
-
