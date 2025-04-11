@@ -202,15 +202,15 @@ export default function Blog() {
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-bold">My Blog Posts</h1>
-          <div className="flex items-center gap-4">
+          <div className="hidden sm:flex items-center gap-4">
             <a
               href="https://medium.com/@easinxarafat"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-[#2ed573] hover:text-[#2ed573]/80"
+              className="inline-flex items-center gap-4 text-[#0f0f0f] hover:text-[#0f0f0f]/80 text-sm sm:text-base bg-gradient-to-r from-[#2ed573] to-[#2ed573]/80 p-3 rounded-[5px] transform transition-transform hover:scale-105 hover:shadow-2xl hover:translate-y-1 hover:translate-x-1 shadow-lg"
               onClick={playClickSound}
             >
-              <BookOpen size={18} />
+              <BookOpen size={30} />
               Read All Blogs On Medium
             </a>
 
@@ -232,6 +232,38 @@ export default function Blog() {
                 <ArrowRight size={18} className="text-[#2ed573]" />
               </Button>
             </div>
+          </div>
+        </div>
+
+        <div className="flex sm:hidden items-center justify-between mb-8">
+          <a
+            href="https://medium.com/@easinxarafat"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-4 text-[#0f0f0f] hover:text-[#0f0f0f]/80 text-sm sm:text-base bg-gradient-to-r from-[#2ed573] to-[#2ed573]/80 p-3 rounded-[5px] transform transition-transform hover:scale-105 hover:shadow-2xl hover:translate-y-1 hover:translate-x-1 shadow-lg"
+            onClick={playClickSound}
+          >
+            <BookOpen size={20} />
+            Read All On Medium
+          </a>
+
+          <div className="flex gap-2">
+            <Button
+              onClick={prevPost}
+              disabled={loading || posts.length === 0}
+              className="w-10 h-10 p-0 rounded-full bg-[#1e272e] hover:bg-[#2a3942] border border-[#2ed573]/20"
+              aria-label="Previous post"
+            >
+              <ArrowLeft size={18} className="text-[#2ed573]" />
+            </Button>
+            <Button
+              onClick={nextPost}
+              disabled={loading || posts.length === 0}
+              className="w-10 h-10 p-0 rounded-full bg-[#1e272e] hover:bg-[#2a3942] border border-[#2ed573]/20"
+              aria-label="Next post"
+            >
+              <ArrowRight size={18} className="text-[#2ed573]" />
+            </Button>
           </div>
         </div>
 

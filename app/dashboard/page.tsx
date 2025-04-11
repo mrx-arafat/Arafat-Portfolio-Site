@@ -374,7 +374,8 @@ export default function Dashboard() {
                   Read My Articles
                 </h3>
                 <p className="text-[#2ed573]/70 mb-6">
-                  Security insights, tech tutorials, and business perspectives
+                  Security Insights, Entrepreneurship, Human Psychology,
+                  Philosophy, and more.
                 </p>
                 <Button
                   onClick={(e) => {
@@ -523,24 +524,24 @@ export default function Dashboard() {
           </div>
 
           {/* Experience Counter */}
-          <div className="bg-[#1e272e] rounded-2xl p-6 flex items-center justify-center border border-[#2ed573]/20">
-            <div className="flex flex-col items-center text-center">
-              <div className="w-16 h-16 rounded-full bg-[#2ed573] flex items-center justify-center mb-4 overflow-hidden">
+          <div className="bg-[#1e272e] rounded-2xl p-4 sm:p-6 flex items-center justify-center border border-[#2ed573]/20">
+            <div className="flex flex-col items-center text-center w-full max-w-md">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#2ed573] flex items-center justify-center mb-3 sm:mb-4 overflow-hidden">
                 <img
                   src="https://cdn-icons-png.flaticon.com/512/5987/5987860.png"
                   alt="Startup"
                   className="w-full h-full object-contain"
                 />
               </div>
-              <h3 className="text-[#2ed573] font-bold text-xl mb-2">
+              <h3 className="text-[#2ed573] font-bold text-lg sm:text-xl mb-2">
                 Entrepreneurial Journey
               </h3>
-              <p className="text-[#2ed573]/80 text-sm max-w-md">
+              <p className="text-[#2ed573]/80 text-xs sm:text-sm max-w-md px-2 sm:px-0">
                 Building innovative solutions to solve real-world problems.
                 Currently working on my startup vision to revolutionize the tech
                 industry.
               </p>
-              <div className="mt-4 flex gap-2">
+              <div className="mt-3 sm:mt-4 flex gap-2">
                 <span className="text-[#2ed573]/70 text-xs">Grow</span>
                 <span className="text-[#2ed573]/70 text-xs">•</span>
                 <span className="text-[#2ed573]/70 text-xs">or</span>

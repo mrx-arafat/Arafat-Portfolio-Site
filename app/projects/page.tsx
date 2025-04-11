@@ -199,21 +199,20 @@ export default function Projects() {
       </Link>
 
       <div className="max-w-4xl mx-auto">
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="text-3xl font-bold">My Projects</h1>
-          <div className="flex items-center gap-4">
+        <div className="flex flex-col sm:flex-row items-center justify-between mb-8">
+          <h1 className="text-3xl font-bold mb-4 sm:mb-0">My Projects</h1>
+          <div className="flex flex-col sm:flex-row items-center gap-4">
             <a
               href="https://github.com/mrx-arafat"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-[#2ed573] hover:text-[#2ed573]/80"
+              className="inline-flex items-center gap-2 text-[#2ed573] hover:text-[#2ed573]/80 mb-4 sm:mb-0"
               onClick={playClickSound}
             >
               <Github size={18} />
               View All Projects on GitHub
             </a>
-
-            <div className="flex gap-2">
+            <div className="flex gap-4 sm:gap-2">
               <Button
                 onClick={prevProject}
                 disabled={loading || projects.length === 0}
