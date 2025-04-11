@@ -1,50 +1,20 @@
-"use client"
+"use client";
 
-import type React from "react"
-
-import { useState } from "react"
-import Link from "next/link"
-import { ArrowLeft, Send } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
+import type React from "react";
+import { useState } from "react";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import { useForm, ValidationError } from "@formspree/react";
 
 export default function Contact() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  })
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSubmitted, setIsSubmitted] = useState(false)
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
-  }
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false)
-      setIsSubmitted(true)
-      setFormData({
-        name: "",
-        email: "",
-        message: "",
-      })
-    }, 1500)
-  }
+  const [state, handleSubmit] = useForm("mldjzrkd");
 
   return (
     <main className="min-h-screen bg-[#1a1b26] text-white p-8">
-      <Link href="/dashboard" className="inline-flex items-center text-[#3b5bdb] hover:text-[#4c6ef5] mb-12">
+      <Link
+        href="/dashboard"
+        className="inline-flex items-center text-[#3b5bdb] hover:text-[#4c6ef5] mb-12"
+      >
         <ArrowLeft size={20} className="mr-2" />
         Back to Dashboard
       </Link>
@@ -52,79 +22,91 @@ export default function Contact() {
       <div className="max-w-md mx-auto">
         <h1 className="text-3xl font-bold mb-8">Get in Touch</h1>
 
-        {isSubmitted ? (
+        {state.succeeded ? (
           <div className="bg-[#2a2c3b] p-6 rounded-lg text-center">
             <h2 className="text-xl font-semibold mb-4">Message Sent!</h2>
-            <p className="text-white/80 mb-6">Thank you for reaching out. I'll get back to you soon.</p>
-            <Button
-              variant="outline"
-              onClick={() => setIsSubmitted(false)}
-              className="bg-[#3b5bdb] text-white hover:bg-[#4c6ef5] border-none"
+            <p className="text-white/80 mb-6">
+              Thank you for reaching out. I'll get back to you soon.
+            </p>
+            <button
+              onClick={() => window.location.reload()}
+              className="w-full py-2 px-4 bg-gradient-to-r from-[#2ed573] to-[#2ed573]/80 text-[#0f0f0f] font-medium rounded-md transform transition-transform hover:scale-105 hover:shadow-2xl hover:translate-y-1 hover:translate-x-1 shadow-lg"
             >
               Send Another Message
-            </Button>
+            </button>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="name" className="block text-sm font-medium mb-2">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-[#2ed573] mb-1"
+              >
                 Name
               </label>
-              <Input
+              <input
+                type="text"
                 id="name"
                 name="name"
-                value={formData.name}
-                onChange={handleChange}
                 required
-                className="bg-[#2a2c3b] border-[#3b5bdb] focus:border-[#4c6ef5] text-white"
+                className="w-full px-4 py-2 rounded-md bg-[#1e272e] border border-[#2ed573]/20 text-white focus:outline-none focus:ring-2 focus:ring-[#2ed573]"
+              />
+              <ValidationError
+                prefix="Name"
+                field="name"
+                errors={state.errors}
               />
             </div>
-
             <div>
-              <label htmlFor="email" className="block text-sm font-medium mb-2">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-[#2ed573] mb-1"
+              >
                 Email
               </label>
-              <Input
+              <input
+                type="email"
                 id="email"
                 name="email"
-                type="email"
-                value={formData.email}
-                onChange={handleChange}
                 required
-                className="bg-[#2a2c3b] border-[#3b5bdb] focus:border-[#4c6ef5] text-white"
+                className="w-full px-4 py-2 rounded-md bg-[#1e272e] border border-[#2ed573]/20 text-white focus:outline-none focus:ring-2 focus:ring-[#2ed573]"
+              />
+              <ValidationError
+                prefix="Email"
+                field="email"
+                errors={state.errors}
               />
             </div>
-
             <div>
-              <label htmlFor="message" className="block text-sm font-medium mb-2">
+              <label
+                htmlFor="message"
+                className="block text-sm font-medium text-[#2ed573] mb-1"
+              >
                 Message
               </label>
-              <Textarea
+              <textarea
                 id="message"
                 name="message"
-                value={formData.message}
-                onChange={handleChange}
+                rows={4}
                 required
-                rows={5}
-                className="bg-[#2a2c3b] border-[#3b5bdb] focus:border-[#4c6ef5] text-white"
+                className="w-full px-4 py-2 rounded-md bg-[#1e272e] border border-[#2ed573]/20 text-white focus:outline-none focus:ring-2 focus:ring-[#2ed573]"
+              ></textarea>
+              <ValidationError
+                prefix="Message"
+                field="message"
+                errors={state.errors}
               />
             </div>
-
-            <Button type="submit" disabled={isSubmitting} className="w-full bg-[#3b5bdb] text-white hover:bg-[#4c6ef5]">
-              {isSubmitting ? (
-                <span className="flex items-center">
-                  <span className="animate-spin mr-2">◌</span> Sending...
-                </span>
-              ) : (
-                <span className="flex items-center">
-                  Send Message <Send size={16} className="ml-2" />
-                </span>
-              )}
-            </Button>
+            <button
+              type="submit"
+              disabled={state.submitting}
+              className="w-full py-2 px-4 bg-gradient-to-r from-[#2ed573] to-[#2ed573]/80 text-[#0f0f0f] font-medium rounded-md transform transition-transform hover:scale-105 hover:shadow-2xl hover:translate-y-1 hover:translate-x-1 shadow-lg"
+            >
+              {state.submitting ? "Sending..." : "Send Message"}
+            </button>
           </form>
         )}
       </div>
     </main>
-  )
+  );
 }
-
