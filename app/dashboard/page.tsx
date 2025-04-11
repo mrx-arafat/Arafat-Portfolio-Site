@@ -203,6 +203,17 @@ export default function Dashboard() {
 
               <div className="bg-[#0f0f0f] p-3 rounded-lg flex items-center justify-between border border-[#2ed573]/20">
                 <span className="text-[#2ed573] font-medium">
+                  ASPIRING ENTREPRENEUR
+                </span>
+                <Switch
+                  checked={skills.business}
+                  onCheckedChange={() => toggleSkill("business")}
+                  className="data-[state=checked]:bg-[#2ed573]"
+                />
+              </div>
+
+              <div className="bg-[#0f0f0f] p-3 rounded-lg flex items-center justify-between border border-[#2ed573]/20">
+                <span className="text-[#2ed573] font-medium">
                   BUSINESS MINDSET
                 </span>
                 <Switch
@@ -412,7 +423,7 @@ export default function Dashboard() {
               >
                 <div className="w-16 h-16 rounded-full bg-[#1e272e] flex items-center justify-center overflow-hidden">
                   <img
-                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-gam6wQbnATFAs00SJs9bNkTid4xxlr.png"
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR24ti9vpY6Wb1w0IusbgE8VQ80nuK6Oy4FBQ&s"
                     alt="Extracurricular"
                     className="w-full h-full object-contain"
                   />
@@ -424,12 +435,9 @@ export default function Dashboard() {
 
                 {/* Extended tooltip that appears on hover */}
                 <div className="absolute inset-0 bg-[#0f0f0f]/90 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-4 text-center">
-                  <h4 className="text-[#2ed573] font-bold mb-2">
-                    Mountain Climbing
-                  </h4>
+                  <h4 className="text-[#2ed573] font-bold mb-2">Leadership</h4>
                   <p className="text-[#2ed573]/80 text-xs">
-                    Exploring heights and pushing physical limits. Conquered 3
-                    major peaks in the last year.
+                    President of MIST Cyber Security Club (2023-2024){" "}
                   </p>
                 </div>
               </div>
@@ -438,8 +446,12 @@ export default function Dashboard() {
                 className="bg-[#0f0f0f] rounded-2xl aspect-square flex items-center justify-center relative hover:bg-[#2a3942] transition-colors cursor-pointer border border-[#2ed573]/20 hover-glow group"
                 onClick={playClickSound}
               >
-                <div className="w-16 h-16 rounded-full bg-[#1e272e] flex items-center justify-center">
-                  <Terminal size={24} className="text-[#2ed573]" />
+                <div className="w-16 h-16 rounded-full bg-[#1e272e] flex items-center justify-center overflow-hidden">
+                  <img
+                    src="https://miro.medium.com/v2/resize:fit:1400/0*QHePljMuURKgqoh_"
+                    alt="CTF Competitions"
+                    className="w-full h-full object-contain"
+                  />
                 </div>
                 <div className="absolute top-2 left-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
                 <div className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
@@ -452,8 +464,7 @@ export default function Dashboard() {
                     CTF Competitions
                   </h4>
                   <p className="text-[#2ed573]/80 text-xs">
-                    Participating in cybersecurity challenges. Ranked in top 10%
-                    in recent HackTheBox competition.
+                    CTF Player and Problem Solver. Ranked top 1% in TryHackMe.
                   </p>
                 </div>
               </div>
@@ -462,8 +473,12 @@ export default function Dashboard() {
                 className="bg-[#0f0f0f] rounded-2xl aspect-square flex items-center justify-center relative hover:bg-[#2a3942] transition-colors cursor-pointer border border-[#2ed573]/20 hover-glow group"
                 onClick={playClickSound}
               >
-                <div className="w-16 h-16 rounded-full bg-[#1e272e] flex items-center justify-center">
-                  <span className="text-[#ff4757] text-xl font-bold">VS</span>
+                <div className="w-16 h-16 rounded-full bg-[#1e272e] flex items-center justify-center overflow-hidden">
+                  <img
+                    src="https://t4.ftcdn.net/jpg/02/11/51/53/360_F_211515361_bnIbyKadClzn3hJT0zCPPuPApcG7k3lC.jpg"
+                    alt="Sports"
+                    className="w-full h-full object-contain"
+                  />
                 </div>
                 <div className="absolute top-2 left-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
                 <div className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
@@ -472,12 +487,10 @@ export default function Dashboard() {
 
                 {/* Extended tooltip that appears on hover */}
                 <div className="absolute inset-0 bg-[#0f0f0f]/90 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-4 text-center">
-                  <h4 className="text-[#2ed573] font-bold mb-2">
-                    Competitive Gaming
-                  </h4>
+                  <h4 className="text-[#2ed573] font-bold mb-2">Sports</h4>
                   <p className="text-[#2ed573]/80 text-xs">
-                    Strategic thinking and team coordination. Compete in weekend
-                    tournaments with friends.
+                    Active participant in sports like football, cricket,
+                    swimming, table tennis, badminton, etc.
                   </p>
                 </div>
               </div>
@@ -486,8 +499,12 @@ export default function Dashboard() {
                 className="bg-[#0f0f0f] rounded-2xl aspect-square flex items-center justify-center relative hover:bg-[#2a3942] transition-colors cursor-pointer border border-[#2ed573]/20 hover-glow group"
                 onClick={playClickSound}
               >
-                <div className="w-16 h-16 rounded-full bg-[#1e272e] flex items-center justify-center">
-                  <Coffee size={24} className="text-[#2ed573]" />
+                <div className="w-16 h-16 rounded-full bg-[#1e272e] flex items-center justify-center overflow-hidden">
+                  <img
+                    src="https://img.freepik.com/premium-vector/vector-book-icon-logo-is-stack-books-stack-albums-art-book-hobby-reading_562582-125.jpg?w=360"
+                    alt="Hobbies"
+                    className="w-full h-full object-contain"
+                  />
                 </div>
                 <div className="absolute top-2 left-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
                 <div className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
@@ -496,12 +513,9 @@ export default function Dashboard() {
 
                 {/* Extended tooltip that appears on hover */}
                 <div className="absolute inset-0 bg-[#0f0f0f]/90 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-4 text-center">
-                  <h4 className="text-[#2ed573] font-bold mb-2">
-                    Coffee Brewing
-                  </h4>
+                  <h4 className="text-[#2ed573] font-bold mb-2">Hobbies</h4>
                   <p className="text-[#2ed573]/80 text-xs">
-                    Exploring different brewing methods and beans. Amateur
-                    barista with home setup.
+                    Love Reading, Writing, and Travelling.
                   </p>
                 </div>
               </div>
@@ -510,13 +524,28 @@ export default function Dashboard() {
 
           {/* Experience Counter */}
           <div className="bg-[#1e272e] rounded-2xl p-6 flex items-center justify-center border border-[#2ed573]/20">
-            <div className="flex flex-col items-center">
-              <div className="w-16 h-16 rounded-full bg-[#2ed573] flex items-center justify-center mb-2">
-                <span className="text-[#0f0f0f] font-bold text-2xl">2</span>
+            <div className="flex flex-col items-center text-center">
+              <div className="w-16 h-16 rounded-full bg-[#2ed573] flex items-center justify-center mb-4 overflow-hidden">
+                <img
+                  src="https://cdn-icons-png.flaticon.com/512/5987/5987860.png"
+                  alt="Startup"
+                  className="w-full h-full object-contain"
+                />
               </div>
-              <div className="text-[#2ed573] text-center">
-                <div className="text-xs">YEARS OF</div>
-                <div className="font-medium">EXPERIENCE</div>
+              <h3 className="text-[#2ed573] font-bold text-xl mb-2">
+                Entrepreneurial Journey
+              </h3>
+              <p className="text-[#2ed573]/80 text-sm max-w-md">
+                Building innovative solutions to solve real-world problems.
+                Currently working on my startup vision to revolutionize the tech
+                industry.
+              </p>
+              <div className="mt-4 flex gap-2">
+                <span className="text-[#2ed573]/70 text-xs">Grow</span>
+                <span className="text-[#2ed573]/70 text-xs">•</span>
+                <span className="text-[#2ed573]/70 text-xs">or</span>
+                <span className="text-[#2ed573]/70 text-xs">•</span>
+                <span className="text-[#2ed573]/70 text-xs">Die</span>
               </div>
             </div>
           </div>
@@ -524,8 +553,10 @@ export default function Dashboard() {
       </div>
 
       {/* Footer */}
-      <div className="text-[#2ed573]/30 text-xs tracking-widest mt-8 text-center">
-        ARAFAT © {new Date().getFullYear()} - ALL RIGHTS RESERVED
+      <div className="text-[#2ed573]/30 text-xs tracking-widest mt-8 text-center w-full max-w-7xl mx-auto px-4">
+        <div className="border-t border-[#2ed573]/10 pt-4">
+          ARAFAT © {new Date().getFullYear()} - ALL RIGHTS RESERVED
+        </div>
       </div>
     </main>
   );
