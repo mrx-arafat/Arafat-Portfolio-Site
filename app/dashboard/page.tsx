@@ -338,7 +338,7 @@ export default function Dashboard() {
                   Explore My Projects
                 </h3>
                 <p className="text-[#2ed573]/70 mb-6">
-                  Security tools, automation scripts, and web applications
+                  Security Tools, Automation Scripts, and Web Applications
                 </p>
                 <Button
                   onClick={(e) => {
@@ -490,8 +490,8 @@ export default function Dashboard() {
                 <div className="absolute inset-0 bg-[#0f0f0f]/90 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-4 text-center">
                   <h4 className="text-[#2ed573] font-bold mb-2">Sports</h4>
                   <p className="text-[#2ed573]/80 text-xs">
-                    Active participant in sports like football, cricket,
-                    swimming, table tennis, badminton, etc.
+                    Active participant in sports like Football, Cricket,
+                    Swimming, Table Tennis, Badminton, etc.
                   </p>
                 </div>
               </div>
