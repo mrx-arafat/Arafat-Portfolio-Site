@@ -1,9 +1,21 @@
-import * as React from "react"
-
-import { cn } from "@/lib/utils"
+import * as React from "react";
+import { cn } from "@/lib/utils";
+import { playKeyboardSound } from "@/utils/sound";
 
 const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
-  ({ className, type, ...props }, ref) => {
+  ({ className, type, onKeyDown, ...props }, ref) => {
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (
+        e.key.length === 1 || // Printable characters
+        e.key === "Backspace" ||
+        e.key === "Enter" ||
+        e.key === " "
+      ) {
+        playKeyboardSound();
+      }
+      onKeyDown?.(e);
+    };
+
     return (
       <input
         type={type}
@@ -12,11 +24,12 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
           className
         )}
         ref={ref}
+        onKeyDown={handleKeyDown}
         {...props}
       />
-    )
+    );
   }
-)
-Input.displayName = "Input"
+);
+Input.displayName = "Input";
 
-export { Input }
+export { Input };

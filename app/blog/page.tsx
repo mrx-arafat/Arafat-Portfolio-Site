@@ -208,7 +208,7 @@ export default function Blog() {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-4 text-[#0f0f0f] hover:text-[#0f0f0f]/80 text-sm sm:text-base bg-gradient-to-r from-[#2ed573] to-[#2ed573]/80 p-3 rounded-[5px] transform transition-transform hover:scale-105 hover:shadow-2xl hover:translate-y-1 hover:translate-x-1 shadow-lg"
-              onClick={playClickSound}
+              onClick={() => playClickSound()}
             >
               <BookOpen size={30} />
               Read All Blogs On Medium
@@ -241,7 +241,7 @@ export default function Blog() {
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-4 text-[#0f0f0f] hover:text-[#0f0f0f]/80 text-sm sm:text-base bg-gradient-to-r from-[#2ed573] to-[#2ed573]/80 p-3 rounded-[5px] transform transition-transform hover:scale-105 hover:shadow-2xl hover:translate-y-1 hover:translate-x-1 shadow-lg"
-            onClick={playClickSound}
+            onClick={() => playClickSound()}
           >
             <BookOpen size={20} />
             Read All On Medium

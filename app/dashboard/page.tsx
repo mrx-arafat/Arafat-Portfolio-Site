@@ -25,6 +25,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import Image from "next/image";
+import { playClickSound } from "@/utils/sound";
 
 export default function Dashboard() {
   const [isMuted, setIsMuted] = useState(true);
@@ -69,36 +70,11 @@ export default function Dashboard() {
   };
 
   const toggleSkill = (skill: keyof typeof skills) => {
-    // Play click sound if not muted
-    if (!isMuted && clickSoundRef.current) {
-      clickSoundRef.current.currentTime = 0;
-      clickSoundRef.current
-        .play()
-        .catch((e) => console.error("Error playing sound:", e));
-    }
-
+    playClickSound();
     setSkills((prev) => ({
       ...prev,
       [skill]: !prev[skill],
     }));
-  };
-
-  const playClickSound = () => {
-    if (!isMuted && clickSoundRef.current) {
-      try {
-        clickSoundRef.current.currentTime = 0;
-        const playPromise = clickSoundRef.current.play();
-
-        if (playPromise !== undefined) {
-          playPromise.catch((error) => {
-            console.log("Audio playback prevented:", error);
-            // Auto-play was prevented, we can safely ignore this error
-          });
-        }
-      } catch (error) {
-        console.error("Error playing sound:", error);
-      }
-    }
   };
 
   const navigateTo = (path: string) => {
