@@ -98,14 +98,14 @@ export default function Dashboard() {
         <div className="bg-[#1e272e] rounded-2xl overflow-hidden shadow-lg border border-[#2ed573]/20">
           {/* Header with name */}
           <div className="p-4 flex items-center gap-3 border-b border-[#2ed573]/10">
-            <div className="w-6 h-6 flex flex-col gap-[2px]">
+            <div className="w-6 h-6 flex justify-center flex-col gap-[2px]">
               <div className="flex gap-[2px]">
-                <div className="w-[6px] h-[6px] bg-[#2ed573] rounded-sm"></div>
-                <div className="w-[6px] h-[6px] bg-[#2ed573] rounded-sm"></div>
+                <div className="w-[8px] h-[8px] bg-[#2ed573] rounded-sm"></div>
+                <div className="w-[8px] h-[8px] bg-[#2ed573] rounded-sm"></div>
               </div>
-              <div className="flex gap-[2px]">
-                <div className="w-[6px] h-[6px] bg-[#2ed573] rounded-sm"></div>
-                <div className="w-[6px] h-[6px] bg-[#2ed573] rounded-sm"></div>
+              <div className="flex  gap-[2px]">
+                <div className="w-[8px] h-[8px] bg-[#2ed573] rounded-sm"></div>
+                <div className="w-[8px] h-[8px] bg-[#2ed573] rounded-sm"></div>
               </div>
             </div>
             <h2 className="text-[#2ed573] font-medium tracking-wide">ARAFAT</h2>

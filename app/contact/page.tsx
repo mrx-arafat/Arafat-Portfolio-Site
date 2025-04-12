@@ -33,7 +33,7 @@ export default function Contact() {
     <main className="min-h-screen bg-[#1a1b26] text-white p-8">
       <Link
         href="/dashboard"
-        className="inline-flex items-center text-[#3b5bdb] hover:text-[#4c6ef5] mb-12"
+        className="inline-flex items-center text-[#2ed573] hover:text-[#1f9b53] mb-12"
         onClick={playClickSound}
       >
         <ArrowLeft size={20} className="mr-2" />

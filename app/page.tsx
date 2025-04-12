@@ -19,8 +19,7 @@ export default function Home() {
     "Aspiring Entrepreneur",
     "Focued on creating impactful solutions",
     "okay! that's enough :')",
-    "Click the button below",
-    "Initialize System...",
+    "Let's Initialize System...",
   ];
 
   useEffect(() => {
