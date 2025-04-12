@@ -467,6 +467,7 @@ export default function Dashboard() {
                   <h4 className="text-[#2ed573] font-bold mb-2">Sports</h4>
                   <p className="text-[#2ed573]/80 text-xs">
                     Active participant in sports like Football, Cricket,
+                    Kickboxing, Swimming, Table Tennis, Badminton, etc.
                     Swimming, Table Tennis, Badminton, etc.
                   </p>
                 </div>

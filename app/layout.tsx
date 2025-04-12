@@ -8,6 +8,7 @@ import StructuredData from "./components/StructuredData";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("http://profile.arafatbytes.live"),
   title:
     "Easin Arafat | Application Security Engineer @ MIST | Cybersecurity Expert",
   description:
