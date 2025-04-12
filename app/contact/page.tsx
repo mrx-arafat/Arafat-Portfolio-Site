@@ -41,7 +41,9 @@ export default function Contact() {
       </Link>
 
       <div className="max-w-md mx-auto">
-        <h1 className="text-3xl font-bold mb-8">Get in Touch</h1>
+        <h1 className="text-3xl  text-[#2ed573] font-bold mb-8">
+          Get in Touch
+        </h1>
 
         {state.succeeded ? (
           <div className="bg-[#2a2c3b] p-6 rounded-lg text-center">
