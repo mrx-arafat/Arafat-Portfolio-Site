@@ -14,11 +14,12 @@ export default function Home() {
   const router = useRouter();
 
   const screens = [
-    "Hi, I'm Arafat.",
-    "Application Security Engineer at Startise.",
-    "Aspiring Entrepreneur.",
-    "Focued on creating impactful solutions.",
+    "Hi, I'm Arafat",
+    "Application Security Engineer at Startise",
+    "Aspiring Entrepreneur",
+    "Focued on creating impactful solutions",
     "okay! that's enough :')",
+    "Click the button below",
     "Initialize System...",
   ];
 
@@ -89,7 +90,7 @@ export default function Home() {
               <span className="animate-blink">_</span>
             </>
           ) : (
-            <span className="text-[#2ed573]/30">System is turned off...</span>
+            <span className="text-[#2ed573]/30">Turn on the terminal...</span>
           )}
         </div>
       </div>
