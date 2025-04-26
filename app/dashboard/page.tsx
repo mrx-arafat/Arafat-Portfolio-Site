@@ -468,7 +468,6 @@ export default function Dashboard() {
                   <p className="text-[#2ed573]/80 text-xs">
                     Active participant in sports like Football, Cricket,
                     Kickboxing, Swimming, Table Tennis, Badminton, etc.
-                    Swimming, Table Tennis, Badminton, etc.
                   </p>
                 </div>
               </div>
@@ -494,6 +493,118 @@ export default function Dashboard() {
                   <h4 className="text-[#2ed573] font-bold mb-2">Hobbies</h4>
                   <p className="text-[#2ed573]/80 text-xs">
                     Love Reading, Writing, and Travelling.
+                  </p>
+                </div>
+              </div>
+
+              {/* MIST LEETCON Card */}
+              <div
+                className="bg-[#0f0f0f] rounded-2xl aspect-square flex items-center justify-center relative hover:bg-[#2a3942] transition-colors cursor-pointer border border-[#2ed573]/20 hover-glow group"
+                onClick={playClickSound}
+              >
+                <div className="w-16 h-16 rounded-full bg-[#1e272e] flex items-center justify-center overflow-hidden">
+                  <img
+                    src="https://isomer-user-content.by.gov.sg/29/859c65a3-5ee3-496d-93b2-5de0c2504487/databuddy_thumbnail.png"
+                    alt="Conference"
+                    className="w-16 h-16 object-cover"
+                  />
+                </div>
+                <div className="absolute top-2 left-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
+                <div className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
+                <div className="absolute bottom-2 left-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
+                <div className="absolute bottom-2 right-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
+
+                <div className="absolute inset-0 bg-[#0f0f0f]/90 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-4 text-center">
+                  <h4 className="text-[#2ed573] font-bold mb-2">
+                    MIST LEETCON 2023
+                  </h4>
+                  <p className="text-[#2ed573]/80 text-xs">
+                    Event Organizer for Bangladesh's first international
+                    cybersecurity conference, hosting 3,500+ participants.
+                  </p>
+                </div>
+              </div>
+
+              {/* Flaghunt Card */}
+              <div
+                className="bg-[#0f0f0f] rounded-2xl aspect-square flex items-center justify-center relative hover:bg-[#2a3942] transition-colors cursor-pointer border border-[#2ed573]/20 hover-glow group"
+                onClick={playClickSound}
+              >
+                <div className="w-16 h-16 rounded-full bg-[#1e272e] flex items-center justify-center overflow-hidden">
+                  <img
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpj-LJYqGa8R4AeBOm-E005q0lLGwPjMstOA&s"
+                    alt="CTF Event"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="absolute top-2 left-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
+                <div className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
+                <div className="absolute bottom-2 left-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
+                <div className="absolute bottom-2 right-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
+
+                <div className="absolute inset-0 bg-[#0f0f0f]/90 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-4 text-center">
+                  <h4 className="text-[#2ed573] font-bold mb-2">
+                    Flaghunt 2023
+                  </h4>
+                  <p className="text-[#2ed573]/80 text-xs">
+                    Event Host for National CTF Competition in collaboration
+                    with CTFBD.
+                  </p>
+                </div>
+              </div>
+
+              {/* Cyber Drill Card */}
+              <div
+                className="bg-[#0f0f0f] rounded-2xl aspect-square flex items-center justify-center relative hover:bg-[#2a3942] transition-colors cursor-pointer border border-[#2ed573]/20 hover-glow group"
+                onClick={playClickSound}
+              >
+                <div className="w-16 h-16 rounded-full bg-[#1e272e] flex items-center justify-center overflow-hidden">
+                  <img
+                    src="https://media.licdn.com/dms/image/v2/D560BAQFIZ2NOrkEvBA/company-logo_200_200/company-logo_200_200/0/1697090906545/bgdegovcirt_logo?e=2147483647&v=beta&t=LBNsabdRQWcuXHkO9e7GYyLKKD0U_hB-ggofIZVDmCk"
+                    alt="Cyber Drill"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="absolute top-2 left-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
+                <div className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
+                <div className="absolute bottom-2 left-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
+                <div className="absolute bottom-2 right-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
+
+                <div className="absolute inset-0 bg-[#0f0f0f]/90 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-4 text-center">
+                  <h4 className="text-[#2ed573] font-bold mb-2">
+                    Cyber Drill 2023
+                  </h4>
+                  <p className="text-[#2ed573]/80 text-xs">
+                    Organizer for Financial Institute & Critical Information
+                    Infrastructures Cyber Drill.
+                  </p>
+                </div>
+              </div>
+
+              {/* Cyber Threats Seminar Card */}
+              <div
+                className="bg-[#0f0f0f] rounded-2xl aspect-square flex items-center justify-center relative hover:bg-[#2a3942] transition-colors cursor-pointer border border-[#2ed573]/20 hover-glow group"
+                onClick={playClickSound}
+              >
+                <div className="w-16 h-16 rounded-full bg-[#1e272e] flex items-center justify-center overflow-hidden">
+                  <img
+                    src="https://www.newagebd.com/files/records/news/202311/218227_132.jpg"
+                    alt="Seminar"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="absolute top-2 left-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
+                <div className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
+                <div className="absolute bottom-2 left-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
+                <div className="absolute bottom-2 right-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
+
+                <div className="absolute inset-0 bg-[#0f0f0f]/90 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-4 text-center">
+                  <h4 className="text-[#2ed573] font-bold mb-2">
+                    Cyber Threats Seminar
+                  </h4>
+                  <p className="text-[#2ed573]/80 text-xs">
+                    Host for emerging cyber threats seminar with Armed Forces
+                    Division of Bangladesh.
                   </p>
                 </div>
               </div>
