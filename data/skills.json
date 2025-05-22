@@ -246,6 +246,27 @@
       "icon": "HardDrive",
       "category": "database",
       "description": "Database administration, optimization, and security across different database systems"
+    },
+    {
+      "id": "osint",
+      "name": "OSINT",
+      "icon": "Search",
+      "category": "security",
+      "description": "Open Source Intelligence gathering and analysis for security research and threat intelligence"
+    },
+    {
+      "id": "digital-forensics",
+      "name": "Digital Forensics",
+      "icon": "FileSearch",
+      "category": "security",
+      "description": "Investigating digital artifacts and recovering evidence for security incident analysis"
+    },
+    {
+      "id": "networking",
+      "name": "Networking",
+      "icon": "Network",
+      "category": "security",
+      "description": "Understanding network protocols, architecture, and security to identify and mitigate network-based threats"
     }
   ]
 }

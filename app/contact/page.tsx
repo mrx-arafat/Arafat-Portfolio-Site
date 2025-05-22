@@ -163,7 +163,7 @@ export default function Contact() {
 
           <div className="relative z-10">
             <h1 className="text-4xl text-[#2ed573] font-bold mb-3 tracking-tight">
-              Let's Connect
+              Anything on your mind?
             </h1>
             <p className="text-[#2ed573]/80 mb-8 text-lg">
               Feel free to reach out - I'm always open to meaningful

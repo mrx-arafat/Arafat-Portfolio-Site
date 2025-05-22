@@ -461,15 +461,36 @@ export default function Dashboard() {
                 <div
                   onClick={() => {
                     // Add terminal typing sound effect
-                    const audio = new Audio("/click.mp3");
-                    audio.volume = 0.3;
-                    audio.play();
+                    playClickSound();
 
-                    // Add hacker-like effect
+                    // Add multiple hacker effects
                     const btn = document.querySelector(".skills-btn");
                     if (btn) {
-                      btn.classList.add("glitch-effect");
+                      // 1. Add shake effect
+                      btn.classList.add("shake-effect");
+
+                      // 2. Add scan line effect
+                      const scanLine = btn.querySelector(".scan-line");
+                      if (scanLine) {
+                        scanLine.style.opacity = "0.7";
+                      }
+
+                      // 3. Add digital noise effect to text
+                      const textElements =
+                        btn.querySelectorAll(".text-lg, .text-xs");
+                      textElements.forEach((el) => {
+                        el.classList.add("digital-noise");
+                      });
+
+                      // Remove effects after animation completes
                       setTimeout(() => {
+                        btn.classList.remove("shake-effect");
+                        if (scanLine) scanLine.style.opacity = "0";
+                        textElements.forEach((el) => {
+                          el.classList.remove("digital-noise");
+                        });
+
+                        // Navigate to skills page
                         navigateTo("/skills");
                       }, 500);
                     } else {
