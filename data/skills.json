@@ -1,0 +1,244 @@
+{
+  "skills": [
+    {
+      "id": "security",
+      "name": "Security Engineer",
+      "icon": "ShieldCheck",
+      "category": "security",
+      "description": "Expertise in application security, penetration testing, and security architecture"
+    },
+    {
+      "id": "entrepreneur",
+      "name": "Aspiring Entrepreneur",
+      "icon": "Briefcase",
+      "category": "business",
+      "description": "Building innovative solutions to solve real-world problems"
+    },
+    {
+      "id": "financial",
+      "name": "Financial Intelligence",
+      "icon": "LineChart",
+      "category": "business",
+      "description": "Understanding financial principles, investment strategies, and economic decision-making"
+    },
+    {
+      "id": "webdev",
+      "name": "Web Developer",
+      "icon": "Globe",
+      "category": "development",
+      "description": "Building modern web applications with Node, Express, React, Next.js, and other frameworks"
+    },
+    {
+      "id": "nodejs",
+      "name": "Node.js",
+      "icon": "Server",
+      "category": "development",
+      "description": "Building scalable backend services and APIs with Node.js runtime"
+    },
+
+    {
+      "id": "react",
+      "name": "React",
+      "icon": "Atom",
+      "category": "development",
+      "description": "Building user interfaces with React and related libraries"
+    },
+    {
+      "id": "nextjs",
+      "name": "Next.js",
+      "icon": "Zap",
+      "category": "development",
+      "description": "Creating full-stack React applications with Next.js framework"
+    },
+    {
+      "id": "typescript",
+      "name": "TypeScript",
+      "icon": "FileCode",
+      "category": "development",
+      "description": "Writing type-safe JavaScript code with TypeScript"
+    },
+    {
+      "id": "python",
+      "name": "Python",
+      "icon": "FileCode",
+      "category": "development",
+      "description": "Building applications, scripts, and automation tools with Python"
+    },
+    {
+      "id": "pentesting",
+      "name": "Penetration Testing",
+      "icon": "Lock",
+      "category": "security",
+      "description": "Identifying and exploiting security vulnerabilities in systems"
+    },
+    {
+      "id": "ctf",
+      "name": "CTF Player",
+      "icon": "Flag",
+      "category": "security",
+      "description": "Participating in and solving Capture The Flag security challenges"
+    },
+    {
+      "id": "leadership",
+      "name": "Leadership",
+      "icon": "Users",
+      "category": "soft-skill",
+      "description": "Leading teams and projects to successful outcomes"
+    },
+    {
+      "id": "communication",
+      "name": "Communication",
+      "icon": "MessageSquare",
+      "category": "soft-skill",
+      "description": "Effectively communicating complex technical concepts"
+    },
+    {
+      "id": "problemsolving",
+      "name": "Problem Solving",
+      "icon": "Lightbulb",
+      "category": "soft-skill",
+      "description": "Analytical thinking and creative problem-solving skills"
+    },
+    {
+      "id": "management",
+      "name": "Management",
+      "icon": "Briefcase",
+      "category": "soft-skill",
+      "description": "Managing projects, teams, events and resources effectively to achieve organizational goals"
+    },
+    {
+      "id": "webservers",
+      "name": "Web Servers",
+      "icon": "Server",
+      "category": "devops",
+      "description": "Configuring and optimizing web servers including Nginx and OpenLiteSpeed (OLS)"
+    },
+    {
+      "id": "docker",
+      "name": "Docker",
+      "icon": "Box",
+      "category": "devops",
+      "description": "Containerizing applications for consistent deployment across environments"
+    },
+    {
+      "id": "kubernetes",
+      "name": "Kubernetes",
+      "icon": "Cpu",
+      "category": "devops",
+      "description": "Orchestrating containerized applications for scalability and resilience"
+    },
+    {
+      "id": "ci-cd",
+      "name": "CI/CD",
+      "icon": "GitBranch",
+      "category": "devops",
+      "description": "Building and maintaining continuous integration and deployment pipelines"
+    },
+    {
+      "id": "terraform",
+      "name": "Terraform",
+      "icon": "Cloud",
+      "category": "devops",
+      "description": "Infrastructure as Code for provisioning and managing cloud resources"
+    },
+    {
+      "id": "cloud",
+      "name": "Cloud Platforms",
+      "icon": "Cloud",
+      "category": "devops",
+      "description": "Managing servers and services across multiple cloud platforms including AWS, Azure, Digital Ocean, and Vultr"
+    },
+    {
+      "id": "git",
+      "name": "Git",
+      "icon": "GitBranch",
+      "category": "development",
+      "description": "Version control and collaborative development using Git"
+    },
+    {
+      "id": "playwright",
+      "name": "Playwright",
+      "icon": "Play",
+      "category": "testing",
+      "description": "End-to-end testing of web applications using Playwright automation framework"
+    },
+    {
+      "id": "jest",
+      "name": "Jest",
+      "icon": "Check",
+      "category": "testing",
+      "description": "JavaScript testing framework for unit and integration tests"
+    },
+
+    {
+      "id": "selenium",
+      "name": "Selenium",
+      "icon": "Monitor",
+      "category": "testing",
+      "description": "Browser automation for testing web applications"
+    },
+    {
+      "id": "owasp",
+      "name": "OWASP",
+      "icon": "Shield",
+      "category": "security",
+      "description": "Applying OWASP security principles and best practices"
+    },
+    {
+      "id": "sast",
+      "name": "SAST",
+      "icon": "Search",
+      "category": "security",
+      "description": "Static Application Security Testing to identify vulnerabilities in code"
+    },
+    {
+      "id": "dast",
+      "name": "DAST",
+      "icon": "Activity",
+      "category": "security",
+      "description": "Dynamic Application Security Testing to find runtime vulnerabilities"
+    },
+    {
+      "id": "linux",
+      "name": "Linux",
+      "icon": "Terminal",
+      "category": "devops",
+      "description": "Linux system administration and shell scripting"
+    },
+    {
+      "id": "monitoring",
+      "name": "Monitoring",
+      "icon": "BarChart",
+      "category": "devops",
+      "description": "Setting up monitoring and alerting systems for applications and infrastructure"
+    },
+    {
+      "id": "api-security",
+      "name": "API Security",
+      "icon": "Lock",
+      "category": "security",
+      "description": "Securing APIs against common vulnerabilities and attacks"
+    },
+    {
+      "id": "mysql",
+      "name": "MySQL",
+      "icon": "Database",
+      "category": "database",
+      "description": "Designing, optimizing, and managing relational databases with MySQL"
+    },
+    {
+      "id": "mongodb",
+      "name": "MongoDB",
+      "icon": "Database",
+      "category": "database",
+      "description": "Working with NoSQL databases using MongoDB for flexible, document-oriented data storage"
+    },
+    {
+      "id": "database-management",
+      "name": "Database Management",
+      "icon": "HardDrive",
+      "category": "database",
+      "description": "Database administration, optimization, and security across different database systems"
+    }
+  ]
+}

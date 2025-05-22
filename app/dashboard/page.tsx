@@ -15,6 +15,8 @@ import {
   Coffee,
   Terminal,
   Info,
+  Code,
+  Layers,
 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
@@ -208,6 +210,26 @@ export default function Dashboard() {
                   onCheckedChange={() => toggleSkill("webdev")}
                   className="data-[state=checked]:bg-[#2ed573]"
                 />
+              </div>
+
+              {/* 3D Skills Button */}
+              <div
+                onClick={() => navigateTo("/skills")}
+                className="bg-[#0f0f0f] p-4 rounded-lg border border-[#2ed573]/20 hover:border-[#2ed573]/50 transition-all cursor-pointer transform hover:translate-y-[-3px] hover:shadow-[0_10px_20px_rgba(46,213,115,0.2)] active:translate-y-[-1px] active:shadow-[0_5px_10px_rgba(46,213,115,0.2)]"
+              >
+                <div className="flex items-center justify-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-[#2ed573]/10 flex items-center justify-center text-[#2ed573]">
+                    <Layers size={20} />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-[#2ed573] font-medium">
+                      MY SKILLS
+                    </span>
+                    <span className="text-[#2ed573]/60 text-xs">
+                      View all skills as badges
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
