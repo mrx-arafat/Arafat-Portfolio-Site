@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
         process.env.SMTP_FROM || "Your Portfolio Site <your-email@gmail.com>",
       to: process.env.CONTACT_EMAIL || "e4rafat@gmail.com",
       replyTo: email,
-      subject: `New Message from ${name}`,
+      subject: `✉️ ${name} sent you a message via your portfolio`,
       text: `
 Name: ${name}
 Email: ${email}
@@ -46,34 +46,48 @@ ${message}
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New message from ${name}</title>
 </head>
-<body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9f9f9; color: #333;">
+<!-- Preview text -->
+<div style="display: none; max-height: 0px; overflow: hidden;">
+  ${name} sent: "${message.substring(0, 100).replace(/\r?\n|\r/g, " ")}${
+        message.length > 100 ? "..." : ""
+      }" - Reply to this email to respond directly.
+</div>
+<!-- End preview text -->
+<body style="margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; background-color: #f9f9f9; color: #333;">
   <div style="max-width: 600px; margin: 0 auto; background-color: #121212; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); margin-top: 20px; margin-bottom: 20px; border: 1px solid #2ed573;">
     <!-- Header -->
     <div style="background-color: #1e272e; padding: 20px; text-align: center; border-bottom: 2px solid #2ed573;">
-      <h1 style="color: #2ed573; margin: 0; font-size: 24px; font-weight: 600;">New Message from Your Portfolio</h1>
+      <h1 style="color: #2ed573; margin: 0; font-size: 24px; font-weight: 600;">Message from ${name}</h1>
     </div>
 
     <!-- Content -->
-    <div style="padding: 30px; background-color: #1a1b26;">
-      <div style="background-color: #0f0f0f; border-radius: 8px; padding: 25px; border-left: 4px solid #2ed573;">
-        <p style="margin-bottom: 20px; color: #2ed573; font-size: 16px;">You've received a new message from your portfolio contact form:</p>
-
-        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+    <div style="padding: 25px; background-color: #1a1b26;">
+      <div style="background-color: #0f0f0f; border-radius: 8px; padding: 20px; border-left: 4px solid #2ed573;">
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
           <tr>
-            <td style="padding: 12px 0; border-bottom: 1px solid #2ed57333; color: #999; width: 100px;">From:</td>
-            <td style="padding: 12px 0; border-bottom: 1px solid #2ed57333; color: #fff; font-weight: 500;">${name}</td>
+            <td style="padding: 10px 0; border-bottom: 1px solid #2ed57333; color: #999; width: 80px;">From:</td>
+            <td style="padding: 10px 0; border-bottom: 1px solid #2ed57333; color: #fff; font-weight: 500;">${name}</td>
           </tr>
           <tr>
-            <td style="padding: 12px 0; border-bottom: 1px solid #2ed57333; color: #999;">Email:</td>
-            <td style="padding: 12px 0; border-bottom: 1px solid #2ed57333; color: #fff; font-weight: 500;"><a href="mailto:${email}" style="color: #2ed573; text-decoration: none;">${email}</a></td>
+            <td style="padding: 10px 0; border-bottom: 1px solid #2ed57333; color: #999;">Email:</td>
+            <td style="padding: 10px 0; border-bottom: 1px solid #2ed57333; color: #fff; font-weight: 500;"><a href="mailto:${email}" style="color: #2ed573; text-decoration: none;">${email}</a></td>
+          </tr>
+          <tr>
+            <td style="padding: 10px 0; color: #999;">Date:</td>
+            <td style="padding: 10px 0; color: #fff; font-weight: 500;">${new Date().toLocaleString()}</td>
           </tr>
         </table>
 
-        <div style="margin-top: 25px;">
-          <h3 style="color: #2ed573; font-size: 18px; margin-bottom: 15px; font-weight: 500;">Message:</h3>
-          <div style="background-color: #1e272e; border-radius: 8px; padding: 20px; color: #eee; line-height: 1.6; white-space: pre-wrap;">${message}</div>
+        <div style="margin-top: 20px;">
+          <h3 style="color: #2ed573; font-size: 16px; margin-bottom: 10px; font-weight: 500;">Message:</h3>
+          <div style="background-color: #1e272e; border-radius: 8px; padding: 15px; color: #eee; line-height: 1.5; white-space: pre-wrap;">${message}</div>
         </div>
+      </div>
+
+      <div style="margin-top: 20px; text-align: center;">
+        <a href="mailto:${email}" style="display: inline-block; padding: 10px 20px; background-color: #2ed573; color: #0f0f0f; text-decoration: none; font-weight: bold; border-radius: 4px;">Reply to ${name}</a>
       </div>
     </div>
 
