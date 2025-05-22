@@ -213,6 +213,13 @@
       "description": "Setting up monitoring and alerting systems for applications and infrastructure"
     },
     {
+      "id": "cloudflare",
+      "name": "Cloudflare",
+      "icon": "Cloud",
+      "category": "devops",
+      "description": "Implementing Cloudflare services for security, performance optimization, and CDN capabilities"
+    },
+    {
       "id": "api-security",
       "name": "API Security",
       "icon": "Lock",
