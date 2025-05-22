@@ -17,6 +17,8 @@ import {
   Info,
   Code,
   Layers,
+  Lock,
+  Unlock,
 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
@@ -36,6 +38,7 @@ export default function Dashboard() {
     business: true,
     webdev: true,
   });
+  const [hackerEffect, setHackerEffect] = useState(false);
   const router = useRouter();
   const clickSoundRef = useRef<HTMLAudioElement | null>(null);
 
@@ -96,138 +99,276 @@ export default function Dashboard() {
       </button>
 
       <div className="grid grid-cols-1 lg:grid-cols-[350px_1fr] gap-6 max-w-7xl mx-auto w-full">
-        {/* Left Panel - Profile Card */}
-        <div className="bg-[#1e272e] rounded-2xl overflow-hidden shadow-lg border border-[#2ed573]/20">
-          {/* Header with name */}
-          <div className="p-4 flex items-center gap-3 border-b border-[#2ed573]/10">
-            <div className="w-6 h-6 flex justify-center flex-col gap-[2px]">
-              <div className="flex gap-[2px]">
-                <div className="w-[8px] h-[8px] bg-[#2ed573] rounded-sm"></div>
-                <div className="w-[8px] h-[8px] bg-[#2ed573] rounded-sm"></div>
-              </div>
-              <div className="flex  gap-[2px]">
-                <div className="w-[8px] h-[8px] bg-[#2ed573] rounded-sm"></div>
-                <div className="w-[8px] h-[8px] bg-[#2ed573] rounded-sm"></div>
-              </div>
-            </div>
-            <h2 className="text-[#2ed573] font-medium tracking-wide">ARAFAT</h2>
-            <div className="ml-auto flex gap-1">
-              {[...Array(6)].map((_, i) => (
-                <div
-                  key={i}
-                  className="w-[6px] h-[6px] bg-[#2ed573]/50 rounded-full"
-                ></div>
-              ))}
-            </div>
-          </div>
+        {/* Left Panel - Profile Card with 3D Effect */}
+        <div className="relative">
+          {/* 3D Shadow Layer */}
+          <div className="absolute inset-0 bg-[#0f0f0f] rounded-2xl translate-x-3 translate-y-3"></div>
 
-          {/* Profile Image */}
-          <div className="p-4">
-            <div className="bg-[#0f0f0f] rounded-lg aspect-square flex items-center justify-center border border-[#2ed573]/20">
-              <div className="w-full h-full bg-[#2a3942] flex items-center justify-center border-2 border-[#2ed573]/30 overflow-hidden">
-                <Image
-                  src="/images/profile.jpg"
-                  alt="Arafat's Profile"
-                  width={500}
-                  height={500}
-                  className="object-cover w-full h-full"
-                  priority
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Contact Button */}
-          <div className="p-4">
-            <Button
-              onClick={() => navigateTo("/contact")}
-              className="bg-[#2ed573] text-[#0f0f0f] font-medium py-6 px-4 rounded-lg flex items-center justify-between w-full hover:bg-[#2ed573]/80 hover-glow"
-            >
-              <span>CONTACT ME</span>
-              <div className="flex items-center">
-                <div className="w-5 h-5 relative">
-                  <div className="absolute inset-0 flex items-center">
-                    <div className="h-[2px] w-full bg-[#0f0f0f]"></div>
+          {/* Main Card */}
+          <div className="relative bg-[#1e272e] rounded-2xl overflow-hidden shadow-lg border border-[#2ed573]/20 z-10">
+            {/* Header with name - Modernized */}
+            <div className="p-4 flex items-center gap-3 border-b border-[#2ed573]/10 bg-gradient-to-r from-[#1e272e] to-[#2a3942]">
+              <div className="w-8 h-8 flex justify-center items-center relative">
+                <div className="absolute inset-0 bg-[#2ed573]/10 rounded-full animate-pulse"></div>
+                <div className="w-6 h-6 flex justify-center flex-col gap-[2px]">
+                  <div className="flex gap-[2px]">
+                    <div className="w-[8px] h-[8px] bg-[#2ed573] rounded-sm"></div>
+                    <div className="w-[8px] h-[8px] bg-[#2ed573] rounded-sm"></div>
                   </div>
-                  <div className="absolute inset-0 flex items-center justify-end">
-                    <div className="h-[2px] w-1/2 bg-[#0f0f0f] rotate-45 origin-right"></div>
-                  </div>
-                  <div className="absolute inset-0 flex items-center justify-end">
-                    <div className="h-[2px] w-1/2 bg-[#0f0f0f] -rotate-45 origin-right"></div>
+                  <div className="flex gap-[2px]">
+                    <div className="w-[8px] h-[8px] bg-[#2ed573] rounded-sm"></div>
+                    <div className="w-[8px] h-[8px] bg-[#2ed573] rounded-sm"></div>
                   </div>
                 </div>
               </div>
-            </Button>
+              <h2 className="text-[#2ed573] font-bold tracking-wide text-lg">
+                ARAFAT
+              </h2>
+              <div className="ml-auto flex gap-1">
+                {[...Array(6)].map((_, i) => (
+                  <div
+                    key={i}
+                    className={`w-[6px] h-[6px] bg-[#2ed573]/${
+                      50 - i * 5
+                    } rounded-full animate-pulse`}
+                    style={{ animationDelay: `${i * 0.1}s` }}
+                  ></div>
+                ))}
+              </div>
+            </div>
+
+            {/* Profile Image - 3D Effect */}
+            <div className="p-6">
+              <div className="relative">
+                {/* Image Shadow */}
+                <div className="absolute -inset-1 bg-[#2ed573]/10 rounded-lg blur-md"></div>
+
+                {/* Image Container */}
+                <div className="relative bg-[#0f0f0f] rounded-lg aspect-square flex items-center justify-center border border-[#2ed573]/20 overflow-hidden transform transition-transform hover:scale-[1.02] duration-300">
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#2ed573]/5 to-transparent"></div>
+                  <div className="w-full h-full bg-[#2a3942] flex items-center justify-center border-2 border-[#2ed573]/30 overflow-hidden">
+                    <Image
+                      src="/images/profile.jpg"
+                      alt="Arafat's Profile"
+                      width={500}
+                      height={500}
+                      className="object-cover w-full h-full"
+                      priority
+                    />
+                  </div>
+
+                  {/* Corner Accents */}
+                  <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-[#2ed573]/40 rounded-tl-lg"></div>
+                  <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-[#2ed573]/40 rounded-tr-lg"></div>
+                  <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-[#2ed573]/40 rounded-bl-lg"></div>
+                  <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-[#2ed573]/40 rounded-br-lg"></div>
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* Skills Toggles */}
+          {/* Contact Button - Hacker Style */}
           <div className="p-4">
-            <div className="flex items-center gap-2 text-[#2ed573]/70 mb-2">
-              <Settings size={16} />
-              <span className="text-sm">Skills customizer</span>
+            <div
+              onClick={() => {
+                setHackerEffect(true);
+                setTimeout(() => {
+                  navigateTo("/contact");
+                }, 800);
+              }}
+              className="relative group cursor-pointer"
+            >
+              {/* 3D Shadow/Base Layer */}
+              <div className="absolute inset-0 bg-[#1f9b53] rounded-lg translate-x-2 translate-y-2 group-hover:translate-x-1 group-hover:translate-y-1 group-active:translate-x-0 group-active:translate-y-0 transition-all duration-200"></div>
+
+              {/* Button Main Layer */}
+              <div
+                className={`relative bg-[#2ed573] text-[#0f0f0f] font-bold py-4 px-6 rounded-lg flex items-center justify-between w-full z-10 shadow-lg transform transition-all duration-200 group-hover:shadow-xl ${
+                  hackerEffect ? "glitch-effect" : ""
+                }`}
+                data-text="ACCESS GRANTED"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-[#0f0f0f]/10 flex items-center justify-center">
+                    {hackerEffect ? (
+                      <Unlock className="w-5 h-5 text-[#0f0f0f]" />
+                    ) : (
+                      <Lock className="w-5 h-5 text-[#0f0f0f]" />
+                    )}
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-lg tracking-wide">CONTACT ME</span>
+                    <span className="text-[#0f0f0f]/70 text-xs font-mono whitespace-nowrap overflow-hidden text-ellipsis max-w-[180px]">
+                      {hackerEffect
+                        ? "ACCESS GRANTED..."
+                        : "$ ./connect.sh --secure"}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="relative w-8 h-8 flex items-center justify-center overflow-hidden">
+                  <div className="text-[#0f0f0f] font-bold text-xl">&gt;</div>
+                </div>
+              </div>
+
+              {/* Decorative elements */}
+              <div className="absolute top-0 left-0 w-2 h-8 bg-[#1f9b53] rounded-l-lg"></div>
+              <div className="absolute bottom-0 right-0 w-8 h-2 bg-[#1f9b53] rounded-b-lg"></div>
+
+              {/* Matrix-like code rain effect (visible on hover) */}
+              <div className="absolute inset-0 bg-[#0f0f0f]/0 group-hover:bg-[#0f0f0f]/5 rounded-lg z-20 overflow-hidden pointer-events-none">
+                {[...Array(10)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="absolute text-[#2ed573]/20 text-xs font-mono"
+                    style={{
+                      left: `${i * 10}%`,
+                      top: "0",
+                      transform: "translateY(-100%)",
+                      animation: `fall 2s linear ${i * 0.1}s infinite`,
+                    }}
+                  >
+                    {[...Array(10)].map((_, j) => (
+                      <div key={j} style={{ animationDelay: `${j * 0.1}s` }}>
+                        {Math.random() > 0.5 ? "1" : "0"}
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Skills Toggles - 3D Style */}
+          <div className="p-4">
+            <div className="flex items-center gap-2 text-[#2ed573]/70 mb-4">
+              <div className="w-8 h-8 rounded-full bg-[#0f0f0f] flex items-center justify-center">
+                <Settings size={16} className="text-[#2ed573]" />
+              </div>
+              <span className="text-sm font-medium">Skills Explorer</span>
             </div>
 
             <div className="space-y-4">
-              <div className="bg-[#0f0f0f] p-3 rounded-lg flex items-center justify-between border border-[#2ed573]/20">
-                <span className="text-[#2ed573] font-medium">
-                  SECURITY ENGINEER
-                </span>
-                <Switch
-                  checked={skills.security}
-                  onCheckedChange={() => toggleSkill("security")}
-                  className="data-[state=checked]:bg-[#2ed573]"
-                />
+              <div className="relative group">
+                <div className="absolute inset-0 bg-[#2ed573]/20 rounded-lg translate-x-1 translate-y-1 group-hover:translate-x-0.5 group-hover:translate-y-0.5 transition-all duration-200"></div>
+                <div className="relative bg-[#0f0f0f] p-3 rounded-lg flex items-center justify-between border border-[#2ed573]/20 z-10">
+                  <span className="text-[#2ed573] font-medium">
+                    SECURITY ENGINEER
+                  </span>
+                  <Switch
+                    checked={skills.security}
+                    onCheckedChange={() => toggleSkill("security")}
+                    className="data-[state=checked]:bg-[#2ed573]"
+                  />
+                </div>
               </div>
 
-              <div className="bg-[#0f0f0f] p-3 rounded-lg flex items-center justify-between border border-[#2ed573]/20">
-                <span className="text-[#2ed573] font-medium">
-                  ASPIRING ENTREPRENEUR
-                </span>
-                <Switch
-                  checked={skills.business}
-                  onCheckedChange={() => toggleSkill("business")}
-                  className="data-[state=checked]:bg-[#2ed573]"
-                />
+              <div className="relative group">
+                <div className="absolute inset-0 bg-[#2ed573]/20 rounded-lg translate-x-1 translate-y-1 group-hover:translate-x-0.5 group-hover:translate-y-0.5 transition-all duration-200"></div>
+                <div className="relative bg-[#0f0f0f] p-3 rounded-lg flex items-center justify-between border border-[#2ed573]/20 z-10">
+                  <span className="text-[#2ed573] font-medium">
+                    ASPIRING ENTREPRENEUR
+                  </span>
+                  <Switch
+                    checked={skills.business}
+                    onCheckedChange={() => toggleSkill("business")}
+                    className="data-[state=checked]:bg-[#2ed573]"
+                  />
+                </div>
               </div>
 
-              <div className="bg-[#0f0f0f] p-3 rounded-lg flex items-center justify-between border border-[#2ed573]/20">
-                <span className="text-[#2ed573] font-medium">
-                  BUSINESS MINDSET
-                </span>
-                <Switch
-                  checked={skills.business}
-                  onCheckedChange={() => toggleSkill("business")}
-                  className="data-[state=checked]:bg-[#2ed573]"
-                />
+              <div className="relative group">
+                <div className="absolute inset-0 bg-[#2ed573]/20 rounded-lg translate-x-1 translate-y-1 group-hover:translate-x-0.5 group-hover:translate-y-0.5 transition-all duration-200"></div>
+                <div className="relative bg-[#0f0f0f] p-3 rounded-lg flex items-center justify-between border border-[#2ed573]/20 z-10">
+                  <span className="text-[#2ed573] font-medium">
+                    FINANCIAL INTELLIGENCE
+                  </span>
+                  <Switch
+                    checked={skills.business}
+                    onCheckedChange={() => toggleSkill("business")}
+                    className="data-[state=checked]:bg-[#2ed573]"
+                  />
+                </div>
               </div>
 
-              <div className="bg-[#0f0f0f] p-3 rounded-lg flex items-center justify-between border border-[#2ed573]/20">
-                <span className="text-[#2ed573] font-medium">
-                  WEB DEVELOPER
-                </span>
-                <Switch
-                  checked={skills.webdev}
-                  onCheckedChange={() => toggleSkill("webdev")}
-                  className="data-[state=checked]:bg-[#2ed573]"
-                />
+              <div className="relative group">
+                <div className="absolute inset-0 bg-[#2ed573]/20 rounded-lg translate-x-1 translate-y-1 group-hover:translate-x-0.5 group-hover:translate-y-0.5 transition-all duration-200"></div>
+                <div className="relative bg-[#0f0f0f] p-3 rounded-lg flex items-center justify-between border border-[#2ed573]/20 z-10">
+                  <span className="text-[#2ed573] font-medium">
+                    WEB DEVELOPER
+                  </span>
+                  <Switch
+                    checked={skills.webdev}
+                    onCheckedChange={() => toggleSkill("webdev")}
+                    className="data-[state=checked]:bg-[#2ed573]"
+                  />
+                </div>
               </div>
 
-              {/* 3D Skills Button */}
-              <div
-                onClick={() => navigateTo("/skills")}
-                className="bg-[#0f0f0f] p-4 rounded-lg border border-[#2ed573]/20 hover:border-[#2ed573]/50 transition-all cursor-pointer transform hover:translate-y-[-3px] hover:shadow-[0_10px_20px_rgba(46,213,115,0.2)] active:translate-y-[-1px] active:shadow-[0_5px_10px_rgba(46,213,115,0.2)]"
-              >
-                <div className="flex items-center justify-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-[#2ed573]/10 flex items-center justify-center text-[#2ed573]">
-                    <Layers size={20} />
+              {/* Hacker Skills Button */}
+              <div className="relative group mt-6">
+                {/* 3D Shadow/Base Layer */}
+                <div className="absolute inset-0 bg-[#1f9b53] rounded-lg translate-x-2 translate-y-2 group-hover:translate-x-1 group-hover:translate-y-1 group-active:translate-x-0 group-active:translate-y-0 transition-all duration-200"></div>
+
+                {/* Button Main Layer */}
+                <div
+                  onClick={() => {
+                    // Add terminal typing sound effect
+                    const audio = new Audio("/click.mp3");
+                    audio.volume = 0.3;
+                    audio.play();
+
+                    // Add hacker-like effect
+                    const btn = document.querySelector(".skills-btn");
+                    if (btn) {
+                      btn.classList.add("glitch-effect");
+                      setTimeout(() => {
+                        navigateTo("/skills");
+                      }, 500);
+                    } else {
+                      navigateTo("/skills");
+                    }
+                  }}
+                  className="skills-btn relative bg-[#2ed573] text-[#0f0f0f] font-bold py-4 px-5 rounded-lg flex items-center justify-between w-full z-10 shadow-lg transform transition-all duration-200 group-hover:shadow-xl cursor-pointer overflow-hidden"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-[#0f0f0f]/10 flex items-center justify-center">
+                      <Code size={20} className="text-[#0f0f0f]" />
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-lg tracking-wide">MY SKILLS</span>
+                      <span className="text-[#0f0f0f]/70 text-xs font-mono whitespace-nowrap overflow-hidden text-ellipsis max-w-[180px]">
+                        $ ./skills.sh --view
+                      </span>
+                    </div>
                   </div>
-                  <div className="flex flex-col">
-                    <span className="text-[#2ed573] font-medium">
-                      MY SKILLS
-                    </span>
-                    <span className="text-[#2ed573]/60 text-xs">
-                      View all skills as badges
-                    </span>
+
+                  <div className="relative w-8 h-8 flex items-center justify-center overflow-hidden">
+                    <div className="text-[#0f0f0f] font-bold text-xl">&gt;</div>
+                  </div>
+
+                  {/* Scan line effect */}
+                  <div className="scan-line"></div>
+                </div>
+
+                {/* Decorative elements */}
+                <div className="absolute top-0 left-0 w-2 h-8 bg-[#1f9b53] rounded-l-lg"></div>
+                <div className="absolute bottom-0 right-0 w-8 h-2 bg-[#1f9b53] rounded-b-lg"></div>
+
+                {/* Binary code overlay (visible on hover) */}
+                <div className="absolute inset-0 bg-transparent rounded-lg z-20 overflow-hidden pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-[#0f0f0f]/10 font-mono text-xs tracking-widest">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <div key={i} className="flex">
+                          {Array.from({ length: 10 }).map((_, j) => (
+                            <span key={j} className="mx-px">
+                              {Math.random() > 0.5 ? "1" : "0"}
+                            </span>
+                          ))}
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
