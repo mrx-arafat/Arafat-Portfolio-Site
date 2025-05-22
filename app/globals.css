@@ -449,19 +449,41 @@
 .typing-text {
   display: inline-block;
   width: 0;
-  animation: typing 2s steps(30, end) forwards,
-    blink-caret 0.75s step-end infinite;
+  animation: typing 2s steps(30, end) forwards;
+  animation-delay: 0.5s;
+}
+
+.typing-text-no-cursor {
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing-only 2s steps(30, end) forwards;
   animation-delay: 0.5s;
 }
 
 .group:hover .typing-text {
-  animation: typing 2s steps(30, end) forwards,
-    blink-caret 0.75s step-end infinite;
+  animation: typing 2s steps(30, end) forwards;
+  animation-delay: 0s;
+  width: 0;
+}
+
+.group:hover .typing-text-no-cursor {
+  animation: typing-only 2s steps(30, end) forwards;
   animation-delay: 0s;
   width: 0;
 }
 
 @keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes typing-only {
   from {
     width: 0;
   }
@@ -726,21 +748,6 @@ body {
 /* Hacker image glitch effect on click */
 .hacker-profile.animate-glitch .hacker-profile-image {
   animation: glitch 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-}
-
-.terminal-text::after {
-  content: "|";
-  animation: blink 1s step-end infinite;
-}
-
-@keyframes blink {
-  from,
-  to {
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
 }
 
 .grid-dots {

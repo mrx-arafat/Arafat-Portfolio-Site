@@ -1046,10 +1046,14 @@ export default function Dashboard() {
 
             {/* Creative element - Command line style */}
             <div className="bg-[#0f0f0f] rounded-md p-2 mx-auto mb-4 overflow-hidden w-72">
-              <p className="font-mono text-[#2ed573] text-xs whitespace-nowrap flex items-center">
-                <span className="mr-1">$</span>
-                <span className="typing-text">./problem.sh --solution</span>
-              </p>
+              <div className="flex justify-center">
+                <p className="font-mono text-[#2ed573] text-xs whitespace-nowrap inline-flex items-center">
+                  <span className="mr-1">$</span>
+                  <span className="typing-text-no-cursor">
+                    ./problem.sh --solution
+                  </span>
+                </p>
+              </div>
             </div>
 
             {/* Simple choice with subtle animation */}
