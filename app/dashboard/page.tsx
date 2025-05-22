@@ -49,33 +49,23 @@ export default function Dashboard() {
 
   // Array of hacker secret information to display
   const hackerInfoOptions = [
-    ["$ whoami", "arafat"],
+    ["$ whoami", ">_ arafat"],
     [
       "$ ./scan.sh --target=system",
       "SCANNING...",
-      "VULNERABILITIES DETECTED: X",
+      "VULNERABILITIES DETECTED: __",
     ],
     ["$ ./access_granted.sh", "SYSTEM COMPROMISED"],
-    ["$ ./kaynaat.sh", "Amreen"],
+    ["$ ./kaynaat.sh", "Hello! YOU...", "404: Not Found"],
 
-    ["$ ./love_doing.sh --all", "Hacking"],
+    ["$ ./my_fav.sh --all", ">_ Hacking"],
     ["$ ./secret.sh --decrypt", "DECRYPTING...", "ACCESS DENIED"],
-    ["$ ./care_about.sh --all", "Nothing"],
+    ["$ ./care_about.sh --all", "Street Dogs", "and HER!"],
 
-    ["$ ./my_league_bros.sh --all", "Intellectual people"],
-    [
-      "$ ./skills.sh --list",
+    ["$ ./my_league.sh --all", ">_ Intellectual People"],
 
-      "Security Engineer",
-      "Intelligence",
-      "AppSec",
-      "DevSecOps",
-      "API Security",
-      "Testing and Automation",
-      "Research",
-    ],
     ["$ ./secret.sh --decrypt", "DECRYPTING...", "ACCESS DENIED"],
-    ["$ ./interested_in.sh --all", "Human Psychology"],
+    ["$ ./interested_in.sh --all", ">_ Psychology"],
 
     ["$ cat /etc/passwd", "Permission denied: Elevated access required"],
   ];
