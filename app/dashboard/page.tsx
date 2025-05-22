@@ -921,31 +921,127 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Experience Counter */}
-          <div className="bg-[#1e272e] rounded-2xl p-4 sm:p-6 flex items-center justify-center border border-[#2ed573]/20">
-            <div className="flex flex-col items-center text-center w-full max-w-md">
-              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#2ed573] flex items-center justify-center mb-3 sm:mb-4 overflow-hidden">
-                <img
-                  src="https://cdn-icons-png.flaticon.com/512/5987/5987860.png"
-                  alt="Startup"
-                  className="w-full h-full object-contain"
-                />
+          {/* Entrepreneurial Journey - Simple but Creative */}
+          <div className="bg-[#1e272e] rounded-2xl p-6 border border-[#2ed573]/20 relative overflow-hidden group hover:shadow-[0_0_15px_rgba(46,213,115,0.2)] transition-all duration-300">
+            {/* Subtle background pattern */}
+            <div className="absolute inset-0 opacity-5">
+              <div className="absolute right-0 bottom-0 w-64 h-64">
+                <svg
+                  viewBox="0 0 200 200"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-full h-full text-[#2ed573]"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M45.3,-51.2C59.4,-41.7,72,-28.5,76.5,-12.7C81,3.1,77.3,21.5,67.1,35.1C56.9,48.7,40.1,57.5,22.8,63.2C5.5,68.9,-12.4,71.5,-27.4,65.9C-42.5,60.3,-54.8,46.5,-63.1,30.1C-71.4,13.7,-75.7,-5.3,-70.8,-21.5C-65.9,-37.7,-51.8,-51.1,-36.6,-60.1C-21.4,-69.1,-5.2,-73.7,9.2,-70.9C23.6,-68.1,31.2,-60.8,45.3,-51.2Z"
+                    transform="translate(100 100)"
+                  />
+                </svg>
               </div>
-              <h3 className="text-[#2ed573] font-bold text-lg sm:text-xl mb-2">
-                Entrepreneurial Journey
-              </h3>
-              <p className="text-[#2ed573]/80 text-xs sm:text-sm max-w-md px-2 sm:px-0">
-                Building innovative solutions to solve real-world problems.
-                Currently working on my startup vision to revolutionize the tech
-                industry.
+            </div>
+
+            {/* Icon with enhanced glow animation and scroll-to-top functionality */}
+            <div className="flex justify-center mb-6">
+              <div
+                className="w-20 h-20 relative cursor-pointer"
+                onClick={() => {
+                  // Play click sound
+                  playClickSound();
+
+                  // Add a flash effect to the icon
+                  const iconElement =
+                    document.querySelector(".scroll-top-icon");
+                  if (iconElement) {
+                    iconElement.classList.add("flash-effect");
+
+                    // Remove the class after animation completes
+                    setTimeout(() => {
+                      iconElement.classList.remove("flash-effect");
+                    }, 700);
+                  }
+
+                  // Scroll to top with smooth effect
+                  window.scrollTo({
+                    top: 0,
+                    behavior: "smooth",
+                  });
+
+                  // Add matrix-like effect to the page
+                  document.body.classList.add("matrix-scroll");
+
+                  // Remove matrix effect after scrolling completes
+                  setTimeout(() => {
+                    document.body.classList.remove("matrix-scroll");
+                  }, 1000);
+                }}
+              >
+                <div className="w-20 h-20 rounded-full bg-[#2a3942] flex items-center justify-center border border-[#2ed573]/40 group-hover:border-[#2ed573]/80 transition-all duration-300 scroll-top-icon">
+                  <svg
+                    className="w-10 h-10 text-[#2ed573] transform group-hover:scale-110 transition-transform duration-500"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 16L12 8"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                    />
+                    <path
+                      d="M9 11L12 8 15 11"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    />
+                  </svg>
+                </div>
+                {/* Enhanced glow effect on hover */}
+                <div className="absolute inset-0 rounded-full bg-[#2ed573]/5 group-hover:bg-[#2ed573]/20 filter blur-lg transition-all duration-500"></div>
+                <div className="absolute inset-0 scale-110 rounded-full bg-[#2ed573]/0 group-hover:bg-[#2ed573]/10 filter blur-xl transition-all duration-700"></div>
+              </div>
+            </div>
+
+            {/* Title with enhanced underline animation */}
+            <h3 className="text-[#2ed573] font-bold text-xl mb-4 text-center relative">
+              Entrepreneurial Journey
+              <div className="h-0.5 w-0 bg-[#2ed573]/70 absolute -bottom-2 left-1/2 transform -translate-x-1/2 group-hover:w-48 transition-all duration-700 shadow-glow"></div>
+            </h3>
+
+            {/* Description with better typography */}
+            <p className="text-[#2ed573]/80 text-sm max-w-md mx-auto text-center mb-4">
+              Building innovative solutions to solve real-world problems.
+              Currently working on my startup vision to revolutionize the tech
+              industry.
+            </p>
+
+            {/* Creative element - Command line style */}
+            <div className="bg-[#0f0f0f] rounded-md p-2 mx-auto mb-4 overflow-hidden w-72">
+              <p className="font-mono text-[#2ed573] text-xs whitespace-nowrap flex items-center">
+                <span className="mr-1">$</span>
+                <span className="typing-text">./problem.sh --solution</span>
               </p>
-              <div className="mt-3 sm:mt-4 flex gap-2">
-                <span className="text-[#2ed573]/70 text-xs">Grow</span>
-                <span className="text-[#2ed573]/70 text-xs">•</span>
-                <span className="text-[#2ed573]/70 text-xs">or</span>
-                <span className="text-[#2ed573]/70 text-xs">•</span>
-                <span className="text-[#2ed573]/70 text-xs">Die</span>
-              </div>
+            </div>
+
+            {/* Simple choice with subtle animation */}
+            <div className="flex justify-center items-center space-x-3 text-sm">
+              <span className="text-[#2ed573] opacity-80 group-hover:opacity-100 transition-opacity duration-300">
+                Grow
+              </span>
+              <span className="text-[#2ed573]/50">•</span>
+              <span className="text-[#2ed573]/70">or</span>
+              <span className="text-[#2ed573]/50">•</span>
+              <span className="text-[#2ed573] opacity-80 group-hover:opacity-100 transition-opacity duration-300">
+                Die
+              </span>
             </div>
           </div>
         </div>

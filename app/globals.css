@@ -422,6 +422,122 @@
   }
 }
 
+@keyframes scan {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(1000%);
+  }
+}
+
+.animate-scan {
+  animation: scan 4s linear infinite;
+}
+
+.terminal-text,
+.typing-text {
+  overflow: hidden;
+  border-right: 2px solid #2ed573;
+  white-space: nowrap;
+  margin: 0 auto;
+  letter-spacing: 0.1em;
+  animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+.typing-text {
+  display: inline-block;
+  width: 0;
+  animation: typing 2s steps(30, end) forwards,
+    blink-caret 0.75s step-end infinite;
+  animation-delay: 0.5s;
+}
+
+.group:hover .typing-text {
+  animation: typing 2s steps(30, end) forwards,
+    blink-caret 0.75s step-end infinite;
+  animation-delay: 0s;
+  width: 0;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink-caret {
+  from,
+  to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: #2ed573;
+  }
+}
+
+.shadow-glow {
+  box-shadow: 0 0 8px rgba(46, 213, 115, 0.6);
+}
+
+/* Flash effect for scroll-to-top icon */
+.flash-effect {
+  animation: flash-animation 0.7s ease-out;
+}
+
+@keyframes flash-animation {
+  0% {
+    box-shadow: 0 0 0 0 rgba(46, 213, 115, 0.7);
+    background-color: rgba(46, 213, 115, 0.8);
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(46, 213, 115, 0);
+    background-color: rgba(42, 57, 66, 1);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(46, 213, 115, 0);
+  }
+}
+
+/* Matrix-like scroll effect */
+.matrix-scroll {
+  position: relative;
+}
+
+.matrix-scroll::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      rgba(46, 213, 115, 0.2) 2px,
+      transparent 4px
+    );
+  pointer-events: none;
+  z-index: 9999;
+  animation: matrix-fade 1s ease-out forwards;
+}
+
+@keyframes matrix-fade {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
 :root {
   --background: 220 14% 10%;
   --foreground: 210 40% 98%;

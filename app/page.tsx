@@ -19,7 +19,7 @@ export default function Home() {
     "Aspiring Entrepreneur",
     "Focued on creating impactful solutions",
     "okay! that's enough :')",
-    "Let's Initialize System...",
+    "Let's Initialize the Dashboard...",
   ];
 
   useEffect(() => {
@@ -104,7 +104,7 @@ export default function Home() {
         onClick={goToDashboard}
         className="mt-8 bg-[#121212] border border-[#2ed573] hover:bg-[#2ed573]/20 text-[#2ed573] flex items-center gap-2 hover-glow px-6 py-3"
       >
-        <Terminal size={16} /> Initialize System
+        <Terminal size={16} /> Initialize Dashboard
       </Button>
     </main>
   );
