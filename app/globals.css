@@ -195,6 +195,233 @@
   opacity: 0.5;
 }
 
+/* Hacker profile effects */
+@keyframes flicker {
+  0% {
+    opacity: 0.8;
+  }
+  5% {
+    opacity: 0.5;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  15% {
+    opacity: 0.9;
+  }
+  20% {
+    opacity: 0.7;
+  }
+  25% {
+    opacity: 0.9;
+  }
+  30% {
+    opacity: 0.8;
+  }
+  35% {
+    opacity: 1;
+  }
+  40% {
+    opacity: 0.7;
+  }
+  45% {
+    opacity: 0.9;
+  }
+  50% {
+    opacity: 1;
+  }
+  55% {
+    opacity: 0.8;
+  }
+  60% {
+    opacity: 0.9;
+  }
+  65% {
+    opacity: 0.7;
+  }
+  70% {
+    opacity: 0.8;
+  }
+  75% {
+    opacity: 0.9;
+  }
+  80% {
+    opacity: 0.6;
+  }
+  85% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 0.9;
+  }
+  95% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes glitch-image {
+  0% {
+    transform: translate(0);
+    filter: hue-rotate(0deg);
+  }
+  2% {
+    transform: translate(-3px, 1px);
+    filter: hue-rotate(90deg);
+  }
+  4% {
+    transform: translate(3px, -1px);
+    filter: hue-rotate(180deg);
+  }
+  6% {
+    transform: translate(-3px, 1px);
+    filter: hue-rotate(270deg);
+  }
+  8% {
+    transform: translate(3px, -1px);
+    filter: hue-rotate(360deg);
+  }
+  10% {
+    transform: translate(0);
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    transform: translate(0);
+    filter: hue-rotate(0deg);
+  }
+}
+
+.hacker-profile {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.hacker-profile::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, rgba(0, 255, 0, 0.05), rgba(0, 0, 0, 0));
+  z-index: 2;
+  pointer-events: none;
+}
+
+.hacker-profile-image {
+  transition: all 0.3s ease;
+  filter: brightness(1) contrast(1);
+}
+
+.hacker-profile:hover {
+  box-shadow: 0 0 15px rgba(46, 213, 115, 0.5);
+}
+
+.hacker-profile:hover .hacker-profile-image {
+  filter: brightness(1.05) contrast(1.1);
+}
+
+.hacker-profile.active-glitch {
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.3), 0 0 30px rgba(46, 213, 115, 0.5);
+}
+
+/* Only apply glitch effect during active state */
+.hacker-profile.active-glitch .hacker-profile-image {
+  animation: glitch-image 0.5s infinite;
+  /* Lighter filter to keep face visible */
+  filter: brightness(1.1) contrast(1.2) saturate(1.1);
+}
+
+.hacker-profile-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.hacker-profile:hover .hacker-profile-overlay {
+  opacity: 1;
+}
+
+.hacker-text {
+  color: #2ed573;
+  font-family: monospace;
+  text-shadow: 0 0 5px #2ed573;
+  animation: flicker 2s infinite;
+}
+
+.code-rain {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  overflow: hidden;
+  opacity: 0.2;
+}
+
+.code-column {
+  position: absolute;
+  top: -20px;
+  font-family: monospace;
+  color: #2ed573;
+  font-size: 12px;
+  text-shadow: 0 0 5px #2ed573;
+  animation-name: fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(500%);
+  }
+}
+
+.edge-glow-effect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-shadow: inset 0 0 15px rgba(46, 213, 115, 0.3);
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.active-glitch .edge-glow-effect {
+  animation: pulse-edge 1.5s infinite alternate;
+}
+
+@keyframes pulse-edge {
+  0% {
+    box-shadow: inset 0 0 15px rgba(46, 213, 115, 0.3);
+  }
+  50% {
+    box-shadow: inset 0 0 20px rgba(255, 0, 0, 0.3);
+  }
+  100% {
+    box-shadow: inset 0 0 15px rgba(46, 213, 115, 0.5);
+  }
+}
+
 :root {
   --background: 220 14% 10%;
   --foreground: 210 40% 98%;
@@ -263,25 +490,56 @@ body {
 @keyframes glitch {
   0% {
     transform: translate(0);
+    filter: none;
+  }
+  10% {
+    transform: translate(-5px, 2px);
+    filter: hue-rotate(90deg) saturate(200%);
   }
   20% {
     transform: translate(-2px, 2px);
+    filter: hue-rotate(0deg);
+  }
+  30% {
+    transform: translate(-2px, -5px);
+    filter: invert(50%);
   }
   40% {
     transform: translate(-2px, -2px);
+    filter: hue-rotate(180deg);
+  }
+  50% {
+    transform: translate(5px, 2px);
+    filter: contrast(200%) brightness(150%);
   }
   60% {
     transform: translate(2px, 2px);
+    filter: none;
+  }
+  70% {
+    transform: translate(2px, -2px);
+    filter: saturate(200%) brightness(50%);
   }
   80% {
-    transform: translate(2px, -2px);
+    transform: translate(2px, -5px);
+    filter: hue-rotate(270deg);
+  }
+  90% {
+    transform: translate(-5px, -2px);
+    filter: blur(2px);
   }
   100% {
     transform: translate(0);
+    filter: none;
   }
 }
 
 .animate-glitch {
+  animation: glitch 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+/* Hacker image glitch effect on click */
+.hacker-profile.animate-glitch .hacker-profile-image {
   animation: glitch 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 

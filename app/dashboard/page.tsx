@@ -39,8 +39,46 @@ export default function Dashboard() {
     webdev: true,
   });
   const [hackerEffect, setHackerEffect] = useState(false);
+  const [glitchActive, setGlitchActive] = useState(false);
+  const [countdown, setCountdown] = useState(11);
+  const [hackerInfo, setHackerInfo] = useState<string[]>([]);
   const router = useRouter();
   const clickSoundRef = useRef<HTMLAudioElement | null>(null);
+  const profileRef = useRef<HTMLDivElement>(null);
+  const countdownRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Array of hacker secret information to display
+  const hackerInfoOptions = [
+    ["$ whoami", "arafat"],
+    [
+      "$ ./scan.sh --target=system",
+      "SCANNING...",
+      "VULNERABILITIES DETECTED: X",
+    ],
+    ["$ ./access_granted.sh", "SYSTEM COMPROMISED"],
+    ["$ ./kaynaat.sh", "Amreen"],
+
+    ["$ ./love_doing.sh --all", "Hacking"],
+    ["$ ./secret.sh --decrypt", "DECRYPTING...", "ACCESS DENIED"],
+    ["$ ./care_about.sh --all", "Nothing"],
+
+    ["$ ./my_league_bros.sh --all", "Intellectual people"],
+    [
+      "$ ./skills.sh --list",
+
+      "Security Engineer",
+      "Intelligence",
+      "AppSec",
+      "DevSecOps",
+      "API Security",
+      "Testing and Automation",
+      "Research",
+    ],
+    ["$ ./secret.sh --decrypt", "DECRYPTING...", "ACCESS DENIED"],
+    ["$ ./interested_in.sh --all", "Human Psychology"],
+
+    ["$ cat /etc/passwd", "Permission denied: Elevated access required"],
+  ];
 
   useEffect(() => {
     // Initialize audio elements with proper error handling
@@ -67,6 +105,11 @@ export default function Dashboard() {
     return () => {
       clearTimeout(timer);
       if (clickSoundRef.current) clickSoundRef.current.pause();
+
+      // Clear countdown interval on unmount
+      if (countdownRef.current) {
+        clearInterval(countdownRef.current);
+      }
     };
   }, []);
 
@@ -104,64 +147,178 @@ export default function Dashboard() {
           {/* 3D Shadow Layer */}
           <div className="absolute inset-0 bg-[#0f0f0f] rounded-2xl translate-x-3 translate-y-3"></div>
 
-          {/* Main Card */}
-          <div className="relative bg-[#1e272e] rounded-2xl overflow-hidden shadow-lg border border-[#2ed573]/20 z-10">
-            {/* Header with name - Modernized */}
-            <div className="p-4 flex items-center gap-3 border-b border-[#2ed573]/10 bg-gradient-to-r from-[#1e272e] to-[#2a3942]">
+          {/* Main Card - Dark Hacker Theme */}
+          <div className="relative bg-[#0a0a0a] rounded-sm overflow-hidden shadow-lg border border-[#2ed573] z-10">
+            {/* Header with name - Hacker Theme */}
+            <div className="p-4 flex items-center gap-3 border-b border-[#2ed573]/10 bg-[#0a0a0a]">
               <div className="w-8 h-8 flex justify-center items-center relative">
-                <div className="absolute inset-0 bg-[#2ed573]/10 rounded-full animate-pulse"></div>
-                <div className="w-6 h-6 flex justify-center flex-col gap-[2px]">
-                  <div className="flex gap-[2px]">
-                    <div className="w-[8px] h-[8px] bg-[#2ed573] rounded-sm"></div>
-                    <div className="w-[8px] h-[8px] bg-[#2ed573] rounded-sm"></div>
-                  </div>
-                  <div className="flex gap-[2px]">
-                    <div className="w-[8px] h-[8px] bg-[#2ed573] rounded-sm"></div>
-                    <div className="w-[8px] h-[8px] bg-[#2ed573] rounded-sm"></div>
-                  </div>
+                <div className="absolute inset-0 bg-[#2ed573]/10 rounded-sm animate-pulse"></div>
+                <div className="w-6 h-6 grid grid-cols-2 gap-[2px]">
+                  {[...Array(4)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="w-[8px] h-[8px] bg-[#2ed573] rounded-none"
+                    ></div>
+                  ))}
                 </div>
               </div>
-              <h2 className="text-[#2ed573] font-bold tracking-wide text-lg">
+              <h2 className="text-[#2ed573] font-mono tracking-wide text-lg hacker-text">
                 ARAFAT
               </h2>
-              <div className="ml-auto flex gap-1">
-                {[...Array(6)].map((_, i) => (
-                  <div
-                    key={i}
-                    className={`w-[6px] h-[6px] bg-[#2ed573]/${
-                      50 - i * 5
-                    } rounded-full animate-pulse`}
-                    style={{ animationDelay: `${i * 0.1}s` }}
-                  ></div>
-                ))}
+              <div className="ml-auto flex items-center">
+                <div className="w-3 h-3 rounded-full bg-[#2ed573]/80 animate-pulse"></div>
               </div>
             </div>
 
-            {/* Profile Image - 3D Effect */}
-            <div className="p-6">
-              <div className="relative">
-                {/* Image Shadow */}
-                <div className="absolute -inset-1 bg-[#2ed573]/10 rounded-lg blur-md"></div>
+            {/* Profile Image - Hacker Theme */}
+            <div className="p-4 bg-[#0a0a0a]">
+              <div
+                ref={profileRef}
+                onClick={() => {
+                  playClickSound();
+
+                  // If not in glitch mode, start the glitch sequence
+                  if (!glitchActive) {
+                    setGlitchActive(true);
+                    setCountdown(11);
+
+                    // Start countdown
+                    if (countdownRef.current) {
+                      clearInterval(countdownRef.current);
+                    }
+
+                    countdownRef.current = setInterval(() => {
+                      setCountdown((prev) => {
+                        if (prev <= 1) {
+                          // Reset when countdown reaches 0
+                          if (countdownRef.current) {
+                            clearInterval(countdownRef.current);
+                          }
+                          setGlitchActive(false);
+                          return 11;
+                        }
+                        return prev - 1;
+                      });
+                    }, 1000);
+                  }
+
+                  // Always select random hacker info to display on each click
+                  const randomIndex = Math.floor(
+                    Math.random() * hackerInfoOptions.length
+                  );
+                  setHackerInfo(hackerInfoOptions[randomIndex]);
+
+                  // Create glitch effect
+                  const element = profileRef.current;
+                  if (element) {
+                    element.classList.add("animate-glitch");
+
+                    // Play hacker sound effect
+                    const audio = new Audio("/click.mp3");
+                    audio.volume = 0.3;
+                    audio
+                      .play()
+                      .catch((e) => console.log("Audio play failed:", e));
+
+                    // Remove animation class after it completes
+                    setTimeout(() => {
+                      element.classList.remove("animate-glitch");
+                    }, 500);
+                  }
+                }}
+                className={`relative hacker-profile cursor-pointer ${
+                  glitchActive ? "active-glitch" : ""
+                }`}
+              >
+                {/* Code Rain Effect */}
+                <div className="code-rain">
+                  {[...Array(10)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="code-column"
+                      style={{
+                        left: `${i * 10}%`,
+                        animationDuration: `${Math.random() * 3 + 2}s`,
+                        animationDelay: `${Math.random() * 2}s`,
+                      }}
+                    >
+                      {[...Array(10)].map((_, j) => (
+                        <div key={j}>{Math.random() > 0.5 ? "1" : "0"}</div>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+
+                {/* Subtle Edge Glow Effect - Won't Cover Face */}
+                <div className="edge-glow-effect"></div>
 
                 {/* Image Container */}
-                <div className="relative bg-[#0f0f0f] rounded-lg aspect-square flex items-center justify-center border border-[#2ed573]/20 overflow-hidden transform transition-transform hover:scale-[1.02] duration-300">
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#2ed573]/5 to-transparent"></div>
-                  <div className="w-full h-full bg-[#2a3942] flex items-center justify-center border-2 border-[#2ed573]/30 overflow-hidden">
+                <div className="relative bg-[#0f0f0f] rounded-none aspect-square flex items-center justify-center border border-[#2ed573] overflow-hidden cursor-crosshair">
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#2ed573]/5 to-transparent mix-blend-overlay pointer-events-none"></div>
+                  <div className="w-full h-full bg-transparent flex items-center justify-center border border-[#2ed573] overflow-hidden">
                     <Image
                       src="/images/profile.jpg"
-                      alt="Arafat's Profile"
+                      alt="Profile Image"
                       width={500}
                       height={500}
-                      className="object-cover w-full h-full"
+                      className="object-cover w-full h-full hacker-profile-image"
                       priority
                     />
                   </div>
 
+                  {/* Hacker Overlay - Appears on Hover/Click */}
+                  <div className="hacker-profile-overlay">
+                    <div className="text-center">
+                      {glitchActive ? (
+                        <>
+                          <p className="hacker-text text-lg mb-2">
+                            SYSTEM BREACH IN PROGRESS
+                          </p>
+                          <p className="hacker-text text-xs mb-2">
+                            COUNTDOWN:{" "}
+                            <span className="text-[#ff3333]">{countdown}</span>
+                          </p>
+                          <div className="w-full bg-[#0a0a0a] h-2 mb-4 border border-[#2ed573]/30">
+                            <div
+                              className="bg-[#2ed573] h-full"
+                              style={{ width: `${(countdown / 11) * 100}%` }}
+                            ></div>
+                          </div>
+                          <div className="font-mono text-[#2ed573] text-xs text-left max-w-[200px] mx-auto">
+                            {hackerInfo.map((line, index) => (
+                              <p
+                                key={index}
+                                className={index > 0 ? "mt-1" : ""}
+                              >
+                                {line}
+                              </p>
+                            ))}
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <p className="hacker-text text-lg mb-2">
+                            IDENTITY: CONFIRMED
+                          </p>
+                          <p className="hacker-text text-xs mb-4">
+                            ACCESS LEVEL: root
+                          </p>
+                          <div className="font-mono text-[#2ed573] text-xs">
+                            <p>$ hack_me.sh</p>
+
+                            <p className="mt-1">$ chmod +x hack_me.sh </p>
+                            <p className="mt-1">$ ./hack_me.sh</p>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </div>
+
                   {/* Corner Accents */}
-                  <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-[#2ed573]/40 rounded-tl-lg"></div>
-                  <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-[#2ed573]/40 rounded-tr-lg"></div>
-                  <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-[#2ed573]/40 rounded-bl-lg"></div>
-                  <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-[#2ed573]/40 rounded-br-lg"></div>
+                  <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-[#2ed573]"></div>
+                  <div className="absolute top-0 right-0 w-4 h-4 border-t border-r border-[#2ed573]"></div>
+                  <div className="absolute bottom-0 left-0 w-4 h-4 border-b border-l border-[#2ed573]"></div>
+                  <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-[#2ed573]"></div>
                 </div>
               </div>
             </div>
