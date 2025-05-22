@@ -15,6 +15,16 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Validate email format
+    const emailRegex =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!emailRegex.test(email)) {
+      return NextResponse.json(
+        { error: "Please enter a valid email address" },
+        { status: 400 }
+      );
+    }
+
     // Create a nodemailer transporter
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST || "smtp.gmail.com",
@@ -74,10 +84,7 @@ ${message}
             <td style="padding: 10px 0; border-bottom: 1px solid #2ed57333; color: #999;">Email:</td>
             <td style="padding: 10px 0; border-bottom: 1px solid #2ed57333; color: #fff; font-weight: 500;"><a href="mailto:${email}" style="color: #2ed573; text-decoration: none;">${email}</a></td>
           </tr>
-          <tr>
-            <td style="padding: 10px 0; color: #999;">Date:</td>
-            <td style="padding: 10px 0; color: #fff; font-weight: 500;">${new Date().toLocaleString()}</td>
-          </tr>
+
         </table>
 
         <div style="margin-top: 20px;">
@@ -93,7 +100,9 @@ ${message}
 
     <!-- Footer -->
     <div style="background-color: #0f0f0f; padding: 15px; text-align: center; font-size: 12px; color: #666; border-top: 1px solid #2ed57333;">
-      <p style="margin: 0;">© ${new Date().getFullYear()} Arafat Portfolio. All rights reserved.</p>
+      <p style="margin: 0;">© ${new Date(
+        new Date().toLocaleString("en-US", { timeZone: "Asia/Dhaka" })
+      ).getFullYear()} Arafat Portfolio Site. All rights reserved.</p>
     </div>
   </div>
 </body>

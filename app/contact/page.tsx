@@ -20,6 +20,7 @@ export default function Contact() {
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState<"success" | "error">("success");
   const [animateForm, setAnimateForm] = useState(false);
+  const [emailError, setEmailError] = useState<string | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
 
   // Add entrance animation
@@ -60,19 +61,46 @@ export default function Contact() {
     return () => clearTimeout(timer);
   };
 
+  // Email validation function
+  const validateEmail = (email: string): boolean => {
+    // RFC 5322 compliant email regex
+    const emailRegex =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return emailRegex.test(email);
+  };
+
+  // Handle email input validation
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const email = e.target.value;
+    if (email && !validateEmail(email)) {
+      setEmailError("Please enter a valid email address");
+    } else {
+      setEmailError(null);
+    }
+  };
+
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     playClickSound();
 
     if (isSubmitting) return;
 
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get("email") as string;
+
+    // Validate email before submission
+    if (!validateEmail(email)) {
+      setEmailError("Please enter a valid email address");
+      showToastNotification("Please enter a valid email address", "error");
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
-      const formData = new FormData(e.currentTarget);
       const data = {
         name: formData.get("name"),
-        email: formData.get("email"),
+        email: email,
         message: formData.get("message"),
       };
 
@@ -88,6 +116,7 @@ export default function Contact() {
 
       if (response.ok) {
         setIsSuccess(true);
+        setEmailError(null);
         showToastNotification(
           "Message sent successfully! We'll get back to you soon.",
           "success"
@@ -239,11 +268,21 @@ export default function Contact() {
                     name="email"
                     required
                     onKeyDown={handleKeyPress}
-                    className="peer w-full pl-10 pr-5 py-4 rounded-lg bg-[#0f0f0f]/70 border border-[#2ed573]/20 text-white
-                  focus:outline-none focus:ring-2 focus:ring-[#2ed573] focus:border-transparent
-                  transition-all duration-300 hover:border-[#2ed573]/50 placeholder-transparent"
+                    onChange={handleEmailChange}
+                    className={`peer w-full pl-10 pr-5 py-4 rounded-lg bg-[#0f0f0f]/70 border ${
+                      emailError ? "border-red-500" : "border-[#2ed573]/20"
+                    } text-white
+                  focus:outline-none focus:ring-2 ${
+                    emailError ? "focus:ring-red-500" : "focus:ring-[#2ed573]"
+                  } focus:border-transparent
+                  transition-all duration-300 hover:border-[#2ed573]/50 placeholder-transparent`}
                     placeholder="your.email@example.com"
                   />
+                  {emailError && (
+                    <p className="text-red-500 text-xs mt-1 ml-2">
+                      {emailError}
+                    </p>
+                  )}
                   <label
                     htmlFor="email"
                     className="absolute left-10 -top-2.5 px-1 text-sm font-medium text-[#2ed573] bg-[#1e272e]
