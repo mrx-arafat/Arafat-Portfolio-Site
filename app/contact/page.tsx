@@ -69,8 +69,8 @@ export default function Contact() {
     return emailRegex.test(email);
   };
 
-  // Handle email input validation
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Handle email validation on blur (when user leaves the field)
+  const handleEmailBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const email = e.target.value;
     if (email && !validateEmail(email)) {
       setEmailError("Please enter a valid email address");
@@ -268,7 +268,7 @@ export default function Contact() {
                     name="email"
                     required
                     onKeyDown={handleKeyPress}
-                    onChange={handleEmailChange}
+                    onBlur={handleEmailBlur}
                     className={`peer w-full pl-10 pr-5 py-4 rounded-lg bg-[#0f0f0f]/70 border ${
                       emailError ? "border-red-500" : "border-[#2ed573]/20"
                     } text-white
