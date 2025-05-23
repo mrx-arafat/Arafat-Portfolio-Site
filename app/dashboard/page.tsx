@@ -742,7 +742,7 @@ export default function Dashboard() {
 
                 {/* Title with animated underline */}
                 <h3 className="text-xl font-bold text-[#2ed573] mb-3 relative inline-block">
-                  Read My Articles
+                  Explore My Writings
                   <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#2ed573] group-hover:w-full transition-all duration-500"></span>
                 </h3>
 
@@ -766,7 +766,7 @@ export default function Dashboard() {
                 >
                   <span className="relative z-10 flex items-center gap-2">
                     <BookOpen size={16} />
-                    Read Blog
+                    Read Blogs
                   </span>
                   <span className="absolute inset-0 bg-[#2ed573]/10 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
                 </Button>
