@@ -1,0 +1,58 @@
+[
+  {
+    "id": "leadership",
+    "title": "Leadership",
+    "description": "President of MIST Cyber Security Club (2023-2024)",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR24ti9vpY6Wb1w0IusbgE8VQ80nuK6Oy4FBQ&s",
+    "imageAlt": "Leadership"
+  },
+  {
+    "id": "ctf-competitions",
+    "title": "CTF Competitions",
+    "description": "CTF Player and Problem Solver. Ranked top 1% in TryHackMe.",
+    "imageUrl": "https://miro.medium.com/v2/resize:fit:1400/0*QHePljMuURKgqoh_",
+    "imageAlt": "CTF Competitions"
+  },
+  {
+    "id": "sports",
+    "title": "Sports",
+    "description": "Active participant in sports like Football, Cricket, Kickboxing, Swimming, Table Tennis, Badminton, etc.",
+    "imageUrl": "https://t4.ftcdn.net/jpg/02/11/51/53/360_F_211515361_bnIbyKadClzn3hJT0zCPPuPApcG7k3lC.jpg",
+    "imageAlt": "Sports"
+  },
+  {
+    "id": "hobbies",
+    "title": "Hobbies",
+    "description": "Love Reading, Writing, and Travelling.",
+    "imageUrl": "https://img.freepik.com/premium-vector/vector-book-icon-logo-is-stack-books-stack-albums-art-book-hobby-reading_562582-125.jpg?w=360",
+    "imageAlt": "Hobbies"
+  },
+  {
+    "id": "mist-leetcon",
+    "title": "MIST LEETCON 2023",
+    "description": "Event Organizer for Bangladesh's first international cybersecurity conference, hosting 3,500+ participants.",
+    "imageUrl": "https://isomer-user-content.by.gov.sg/29/859c65a3-5ee3-496d-93b2-5de0c2504487/databuddy_thumbnail.png",
+    "imageAlt": "Conference"
+  },
+  {
+    "id": "flaghunt",
+    "title": "Flaghunt 2023",
+    "description": "Event Host for National CTF Competition in collaboration with CTFBD.",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpj-LJYqGa8R4AeBOm-E005q0lLGwPjMstOA&s",
+    "imageAlt": "CTF Event"
+  },
+  {
+    "id": "cyber-drill",
+    "title": "Cyber Drill 2023",
+    "description": "Organizer for Financial Institute & Critical Information Infrastructures Cyber Drill.",
+    "imageUrl": "https://media.licdn.com/dms/image/v2/D560BAQFIZ2NOrkEvBA/company-logo_200_200/company-logo_200_200/0/1697090906545/bgdegovcirt_logo?e=2147483647&v=beta&t=LBNsabdRQWcuXHkO9e7GYyLKKD0U_hB-ggofIZVDmCk",
+    "imageAlt": "Cyber Drill"
+  },
+  {
+    "id": "cyber-threats",
+    "title": "Cyber Threats Seminar",
+    "description": "Host for emerging cyber threats seminar with Armed Forces Division of Bangladesh.",
+    "imageUrl": "https://www.newagebd.com/files/records/news/202311/218227_132.jpg",
+    "imageAlt": "Seminar"
+  }
+]

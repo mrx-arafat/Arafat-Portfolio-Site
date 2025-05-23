@@ -1,0 +1,60 @@
+[
+  {
+    "id": 1,
+    "name": "KingBOB Web Crawler",
+    "description": "This Python script allows systematic browsing and extraction of links from websites up to a specified depth. It is ideal for SEO analysis, site audit, and exploring web structures.",
+    "html_url": "https://github.com/mrx-arafat/KingBOB-WebCrawler",
+    "topics": ["python", "web-crawler", "seo", "automation"],
+    "language": "Python",
+    "stargazers_count": 0,
+    "preview_image": "https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_Web_Crawler.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Daily Personal Planner",
+    "description": "Daily planner web application built with Next.js and TypeScript. Features include task management, calendar integration, and responsive design.",
+    "html_url": "https://github.com/mrx-arafat/daily-planner",
+    "topics": [
+      "nextjs",
+      "typescript",
+      "tailwindcss",
+      "date-fns",
+      "html2canvas"
+    ],
+    "language": "TypeScript",
+    "stargazers_count": 0,
+    "homepage": "https://daily.arafatbytes.live/",
+    "preview_image": "https://i.ibb.co.com/dJJ3Wzp9/daily-planner.png"
+  },
+  {
+    "id": 3,
+    "name": "E-commerce Backend",
+    "description": "A robust e-commerce backend built with Node.js and TypeScript, featuring Express.js and Mongoose for database management.",
+    "html_url": "https://github.com/mrx-arafat/e-commmerce-backend",
+    "topics": ["nodejs", "typescript", "expressjs", "mongoosejs"],
+    "language": "TypeScript",
+    "stargazers_count": 0,
+    "homepage": "https://e-commmerce-backend.vercel.app/",
+    "preview_image": "https://images.contentstack.io/v3/assets/blt7151619cb9560896/blt4b651817f6dec60f/666848e371203e8537986b38/mern-stack.png"
+  },
+  {
+    "id": 4,
+    "name": "Binary Exploitation Buffer Overflow Starter Code",
+    "description": "A collection of Python scripts and exercises for practicing binary exploitation and buffer overflow techniques.",
+    "html_url": "https://github.com/mrx-arafat/Binary-Exploitation-Bufferoverflow-Practice",
+    "topics": ["python", "security", "binary-exploitation", "buffer-overflow"],
+    "language": "Python",
+    "stargazers_count": 0,
+    "preview_image": "https://pbs.twimg.com/ext_tw_video_thumb/1709973595038822403/pu/img/jcukjOP0NhuvbIpD.jpg:large"
+  },
+  {
+    "id": 5,
+    "name": "AES Crypto 256 Bits by KingBOB",
+    "description": "Python scripts for encrypting and decrypting text files using the Advanced Encryption Standard (AES) in Cipher Block Chaining (CBC) mode with a 256-bit key.",
+    "html_url": "https://github.com/mrx-arafat/AES-Crypto-256-Bits-by-KingBOB",
+    "topics": ["python", "cryptography", "aes", "security"],
+    "language": "Python",
+    "stargazers_count": 0,
+    "preview_image": "https://content.nordlayer.com/uploads/How_encryption_works_1400x580_59f8b2cf11.webp"
+  }
+]
