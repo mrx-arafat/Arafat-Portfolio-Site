@@ -769,6 +769,19 @@ body {
   transition: transform 0.3s ease;
 }
 
+/* Float animation for code elements */
+@keyframes float {
+  0% {
+    transform: translateY(0) rotate(30deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(30deg);
+  }
+  100% {
+    transform: translateY(0) rotate(30deg);
+  }
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;

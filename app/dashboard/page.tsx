@@ -621,77 +621,154 @@ export default function Dashboard() {
 
           {/* Main Content Sections */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Portfolio Section */}
-            <div className="bg-[#1e272e] rounded-2xl overflow-hidden flex flex-col border border-[#2ed573]/20">
-              <div className="p-4 flex items-center justify-between border-b border-[#2ed573]/10">
-                <div className="flex items-center gap-3">
-                  <div className="w-6 h-6 bg-[#ffdd59] rounded-md flex items-center justify-center">
-                    <span className="text-[#0f0f0f] text-xs">📁</span>
-                  </div>
-                  <span className="text-[#2ed573] font-medium">
-                    PROJECT SHOWCASE
-                  </span>
+            {/* Portfolio Section - Creative Hacker Style */}
+            <div
+              className="group relative bg-[#1a1b26] rounded-2xl overflow-hidden flex flex-col border border-[#2ed573]/20 shadow-lg hover:shadow-[0_0_15px_rgba(46,213,115,0.3)] transition-all duration-300 cursor-pointer"
+              onClick={() => navigateTo("/projects")}
+            >
+              {/* Animated background elements */}
+              <div className="absolute inset-0 overflow-hidden opacity-10 group-hover:opacity-20 transition-opacity duration-500">
+                <div className="absolute top-0 left-0 w-full h-full">
+                  {[...Array(5)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="absolute text-[#2ed573] font-mono text-xs opacity-30"
+                      style={{
+                        top: `${Math.random() * 100}%`,
+                        left: `${Math.random() * 100}%`,
+                        transform: "rotate(30deg)",
+                        animation: `float ${
+                          2 + Math.random() * 3
+                        }s infinite ease-in-out`,
+                      }}
+                    >
+                      {"{code}"}
+                    </div>
+                  ))}
                 </div>
               </div>
 
-              <div
-                className="flex-1 p-6 flex flex-col items-center justify-center text-center cursor-pointer hover-scale"
-                onClick={() => navigateTo("/projects")}
-              >
-                <div className="mb-4">
-                  <Github size={48} className="text-[#2ed573]/50 mx-auto" />
+              {/* Header with 3D effect */}
+              <div className="p-4 flex items-center justify-between border-b border-[#2ed573]/10 relative z-10">
+                <div className="flex items-center gap-3">
+                  <div className="w-6 h-6 bg-[#ffdd59] rounded-md flex items-center justify-center shadow-[0_0_8px_rgba(255,221,89,0.3)] group-hover:shadow-[0_0_12px_rgba(255,221,89,0.5)] transition-all duration-300">
+                    <span className="text-[#0f0f0f] text-xs">📁</span>
+                  </div>
+                  <span className="text-[#2ed573] font-medium tracking-wider">
+                    PROJECT SHOWCASE
+                  </span>
                 </div>
-                <h3 className="text-xl font-bold text-[#2ed573] mb-2">
+                <div className="w-2 h-2 rounded-full bg-[#2ed573]/50 group-hover:bg-[#2ed573] transition-colors duration-300"></div>
+              </div>
+
+              <div className="flex-1 p-6 flex flex-col items-center justify-center text-center relative z-10">
+                {/* Icon with animated glow effect */}
+                <div className="mb-6 relative">
+                  <div className="absolute inset-0 bg-[#2ed573]/5 rounded-full blur-xl transform scale-150 group-hover:scale-200 transition-transform duration-500"></div>
+                  <div className="relative bg-[#0f0f0f] p-4 rounded-full border border-[#2ed573]/30 group-hover:border-[#2ed573]/60 transition-all duration-300">
+                    <Github
+                      size={40}
+                      className="text-[#2ed573] group-hover:text-[#2ed573] transition-colors duration-300"
+                    />
+                  </div>
+                </div>
+
+                {/* Title with animated underline */}
+                <h3 className="text-xl font-bold text-[#2ed573] mb-3 relative inline-block">
                   Explore My Projects
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#2ed573] group-hover:w-full transition-all duration-500"></span>
                 </h3>
-                <p className="text-[#2ed573]/70 mb-6">
-                  Security Tools, Automation Scripts, and Web Applications
-                </p>
+
+                {/* Description with terminal-style formatting */}
+                <div className="bg-[#0f0f0f]/50 p-3 rounded-md mb-6 border-l-2 border-[#2ed573] font-mono text-sm">
+                  <p className="text-[#2ed573]/90">
+                    <span className="text-[#2ed573]/50">$</span> Security Tools,
+                    Automation Scripts, and Web Applications
+                  </p>
+                </div>
+
+                {/* Button with 3D effect and shake animation */}
                 <Button
                   onClick={(e) => {
                     e.stopPropagation();
+                    playClickSound();
                     navigateTo("/projects");
                   }}
-                  className="bg-[#0f0f0f] hover:bg-[#2a3942] text-[#2ed573] border border-[#2ed573]/30"
+                  className="bg-[#0f0f0f] hover:bg-[#2ed573] hover:text-[#0f0f0f] text-[#2ed573] border border-[#2ed573]/30 relative overflow-hidden group-hover:shake-effect transition-all duration-300 transform hover:translate-y-[-2px]"
                 >
-                  View Projects
+                  <span className="relative z-10 flex items-center gap-2">
+                    <Code size={16} />
+                    View Projects
+                  </span>
+                  <span className="absolute inset-0 bg-[#2ed573]/10 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
                 </Button>
               </div>
             </div>
 
-            {/* Blog Section */}
-            <div className="bg-[#1e272e] rounded-2xl overflow-hidden flex flex-col border border-[#2ed573]/20">
-              <div className="p-4 flex items-center justify-between border-b border-[#2ed573]/10">
-                <div className="flex items-center gap-3">
-                  <div className="w-6 h-6 bg-[#ffdd59] rounded-md flex items-center justify-center">
-                    <span className="text-[#0f0f0f] text-xs">📝</span>
-                  </div>
-                  <span className="text-[#2ed573] font-medium">BLOG</span>
-                </div>
+            {/* Blog Section - Creative Hacker Style */}
+            <div
+              className="group relative bg-[#1a1b26] rounded-2xl overflow-hidden flex flex-col border border-[#2ed573]/20 shadow-lg hover:shadow-[0_0_15px_rgba(46,213,115,0.3)] transition-all duration-300 cursor-pointer"
+              onClick={() => navigateTo("/blog")}
+            >
+              {/* Animated scan line */}
+              <div className="absolute inset-0 overflow-hidden opacity-20 pointer-events-none">
+                <div className="h-[2px] w-full bg-[#2ed573]/30 absolute animate-scan"></div>
               </div>
 
-              <div
-                className="flex-1 p-6 flex flex-col items-center justify-center text-center cursor-pointer hover-scale"
-                onClick={() => navigateTo("/blog")}
-              >
-                <div className="mb-4">
-                  <BookOpen size={48} className="text-[#2ed573]/50 mx-auto" />
+              {/* Header with 3D effect */}
+              <div className="p-4 flex items-center justify-between border-b border-[#2ed573]/10 relative z-10">
+                <div className="flex items-center gap-3">
+                  <div className="w-6 h-6 bg-[#ffdd59] rounded-md flex items-center justify-center shadow-[0_0_8px_rgba(255,221,89,0.3)] group-hover:shadow-[0_0_12px_rgba(255,221,89,0.5)] transition-all duration-300">
+                    <span className="text-[#0f0f0f] text-xs">📝</span>
+                  </div>
+                  <span className="text-[#2ed573] font-medium tracking-wider">
+                    BLOG
+                  </span>
                 </div>
-                <h3 className="text-xl font-bold text-[#2ed573] mb-2">
+                <div className="w-2 h-2 rounded-full bg-[#2ed573]/50 group-hover:bg-[#2ed573] transition-colors duration-300"></div>
+              </div>
+
+              <div className="flex-1 p-6 flex flex-col items-center justify-center text-center relative z-10">
+                {/* Icon with animated glow effect */}
+                <div className="mb-6 relative">
+                  <div className="absolute inset-0 bg-[#2ed573]/5 rounded-full blur-xl transform scale-150 group-hover:scale-200 transition-transform duration-500"></div>
+                  <div className="relative bg-[#0f0f0f] p-4 rounded-full border border-[#2ed573]/30 group-hover:border-[#2ed573]/60 transition-all duration-300">
+                    <BookOpen
+                      size={40}
+                      className="text-[#2ed573] group-hover:text-[#2ed573] transition-colors duration-300"
+                    />
+                  </div>
+                </div>
+
+                {/* Title with animated underline */}
+                <h3 className="text-xl font-bold text-[#2ed573] mb-3 relative inline-block">
                   Read My Articles
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#2ed573] group-hover:w-full transition-all duration-500"></span>
                 </h3>
-                <p className="text-[#2ed573]/70 mb-6">
-                  Security Insights, Entrepreneurship, Human Psychology,
-                  Philosophy, and more.
-                </p>
+
+                {/* Description with terminal-style formatting */}
+                <div className="bg-[#0f0f0f]/50 p-3 rounded-md mb-6 border-l-2 border-[#2ed573] font-mono text-sm">
+                  <p className="text-[#2ed573]/90">
+                    <span className="text-[#2ed573]/50">$</span> Security
+                    Insights, Entrepreneurship, Human Psychology, Philosophy,
+                    and more.
+                  </p>
+                </div>
+
+                {/* Button with 3D effect and shake animation */}
                 <Button
                   onClick={(e) => {
                     e.stopPropagation();
+                    playClickSound();
                     navigateTo("/blog");
                   }}
-                  className="bg-[#0f0f0f] hover:bg-[#2a3942] text-[#2ed573] border border-[#2ed573]/30"
+                  className="bg-[#0f0f0f] hover:bg-[#2ed573] hover:text-[#0f0f0f] text-[#2ed573] border border-[#2ed573]/30 relative overflow-hidden group-hover:shake-effect transition-all duration-300 transform hover:translate-y-[-2px]"
                 >
-                  Read Blog
+                  <span className="relative z-10 flex items-center gap-2">
+                    <BookOpen size={16} />
+                    Read Blog
+                  </span>
+                  <span className="absolute inset-0 bg-[#2ed573]/10 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
                 </Button>
               </div>
             </div>
