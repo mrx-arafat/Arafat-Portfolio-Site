@@ -22,9 +22,9 @@
   {
     "id": 2,
     "name": "KingBOB Web Crawler",
-    "description": "This Python script allows systematic browsing and extraction of links from websites up to a specified depth. It is ideal for SEO analysis, site audit, and exploring web structures.",
+    "description": "This Python script allows systematic browsing and extraction of links from websites up to a specified depth. It is ideal for site audit, and exploring web structures.",
     "html_url": "https://github.com/mrx-arafat/KingBOB-WebCrawler",
-    "topics": ["python", "web-crawler", "seo", "automation"],
+    "topics": ["python", "web-crawler", "endpoint-scanning", "automation"],
     "language": "Python",
     "stargazers_count": 0,
     "preview_image": "https://www.osting.it/blog/wp-content/uploads/2018/10/web_crawler_spider-2.jpg"
