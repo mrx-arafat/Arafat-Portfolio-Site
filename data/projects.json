@@ -1,18 +1,57 @@
 [
   {
     "id": 1,
+    "name": "ATtiny85-Gameplay",
+    "description": "Automated Wi-Fi credential extraction and Chrome password decryption using ATtiny85 microcontroller. This hardware security project demonstrates USB HID emulation for automated credential harvesting and PowerShell-based data extraction in controlled environments.",
+    "html_url": "https://github.com/mrx-arafat/AtTiny85-Gameplay",
+    "topics": [
+      "attiny85",
+      "hardware-hacking",
+      "powershell",
+      "wifi-extraction",
+      "chrome-passwords",
+      "usb-hid",
+      "security-research",
+      "penetration-testing"
+    ],
+    "language": "PowerShell",
+    "stargazers_count": 0,
+    "homepage": "",
+    "preview_image": "https://content.instructables.com/FDF/U5X9/LVWEINWJ/FDFU5X9LVWEINWJ.jpg"
+  },
+  {
+    "id": 2,
     "name": "KingBOB Web Crawler",
     "description": "This Python script allows systematic browsing and extraction of links from websites up to a specified depth. It is ideal for SEO analysis, site audit, and exploring web structures.",
     "html_url": "https://github.com/mrx-arafat/KingBOB-WebCrawler",
     "topics": ["python", "web-crawler", "seo", "automation"],
     "language": "Python",
     "stargazers_count": 0,
-    "preview_image": "https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_Web_Crawler.jpg"
+    "preview_image": "https://www.osting.it/blog/wp-content/uploads/2018/10/web_crawler_spider-2.jpg"
   },
   {
-    "id": 2,
+    "id": 3,
+    "name": "QuoteNest",
+    "description": "A personal quote journal application that allows you to collect, organize, and reflect on your favorite quotes with tagging, favorites, and search functionality.",
+    "html_url": "https://github.com/mrx-arafat/QuoteNest",
+    "topics": [
+      "react",
+      "nodejs",
+      "mongodb",
+      "express",
+      "quote-management",
+      "journal",
+      "responsive-design"
+    ],
+    "language": "JavaScript",
+    "stargazers_count": 0,
+    "homepage": "",
+    "preview_image": "https://www.onethreadapp.com/blog/wp-content/uploads/2023/07/The-only-way-to-do-great-work-is-to-love-what-you-do.jpg"
+  },
+  {
+    "id": 4,
     "name": "Daily Personal Planner",
-    "description": "Daily planner web application built with Next.js and TypeScript. Features include task management, calendar integration, and responsive design.",
+    "description": "Daily planner web application built with Next.js and TypeScript. Features include task management, calendar integration, and responsive design. Use this password : arafat69",
     "html_url": "https://github.com/mrx-arafat/daily-planner",
     "topics": [
       "nextjs",
@@ -27,7 +66,7 @@
     "preview_image": "https://i.ibb.co.com/dJJ3Wzp9/daily-planner.png"
   },
   {
-    "id": 3,
+    "id": 5,
     "name": "E-commerce Backend",
     "description": "A robust e-commerce backend built with Node.js and TypeScript, featuring Express.js and Mongoose for database management.",
     "html_url": "https://github.com/mrx-arafat/e-commmerce-backend",
@@ -35,10 +74,10 @@
     "language": "TypeScript",
     "stargazers_count": 0,
     "homepage": "https://e-commmerce-backend.vercel.app/",
-    "preview_image": "https://images.contentstack.io/v3/assets/blt7151619cb9560896/blt4b651817f6dec60f/666848e371203e8537986b38/mern-stack.png"
+    "preview_image": "https://webcodeft.com/wp-content/uploads/2025/01/Image_2025_01_17t12_44_03_564z.png"
   },
   {
-    "id": 4,
+    "id": 5,
     "name": "Binary Exploitation Buffer Overflow Starter Code",
     "description": "A collection of Python scripts and exercises for practicing binary exploitation and buffer overflow techniques.",
     "html_url": "https://github.com/mrx-arafat/Binary-Exploitation-Bufferoverflow-Practice",
@@ -48,13 +87,13 @@
     "preview_image": "https://pbs.twimg.com/ext_tw_video_thumb/1709973595038822403/pu/img/jcukjOP0NhuvbIpD.jpg:large"
   },
   {
-    "id": 5,
+    "id": 6,
     "name": "AES Crypto 256 Bits by KingBOB",
     "description": "Python scripts for encrypting and decrypting text files using the Advanced Encryption Standard (AES) in Cipher Block Chaining (CBC) mode with a 256-bit key.",
     "html_url": "https://github.com/mrx-arafat/AES-Crypto-256-Bits-by-KingBOB",
     "topics": ["python", "cryptography", "aes", "security"],
     "language": "Python",
     "stargazers_count": 0,
-    "preview_image": "https://content.nordlayer.com/uploads/How_encryption_works_1400x580_59f8b2cf11.webp"
+    "preview_image": "https://cdn.prod.website-files.com/5ff66329429d880392f6cba2/67b431c85d2112aaa730a2f2_618e3f3ff8ffcc7e84a823cd_AES%2520algorithm%2520working.png"
   }
 ]
