@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowLeft,
   ArrowRight,
@@ -11,6 +12,7 @@ import {
   Code,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import ImagePreloader from "@/components/ImagePreloader";
 import projectsData from "@/data/projects.json";
 
 interface GithubRepo {
@@ -30,6 +32,8 @@ export default function Projects() {
   const [projects, setProjects] = useState<GithubRepo[]>([]);
   const [loading, setLoading] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
+  const [imageLoading, setImageLoading] = useState<{ [key: number]: boolean }>({});
+  const [imageErrors, setImageErrors] = useState<{ [key: number]: boolean }>({});
   const clickSoundRef = useRef<HTMLAudioElement | null>(null);
 
   // Projects data is now imported from JSON file
@@ -60,6 +64,13 @@ export default function Projects() {
     setTimeout(() => {
       setProjects(projectsData);
       setLoading(false);
+
+      // Initialize image loading states
+      const initialImageLoading: { [key: number]: boolean } = {};
+      projectsData.forEach((_, index) => {
+        initialImageLoading[index] = true;
+      });
+      setImageLoading(initialImageLoading);
     }, 1000);
 
     return () => {
@@ -118,8 +129,48 @@ export default function Projects() {
     window.open(url, "_blank");
   };
 
+  const handleImageLoad = (index: number) => {
+    setImageLoading(prev => ({ ...prev, [index]: false }));
+  };
+
+  const handleImageError = (index: number) => {
+    setImageLoading(prev => ({ ...prev, [index]: false }));
+    setImageErrors(prev => ({ ...prev, [index]: true }));
+  };
+
+  // Preload adjacent images for smoother navigation
+  useEffect(() => {
+    if (projects.length > 0) {
+      const preloadImage = (index: number) => {
+        if (projects[index]?.preview_image && !imageErrors[index]) {
+          const img = new window.Image();
+          img.src = projects[index].preview_image!;
+          img.onload = () => handleImageLoad(index);
+          img.onerror = () => handleImageError(index);
+        }
+      };
+
+      // Preload current, next, and previous images
+      const nextIndex = (currentProject + 1) % projects.length;
+      const prevIndex = (currentProject - 1 + projects.length) % projects.length;
+
+      preloadImage(currentProject);
+      if (projects.length > 1) {
+        preloadImage(nextIndex);
+        preloadImage(prevIndex);
+      }
+    }
+  }, [currentProject, projects, imageErrors]);
+
   return (
     <main className="min-h-screen bg-[#121212] text-[#2ed573] p-4 md:p-8 grid-dots overflow-hidden">
+      {/* Image Preloader */}
+      {projects.length > 0 && (
+        <ImagePreloader
+          images={projects.map(p => p.preview_image).filter(Boolean) as string[]}
+          currentIndex={currentProject}
+        />
+      )}
       {/* Terminal-style header */}
       <div className="mb-8 bg-[#0f0f0f] border border-[#2ed573]/30 rounded-lg p-3 shadow-[0_0_15px_rgba(46,213,115,0.2)]">
         <div className="flex items-center gap-2 mb-2">
@@ -219,19 +270,35 @@ export default function Projects() {
             {/* Left column - Project image */}
             <div className="md:col-span-1 h-[300px] md:h-[400px] bg-[#1a1b26] rounded-lg overflow-hidden relative group shadow-[0_0_15px_rgba(46,213,115,0.1)] border border-[#2ed573]/10">
               <div className="absolute inset-0 flex items-center justify-center bg-[#0f0f0f]/50 z-10">
-                {projects[currentProject].preview_image ? (
-                  <img
-                    src={
-                      projects[currentProject].preview_image ||
-                      "/placeholder.svg"
-                    }
-                    alt={`${projects[currentProject].name} preview`}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
+                {projects[currentProject].preview_image && !imageErrors[currentProject] ? (
+                  <div className="relative w-full h-full">
+                    {/* Loading skeleton */}
+                    {imageLoading[currentProject] && (
+                      <div className="absolute inset-0 bg-[#1a1b26] animate-pulse flex items-center justify-center">
+                        <div className="w-16 h-16 border-2 border-[#2ed573]/30 border-t-[#2ed573] rounded-full animate-spin"></div>
+                      </div>
+                    )}
+
+                    <Image
+                      src={projects[currentProject].preview_image}
+                      alt={`${projects[currentProject].name} preview`}
+                      fill
+                      className={`object-cover group-hover:scale-105 transition-all duration-500 ${
+                        imageLoading[currentProject] ? 'opacity-0' : 'opacity-100'
+                      }`}
+                      onLoad={() => handleImageLoad(currentProject)}
+                      onError={() => handleImageError(currentProject)}
+                      priority={currentProject === 0}
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      quality={85}
+                    />
+                  </div>
                 ) : (
                   <div className="flex flex-col items-center justify-center h-full w-full bg-[#1a1b26] text-[#2ed573]/30">
                     <Code size={64} className="mb-2" />
-                    <span className="text-sm">No preview available</span>
+                    <span className="text-sm">
+                      {imageErrors[currentProject] ? 'Failed to load image' : 'No preview available'}
+                    </span>
                   </div>
                 )}
               </div>
