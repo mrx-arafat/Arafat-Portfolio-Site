@@ -11,43 +11,11 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'content.instructables.com',
+        hostname: '**',
       },
       {
-        protocol: 'https',
-        hostname: 'i.imgur.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'www.osting.it',
-      },
-      {
-        protocol: 'https',
-        hostname: 'www.onethreadapp.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'i.ibb.co.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'webcodeft.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'pbs.twimg.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'cdn.prod.website-files.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'miro.medium.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'encrypted-tbn0.gstatic.com',
+        protocol: 'http',
+        hostname: '**',
       },
     ],
     formats: ['image/webp', 'image/avif'],
