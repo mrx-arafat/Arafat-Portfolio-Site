@@ -55,6 +55,7 @@ export function Profile() {
           height={128}
           className="object-cover"
           priority
+          unoptimized={true}
         />
       </div>
       <h2 className="text-2xl font-bold text-primary">Easin Arafat</h2>

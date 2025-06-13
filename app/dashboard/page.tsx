@@ -254,6 +254,7 @@ export default function Dashboard() {
                       height={500}
                       className="object-cover w-full h-full hacker-profile-image"
                       priority
+                      unoptimized={true}
                     />
                   </div>
 
@@ -814,6 +815,8 @@ export default function Dashboard() {
                       src={item.imageUrl}
                       alt={item.imageAlt}
                       className="w-full h-full object-cover"
+                      loading="lazy"
+                      decoding="async"
                     />
                   </div>
                   {/* Corner dots for decoration */}

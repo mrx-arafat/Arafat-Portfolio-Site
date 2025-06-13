@@ -100,6 +100,27 @@ export default function Blogs() {
     window.open(url, "_blank");
   };
 
+  // Simple preloading for adjacent blog images
+  useEffect(() => {
+    if (posts.length > 0) {
+      const preloadImage = (index: number) => {
+        if (posts[index]?.imageUrl) {
+          const img = new window.Image();
+          img.src = posts[index].imageUrl;
+        }
+      };
+
+      // Preload next and previous images
+      const nextIndex = (currentPost + 1) % posts.length;
+      const prevIndex = (currentPost - 1 + posts.length) % posts.length;
+
+      if (posts.length > 1) {
+        preloadImage(nextIndex);
+        preloadImage(prevIndex);
+      }
+    }
+  }, [currentPost, posts]);
+
   return (
     <main className="min-h-screen bg-[#121212] text-[#2ed573] p-4 md:p-8 grid-dots overflow-hidden">
       {/* Terminal-style header */}
@@ -209,6 +230,8 @@ export default function Blogs() {
                     src={posts[currentPost].imageUrl || "/placeholder.svg"}
                     alt={`${posts[currentPost].title} preview`}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="eager"
+                    decoding="async"
                   />
                 ) : (
                   <div className="flex flex-col items-center justify-center h-full w-full bg-[#1a1b26] text-[#2ed573]/30">

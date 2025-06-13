@@ -12,7 +12,6 @@ import {
   Code,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import ImagePreloader from "@/components/ImagePreloader";
 import projectsData from "@/data/projects.json";
 
 interface GithubRepo {
@@ -35,6 +34,8 @@ export default function Projects() {
   const [imageLoading, setImageLoading] = useState<{ [key: number]: boolean }>({});
   const [imageErrors, setImageErrors] = useState<{ [key: number]: boolean }>({});
   const clickSoundRef = useRef<HTMLAudioElement | null>(null);
+
+
 
   // Projects data is now imported from JSON file
 
@@ -138,39 +139,30 @@ export default function Projects() {
     setImageErrors(prev => ({ ...prev, [index]: true }));
   };
 
-  // Preload adjacent images for smoother navigation
+  // Simple preloading for adjacent images
   useEffect(() => {
     if (projects.length > 0) {
       const preloadImage = (index: number) => {
-        if (projects[index]?.preview_image && !imageErrors[index]) {
+        if (projects[index]?.preview_image) {
           const img = new window.Image();
           img.src = projects[index].preview_image!;
-          img.onload = () => handleImageLoad(index);
-          img.onerror = () => handleImageError(index);
         }
       };
 
-      // Preload current, next, and previous images
+      // Preload next and previous images
       const nextIndex = (currentProject + 1) % projects.length;
       const prevIndex = (currentProject - 1 + projects.length) % projects.length;
 
-      preloadImage(currentProject);
       if (projects.length > 1) {
         preloadImage(nextIndex);
         preloadImage(prevIndex);
       }
     }
-  }, [currentProject, projects, imageErrors]);
+  }, [currentProject, projects]);
 
   return (
     <main className="min-h-screen bg-[#121212] text-[#2ed573] p-4 md:p-8 grid-dots overflow-hidden">
-      {/* Image Preloader */}
-      {projects.length > 0 && (
-        <ImagePreloader
-          images={projects.map(p => p.preview_image).filter(Boolean) as string[]}
-          currentIndex={currentProject}
-        />
-      )}
+
       {/* Terminal-style header */}
       <div className="mb-8 bg-[#0f0f0f] border border-[#2ed573]/30 rounded-lg p-3 shadow-[0_0_15px_rgba(46,213,115,0.2)]">
         <div className="flex items-center gap-2 mb-2">
@@ -272,10 +264,10 @@ export default function Projects() {
               <div className="absolute inset-0 flex items-center justify-center bg-[#0f0f0f]/50 z-10">
                 {projects[currentProject].preview_image && !imageErrors[currentProject] ? (
                   <div className="relative w-full h-full">
-                    {/* Loading skeleton */}
+                    {/* Simple loading indicator */}
                     {imageLoading[currentProject] && (
-                      <div className="absolute inset-0 bg-[#1a1b26] animate-pulse flex items-center justify-center">
-                        <div className="w-16 h-16 border-2 border-[#2ed573]/30 border-t-[#2ed573] rounded-full animate-spin"></div>
+                      <div className="absolute inset-0 bg-[#1a1b26] flex items-center justify-center z-10">
+                        <div className="w-8 h-8 border-2 border-[#2ed573]/30 border-t-[#2ed573] rounded-full animate-spin"></div>
                       </div>
                     )}
 
@@ -288,9 +280,8 @@ export default function Projects() {
                       }`}
                       onLoad={() => handleImageLoad(currentProject)}
                       onError={() => handleImageError(currentProject)}
-                      priority={currentProject === 0}
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                      quality={85}
+                      priority={true}
+                      unoptimized={true} // Skip optimization for faster loading
                     />
                   </div>
                 ) : (
