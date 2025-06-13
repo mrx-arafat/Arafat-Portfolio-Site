@@ -21,6 +21,25 @@
   },
   {
     "id": 2,
+    "name": "MealMetrics",
+    "description": "AI-powered Telegram bot for nutrition tracking. Send a meal photo, get instant calorie and nutrition analysis with witty recommendations. Features smart food recognition, accurate calorie estimation, health scoring, daily tracking, robust error handling, and privacy-first data storage. Supports SQLite & MySQL.",
+    "html_url": "https://github.com/mrx-arafat/MealMetrics",
+    "topics": [
+      "python",
+      "telegram-bot",
+      "ai",
+      "calorie-tracking",
+
+      "image-analysis",
+      "sqlite"
+    ],
+    "language": "Python",
+    "stargazers_count": 0,
+    "homepage": "https://t.me/MealMetrics_bot",
+    "preview_image": "https://github.com/mrx-arafat/MealMetrics/blob/master/shared/logo/mealmatrics.png?raw=true"
+  },
+  {
+    "id": 3,
     "name": "AI Opportunity Map Dashboard",
     "description": "A comprehensive, interactive dashboard for exploring AI industry trends, opportunities, and strategic decision-making pathways. Built with Streamlit and designed for businesses and individuals navigating the AI revolution.",
     "html_url": "https://github.com/mrx-arafat/AI-Opportunity-Map",
@@ -39,7 +58,7 @@
     "preview_image": "https://i.imgur.com/sBCqJdJ.png"
   },
   {
-    "id": 3,
+    "id": 4,
     "name": "KingBOB Web Crawler",
     "description": "This Python script allows systematic browsing and extraction of links from websites up to a specified depth. It is ideal for site audit, and exploring web structures.",
     "html_url": "https://github.com/mrx-arafat/KingBOB-WebCrawler",
@@ -49,7 +68,7 @@
     "preview_image": "https://www.osting.it/blog/wp-content/uploads/2018/10/web_crawler_spider-2.jpg"
   },
   {
-    "id": 4,
+    "id": 5,
     "name": "QuoteNest",
     "description": "A personal quote journal application that allows you to collect, organize, and reflect on your favorite quotes with tagging, favorites, and search functionality.",
     "html_url": "https://github.com/mrx-arafat/QuoteNest",
@@ -68,7 +87,7 @@
     "preview_image": "https://www.onethreadapp.com/blog/wp-content/uploads/2023/07/The-only-way-to-do-great-work-is-to-love-what-you-do.jpg"
   },
   {
-    "id": 5,
+    "id": 6,
     "name": "Daily Personal Planner",
     "description": "Daily planner web application built with Next.js and TypeScript. Features include task management, calendar integration, and responsive design. Use this password : arafat69",
     "html_url": "https://github.com/mrx-arafat/daily-planner",
@@ -85,7 +104,7 @@
     "preview_image": "https://i.ibb.co.com/dJJ3Wzp9/daily-planner.png"
   },
   {
-    "id": 6,
+    "id": 7,
     "name": "E-commerce Backend",
     "description": "A robust e-commerce backend built with Node.js and TypeScript, featuring Express.js and Mongoose for database management.",
     "html_url": "https://github.com/mrx-arafat/e-commmerce-backend",
@@ -96,7 +115,7 @@
     "preview_image": "https://webcodeft.com/wp-content/uploads/2025/01/Image_2025_01_17t12_44_03_564z.png"
   },
   {
-    "id": 7,
+    "id": 8,
     "name": "Binary Exploitation Buffer Overflow Starter Code",
     "description": "A collection of Python scripts and exercises for practicing binary exploitation and buffer overflow techniques.",
     "html_url": "https://github.com/mrx-arafat/Binary-Exploitation-Bufferoverflow-Practice",
@@ -106,7 +125,7 @@
     "preview_image": "https://pbs.twimg.com/ext_tw_video_thumb/1709973595038822403/pu/img/jcukjOP0NhuvbIpD.jpg:large"
   },
   {
-    "id": 8,
+    "id": 9,
     "name": "AES Crypto 256 Bits by KingBOB",
     "description": "Python scripts for encrypting and decrypting text files using the Advanced Encryption Standard (AES) in Cipher Block Chaining (CBC) mode with a 256-bit key.",
     "html_url": "https://github.com/mrx-arafat/AES-Crypto-256-Bits-by-KingBOB",
