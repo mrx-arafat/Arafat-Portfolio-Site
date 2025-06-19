@@ -44,6 +44,19 @@ export default function Dashboard() {
   const [countdown, setCountdown] = useState(11);
   const [hackerInfo, setHackerInfo] = useState<string[]>([]);
   const [cardEffectActive, setCardEffectActive] = useState(false);
+  const [matrixModeActive, setMatrixModeActive] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
   const router = useRouter();
   const clickSoundRef = useRef<HTMLAudioElement | null>(null);
   const profileRef = useRef<HTMLDivElement>(null);
@@ -123,7 +136,121 @@ export default function Dashboard() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col bg-[#121212] p-4 md:p-8 relative grid-dots">
+    <main className={`flex min-h-screen flex-col bg-[#121212] p-4 md:p-8 relative grid-dots transition-all duration-1000 ${
+      matrixModeActive ? "matrix-mode-active" : ""
+    }`}>
+      {/* ELITE SYSTEM INFILTRATION */}
+      {matrixModeActive && (
+        <div className="fixed inset-0 z-50 pointer-events-none elite-infiltration-overlay">
+          {/* Neural Network Visualization */}
+          <div className="absolute inset-0 neural-network">
+            {[...Array(isMobile ? 12 : 20)].map((_, i) => (
+              <div
+                key={i}
+                className="neural-node"
+                style={{
+                  top: `${Math.random() * 90 + 5}%`,
+                  left: `${Math.random() * 90 + 5}%`,
+                  animationDelay: `${Math.random() * 2}s`
+                }}
+              >
+                <div className="node-core"></div>
+                <div className="node-pulse"></div>
+              </div>
+            ))}
+          </div>
+
+          {/* Data Stream Corruption */}
+          <div className="absolute inset-0 data-streams">
+            {[...Array(isMobile ? 8 : 12)].map((_, i) => (
+              <div
+                key={i}
+                className="data-stream"
+                style={{
+                  left: `${i * (isMobile ? 12 : 8)}%`,
+                  animationDelay: `${i * 0.3}s`
+                }}
+              >
+                {[...Array(isMobile ? 6 : 8)].map((_, j) => (
+                  <div key={j} className="data-packet">
+                    {Math.random() > 0.5 ? '1' : '0'}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+
+          {/* Elite Terminal Interface */}
+          <div className="absolute top-4 left-4 right-4 md:top-8 md:left-8 md:right-auto elite-terminal">
+            <div className="terminal-header">
+              <span className="system-icon">⬢</span>
+              <span className="terminal-title">ARAFAT MISSION-30</span>
+              <span className="security-level">TARGET: 2030</span>
+            </div>
+            <div className="command-line" style={{animationDelay: '0.3s'}}>
+              <span className="elite-prompt">{isMobile ? 'arafat@K1NGB0B:~$' : 'arafat@K1NGB0B:~$'}</span> <span className="command">{isMobile ? './greatness --activate' : './greatness --activate-goat-mode'}</span>
+            </div>
+            <div className="command-line" style={{animationDelay: '0.9s'}}>
+              <span className="status-success">{isMobile ? 'GOAT MODE ACTIVATED' : 'GREATEST OF ALL TIME MODE ACTIVATED'}</span>
+            </div>
+            <div className="command-line" style={{animationDelay: '1.5s'}}>
+              <span className="elite-prompt">{isMobile ? 'arafat@K1NGB0B:~$' : 'arafat@K1NGB0B:~$'}</span> <span className="command">{isMobile ? 'execute --world-change' : 'execute --change-the-world'}</span>
+            </div>
+            <div className="command-line" style={{animationDelay: '2.1s'}}>
+              <span className="status-warning">{isMobile ? 'WORLD TRANSFORMATION INITIATED' : 'GLOBAL TRANSFORMATION PROTOCOLS INITIATED'}</span>
+            </div>
+            <div className="command-line" style={{animationDelay: '2.7s'}}>
+              <span className="elite-prompt">{isMobile ? 'arafat@K1NGB0B:~$' : 'arafat@K1NGB0B:~$'}</span> <span className="command">whoami --destiny</span>
+            </div>
+            <div className="command-line" style={{animationDelay: '3.3s'}}>
+              <span className="architect-identity">{isMobile ? 'ARAFAT - FUTURE GOAT' : 'ARAFAT - THE NEXT GOAT OF THE WORLD'}</span>
+            </div>
+            <div className="command-line" style={{animationDelay: '3.9s'}}>
+              <span className="status-critical">{isMobile ? 'GREATEST PERSON RISING' : 'BECOMING THE GREATEST PERSON ALIVE'}</span>
+            </div>
+            <div className="command-line" style={{animationDelay: '4.5s'}}>
+              <span className="final-status">{isMobile ? 'MISSION: CHANGE THE WORLD' : 'MISSION: I WILL CHANGE THE WORLD'}</span>
+            </div>
+          </div>
+
+          {/* GOAT Status Panel */}
+          <div className="absolute bottom-4 left-4 right-4 md:top-8 md:right-8 md:left-auto md:bottom-auto status-panel">
+            <div className="panel-header">GOAT STATUS</div>
+            <div className="grid grid-cols-2 md:block gap-2 md:gap-0">
+              <div className="status-item" style={{animationDelay: '1s'}}>
+                <span className="metric">GREATNESS:</span> <span className="value critical">RISING</span>
+              </div>
+              <div className="status-item" style={{animationDelay: '1.5s'}}>
+                <span className="metric">IMPACT:</span> <span className="value active">WORLD</span>
+              </div>
+              <div className="status-item" style={{animationDelay: '2s'}}>
+                <span className="metric">FUTURE GOAT:</span> <span className="value master">ARAFAT</span>
+              </div>
+              <div className="status-item" style={{animationDelay: '2.5s'}}>
+                <span className="metric">DESTINY:</span> <span className="value omega">CHANGE WORLD</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Quantum Interference */}
+          <div className="absolute inset-0 quantum-interference">
+            <div className="interference-wave"></div>
+            <div className="interference-wave" style={{animationDelay: '1s'}}></div>
+            <div className="interference-wave" style={{animationDelay: '2s'}}></div>
+          </div>
+
+          {/* System Corruption Bars */}
+          <div className="absolute inset-0 corruption-bars">
+            <div className="corruption-bar" style={{top: '20%', animationDelay: '0.5s'}}></div>
+            <div className="corruption-bar" style={{top: '45%', animationDelay: '1.2s'}}></div>
+            <div className="corruption-bar" style={{top: '70%', animationDelay: '1.8s'}}></div>
+          </div>
+
+          {/* Deep System Pulse */}
+          <div className="absolute inset-0 deep-system-pulse"></div>
+        </div>
+      )}
+
       {/* Sound toggle button */}
       <button
         onClick={toggleMute}
@@ -140,16 +267,42 @@ export default function Dashboard() {
           <div className="absolute inset-0 bg-[#0f0f0f] rounded-2xl translate-x-3 translate-y-3"></div>
 
           {/* Main Card - Dark Hacker Theme */}
-          <div className="relative bg-[#0a0a0a] rounded-sm overflow-hidden shadow-lg border border-[#2ed573] z-10">
+          <div className={`relative bg-[#0a0a0a] rounded-sm overflow-hidden shadow-lg border border-[#2ed573] z-10 transition-all duration-1000 ${
+            matrixModeActive ? "elite-profile-override border-[#00BFFF] shadow-[0_0_35px_rgba(0,191,255,0.8)] brightness-70 contrast-180" : ""
+          }`}>
             {/* Header with name - Hacker Theme */}
             <div className="p-4 flex items-center gap-3 border-b border-[#2ed573]/10 bg-[#0a0a0a]">
-              <div className="w-8 h-8 flex justify-center items-center relative">
-                <div className="absolute inset-0 bg-[#2ed573]/10 rounded-sm animate-pulse"></div>
-                <div className="w-6 h-6 grid grid-cols-2 gap-[2px]">
+              <div
+                className="w-8 h-8 flex justify-center items-center relative cursor-pointer group"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  playClickSound();
+
+                  // Play deeper, more sophisticated sound
+                  const eliteAudio = new Audio("/click.mp3");
+                  eliteAudio.volume = 0.7;
+                  eliteAudio.playbackRate = 0.6; // Deep, professional tone
+                  eliteAudio.play().catch((e) => console.log("Elite audio failed:", e));
+
+                  // Trigger the elite system infiltration
+                  setMatrixModeActive(true);
+
+                  // Add body class for quantum override
+                  document.body.classList.add("quantum-override");
+
+                  // Reset after 5 seconds - system restoration
+                  setTimeout(() => {
+                    setMatrixModeActive(false);
+                    document.body.classList.remove("quantum-override");
+                  }, 5000);
+                }}
+              >
+                <div className="absolute inset-[2px] bg-[#2ed573]/10 rounded-sm animate-pulse group-hover:bg-[#2ed573]/20 transition-colors duration-200"></div>
+                <div className="w-6 h-6 grid grid-cols-2 gap-[1px] place-items-center">
                   {[...Array(4)].map((_, i) => (
                     <div
                       key={i}
-                      className="w-[8px] h-[8px] bg-[#2ed573] rounded-none"
+                      className="w-[9px] h-[9px] bg-[#2ed573] rounded-none group-hover:shadow-[0_0_4px_#2ed573] transition-all duration-200"
                     ></div>
                   ))}
                 </div>
@@ -621,7 +774,9 @@ export default function Dashboard() {
                         window.open(platform.url, "_blank");
                       }}
                     >
-                      <div className="bg-[#1e272e] rounded-2xl aspect-square flex items-center justify-center relative hover:bg-[#2a3942] transition-colors cursor-pointer border border-[#2ed573]/20 hover-glow">
+                      <div className={`bg-[#1e272e] rounded-2xl aspect-square flex items-center justify-center relative hover:bg-[#2a3942] transition-colors cursor-pointer border border-[#2ed573]/20 hover-glow ${
+                        matrixModeActive ? "matrix-social-effect border-[#2ed573] shadow-[0_0_20px_rgba(46,213,115,0.8)]" : ""
+                      }`}>
                         <div className="w-12 h-12 rounded-full bg-[#0f0f0f] flex items-center justify-center">
                           {platform.icon}
                         </div>
@@ -648,6 +803,10 @@ export default function Dashboard() {
                 cardEffectActive
                   ? "border-[#2ed573] bg-[#1a1b26] brightness-125 animate-border-pulse"
                   : "border-[#2ed573]/20 shadow-lg hover:shadow-[0_0_15px_rgba(46,213,115,0.3)]"
+              } ${
+                matrixModeActive
+                  ? "elite-card-override border-[#00BFFF] shadow-[0_0_25px_rgba(0,191,255,0.6)] brightness-80 contrast-120"
+                  : ""
               }`}
               onClick={() => navigateTo("/projects")}
             >
@@ -750,6 +909,10 @@ export default function Dashboard() {
                 cardEffectActive
                   ? "border-[#2ed573] bg-[#1a1b26] brightness-125 animate-border-pulse"
                   : "border-[#2ed573]/20 shadow-lg hover:shadow-[0_0_15px_rgba(46,213,115,0.3)]"
+              } ${
+                matrixModeActive
+                  ? "elite-card-override border-[#00BFFF] shadow-[0_0_25px_rgba(0,191,255,0.6)] brightness-80 contrast-120"
+                  : ""
               }`}
               onClick={() => navigateTo("/blogs")}
             >
