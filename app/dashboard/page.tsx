@@ -188,7 +188,7 @@ export default function Dashboard() {
               <span className="security-level">TARGET: 2030</span>
             </div>
             <div className="command-line" style={{animationDelay: '0.3s'}}>
-              <span className="elite-prompt">{isMobile ? 'arafat@K1NGB0B:~$' : 'arafat@K1NGB0B:~$'}</span> <span className="command">{isMobile ? './greatness --activate' : './greatness --activate-goat-mode'}</span>
+              <span className="elite-prompt">{isMobile ? 'arafat@K1NGB0B:~$' : 'arafat@K1NGB0B:~$'}</span> <span className="command">{isMobile ? './the_GOAT.sh --activate' : './the_GOAT.sh --activate-goat-mode'}</span>
             </div>
             <div className="command-line" style={{animationDelay: '0.9s'}}>
               <span className="status-success">{isMobile ? 'GOAT MODE ACTIVATED' : 'GREATEST OF ALL TIME MODE ACTIVATED'}</span>
