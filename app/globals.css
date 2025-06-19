@@ -469,7 +469,56 @@
 }
 
 .animate-scan {
-  animation: scan 4s linear infinite;
+  animation: scan 2s linear infinite;
+}
+
+@keyframes scan-reverse {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+}
+
+.animate-scan-reverse {
+  animation: scan-reverse 2s linear infinite;
+}
+
+@keyframes scan-fast {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+.animate-scan-fast {
+  animation: scan-fast 1.5s linear infinite;
+}
+
+@keyframes border-pulse {
+  0%, 100% {
+    border-color: rgba(46, 213, 115, 0.8);
+    box-shadow: 0 0 35px rgba(46, 213, 115, 0.8), 0 0 70px rgba(46, 213, 115, 0.4);
+  }
+  50% {
+    border-color: rgba(46, 213, 115, 1);
+    box-shadow: 0 0 45px rgba(46, 213, 115, 1), 0 0 90px rgba(46, 213, 115, 0.6);
+  }
+}
+
+.animate-border-pulse {
+  animation: border-pulse 2s ease-in-out infinite;
 }
 
 .terminal-text,
