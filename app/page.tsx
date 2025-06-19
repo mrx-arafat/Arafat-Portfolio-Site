@@ -99,13 +99,26 @@ export default function Home() {
         TURN ON YOUR <Volume2 size={16} />
       </div>
 
-      {/* Enter dashboard button */}
-      <Button
-        onClick={goToDashboard}
-        className="mt-8 bg-[#121212] border border-[#2ed573] hover:bg-[#2ed573]/20 text-[#2ed573] flex items-center gap-2 hover-glow px-6 py-3"
-      >
-        <Terminal size={16} /> Initialize Dashboard
-      </Button>
+      {/* Simple instruction text */}
+      <div className="text-center mt-8 mb-4">
+        <div className="text-[#2ed573]/80 text-sm font-mono tracking-wide animate-slow-blink">
+          Click to see ARAFAT's Portfolio
+        </div>
+      </div>
+
+      {/* Enter dashboard button with highlight blink */}
+      <div className="relative">
+        <Button
+          onClick={goToDashboard}
+          className="relative bg-[#121212] border-2 border-[#2ed573]/60 hover:border-[#2ed573] hover:bg-[#2ed573]/20 text-[#2ed573]/70 hover:text-[#2ed573] flex items-center gap-3 px-8 py-4 text-lg font-mono tracking-wide transition-all duration-300 hover:scale-105 hover:shadow-[0_0_25px_rgba(46,213,115,0.6)]"
+        >
+          <Terminal size={20} className="opacity-70 group-hover:opacity-100" />
+          <span>Initialize Dashboard</span>
+        </Button>
+
+        {/* Highlight blink overlay */}
+        <div className="absolute inset-0 border-2 border-[#2ed573]/40 rounded-md animate-highlight-blink pointer-events-none"></div>
+      </div>
     </main>
   );
 }
