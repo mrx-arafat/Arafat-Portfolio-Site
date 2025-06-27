@@ -40,6 +40,25 @@
   },
   {
     "id": 3,
+    "name": "LinuxBuddy",
+    "description": "Your friendly companion to mastering Linux! Learn system administration, VPS deployment, and become a Linux expert. A structured learning platform to learn Linux.",
+    "html_url": "https://github.com/mrx-arafat/LinuxBuddy",
+    "topics": [
+      "linux",
+      "education",
+      "system-administration",
+      "vps",
+      "learning-platform",
+      "devops",
+      "tutorial"
+    ],
+    "language": "JavaScript",
+    "stargazers_count": 0,
+    "homepage": "https://linux-buddy.arafatops.com/",
+    "preview_image": "https://i.ibb.co/99DRY1Nn/linux-buddy-aa.png"
+  },
+  {
+    "id": 4,
     "name": "K1NGB0B Recon Script",
     "description": "A simple and efficient domain reconnaissance tool designed for bug bounty hunters and security researchers. Automated tool for domain reconnaissance.",
     "html_url": "https://github.com/mrx-arafat/K1NGB0B-recon-script",
@@ -57,7 +76,7 @@
     "preview_image": "https://miro.medium.com/v2/resize:fit:1200/1*P8L-vzhTTEipr6Ss7FFM-g.png"
   },
   {
-    "id": 4,
+    "id": 5,
     "name": "AI Opportunity Map Dashboard",
     "description": "A comprehensive, interactive dashboard for exploring AI industry trends, opportunities, and strategic decision-making pathways. Built with Streamlit and designed for businesses and individuals navigating the AI revolution.",
     "html_url": "https://github.com/mrx-arafat/AI-Opportunity-Map",
@@ -76,7 +95,7 @@
     "preview_image": "https://i.imgur.com/sBCqJdJ.png"
   },
   {
-    "id": 5,
+    "id": 6,
     "name": "KingBOB Web Crawler",
     "description": "This Python script allows systematic browsing and extraction of links from websites up to a specified depth. It is ideal for site audit, and exploring web structures.",
     "html_url": "https://github.com/mrx-arafat/KingBOB-WebCrawler",
@@ -86,7 +105,7 @@
     "preview_image": "https://static.vecteezy.com/system/resources/thumbnails/016/855/914/small_2x/web-crawler-crawling-website-data-server-on-computer-internet-with-modern-flat-style-free-vector.jpg"
   },
   {
-    "id": 6,
+    "id": 7,
     "name": "QuoteNest",
     "description": "A personal quote journal application that allows you to collect, organize, and reflect on your favorite quotes with tagging, favorites, and search functionality.",
     "html_url": "https://github.com/mrx-arafat/QuoteNest",
@@ -105,7 +124,7 @@
     "preview_image": "https://www.onethreadapp.com/blog/wp-content/uploads/2023/07/The-only-way-to-do-great-work-is-to-love-what-you-do.jpg"
   },
   {
-    "id": 7,
+    "id": 8,
     "name": "Daily Personal Planner",
     "description": "Daily planner web application built with Next.js and TypeScript. Features include task management, calendar integration, and responsive design. Use this password : arafat69",
     "html_url": "https://github.com/mrx-arafat/daily-planner",
@@ -122,7 +141,7 @@
     "preview_image": "https://i.ibb.co.com/dJJ3Wzp9/daily-planner.png"
   },
   {
-    "id": 8,
+    "id": 9,
     "name": "E-commerce Backend",
     "description": "A robust e-commerce backend built with Node.js and TypeScript, featuring Express.js and Mongoose for database management.",
     "html_url": "https://github.com/mrx-arafat/e-commmerce-backend",
@@ -133,7 +152,7 @@
     "preview_image": "https://webcodeft.com/wp-content/uploads/2025/01/Image_2025_01_17t12_44_03_564z.png"
   },
   {
-    "id": 9,
+    "id": 10,
     "name": "Binary Exploitation Buffer Overflow Starter Code",
     "description": "A collection of Python scripts and exercises for practicing binary exploitation and buffer overflow techniques.",
     "html_url": "https://github.com/mrx-arafat/Binary-Exploitation-Bufferoverflow-Practice",
@@ -143,7 +162,7 @@
     "preview_image": "https://pbs.twimg.com/ext_tw_video_thumb/1709973595038822403/pu/img/jcukjOP0NhuvbIpD.jpg:large"
   },
   {
-    "id": 10,
+    "id": 11,
     "name": "AES Crypto 256 Bits by KingBOB",
     "description": "Python scripts for encrypting and decrypting text files using the Advanced Encryption Standard (AES) in Cipher Block Chaining (CBC) mode with a 256-bit key.",
     "html_url": "https://github.com/mrx-arafat/AES-Crypto-256-Bits-by-KingBOB",

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Volume2, VolumeX, Terminal } from "lucide-react";
+import { Volume2, VolumeX } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { playClickSound, playKeyboardSound } from "@/utils/sound";
@@ -101,24 +101,19 @@ export default function Home() {
 
       {/* Simple instruction text */}
       <div className="text-center mt-8 mb-4">
-        <div className="text-[#2ed573]/80 text-sm font-mono tracking-wide animate-slow-blink">
+        <div className="text-[#2ed573]/90 text-sm font-mono tracking-wide animate-slow-blink">
           Click to see ARAFAT's Portfolio
         </div>
       </div>
 
-      {/* Enter dashboard button with highlight blink */}
-      <div className="relative">
-        <Button
-          onClick={goToDashboard}
-          className="relative bg-[#121212] border-2 border-[#2ed573]/60 hover:border-[#2ed573] hover:bg-[#2ed573]/20 text-[#2ed573]/70 hover:text-[#2ed573] flex items-center gap-3 px-8 py-4 text-lg font-mono tracking-wide transition-all duration-300 hover:scale-105 hover:shadow-[0_0_25px_rgba(46,213,115,0.6)]"
-        >
-          <Terminal size={20} className="opacity-70 group-hover:opacity-100" />
-          <span>Initialize Dashboard</span>
-        </Button>
-
-        {/* Highlight blink overlay */}
-        <div className="absolute inset-0 border-2 border-[#2ed573]/40 rounded-md animate-highlight-blink pointer-events-none"></div>
-      </div>
+      {/* Enter dashboard button */}
+      <Button
+        onClick={goToDashboard}
+        className="bg-[#151620] border border-[#2ed573]/30 hover:border-[#2ed573]/60 hover:bg-[#2ed573]/10 text-[#2ed573] flex items-center gap-2 px-6 py-3 font-mono tracking-wide transition-all duration-300"
+      >
+        <span className="text-[#2ed573]">{'>_'}</span>
+        <span>Initialize Dashboard</span>
+      </Button>
     </main>
   );
 }

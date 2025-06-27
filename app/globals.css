@@ -1704,8 +1704,8 @@ body {
     opacity: 0;
   }
   25%, 75% {
-    opacity: 0.4;
-    box-shadow: 0 0 10px rgba(46, 213, 115, 0.3);
+    opacity: 0.3;
+    box-shadow: 0 0 8px rgba(26, 77, 46, 0.4);
   }
 }
 
@@ -1716,13 +1716,13 @@ body {
 /* Slow blink animation for text */
 @keyframes slow-blink {
   0%, 100% {
-    opacity: 0.8;
+    opacity: 1;
   }
   50% {
-    opacity: 0.3;
+    opacity: 0.4;
   }
 }
 
 .animate-slow-blink {
-  animation: slow-blink 3s ease-in-out infinite;
+  animation: slow-blink 2s ease-in-out infinite;
 }
