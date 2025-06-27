@@ -3,14 +3,7 @@
 import type React from "react";
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import {
-  ArrowLeft,
-  CheckCircle,
-  AlertCircle,
-  Mail,
-  User,
-  MessageSquare,
-} from "lucide-react";
+
 import { playKeyboardSound, playClickSound } from "@/utils/sound";
 
 export default function Contact() {
@@ -139,86 +132,125 @@ export default function Contact() {
   };
 
   return (
-    <main className="min-h-screen bg-[#1a1b26] text-white p-4 md:p-8 relative overflow-hidden">
-      {/* Animated background elements */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        <div className="absolute top-[10%] left-[5%] w-64 h-64 bg-[#2ed573]/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-[20%] right-[10%] w-80 h-80 bg-[#2ed573]/5 rounded-full blur-3xl"></div>
-        <div className="absolute top-[40%] right-[20%] w-40 h-40 bg-[#2ed573]/5 rounded-full blur-3xl"></div>
+    <main className="min-h-screen bg-[#121212] text-[#2ed573] p-4 md:p-8 relative overflow-hidden grid-dots">
+      {/* Matrix rain effect background */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-10">
+        {[...Array(20)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute text-[#2ed573] text-xs font-mono animate-matrix-fall"
+            style={{
+              left: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 5}s`,
+              animationDuration: `${5 + Math.random() * 10}s`
+            }}
+          >
+            {Math.random() > 0.5 ? '01' : '10'}
+          </div>
+        ))}
       </div>
 
-      {/* Toast Notification */}
+      {/* Terminal-style Toast Notification */}
       {showToast && (
         <div
-          className={`fixed top-4 right-4 p-4 rounded-lg shadow-lg flex items-center gap-3 z-50 transition-all duration-300 backdrop-blur-md ${
+          className={`fixed top-4 right-4 p-4 bg-[#0f0f0f] border ${
             toastType === "success"
-              ? "bg-[#2ed573]/80 text-[#0f0f0f]"
-              : "bg-red-500/80 text-white"
-          }`}
+              ? "border-[#2ed573]/60"
+              : "border-red-500/60"
+          } shadow-[0_0_20px_rgba(46,213,115,0.2)] z-50 transition-all duration-300 font-mono text-sm max-w-md`}
         >
-          {toastType === "success" ? (
-            <CheckCircle className="h-5 w-5 flex-shrink-0" />
-          ) : (
-            <AlertCircle className="h-5 w-5 flex-shrink-0" />
-          )}
-          <p className="font-medium">{toastMessage}</p>
-          <button
-            onClick={() => setShowToast(false)}
-            className="ml-2 text-sm opacity-70 hover:opacity-100"
-          >
-            ✕
-          </button>
+          <div className="flex items-start gap-3">
+            <span className={toastType === "success" ? "text-[#2ed573]" : "text-red-500"}>
+              [{toastType === "success" ? "SUCCESS" : "ERROR"}]
+            </span>
+            <p className={toastType === "success" ? "text-[#2ed573]/80" : "text-red-400/80"}>
+              {toastMessage}
+            </p>
+            <button
+              onClick={() => setShowToast(false)}
+              className="ml-auto text-[#2ed573]/60 hover:text-[#2ed573]"
+            >
+              [X]
+            </button>
+          </div>
         </div>
       )}
 
-      <Link
-        href="/dashboard"
-        className="inline-flex items-center text-[#2ed573] hover:text-[#1f9b53] mb-8 relative z-10 transition-transform hover:-translate-x-1"
-        onClick={playClickSound}
-      >
-        <ArrowLeft size={20} className="mr-2" />
-        Back to Dashboard
-      </Link>
+      {/* Back to Dashboard Button */}
+      <div className="max-w-4xl mx-auto mb-6">
+        <Link
+          href="/dashboard"
+          className="inline-flex items-center gap-2 text-[#2ed573]/70 hover:text-[#2ed573] font-mono text-sm transition-all duration-300 group"
+          onClick={playClickSound}
+        >
+          <span className="text-[#2ed573]/50 group-hover:text-[#2ed573]/70">[</span>
+          <span className="group-hover:translate-x-[-2px] transition-transform duration-300">←</span>
+          <span>cd ../dashboard</span>
+          <span className="text-[#2ed573]/50 group-hover:text-[#2ed573]/70">]</span>
+        </Link>
+      </div>
 
-      <div className="max-w-xl mx-auto">
-        <div className="bg-[#1e272e]/80 backdrop-blur-sm p-8 md:p-10 rounded-2xl shadow-2xl border border-[#2ed573]/20 relative overflow-hidden">
-          {/* Decorative elements */}
-          <div className="absolute top-0 right-0 w-32 h-32 bg-[#2ed573]/10 rounded-full -mr-16 -mt-16 z-0"></div>
-          <div className="absolute bottom-0 left-0 w-24 h-24 bg-[#2ed573]/10 rounded-full -ml-12 -mb-12 z-0"></div>
-          <div className="absolute top-0 left-0 w-2 h-16 bg-[#2ed573] rounded-b-full"></div>
-          <div className="absolute top-0 left-0 w-16 h-2 bg-[#2ed573] rounded-r-full"></div>
-          <div className="absolute bottom-0 right-0 w-2 h-16 bg-[#2ed573] rounded-t-full"></div>
-          <div className="absolute bottom-0 right-0 w-16 h-2 bg-[#2ed573] rounded-l-full"></div>
+      {/* Terminal header */}
+      <div className="mb-8 bg-[#0f0f0f] border border-[#2ed573]/30 rounded-lg p-3 shadow-[0_0_15px_rgba(46,213,115,0.2)] max-w-4xl mx-auto relative z-10">
+        <div className="flex items-center gap-2 mb-2">
+          <div className="w-3 h-3 rounded-full bg-[#ff5f57]"></div>
+          <div className="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
+          <div className="w-3 h-3 rounded-full bg-[#28ca41]"></div>
+          <div className="ml-2 text-[#2ed573]/70 text-xs">arafat@K1NGB0B:~/contact</div>
+        </div>
+        <div className="flex items-center">
+          <span className="text-[#2ed573] mr-2">$</span>
+          <span className="text-[#2ed573]">contact --arafat</span>
+          <span className="animate-blink ml-1">|</span>
+        </div>
+      </div>
 
-          <div className="relative z-10">
-            <h1 className="text-4xl text-[#2ed573] font-bold mb-3 tracking-tight">
-              Anything on your mind?
-            </h1>
-            <p className="text-[#2ed573]/80 mb-8 text-lg">
-              Feel free to reach out - I'm always open to meaningful
-              conversations.
-            </p>
+      <div className="max-w-2xl mx-auto">
+        <div className="bg-[#0f0f0f] border border-[#2ed573]/30 rounded-lg shadow-[0_0_20px_rgba(46,213,115,0.1)] relative overflow-hidden">
+          {/* Terminal-style header inside form */}
+          <div className="bg-[#1a1b26] border-b border-[#2ed573]/20 px-6 py-3">
+            <div className="flex items-center gap-2">
+              <span className="text-[#2ed573] text-sm font-mono">&gt;_</span>
+              <span className="text-[#2ed573]/70 text-sm font-mono">Contact Form</span>
+            </div>
+          </div>
+
+          <div className="p-8 md:p-10">
+            <div className="mb-8">
+              <h1 className="text-2xl text-[#2ed573] font-mono mb-2">
+                Anything on your mind?
+              </h1>
+              <div className="text-[#2ed573]/60 text-sm font-mono">
+                Feel free to reach out - I'm always open to meaningful conversations.
+              </div>
+            </div>
 
             {isSuccess ? (
-              <div className="text-center py-8 px-4">
-                <div className="w-20 h-20 mx-auto mb-6 bg-[#2ed573]/20 rounded-full flex items-center justify-center">
-                  <CheckCircle className="h-10 w-10 text-[#2ed573]" />
+              <div className="text-center py-8">
+                <div className="mb-6 font-mono">
+                  <div className="text-[#2ed573] text-lg mb-2">Message Sent Successfully!</div>
+                  <div className="text-[#2ed573]/60 text-sm">
+                    Thank you for reaching out. I'll get back to you soon.
+                  </div>
                 </div>
-                <h2 className="text-2xl font-bold text-[#2ed573] mb-3">
-                  Message Sent!
-                </h2>
-                <p className="text-[#2ed573]/80 mb-8">
-                  Thanks for reaching out! I'll get back to you as soon as
-                  possible.
-                </p>
+                <div className="my-8">
+                  <pre className="text-[#2ed573] text-xs font-mono">
+{`    _____ _   _  ____ ____ _____ ____ ____
+   / ____| | | |/ ___/ ___| ____/ ___/ ___|
+  | (___ | | | | |  | |   |  _| \\___ \\___ \\
+   \\___ \\| | | | |  | |   | |___ ___) |__) |
+   ____) | |_| | |__| |___|_____|____/____/
+  |_____/ \\___/ \\____\\____|               `}
+                  </pre>
+                </div>
                 <button
                   onClick={() => {
                     playClickSound();
                     setIsSuccess(false);
                   }}
-                  className="px-8 py-3 bg-[#2ed573] text-[#0f0f0f] font-medium rounded-full
-                transition-all duration-300 hover:bg-[#1f9b53] hover:shadow-lg transform hover:scale-105"
+                  className="bg-[#151620] border border-[#2ed573]/30 hover:border-[#2ed573]/60 hover:bg-[#2ed573]/10 text-[#2ed573] px-6 py-3 font-mono transition-all duration-300"
                 >
+                  <span className="mr-2">&gt;_</span>
                   Send Another Message
                 </button>
               </div>
@@ -232,36 +264,27 @@ export default function Contact() {
                     : "opacity-0 translate-y-4"
                 }`}
               >
-                <div className="relative group">
-                  <div className="absolute left-4 top-4 text-[#2ed573]/50 group-focus-within:text-[#2ed573] transition-colors duration-300">
-                    <User size={18} />
-                  </div>
+                <div className="space-y-1">
+                  <label className="text-[#2ed573] text-sm font-mono block">
+                    <span className="text-[#2ed573]/60">&gt;</span> Your Name
+                  </label>
                   <input
                     type="text"
                     id="name"
                     name="name"
                     required
                     onKeyDown={handleKeyPress}
-                    className="peer w-full pl-10 pr-5 py-4 rounded-lg bg-[#0f0f0f]/70 border border-[#2ed573]/20 text-white
-                  focus:outline-none focus:ring-2 focus:ring-[#2ed573] focus:border-transparent
-                  transition-all duration-300 hover:border-[#2ed573]/50 placeholder-transparent"
-                    placeholder="Your name"
+                    className="w-full px-4 py-3 bg-[#1a1b26] border border-[#2ed573]/20 text-[#2ed573] font-mono
+                    focus:outline-none focus:border-[#2ed573]/60 focus:bg-[#151620]
+                    transition-all duration-300 hover:border-[#2ed573]/40 placeholder-[#2ed573]/30"
+                    placeholder="Ingrid Bergman"
                   />
-                  <label
-                    htmlFor="name"
-                    className="absolute left-10 -top-2.5 px-1 text-sm font-medium text-[#2ed573] bg-[#1e272e]
-                  transition-all duration-300 transform
-                  peer-placeholder-shown:text-[#2ed573]/50 peer-placeholder-shown:top-4 peer-placeholder-shown:left-10
-                  peer-focus:-top-2.5 peer-focus:left-5 peer-focus:text-[#2ed573] peer-focus:text-sm peer-focus:bg-[#1e272e]"
-                  >
-                    Name
-                  </label>
                 </div>
 
-                <div className="relative group">
-                  <div className="absolute left-4 top-4 text-[#2ed573]/50 group-focus-within:text-[#2ed573] transition-colors duration-300">
-                    <Mail size={18} />
-                  </div>
+                <div className="space-y-1">
+                  <label className="text-[#2ed573] text-sm font-mono block">
+                    <span className="text-[#2ed573]/60">&gt;</span> Your Email
+                  </label>
                   <input
                     type="email"
                     id="email"
@@ -269,115 +292,61 @@ export default function Contact() {
                     required
                     onKeyDown={handleKeyPress}
                     onBlur={handleEmailBlur}
-                    className={`peer w-full pl-10 pr-5 py-4 rounded-lg bg-[#0f0f0f]/70 border ${
+                    className={`w-full px-4 py-3 bg-[#1a1b26] border ${
                       emailError ? "border-red-500" : "border-[#2ed573]/20"
-                    } text-white
-                  focus:outline-none focus:ring-2 ${
-                    emailError ? "focus:ring-red-500" : "focus:ring-[#2ed573]"
-                  } focus:border-transparent
-                  transition-all duration-300 hover:border-[#2ed573]/50 placeholder-transparent`}
-                    placeholder="your.email@example.com"
+                    } text-[#2ed573] font-mono
+                    focus:outline-none ${
+                      emailError ? "focus:border-red-500" : "focus:border-[#2ed573]/60"
+                    } focus:bg-[#151620]
+                    transition-all duration-300 hover:border-[#2ed573]/40 placeholder-[#2ed573]/30`}
+                    placeholder="ingrid@example.com"
                   />
                   {emailError && (
-                    <p className="text-red-500 text-xs mt-1 ml-2">
+                    <p className="text-red-500 text-xs mt-1 font-mono">
                       {emailError}
                     </p>
                   )}
-                  <label
-                    htmlFor="email"
-                    className="absolute left-10 -top-2.5 px-1 text-sm font-medium text-[#2ed573] bg-[#1e272e]
-                  transition-all duration-300 transform
-                  peer-placeholder-shown:text-[#2ed573]/50 peer-placeholder-shown:top-4 peer-placeholder-shown:left-10
-                  peer-focus:-top-2.5 peer-focus:left-5 peer-focus:text-[#2ed573] peer-focus:text-sm peer-focus:bg-[#1e272e]"
-                  >
-                    Email
-                  </label>
                 </div>
 
-                <div className="relative group">
-                  <div className="absolute left-4 top-4 text-[#2ed573]/50 group-focus-within:text-[#2ed573] transition-colors duration-300">
-                    <MessageSquare size={18} />
-                  </div>
+                <div className="space-y-1">
+                  <label className="text-[#2ed573] text-sm font-mono block">
+                    <span className="text-[#2ed573]/60">&gt;</span> Your Message
+                  </label>
                   <textarea
                     id="message"
                     name="message"
-                    rows={4}
+                    rows={6}
                     required
                     onKeyDown={handleKeyPress}
-                    className="peer w-full pl-10 pr-5 py-4 rounded-lg bg-[#0f0f0f]/70 border border-[#2ed573]/20 text-white
-                  focus:outline-none focus:ring-2 focus:ring-[#2ed573] focus:border-transparent
-                  transition-all duration-300 hover:border-[#2ed573]/50 placeholder-transparent resize-none"
-                    placeholder="Your message here..."
+                    className="w-full px-4 py-3 bg-[#1a1b26] border border-[#2ed573]/20 text-[#2ed573] font-mono
+                    focus:outline-none focus:border-[#2ed573]/60 focus:bg-[#151620]
+                    transition-all duration-300 hover:border-[#2ed573]/40 resize-none placeholder-[#2ed573]/30"
+                    placeholder="Hello Arafat, I wanna reach out to you for..."
                   ></textarea>
-                  <label
-                    htmlFor="message"
-                    className="absolute left-10 -top-2.5 px-1 text-sm font-medium text-[#2ed573] bg-[#1e272e]
-                  transition-all duration-300 transform
-                  peer-placeholder-shown:text-[#2ed573]/50 peer-placeholder-shown:top-4 peer-placeholder-shown:left-10
-                  peer-focus:-top-2.5 peer-focus:left-5 peer-focus:text-[#2ed573] peer-focus:text-sm peer-focus:bg-[#1e272e]"
-                  >
-                    Message
-                  </label>
                 </div>
 
-                <div className="pt-4">
+                <div className="pt-6">
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full py-4 px-6 bg-[#2ed573] text-[#0f0f0f] font-bold rounded-full
-                  transition-all duration-300 hover:bg-[#1f9b53] hover:shadow-lg transform hover:scale-[1.02]
-                  focus:ring-2 focus:ring-[#2ed573] focus:ring-offset-2 focus:ring-offset-[#0f0f0f]
-                  disabled:opacity-70 disabled:cursor-not-allowed"
+                    className="w-full py-4 px-6 bg-[#151620] border border-[#2ed573]/30 text-[#2ed573] font-mono
+                    transition-all duration-300 hover:border-[#2ed573]/60 hover:bg-[#2ed573]/10
+                    disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group"
                   >
-                    <div className="flex items-center justify-center gap-2">
-                      <span>
+                    <div className="flex items-center justify-center gap-3">
+                      <span className="text-lg">&gt;_</span>
+                      <span className="uppercase tracking-wider">
                         {isSubmitting ? "Sending..." : "Send Message"}
                       </span>
-                      {isSubmitting ? (
-                        <svg
-                          className="animate-spin h-5 w-5"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                        >
-                          <circle
-                            className="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                          ></circle>
-                          <path
-                            className="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                          ></path>
-                        </svg>
-                      ) : (
-                        <svg
-                          className="w-5 h-5"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M22 2L11 13"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                          <path
-                            d="M22 2L15 22L11 13L2 9L22 2Z"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
+                      {isSubmitting && (
+                        <div className="flex gap-1">
+                          <span className="animate-pulse">.</span>
+                          <span className="animate-pulse" style={{ animationDelay: "0.2s" }}>.</span>
+                          <span className="animate-pulse" style={{ animationDelay: "0.4s" }}>.</span>
+                        </div>
                       )}
                     </div>
+                    <div className="absolute inset-0 bg-[#2ed573]/5 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
                   </button>
                 </div>
               </form>
