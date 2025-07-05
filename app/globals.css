@@ -521,6 +521,66 @@
   animation: border-pulse 2s ease-in-out infinite;
 }
 
+/* Subtle pulse animation for ARAFAT click effect */
+@keyframes subtle-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.01);
+  }
+}
+
+.animate-subtle-pulse {
+  animation: subtle-pulse 2s ease-in-out;
+}
+
+/* Subtle scan animation */
+@keyframes scan-subtle {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.6;
+  }
+  80% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.animate-scan-subtle {
+  animation: scan-subtle 2s ease-in-out;
+}
+
+/* Subtle scan reverse animation */
+@keyframes scan-subtle-reverse {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.6;
+  }
+  80% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+.animate-scan-subtle-reverse {
+  animation: scan-subtle-reverse 2s ease-in-out;
+}
+
 /* ========== ELITE SYSTEM INFILTRATION ========== */
 
 .matrix-mode-active {

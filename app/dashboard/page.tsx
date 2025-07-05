@@ -801,7 +801,7 @@ export default function Dashboard() {
             <div
               className={`group relative bg-[#1a1b26] rounded-2xl overflow-hidden flex flex-col border transition-all duration-300 cursor-pointer ${
                 cardEffectActive
-                  ? "border-[#2ed573] bg-[#1a1b26] brightness-125 animate-border-pulse"
+                  ? "border-[#2ed573]/60 bg-[#1a1b26] shadow-[0_0_20px_rgba(46,213,115,0.3)] animate-subtle-pulse"
                   : "border-[#2ed573]/20 shadow-lg hover:shadow-[0_0_15px_rgba(46,213,115,0.3)]"
               } ${
                 matrixModeActive
@@ -812,13 +812,16 @@ export default function Dashboard() {
             >
               {/* Special effect overlay when ARAFAT is clicked */}
               {cardEffectActive && (
-                <div className="absolute inset-0 bg-gradient-to-r from-[#2ed573]/20 via-[#2ed573]/5 to-[#2ed573]/20 z-10 pointer-events-none">
-                  <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTAiIGN5PSIxMCIgcj0iMSIgZmlsbD0iIzJlZDU3MyIgZmlsbC1vcGFjaXR5PSIwLjUiLz4KPC9zdmc+')] opacity-40"></div>
-                  {/* Multiple synchronized scan lines */}
-                  <div className="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-transparent via-[#2ed573] to-transparent animate-scan-fast shadow-[0_0_10px_#2ed573]"></div>
-                  <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#00ff88] to-transparent animate-scan-fast" style={{animationDelay: '0.3s'}}></div>
-                  <div className="absolute bottom-0 right-0 w-full h-[3px] bg-gradient-to-l from-transparent via-[#2ed573] to-transparent animate-scan-reverse shadow-[0_0_10px_#2ed573]"></div>
-                  <div className="absolute bottom-0 right-0 w-full h-[2px] bg-gradient-to-l from-transparent via-[#00ff88] to-transparent animate-scan-reverse" style={{animationDelay: '0.3s'}}></div>
+                <div className="absolute inset-0 z-10 pointer-events-none">
+                  {/* Subtle dark overlay */}
+                  <div className="absolute inset-0 bg-[#0f0f0f]/20"></div>
+                  {/* Single subtle scan line */}
+                  <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#2ed573]/50 to-transparent animate-scan-subtle"></div>
+                  {/* Corner accents */}
+                  <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-[#2ed573]/40 animate-pulse"></div>
+                  <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-[#2ed573]/40 animate-pulse"></div>
+                  <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-[#2ed573]/40 animate-pulse"></div>
+                  <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-[#2ed573]/40 animate-pulse"></div>
                 </div>
               )}
 
@@ -907,7 +910,7 @@ export default function Dashboard() {
             <div
               className={`group relative bg-[#1a1b26] rounded-2xl overflow-hidden flex flex-col border transition-all duration-300 cursor-pointer ${
                 cardEffectActive
-                  ? "border-[#2ed573] bg-[#1a1b26] brightness-125 animate-border-pulse"
+                  ? "border-[#2ed573]/60 bg-[#1a1b26] shadow-[0_0_20px_rgba(46,213,115,0.3)] animate-subtle-pulse"
                   : "border-[#2ed573]/20 shadow-lg hover:shadow-[0_0_15px_rgba(46,213,115,0.3)]"
               } ${
                 matrixModeActive
@@ -918,26 +921,18 @@ export default function Dashboard() {
             >
               {/* Special effect overlay when ARAFAT is clicked */}
               {cardEffectActive && (
-                <div className="absolute inset-0 bg-gradient-to-l from-[#2ed573]/20 via-[#2ed573]/5 to-[#2ed573]/20 z-10 pointer-events-none">
-                  <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTAiIGN5PSIxMCIgcj0iMSIgZmlsbD0iIzJlZDU3MyIgZmlsbC1vcGFjaXR5PSIwLjUiLz4KPC9zdmc+')] opacity-40"></div>
-                  {/* Multiple synchronized scan lines - different pattern from PROJECT card */}
-                  <div className="absolute top-0 right-0 w-full h-[3px] bg-gradient-to-l from-transparent via-[#2ed573] to-transparent animate-scan-fast shadow-[0_0_10px_#2ed573]"></div>
-                  <div className="absolute top-0 right-0 w-full h-[2px] bg-gradient-to-l from-transparent via-[#00ff88] to-transparent animate-scan-fast" style={{animationDelay: '0.3s'}}></div>
-                  <div className="absolute bottom-0 left-0 w-full h-[3px] bg-gradient-to-r from-transparent via-[#2ed573] to-transparent animate-scan-reverse shadow-[0_0_10px_#2ed573]"></div>
-                  <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#00ff88] to-transparent animate-scan-reverse" style={{animationDelay: '0.3s'}}></div>
-                  {/* Vertical scan lines for extra effect */}
-                  <div className="absolute left-0 top-0 h-full w-[3px] bg-gradient-to-b from-transparent via-[#2ed573] to-transparent animate-scan-fast shadow-[0_0_10px_#2ed573]" style={{animationDelay: '0.6s'}}></div>
-                  <div className="absolute right-0 top-0 h-full w-[3px] bg-gradient-to-b from-transparent via-[#2ed573] to-transparent animate-scan-reverse shadow-[0_0_10px_#2ed573]" style={{animationDelay: '0.9s'}}></div>
+                <div className="absolute inset-0 z-10 pointer-events-none">
+                  {/* Subtle dark overlay */}
+                  <div className="absolute inset-0 bg-[#0f0f0f]/20"></div>
+                  {/* Single subtle scan line - opposite direction */}
+                  <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#2ed573]/50 to-transparent animate-scan-subtle-reverse"></div>
+                  {/* Corner accents - different corners */}
+                  <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-[#2ed573]/40 animate-pulse" style={{animationDelay: '0.5s'}}></div>
+                  <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-[#2ed573]/40 animate-pulse" style={{animationDelay: '0.5s'}}></div>
                 </div>
               )}
 
-              {/* Animated scan lines - Enhanced */}
-              <div className={`absolute inset-0 overflow-hidden pointer-events-none transition-opacity duration-500 ${
-                cardEffectActive ? "opacity-80" : "opacity-20"
-              }`}>
-                <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-[#2ed573] to-transparent absolute animate-scan-fast shadow-[0_0_8px_#2ed573]"></div>
-                <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-[#00ff88] to-transparent absolute animate-scan-fast" style={{animationDelay: '0.5s'}}></div>
-              </div>
+
 
               {/* Header with 3D effect */}
               <div className="p-4 flex items-center justify-between border-b border-[#2ed573]/10 relative z-10">
