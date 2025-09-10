@@ -106,22 +106,20 @@
   },
   {
     "id": 7,
-    "name": "QuoteNest",
-    "description": "A personal quote journal application that allows you to collect, organize, and reflect on your favorite quotes with tagging, favorites, and search functionality.",
-    "html_url": "https://github.com/mrx-arafat/QuoteNest",
+    "name": "LinkedIn Data Scraping Suite",
+    "description": "A comprehensive Playwright-based automation toolkit for scraping LinkedIn data including connections, search results, and posts.",
+    "html_url": "https://github.com/mrx-arafat/LinkedIn-Data-Scraping",
     "topics": [
-      "react",
-      "nodejs",
-      "mongodb",
-      "express",
-      "quote-management",
-      "journal",
-      "responsive-design"
+      "playwright",
+      "automation",
+      "scraping",
+      "linkedin",
+      "nodejs"
     ],
-    "language": "JavaScript",
+    "language": "TypeScript",
     "stargazers_count": 0,
     "homepage": "",
-    "preview_image": "https://www.onethreadapp.com/blog/wp-content/uploads/2023/07/The-only-way-to-do-great-work-is-to-love-what-you-do.jpg"
+    "preview_image": "https://postiz.com/_next/image?url=https%3A%2F%2Fcms.postiz.com%2Fwp-content%2Fuploads%2F2024%2F06%2FBlog-Post-20.png&w=1080&q=75"
   },
   {
     "id": 8,
@@ -170,5 +168,23 @@
     "language": "Python",
     "stargazers_count": 0,
     "preview_image": "https://cdn.prod.website-files.com/5ff66329429d880392f6cba2/67b431c85d2112aaa730a2f2_618e3f3ff8ffcc7e84a823cd_AES%2520algorithm%2520working.png"
+  },
+  {
+    "id": 12,
+    "name": "SecureShare",
+    "description": "SecureShare is a revolutionary Chrome extension that solves a common problem: sharing access to online accounts without compromising security. Using military-grade encryption, it allows you to share your logged-in sessions temporarily without ever revealing your passwords.",
+    "html_url": "https://github.com/mrx-arafat/SecureShare",
+    "topics": [
+      "chrome-extension",
+      "security",
+      "encryption",
+      "session-sharing",
+      "privacy",
+      "browser"
+    ],
+    "language": "JavaScript",
+    "stargazers_count": 0,
+    "homepage": "",
+    "preview_image": "https://github.com/mrx-arafat/SecureShare/raw/main/icons/128.png"
   }
 ]

@@ -163,14 +163,6 @@
       "description": "End-to-end testing of web applications using Playwright automation framework"
     },
     {
-      "id": "jest",
-      "name": "Jest",
-      "icon": "Check",
-      "category": "testing",
-      "description": "JavaScript testing framework for unit and integration tests"
-    },
-
-    {
       "id": "selenium",
       "name": "Selenium",
       "icon": "Monitor",
@@ -267,6 +259,35 @@
       "icon": "Network",
       "category": "security",
       "description": "Understanding network protocols, architecture, and security to identify and mitigate network-based threats"
+    },
+    {
+      "id": "n8n-automation",
+      "name": "n8n Automation",
+      "icon": "Settings",
+      "category": "automation",
+      "description": "Designing and orchestrating automated workflows and integrations with n8n for data pipelines and business processes"
+    },
+    {
+      "id": "wordpress-security",
+      "name": "WordPress Security",
+      "icon": "Shield",
+      "category": "security",
+      "description": "Plugin vulnerability research and exploitation: auditing WordPress plugins, reproducing CVEs and responsible disclosure. Got multiple CVEs and PoCs accepted."
+    }
+,
+    {
+      "id": "ai-ml",
+      "name": "AI/ML",
+      "icon": "Brain",
+      "category": "ai",
+      "description": "Machine learning and applied AI: building, fine-tuning, and integrating models for real-world use cases"
+    },
+    {
+      "id": "ai-automations",
+      "name": "AI Automations",
+      "icon": "Bot",
+      "category": "automation",
+      "description": "Designing AI-driven automations: LLM agents, workflow orchestration, and tool integration to streamline tasks"
     }
   ]
 }
