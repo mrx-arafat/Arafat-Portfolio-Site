@@ -72,7 +72,7 @@ export default function Home() {
 
       {/* Terminal screen */}
       <div
-        className={`w-full max-w-2xl h-48 bg-[#1e272e] rounded-lg p-6 font-mono relative overflow-hidden ${
+        className={`w-full max-w-2xl h-48 bg-[#1e272e] rounded-lg p-6 font-mono relative overflow-hidden border border-[#2ed573]/10 shadow-[0_0_30px_rgba(46,213,115,0.08)] ${
           isAnimating ? "animate-glitch" : ""
         }`}
       >
@@ -102,7 +102,7 @@ export default function Home() {
       {/* Enter dashboard button with enhanced visual cues */}
       <div className="relative mt-8 mb-4">
         {/* Pulsing glow background */}
-        <div className="absolute inset-0 bg-[#2ed573]/20 blur-xl rounded-lg animate-pulse" />
+        <div className="absolute inset-0 bg-[#2ed573]/10 blur-xl rounded-lg animate-pulse" />
 
         {/* Animated pointer arrows */}
         <div className="absolute -left-12 top-1/2 -translate-y-1/2 hidden md:flex items-center gap-1 animate-bounce">
@@ -116,7 +116,7 @@ export default function Home() {
 
         <Button
           onClick={goToDashboard}
-          className="relative bg-[#151620] border-2 border-[#2ed573]/50 hover:border-[#2ed573] hover:bg-[#2ed573]/10 text-[#2ed573] flex items-center gap-3 px-8 py-4 font-mono tracking-wide transition-all duration-300 shadow-[0_0_20px_rgba(46,213,115,0.3)] hover:shadow-[0_0_30px_rgba(46,213,115,0.6)] hover:scale-105 group overflow-hidden"
+          className="relative bg-[#151620] border-2 border-[#2ed573]/50 hover:border-[#2ed573] hover:bg-[#2ed573]/10 text-[#2ed573] flex items-center gap-3 px-8 py-4 font-mono tracking-wide transition-all duration-300 shadow-[0_0_15px_rgba(46,213,115,0.2)] hover:shadow-[0_0_25px_rgba(46,213,115,0.4)] hover:scale-105 group overflow-hidden"
         >
           {/* Animated border glow effect */}
           <div className="absolute inset-0 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -139,7 +139,7 @@ export default function Home() {
           <span className="text-[#2ed573]/60">]</span>
         </div>
         <div className="text-[#2ed573]/70 text-sm font-mono animate-slow-blink">
-          <span className="text-[#2ed573]/50">&gt;</span> Access Portfolio System
+          <span className="text-[#2ed573]/50">&gt;</span> Welcome to My Portfolio
         </div>
       </div>
       
