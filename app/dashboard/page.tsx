@@ -644,7 +644,7 @@ export default function Dashboard() {
                       btn.classList.add("shake-effect");
 
                       // 2. Add scan line effect
-                      const scanLine = btn.querySelector(".scan-line");
+                      const scanLine = btn.querySelector(".scan-line") as HTMLElement | null;
                       if (scanLine) {
                         scanLine.style.opacity = "0.7";
                       }

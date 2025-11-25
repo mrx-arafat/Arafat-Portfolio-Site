@@ -99,21 +99,50 @@ export default function Home() {
         TURN ON YOUR <Volume2 size={16} />
       </div>
 
-      {/* Simple instruction text */}
-      <div className="text-center mt-8 mb-4">
-        <div className="text-[#2ed573]/90 text-sm font-mono tracking-wide animate-slow-blink">
-          Click to see ARAFAT's Portfolio
+      {/* Enter dashboard button with enhanced visual cues */}
+      <div className="relative mt-8 mb-4">
+        {/* Pulsing glow background */}
+        <div className="absolute inset-0 bg-[#2ed573]/20 blur-xl rounded-lg animate-pulse" />
+
+        {/* Animated pointer arrows */}
+        <div className="absolute -left-12 top-1/2 -translate-y-1/2 hidden md:flex items-center gap-1 animate-bounce">
+          <span className="text-[#2ed573] text-2xl font-mono">→</span>
+          <span className="text-[#2ed573] text-2xl font-mono">→</span>
         </div>
+        <div className="absolute -right-12 top-1/2 -translate-y-1/2 hidden md:flex items-center gap-1 animate-bounce">
+          <span className="text-[#2ed573] text-2xl font-mono">←</span>
+          <span className="text-[#2ed573] text-2xl font-mono">←</span>
+        </div>
+
+        <Button
+          onClick={goToDashboard}
+          className="relative bg-[#151620] border-2 border-[#2ed573]/50 hover:border-[#2ed573] hover:bg-[#2ed573]/10 text-[#2ed573] flex items-center gap-3 px-8 py-4 font-mono tracking-wide transition-all duration-300 shadow-[0_0_20px_rgba(46,213,115,0.3)] hover:shadow-[0_0_30px_rgba(46,213,115,0.6)] hover:scale-105 group overflow-hidden"
+        >
+          {/* Animated border glow effect */}
+          <div className="absolute inset-0 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#2ed573]/20 to-transparent animate-shimmer" />
+          </div>
+
+          <span className="relative z-10 text-[#2ed573] text-lg group-hover:animate-pulse">{'>_'}</span>
+          <span className="relative z-10 text-base">Initialize Dashboard</span>
+
+          {/* Blinking cursor indicator */}
+          <span className="relative z-10 animate-blink text-lg">|</span>
+        </Button>
       </div>
 
-      {/* Enter dashboard button */}
-      <Button
-        onClick={goToDashboard}
-        className="bg-[#151620] border border-[#2ed573]/30 hover:border-[#2ed573]/60 hover:bg-[#2ed573]/10 text-[#2ed573] flex items-center gap-2 px-6 py-3 font-mono tracking-wide transition-all duration-300"
-      >
-        <span className="text-[#2ed573]">{'>_'}</span>
-        <span>Initialize Dashboard</span>
-      </Button>
+      {/* Enhanced instruction text - classy terminal style */}
+      <div className="text-center space-y-3 mt-2">
+        <div className="text-[#2ed573] text-base font-mono tracking-wide flex items-center justify-center gap-3">
+          <span className="text-[#2ed573]/60">[</span>
+          <span className="font-bold">CLICK TO ENTER</span>
+          <span className="text-[#2ed573]/60">]</span>
+        </div>
+        <div className="text-[#2ed573]/70 text-sm font-mono animate-slow-blink">
+          <span className="text-[#2ed573]/50">&gt;</span> Access Portfolio System
+        </div>
+      </div>
+      
     </main>
   );
 }
