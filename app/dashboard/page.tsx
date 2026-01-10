@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import {
   Volume2,
@@ -33,7 +33,25 @@ import Image from "next/image";
 import { playClickSound } from "@/utils/sound";
 import extracurricularData from "@/data/extracurricular.json";
 
+// Pre-generate stable random values to avoid hydration mismatches
+const generateStableRandoms = (count: number, seed: number = 1) => {
+  const randoms: number[] = [];
+  for (let i = 0; i < count; i++) {
+    // Simple seeded pseudo-random for consistency
+    randoms.push(((seed * (i + 1) * 9301 + 49297) % 233280) / 233280);
+  }
+  return randoms;
+};
+
+// Pre-computed stable values
+const NEURAL_NODE_POSITIONS = generateStableRandoms(40, 42);
+const DATA_STREAM_DELAYS = generateStableRandoms(12, 17);
+const CODE_RAIN_DURATIONS = generateStableRandoms(20, 23);
+const MATRIX_RAIN_VALUES = generateStableRandoms(100, 31);
+const FLOATING_CODE_POSITIONS = generateStableRandoms(10, 55);
+
 export default function Dashboard() {
+  const [isMounted, setIsMounted] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [skills, setSkills] = useState({
     security: true,
@@ -47,6 +65,11 @@ export default function Dashboard() {
   const [cardEffectActive, setCardEffectActive] = useState(false);
   const [matrixModeActive, setMatrixModeActive] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+
+  // Mark as mounted to enable client-only rendering
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -62,6 +85,12 @@ export default function Dashboard() {
   const clickSoundRef = useRef<HTMLAudioElement | null>(null);
   const profileRef = useRef<HTMLDivElement>(null);
   const countdownRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Memoize binary values to prevent regeneration on each render
+  const binaryValues = useMemo(() =>
+    Array.from({ length: 100 }, (_, i) => MATRIX_RAIN_VALUES[i % MATRIX_RAIN_VALUES.length] > 0.5 ? "1" : "0"),
+    []
+  );
 
   // Array of hacker secret information to display
   const hackerInfoOptions = [
@@ -140,8 +169,8 @@ export default function Dashboard() {
     <main className={`flex min-h-screen flex-col bg-[#121212] p-4 md:p-8 relative grid-dots transition-all duration-1000 ${
       matrixModeActive ? "matrix-mode-active" : ""
     }`}>
-      {/* ELITE SYSTEM INFILTRATION */}
-      {matrixModeActive && (
+      {/* ELITE SYSTEM INFILTRATION - Only render on client */}
+      {isMounted && matrixModeActive && (
         <div className="fixed inset-0 z-50 pointer-events-none elite-infiltration-overlay">
           {/* Neural Network Visualization */}
           <div className="absolute inset-0 neural-network">
@@ -150,9 +179,9 @@ export default function Dashboard() {
                 key={i}
                 className="neural-node"
                 style={{
-                  top: `${Math.random() * 90 + 5}%`,
-                  left: `${Math.random() * 90 + 5}%`,
-                  animationDelay: `${Math.random() * 2}s`
+                  top: `${NEURAL_NODE_POSITIONS[i * 2] * 90 + 5}%`,
+                  left: `${NEURAL_NODE_POSITIONS[i * 2 + 1] * 90 + 5}%`,
+                  animationDelay: `${DATA_STREAM_DELAYS[i % 12] * 2}s`
                 }}
               >
                 <div className="node-core"></div>
@@ -174,7 +203,7 @@ export default function Dashboard() {
               >
                 {[...Array(isMobile ? 6 : 8)].map((_, j) => (
                   <div key={j} className="data-packet">
-                    {Math.random() > 0.5 ? '1' : '0'}
+                    {binaryValues[(i * 8 + j) % 100]}
                   </div>
                 ))}
               </div>
@@ -402,12 +431,12 @@ export default function Dashboard() {
                       className="code-column"
                       style={{
                         left: `${i * 10}%`,
-                        animationDuration: `${Math.random() * 3 + 2}s`,
-                        animationDelay: `${Math.random() * 2}s`,
+                        animationDuration: `${CODE_RAIN_DURATIONS[i] * 3 + 2}s`,
+                        animationDelay: `${CODE_RAIN_DURATIONS[i + 10] * 2}s`,
                       }}
                     >
                       {[...Array(10)].map((_, j) => (
-                        <div key={j}>{Math.random() > 0.5 ? "1" : "0"}</div>
+                        <div key={j}>{binaryValues[(i * 10 + j) % 100]}</div>
                       ))}
                     </div>
                   ))}
@@ -427,7 +456,6 @@ export default function Dashboard() {
                       height={500}
                       className="object-cover w-full h-full hacker-profile-image"
                       priority
-                      unoptimized={true}
                     />
                   </div>
 
@@ -589,7 +617,7 @@ export default function Dashboard() {
                   >
                     {[...Array(10)].map((_, j) => (
                       <div key={j} style={{ animationDelay: `${j * 0.1}s` }}>
-                        {Math.random() > 0.5 ? "1" : "0"}
+                        {binaryValues[(i * 10 + j) % 100]}
                       </div>
                     ))}
                   </div>
@@ -743,7 +771,7 @@ export default function Dashboard() {
                         <div key={i} className="flex">
                           {Array.from({ length: 10 }).map((_, j) => (
                             <span key={j} className="mx-px">
-                              {Math.random() > 0.5 ? "1" : "0"}
+                              {binaryValues[(i * 10 + j) % 100]}
                             </span>
                           ))}
                         </div>
@@ -873,11 +901,11 @@ export default function Dashboard() {
                       key={i}
                       className="absolute text-[#2ed573] font-mono text-xs opacity-30"
                       style={{
-                        top: `${Math.random() * 100}%`,
-                        left: `${Math.random() * 100}%`,
+                        top: `${FLOATING_CODE_POSITIONS[i * 2] * 100}%`,
+                        left: `${FLOATING_CODE_POSITIONS[i * 2 + 1] * 100}%`,
                         transform: "rotate(30deg)",
                         animation: `float ${
-                          2 + Math.random() * 3
+                          2 + FLOATING_CODE_POSITIONS[i] * 3
                         }s infinite ease-in-out`,
                       }}
                     >

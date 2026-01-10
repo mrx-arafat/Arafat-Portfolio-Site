@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { playClickSound, playKeyboardSound } from "@/utils/sound";
 
@@ -142,7 +143,9 @@ export default function Home() {
           <span className="text-[#2ed573]/50">&gt;</span> Welcome to My Portfolio
         </div>
       </div>
-      
+
+      {/* Prefetch dashboard for faster navigation */}
+      <Link href="/dashboard" prefetch={true} className="hidden" aria-hidden="true" />
     </main>
   );
 }
