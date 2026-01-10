@@ -19,6 +19,7 @@ import {
   Layers,
   Lock,
   Unlock,
+  User,
 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
@@ -485,6 +486,43 @@ export default function Dashboard() {
                   <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-[#2ed573]"></div>
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* What Do I Do Button - Hacker Style */}
+          <div className="p-4 pb-0">
+            <div
+              onClick={() => {
+                playClickSound();
+                navigateTo("/about-me");
+              }}
+              className="relative group cursor-pointer"
+            >
+              {/* 3D Shadow/Base Layer */}
+              <div className="absolute inset-0 bg-[#2ed573]/30 rounded-lg translate-x-2 translate-y-2 group-hover:translate-x-1 group-hover:translate-y-1 group-active:translate-x-0 group-active:translate-y-0 transition-all duration-200"></div>
+
+              {/* Button Main Layer */}
+              <div className="relative bg-[#0f0f0f] text-[#2ed573] font-bold py-4 px-6 rounded-lg flex items-center justify-between w-full z-10 shadow-lg border border-[#2ed573]/50 transform transition-all duration-200 group-hover:shadow-xl group-hover:border-[#2ed573]">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-[#2ed573]/10 flex items-center justify-center">
+                    <User className="w-5 h-5 text-[#2ed573]" />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-lg tracking-wide">WHAT DO I DO?</span>
+                    <span className="text-[#2ed573]/70 text-xs font-mono whitespace-nowrap overflow-hidden text-ellipsis max-w-[180px]">
+                      $ ./about_me.sh --role
+                    </span>
+                  </div>
+                </div>
+
+                <div className="relative w-8 h-8 flex items-center justify-center overflow-hidden">
+                  <div className="text-[#2ed573] font-bold text-xl">&gt;</div>
+                </div>
+              </div>
+
+              {/* Decorative elements */}
+              <div className="absolute top-0 left-0 w-2 h-8 bg-[#2ed573]/30 rounded-l-lg"></div>
+              <div className="absolute bottom-0 right-0 w-8 h-2 bg-[#2ed573]/30 rounded-b-lg"></div>
             </div>
           </div>
 
