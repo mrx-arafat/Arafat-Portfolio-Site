@@ -4,7 +4,7 @@ export default function StructuredData() {
     "@type": "Person",
     name: "Easin Arafat",
     url: "http://profile.arafatbytes.live",
-    image: "http://profile.arafatbytes.live/images/profile.jpg",
+    image: "http://profile.arafatbytes.live/images/profile.webp",
     jobTitle: "Application Security Engineer",
     worksFor: [
       {

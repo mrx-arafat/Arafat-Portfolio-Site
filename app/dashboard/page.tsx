@@ -450,7 +450,7 @@ export default function Dashboard() {
                   <div className="absolute inset-0 bg-gradient-to-br from-[#2ed573]/5 to-transparent mix-blend-overlay pointer-events-none"></div>
                   <div className="w-full h-full bg-transparent flex items-center justify-center border border-[#2ed573] overflow-hidden">
                     <Image
-                      src="/images/profile.jpg"
+                      src="/images/profile.webp"
                       alt="Profile Image"
                       width={500}
                       height={500}

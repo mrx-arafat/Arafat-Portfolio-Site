@@ -5,7 +5,7 @@ import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import StructuredData from "./components/StructuredData";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
   metadataBase: new URL("http://profile.arafatbytes.live"),
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     siteName: "Easin Arafat Portfolio",
     images: [
       {
-        url: "/images/profile.jpg",
+        url: "/images/profile.webp",
         width: 800,
         height: 600,
         alt: "Easin Arafat - Application Security Engineer & Startise Employee",
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
       "Easin Arafat | Application Security Engineer @ Startise | Cybersecurity Expert",
     description:
       "Easin Arafat is an Application Security Engineer at Startise. Graduated from MIST and Former President of MIST Cyber Security Club. Leading cybersecurity expert in Bangladesh specializing in cybersecurity, web development, and business solutions.",
-    images: ["/images/profile.jpg"],
+    images: ["/images/profile.webp"],
   },
   robots: {
     index: true,
@@ -83,5 +83,3 @@ export default function RootLayout({
     </html>
   );
 }
-
-import "./globals.css";

@@ -49,13 +49,12 @@ export function Profile() {
     <div className="flex flex-col items-center space-y-4 p-6 bg-card rounded-lg shadow-lg">
       <div className="relative w-32 h-32 rounded-full overflow-hidden border-4 border-primary">
         <Image
-          src="/images/profile.jpg"
+          src="/images/profile.webp"
           alt="Arafat's Profile"
           width={128}
           height={128}
           className="object-cover"
           priority
-          unoptimized={true}
         />
       </div>
       <h2 className="text-2xl font-bold text-primary">Easin Arafat</h2>
