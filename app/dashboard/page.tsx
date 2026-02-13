@@ -11,8 +11,9 @@ import {
   Facebook,
   Instagram,
   BookOpen,
+  PenLine,
   Shield,
-  Coffee,
+  Zap,
   Terminal,
   Info,
   Code,
@@ -20,6 +21,7 @@ import {
   Lock,
   Unlock,
   User,
+  ArrowRight,
 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
@@ -863,12 +865,12 @@ export default function Dashboard() {
 
           {/* Main Content Sections */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Portfolio Section - Creative Hacker Style */}
+            {/* Projects Card */}
             <div
-              className={`group relative bg-[#1a1b26] rounded-2xl overflow-hidden flex flex-col border transition-all duration-300 cursor-pointer ${
+              className={`group relative bg-[#1e272e] rounded-2xl overflow-hidden flex flex-col border transition-all duration-300 cursor-pointer hover-glow ${
                 cardEffectActive
-                  ? "border-[#2ed573]/60 bg-[#1a1b26] shadow-[0_0_20px_rgba(46,213,115,0.3)] animate-subtle-pulse"
-                  : "border-[#2ed573]/20 shadow-lg hover:shadow-[0_0_15px_rgba(46,213,115,0.3)]"
+                  ? "border-[#2ed573]/60 shadow-[0_0_20px_rgba(46,213,115,0.3)] animate-subtle-pulse"
+                  : "border-[#2ed573]/20 shadow-lg"
               } ${
                 matrixModeActive
                   ? "elite-card-override border-[#00BFFF] shadow-[0_0_25px_rgba(0,191,255,0.6)] brightness-80 contrast-120"
@@ -876,14 +878,11 @@ export default function Dashboard() {
               }`}
               onClick={() => navigateTo("/projects")}
             >
-              {/* Special effect overlay when ARAFAT is clicked */}
+              {/* Card effect overlay */}
               {cardEffectActive && (
                 <div className="absolute inset-0 z-10 pointer-events-none">
-                  {/* Subtle dark overlay */}
                   <div className="absolute inset-0 bg-[#0f0f0f]/20"></div>
-                  {/* Single subtle scan line */}
                   <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#2ed573]/50 to-transparent animate-scan-subtle"></div>
-                  {/* Corner accents */}
                   <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-[#2ed573]/40 animate-pulse"></div>
                   <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-[#2ed573]/40 animate-pulse"></div>
                   <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-[#2ed573]/40 animate-pulse"></div>
@@ -891,93 +890,86 @@ export default function Dashboard() {
                 </div>
               )}
 
-              {/* Animated background elements */}
-              <div className={`absolute inset-0 overflow-hidden transition-opacity duration-500 ${
-                cardEffectActive ? "opacity-40" : "opacity-10 group-hover:opacity-20"
-              }`}>
-                <div className="absolute top-0 left-0 w-full h-full">
-                  {[...Array(5)].map((_, i) => (
-                    <div
-                      key={i}
-                      className="absolute text-[#2ed573] font-mono text-xs opacity-30"
-                      style={{
-                        top: `${FLOATING_CODE_POSITIONS[i * 2] * 100}%`,
-                        left: `${FLOATING_CODE_POSITIONS[i * 2 + 1] * 100}%`,
-                        transform: "rotate(30deg)",
-                        animation: `float ${
-                          2 + FLOATING_CODE_POSITIONS[i] * 3
-                        }s infinite ease-in-out`,
-                      }}
-                    >
-                      {"{code}"}
-                    </div>
-                  ))}
-                </div>
-              </div>
+              {/* Top accent glow line */}
+              <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#2ed573]/30 to-transparent"></div>
 
-              {/* Header with 3D effect */}
-              <div className="p-4 flex items-center justify-between border-b border-[#2ed573]/10 relative z-10">
+              {/* Header */}
+              <div className="p-4 flex items-center justify-between border-b border-[#2ed573]/10">
                 <div className="flex items-center gap-3">
-                  <div className="w-6 h-6 bg-[#ffdd59] rounded-md flex items-center justify-center shadow-[0_0_8px_rgba(255,221,89,0.3)] group-hover:shadow-[0_0_12px_rgba(255,221,89,0.5)] transition-all duration-300">
-                    <span className="text-[#0f0f0f] text-xs">📁</span>
+                  <div className="w-7 h-7 bg-[#2ed573]/10 rounded-lg flex items-center justify-center border border-[#2ed573]/20 group-hover:bg-[#2ed573]/20 group-hover:border-[#2ed573]/40 transition-all duration-300">
+                    <Code size={14} className="text-[#2ed573]" />
                   </div>
-                  <span className="text-[#2ed573] font-medium tracking-wider">
-                    PROJECT SHOWCASE
+                  <span className="text-[#2ed573] font-medium">
+                    MY PROJECTS
                   </span>
                 </div>
-                <div className="w-2 h-2 rounded-full bg-[#2ed573]/50 group-hover:bg-[#2ed573] transition-colors duration-300"></div>
+                <span className="text-[#2ed573]/50 text-xs">20+ Projects</span>
               </div>
 
-              <div className="flex-1 p-6 flex flex-col items-center justify-center text-center relative z-10">
-                {/* Icon with animated glow effect */}
-                <div className="mb-6 relative">
-                  <div className="absolute inset-0 bg-[#2ed573]/5 rounded-full blur-xl transform scale-150 group-hover:scale-200 transition-transform duration-500"></div>
-                  <div className="relative bg-[#0f0f0f] p-4 rounded-full border border-[#2ed573]/30 group-hover:border-[#2ed573]/60 transition-all duration-300">
-                    <Github
-                      size={40}
-                      className="text-[#2ed573] group-hover:text-[#2ed573] transition-colors duration-300"
-                    />
-                  </div>
-                </div>
-
-                {/* Title with animated underline */}
-                <h3 className="text-xl font-bold text-[#2ed573] mb-3 relative inline-block">
-                  Explore My Projects
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#2ed573] group-hover:w-full transition-all duration-500"></span>
-                </h3>
-
-                {/* Description with terminal-style formatting */}
-                <div className="bg-[#0f0f0f]/50 p-3 rounded-md mb-6 border-l-2 border-[#2ed573] font-mono text-sm">
-                  <p className="text-[#2ed573]/90">
-                    <span className="text-[#2ed573]/50">$</span> Security Tools,
-                    Automation Scripts, and Web Applications
+              {/* Body */}
+              <div className="flex-1 p-4 flex flex-col relative z-10">
+                <div className="mb-4">
+                  <h3 className="text-lg font-bold text-[#2ed573] mb-1.5">
+                    What I&apos;ve Built
+                  </h3>
+                  <p className="text-[#8b949e] text-sm leading-relaxed">
+                    Real-world tools and applications — from security research to web apps. Take a look inside.
                   </p>
                 </div>
 
-                {/* Button with 3D effect and shake animation */}
-                <Button
+                {/* Category previews */}
+                <div className="space-y-1 mb-4">
+                  <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[#2a3942] transition-all duration-200 group/row" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.1s both' }}>
+                    <div className="w-1 self-stretch rounded-full bg-[#ff6b6b] flex-shrink-0 group-hover/row:shadow-[0_0_6px_rgba(255,107,107,0.4)] transition-shadow duration-200"></div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-[#2ed573] text-sm font-medium">Security Tools</div>
+                      <div className="text-[#8b949e] text-xs">Security scripts, scanners, and defense utilities</div>
+                    </div>
+                    <ArrowRight size={14} className="text-[#2ed573]/0 group-hover/row:text-[#2ed573]/40 transition-all duration-200 flex-shrink-0" />
+                  </div>
+                  <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[#2a3942] transition-all duration-200 group/row" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.2s both' }}>
+                    <div className="w-1 self-stretch rounded-full bg-[#2ed573] flex-shrink-0 group-hover/row:shadow-[0_0_6px_rgba(46,213,115,0.4)] transition-shadow duration-200"></div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-[#2ed573] text-sm font-medium">DevSecOps & Automation</div>
+                      <div className="text-[#8b949e] text-xs">Bots, CI/CD pipelines, and deployment tools</div>
+                    </div>
+                    <ArrowRight size={14} className="text-[#2ed573]/0 group-hover/row:text-[#2ed573]/40 transition-all duration-200 flex-shrink-0" />
+                  </div>
+                  <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[#2a3942] transition-all duration-200 group/row" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.3s both' }}>
+                    <div className="w-1 self-stretch rounded-full bg-[#58a6ff] flex-shrink-0 group-hover/row:shadow-[0_0_6px_rgba(88,166,255,0.4)] transition-shadow duration-200"></div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-[#2ed573] text-sm font-medium">Web Apps & Products</div>
+                      <div className="text-[#8b949e] text-xs">Real-world apps solving real problems</div>
+                    </div>
+                    <ArrowRight size={14} className="text-[#2ed573]/0 group-hover/row:text-[#2ed573]/40 transition-all duration-200 flex-shrink-0" />
+                  </div>
+                </div>
+
+                <div className="flex-1"></div>
+
+                {/* CTA button */}
+                <button
                   onClick={(e) => {
                     e.stopPropagation();
                     playClickSound();
                     navigateTo("/projects");
                   }}
-                  className="bg-[#0f0f0f] hover:bg-[#2ed573] hover:text-[#0f0f0f] text-[#2ed573] border border-[#2ed573]/30 relative overflow-hidden group-hover:shake-effect transition-all duration-300 transform hover:translate-y-[-2px]"
+                  className="w-full py-2.5 rounded-xl bg-[#0f0f0f] hover:bg-[#2ed573] hover:text-[#0f0f0f] text-[#2ed573] border border-[#2ed573]/30 hover:border-[#2ed573] font-medium text-sm flex items-center justify-center gap-2 transition-all duration-300 hover:shadow-[0_0_12px_rgba(46,213,115,0.25)] relative overflow-hidden group/btn"
                 >
-                  <span className="relative z-10 flex items-center gap-2">
-                    <Code size={16} />
-                    View Projects
-                  </span>
-                  <span className="absolute inset-0 bg-[#2ed573]/10 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
-                </Button>
+                  <span className="absolute inset-0 bg-gradient-to-r from-[#2ed573]/0 via-[#2ed573]/10 to-[#2ed573]/0 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700"></span>
+                  <Terminal size={16} className="relative z-10" />
+                  <span className="relative z-10">Explore Projects</span>
+                  <ArrowRight size={16} className="relative z-10 transform group-hover:translate-x-1 transition-transform duration-200" />
+                </button>
               </div>
             </div>
 
-            {/* Blog Section - Creative Hacker Style */}
+            {/* Blog Card */}
             <div
-              className={`group relative bg-[#1a1b26] rounded-2xl overflow-hidden flex flex-col border transition-all duration-300 cursor-pointer ${
+              className={`group relative bg-[#1e272e] rounded-2xl overflow-hidden flex flex-col border transition-all duration-300 cursor-pointer hover-glow ${
                 cardEffectActive
-                  ? "border-[#2ed573]/60 bg-[#1a1b26] shadow-[0_0_20px_rgba(46,213,115,0.3)] animate-subtle-pulse"
-                  : "border-[#2ed573]/20 shadow-lg hover:shadow-[0_0_15px_rgba(46,213,115,0.3)]"
+                  ? "border-[#2ed573]/60 shadow-[0_0_20px_rgba(46,213,115,0.3)] animate-subtle-pulse"
+                  : "border-[#2ed573]/20 shadow-lg"
               } ${
                 matrixModeActive
                   ? "elite-card-override border-[#00BFFF] shadow-[0_0_25px_rgba(0,191,255,0.6)] brightness-80 contrast-120"
@@ -985,76 +977,87 @@ export default function Dashboard() {
               }`}
               onClick={() => navigateTo("/blogs")}
             >
-              {/* Special effect overlay when ARAFAT is clicked */}
+              {/* Card effect overlay */}
               {cardEffectActive && (
                 <div className="absolute inset-0 z-10 pointer-events-none">
-                  {/* Subtle dark overlay */}
                   <div className="absolute inset-0 bg-[#0f0f0f]/20"></div>
-                  {/* Single subtle scan line - opposite direction */}
                   <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#2ed573]/50 to-transparent animate-scan-subtle-reverse"></div>
-                  {/* Corner accents - different corners */}
                   <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-[#2ed573]/40 animate-pulse" style={{animationDelay: '0.5s'}}></div>
                   <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-[#2ed573]/40 animate-pulse" style={{animationDelay: '0.5s'}}></div>
                 </div>
               )}
 
+              {/* Top accent glow line */}
+              <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#2ed573]/30 to-transparent"></div>
 
-
-              {/* Header with 3D effect */}
-              <div className="p-4 flex items-center justify-between border-b border-[#2ed573]/10 relative z-10">
+              {/* Header */}
+              <div className="p-4 flex items-center justify-between border-b border-[#2ed573]/10">
                 <div className="flex items-center gap-3">
-                  <div className="w-6 h-6 bg-[#ffdd59] rounded-md flex items-center justify-center shadow-[0_0_8px_rgba(255,221,89,0.3)] group-hover:shadow-[0_0_12px_rgba(255,221,89,0.5)] transition-all duration-300">
-                    <span className="text-[#0f0f0f] text-xs">📝</span>
+                  <div className="w-7 h-7 bg-[#2ed573]/10 rounded-lg flex items-center justify-center border border-[#2ed573]/20 group-hover:bg-[#2ed573]/20 group-hover:border-[#2ed573]/40 transition-all duration-300">
+                    <PenLine size={14} className="text-[#2ed573]" />
                   </div>
-                  <span className="text-[#2ed573] font-medium tracking-wider">
-                    BLOG
+                  <span className="text-[#2ed573] font-medium">
+                    MY BLOG
                   </span>
                 </div>
-                <div className="w-2 h-2 rounded-full bg-[#2ed573]/50 group-hover:bg-[#2ed573] transition-colors duration-300"></div>
+                <span className="text-[#2ed573]/50 text-xs">New Posts</span>
               </div>
 
-              <div className="flex-1 p-6 flex flex-col items-center justify-center text-center relative z-10">
-                {/* Icon with animated glow effect */}
-                <div className="mb-6 relative">
-                  <div className="absolute inset-0 bg-[#2ed573]/5 rounded-full blur-xl transform scale-150 group-hover:scale-200 transition-transform duration-500"></div>
-                  <div className="relative bg-[#0f0f0f] p-4 rounded-full border border-[#2ed573]/30 group-hover:border-[#2ed573]/60 transition-all duration-300">
-                    <BookOpen
-                      size={40}
-                      className="text-[#2ed573] group-hover:text-[#2ed573] transition-colors duration-300"
-                    />
-                  </div>
-                </div>
-
-                {/* Title with animated underline */}
-                <h3 className="text-xl font-bold text-[#2ed573] mb-3 relative inline-block">
-                  Explore My Writings
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#2ed573] group-hover:w-full transition-all duration-500"></span>
-                </h3>
-
-                {/* Description with terminal-style formatting */}
-                <div className="bg-[#0f0f0f]/50 p-3 rounded-md mb-6 border-l-2 border-[#2ed573] font-mono text-sm">
-                  <p className="text-[#2ed573]/90">
-                    <span className="text-[#2ed573]/50">$</span> Security
-                    Insights, Entrepreneurship, Human Psychology, Philosophy,
-                    and more.
+              {/* Body */}
+              <div className="flex-1 p-4 flex flex-col relative z-10">
+                <div className="mb-4">
+                  <h3 className="text-lg font-bold text-[#2ed573] mb-1.5">
+                    What I Write About
+                  </h3>
+                  <p className="text-[#8b949e] text-sm leading-relaxed">
+                    Ideas and lessons on security, building businesses, psychology, and how the world works.
                   </p>
                 </div>
 
-                {/* Button with 3D effect and shake animation */}
-                <Button
+                {/* Topic previews */}
+                <div className="space-y-1 mb-4">
+                  <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[#2a3942] transition-all duration-200 group/row" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.1s both' }}>
+                    <div className="w-1 self-stretch rounded-full bg-[#2ed573] flex-shrink-0 group-hover/row:shadow-[0_0_6px_rgba(46,213,115,0.4)] transition-shadow duration-200"></div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-[#2ed573] text-sm font-medium">Security & AppSec</div>
+                      <div className="text-[#8b949e] text-xs">How software gets hacked — and how to stop it</div>
+                    </div>
+                    <ArrowRight size={14} className="text-[#2ed573]/0 group-hover/row:text-[#2ed573]/40 transition-all duration-200 flex-shrink-0" />
+                  </div>
+                  <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[#2a3942] transition-all duration-200 group/row" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.2s both' }}>
+                    <div className="w-1 self-stretch rounded-full bg-[#febc2e] flex-shrink-0 group-hover/row:shadow-[0_0_6px_rgba(254,188,46,0.4)] transition-shadow duration-200"></div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-[#2ed573] text-sm font-medium">Business & Startups</div>
+                      <div className="text-[#8b949e] text-xs">Lessons from building things from scratch</div>
+                    </div>
+                    <ArrowRight size={14} className="text-[#2ed573]/0 group-hover/row:text-[#2ed573]/40 transition-all duration-200 flex-shrink-0" />
+                  </div>
+                  <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[#2a3942] transition-all duration-200 group/row" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.3s both' }}>
+                    <div className="w-1 self-stretch rounded-full bg-[#58a6ff] flex-shrink-0 group-hover/row:shadow-[0_0_6px_rgba(88,166,255,0.4)] transition-shadow duration-200"></div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-[#2ed573] text-sm font-medium">Philosophy & Psychology</div>
+                      <div className="text-[#8b949e] text-xs">Deep thinking about people and ideas</div>
+                    </div>
+                    <ArrowRight size={14} className="text-[#2ed573]/0 group-hover/row:text-[#2ed573]/40 transition-all duration-200 flex-shrink-0" />
+                  </div>
+                </div>
+
+                <div className="flex-1"></div>
+
+                {/* CTA button */}
+                <button
                   onClick={(e) => {
                     e.stopPropagation();
                     playClickSound();
                     navigateTo("/blogs");
                   }}
-                  className="bg-[#0f0f0f] hover:bg-[#2ed573] hover:text-[#0f0f0f] text-[#2ed573] border border-[#2ed573]/30 relative overflow-hidden group-hover:shake-effect transition-all duration-300 transform hover:translate-y-[-2px]"
+                  className="w-full py-2.5 rounded-xl bg-[#0f0f0f] hover:bg-[#2ed573] hover:text-[#0f0f0f] text-[#2ed573] border border-[#2ed573]/30 hover:border-[#2ed573] font-medium text-sm flex items-center justify-center gap-2 transition-all duration-300 hover:shadow-[0_0_12px_rgba(46,213,115,0.25)] relative overflow-hidden group/btn"
                 >
-                  <span className="relative z-10 flex items-center gap-2">
-                    <BookOpen size={16} />
-                    Read Blogs
-                  </span>
-                  <span className="absolute inset-0 bg-[#2ed573]/10 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
-                </Button>
+                  <span className="absolute inset-0 bg-gradient-to-r from-[#2ed573]/0 via-[#2ed573]/10 to-[#2ed573]/0 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700"></span>
+                  <PenLine size={16} className="relative z-10" />
+                  <span className="relative z-10">Read My Blog</span>
+                  <ArrowRight size={16} className="relative z-10 transform group-hover:translate-x-1 transition-transform duration-200" />
+                </button>
               </div>
             </div>
           </div>
@@ -1063,8 +1066,8 @@ export default function Dashboard() {
           <div className="bg-[#1e272e] rounded-2xl overflow-hidden border border-[#2ed573]/20">
             <div className="p-4 flex items-center justify-between border-b border-[#2ed573]/10">
               <div className="flex items-center gap-3">
-                <div className="w-6 h-6 bg-[#ffdd59] rounded-md flex items-center justify-center">
-                  <Coffee size={14} className="text-[#0f0f0f]" />
+                <div className="w-6 h-6 bg-[#2ed573]/20 rounded-md flex items-center justify-center border border-[#2ed573]/30">
+                  <Zap size={14} className="text-[#2ed573]" />
                 </div>
                 <span className="text-[#2ed573] font-medium">
                   EXTRACURRICULAR
