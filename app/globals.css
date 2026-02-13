@@ -1806,20 +1806,34 @@ body {
   animation: matrix-fall linear infinite;
 }
 
-/* Bounce animation for pointer indicators */
-@keyframes bounce {
-  0%, 100% {
-    transform: translateX(0);
-    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+/* Rotating border glow for CTA button */
+@keyframes border-rotate {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
   }
-  50% {
-    transform: translateX(-10px);
-    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
   }
 }
 
-.animate-bounce {
-  animation: bounce 1s infinite;
+.animate-border-rotate {
+  animation: border-rotate 3s linear infinite;
+}
+
+/* Breathing pulse for CTA glow */
+@keyframes cta-breathe {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.03);
+  }
+}
+
+.animate-cta-breathe {
+  animation: cta-breathe 2.5s ease-in-out infinite;
 }
 
 /* Shimmer effect for button hover */

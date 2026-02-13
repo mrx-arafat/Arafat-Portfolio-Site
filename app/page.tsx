@@ -100,47 +100,47 @@ export default function Home() {
         TURN ON YOUR <Volume2 size={16} />
       </div>
 
-      {/* Enter dashboard button with enhanced visual cues */}
-      <div className="relative mt-8 mb-4">
-        {/* Pulsing glow background */}
-        <div className="absolute inset-0 bg-[#2ed573]/10 blur-xl rounded-lg animate-pulse" />
+      {/* Enter dashboard button with animated border */}
+      <div className="relative mt-8 mb-4 group/cta">
+        {/* Breathing glow background */}
+        <div className="absolute -inset-3 bg-[#2ed573]/8 blur-2xl rounded-2xl animate-cta-breathe" />
 
-        {/* Animated pointer arrows */}
-        <div className="absolute -left-12 top-1/2 -translate-y-1/2 hidden md:flex items-center gap-1 animate-bounce">
-          <span className="text-[#2ed573] text-2xl font-mono">→</span>
-          <span className="text-[#2ed573] text-2xl font-mono">→</span>
+        {/* Animated orbiting border container */}
+        <div className="relative rounded-lg p-[2px] overflow-hidden">
+          {/* Rotating conic gradient - oversized so rotation covers all edges */}
+          <div className="absolute top-1/2 left-1/2 w-[200%] h-[400%] -translate-x-1/2 -translate-y-1/2 animate-border-rotate" style={{
+            background: 'conic-gradient(from 0deg, transparent 0%, transparent 30%, #2ed573 50%, transparent 70%, transparent 100%)',
+          }} />
+          {/* Static subtle border underneath */}
+          <div className="absolute inset-0 rounded-lg border border-[#2ed573]/15" />
+
+          <Button
+            onClick={goToDashboard}
+            className="relative bg-[#151620] hover:bg-[#2ed573]/10 text-[#2ed573] flex items-center gap-3 px-10 py-5 font-mono tracking-wide transition-all duration-300 shadow-[0_0_20px_rgba(46,213,115,0.15)] hover:shadow-[0_0_35px_rgba(46,213,115,0.4)] hover:scale-105 group overflow-hidden rounded-[6px] border-0"
+          >
+            {/* Shimmer sweep on hover */}
+            <div className="absolute inset-0 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#2ed573]/20 to-transparent animate-shimmer" />
+            </div>
+
+            <span className="relative z-10 text-[#2ed573] text-lg">{'>_'}</span>
+            <span className="relative z-10 text-base">Initialize Dashboard</span>
+
+            {/* Blinking cursor */}
+            <span className="relative z-10 animate-blink text-lg">|</span>
+          </Button>
         </div>
-        <div className="absolute -right-12 top-1/2 -translate-y-1/2 hidden md:flex items-center gap-1 animate-bounce">
-          <span className="text-[#2ed573] text-2xl font-mono">←</span>
-          <span className="text-[#2ed573] text-2xl font-mono">←</span>
-        </div>
-
-        <Button
-          onClick={goToDashboard}
-          className="relative bg-[#151620] border-2 border-[#2ed573]/50 hover:border-[#2ed573] hover:bg-[#2ed573]/10 text-[#2ed573] flex items-center gap-3 px-8 py-4 font-mono tracking-wide transition-all duration-300 shadow-[0_0_15px_rgba(46,213,115,0.2)] hover:shadow-[0_0_25px_rgba(46,213,115,0.4)] hover:scale-105 group overflow-hidden"
-        >
-          {/* Animated border glow effect */}
-          <div className="absolute inset-0 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#2ed573]/20 to-transparent animate-shimmer" />
-          </div>
-
-          <span className="relative z-10 text-[#2ed573] text-lg group-hover:animate-pulse">{'>_'}</span>
-          <span className="relative z-10 text-base">Initialize Dashboard</span>
-
-          {/* Blinking cursor indicator */}
-          <span className="relative z-10 animate-blink text-lg">|</span>
-        </Button>
       </div>
 
-      {/* Enhanced instruction text - classy terminal style */}
+      {/* Instruction text */}
       <div className="text-center space-y-3 mt-2">
-        <div className="text-[#2ed573] text-base font-mono tracking-wide flex items-center justify-center gap-3">
-          <span className="text-[#2ed573]/60">[</span>
-          <span className="font-bold">CLICK TO ENTER</span>
-          <span className="text-[#2ed573]/60">]</span>
+        <div className="text-[#2ed573]/50 text-sm font-mono tracking-wide">
+          <span className="text-[#2ed573]/30">[</span>
+          <span> CLICK TO ENTER </span>
+          <span className="text-[#2ed573]/30">]</span>
         </div>
-        <div className="text-[#2ed573]/70 text-sm font-mono animate-slow-blink">
-          <span className="text-[#2ed573]/50">&gt;</span> Welcome to My Portfolio
+        <div className="text-[#2ed573]/40 text-sm font-mono">
+          <span className="text-[#2ed573]/30">&gt;</span> Welcome to My Portfolio
         </div>
       </div>
 
