@@ -903,7 +903,7 @@ export default function Dashboard() {
                     MY PROJECTS
                   </span>
                 </div>
-                <span className="text-[#2ed573]/50 text-xs">20+ Projects</span>
+                <span className="text-[#2ed573]/50 text-xs">25+ Projects</span>
               </div>
 
               {/* Body */}
@@ -997,7 +997,7 @@ export default function Dashboard() {
                     <PenLine size={14} className="text-[#2ed573]" />
                   </div>
                   <span className="text-[#2ed573] font-medium">
-                    MY BLOG
+                    MY BLOGS
                   </span>
                 </div>
                 <span className="text-[#2ed573]/50 text-xs">New Posts</span>
@@ -1055,7 +1055,7 @@ export default function Dashboard() {
                 >
                   <span className="absolute inset-0 bg-gradient-to-r from-[#2ed573]/0 via-[#2ed573]/10 to-[#2ed573]/0 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700"></span>
                   <PenLine size={16} className="relative z-10" />
-                  <span className="relative z-10">Read My Blog</span>
+                  <span className="relative z-10">Read My Blogs</span>
                   <ArrowRight size={16} className="relative z-10 transform group-hover:translate-x-1 transition-transform duration-200" />
                 </button>
               </div>
