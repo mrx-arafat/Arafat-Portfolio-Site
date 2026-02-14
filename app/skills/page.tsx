@@ -22,21 +22,16 @@ export default function Skills() {
   const [isMuted, setIsMuted] = useState(true);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [skills, setSkills] = useState<Skill[]>([]);
+  const [isEntering, setIsEntering] = useState(true);
 
   useEffect(() => {
     // Load skills from the JSON file
     setSkills(skillsData.skills);
 
-    // Add entrance animation class to body
-    document.body.classList.add("animate-slideInRight");
-
-    // Remove animation class after animation completes
-    const timer = setTimeout(() => {
-      document.body.classList.remove("animate-slideInRight");
-    }, 500);
+    const enterTimer = setTimeout(() => setIsEntering(false), 500);
 
     return () => {
-      clearTimeout(timer);
+      clearTimeout(enterTimer);
     };
   }, []);
 
@@ -82,7 +77,7 @@ export default function Skills() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col bg-[#121212] p-4 md:p-8 relative grid-dots">
+    <main className={`flex min-h-screen flex-col bg-[#121212] p-4 md:p-8 relative grid-dots ${isEntering ? "animate-slideInRight" : ""}`}>
       {/* Sound toggle button */}
       <button
         onClick={toggleMute}

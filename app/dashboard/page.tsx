@@ -67,10 +67,14 @@ export default function Dashboard() {
   const [cardEffectActive, setCardEffectActive] = useState(false);
   const [matrixModeActive, setMatrixModeActive] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isEntering, setIsEntering] = useState(true);
 
   // Mark as mounted to enable client-only rendering
   useEffect(() => {
     setIsMounted(true);
+    // Remove entrance animation after it completes
+    const enterTimer = setTimeout(() => setIsEntering(false), 500);
+    return () => clearTimeout(enterTimer);
   }, []);
 
   useEffect(() => {
@@ -131,16 +135,7 @@ export default function Dashboard() {
       console.error("Error initializing audio:", error);
     }
 
-    // Add entrance animation class to body
-    document.body.classList.add("animate-slideInRight");
-
-    // Remove animation class after animation completes
-    const timer = setTimeout(() => {
-      document.body.classList.remove("animate-slideInRight");
-    }, 500);
-
     return () => {
-      clearTimeout(timer);
       if (clickSoundRef.current) clickSoundRef.current.pause();
 
       // Clear countdown interval on unmount
@@ -170,7 +165,7 @@ export default function Dashboard() {
   return (
     <main className={`flex min-h-screen flex-col bg-[#121212] p-4 md:p-8 relative grid-dots transition-all duration-1000 ${
       matrixModeActive ? "matrix-mode-active" : ""
-    }`}>
+    } ${isEntering ? "animate-slideInRight" : ""}`}>
       {/* ELITE SYSTEM INFILTRATION - Only render on client */}
       {isMounted && matrixModeActive && (
         <div className="fixed inset-0 z-50 pointer-events-none elite-infiltration-overlay">

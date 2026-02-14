@@ -29,6 +29,7 @@ export default function Blogs() {
   const [loading, setLoading] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
   const [currentPost, setCurrentPost] = useState(0);
+  const [isEntering, setIsEntering] = useState(true);
   const clickSoundRef = useRef<HTMLAudioElement | null>(null);
 
   // Blog posts data is now imported from JSON file
@@ -47,13 +48,7 @@ export default function Blogs() {
       console.error("Error initializing audio:", error);
     }
 
-    // Add entrance animation class to body
-    document.body.classList.add("animate-slideInRight");
-
-    // Remove animation class after animation completes
-    const timer = setTimeout(() => {
-      document.body.classList.remove("animate-slideInRight");
-    }, 500);
+    const enterTimer = setTimeout(() => setIsEntering(false), 500);
 
     // Load blog posts from JSON data
     setTimeout(() => {
@@ -62,7 +57,7 @@ export default function Blogs() {
     }, 1000);
 
     return () => {
-      clearTimeout(timer);
+      clearTimeout(enterTimer);
       if (clickSoundRef.current) clickSoundRef.current.pause();
     };
   }, []);
@@ -122,7 +117,7 @@ export default function Blogs() {
   }, [currentPost, posts]);
 
   return (
-    <main className="min-h-screen bg-[#121212] text-[#2ed573] p-4 md:p-8 grid-dots overflow-hidden">
+    <main className={`min-h-screen bg-[#121212] text-[#2ed573] p-4 md:p-8 grid-dots overflow-hidden ${isEntering ? "animate-slideInRight" : ""}`}>
       {/* Terminal-style header */}
       <div className="mb-8 bg-[#0f0f0f] border border-[#2ed573]/30 rounded-lg p-3 shadow-[0_0_15px_rgba(46,213,115,0.2)]">
         <div className="flex items-center gap-2 mb-2">

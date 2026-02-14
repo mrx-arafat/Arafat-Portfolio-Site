@@ -33,6 +33,7 @@ export default function Projects() {
   const [isMuted, setIsMuted] = useState(true);
   const [imageLoading, setImageLoading] = useState<{ [key: number]: boolean }>({});
   const [imageErrors, setImageErrors] = useState<{ [key: number]: boolean }>({});
+  const [isEntering, setIsEntering] = useState(true);
   const clickSoundRef = useRef<HTMLAudioElement | null>(null);
 
 
@@ -53,13 +54,7 @@ export default function Projects() {
       console.error("Error initializing audio:", error);
     }
 
-    // Add entrance animation class to body
-    document.body.classList.add("animate-slideInRight");
-
-    // Remove animation class after animation completes
-    const timer = setTimeout(() => {
-      document.body.classList.remove("animate-slideInRight");
-    }, 500);
+    const enterTimer = setTimeout(() => setIsEntering(false), 500);
 
     // Use projects from JSON file
     setTimeout(() => {
@@ -75,7 +70,7 @@ export default function Projects() {
     }, 1000);
 
     return () => {
-      clearTimeout(timer);
+      clearTimeout(enterTimer);
       if (clickSoundRef.current) clickSoundRef.current.pause();
     };
   }, []);
@@ -161,7 +156,7 @@ export default function Projects() {
   }, [currentProject, projects]);
 
   return (
-    <main className="min-h-screen bg-[#121212] text-[#2ed573] p-4 md:p-8 grid-dots overflow-hidden">
+    <main className={`min-h-screen bg-[#121212] text-[#2ed573] p-4 md:p-8 grid-dots overflow-hidden ${isEntering ? "animate-slideInRight" : ""}`}>
 
       {/* Terminal-style header */}
       <div className="mb-8 bg-[#0f0f0f] border border-[#2ed573]/30 rounded-lg p-3 shadow-[0_0_15px_rgba(46,213,115,0.2)]">
