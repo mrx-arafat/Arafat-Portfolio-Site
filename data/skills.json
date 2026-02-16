@@ -288,6 +288,20 @@
       "icon": "Bot",
       "category": "automation",
       "description": "Designing AI-driven automations: LLM agents, workflow orchestration, and tool integration to streamline tasks"
+    },
+    {
+      "id": "mail-delivery-smtp",
+      "name": "Mail Delivery & SMTP",
+      "icon": "Mail",
+      "category": "devops",
+      "description": "Configuring and managing mail servers, SMTP relay, email deliverability, SPF, DKIM, DMARC, and transactional email infrastructure"
+    },
+    {
+      "id": "ai-bot-assistant",
+      "name": "AI Bot/Assistant",
+      "icon": "MessageSquareBot",
+      "category": "ai",
+      "description": "Building intelligent AI bots and virtual assistants using LLMs, conversational AI frameworks, and custom integrations"
     }
   ]
 }
