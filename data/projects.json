@@ -186,5 +186,127 @@
     "stargazers_count": 0,
     "homepage": "",
     "preview_image": "https://github.com/mrx-arafat/SecureShare/raw/main/icons/128.png"
+  },
+  {
+    "id": 13,
+    "name": "MissionDeck",
+    "description": "Mission Control for your AI Agent Army. A cyberpunk-themed Kanban task management dashboard with drag-and-drop, multi-agent authentication, full CRUD persistence to Vercel Postgres (Neon), optimistic updates, and a JARVIS-inspired dark UI with scanlines and glow effects.",
+    "html_url": "https://github.com/mrx-arafat/mission-deck",
+    "topics": [
+      "nextjs",
+      "typescript",
+      "tailwindcss",
+      "postgres",
+      "neon",
+      "kanban",
+      "framer-motion",
+      "authentication",
+      "cyberpunk-ui"
+    ],
+    "language": "TypeScript",
+    "stargazers_count": 0,
+    "homepage": "https://mission-deck.vercel.app/",
+    "preview_image": "/images/mission-deck.webp"
+  },
+  {
+    "id": 14,
+    "name": "README Beautifier",
+    "description": "Transform GitHub README files into professional documentation with AI-powered formatting. Features drag-and-drop upload, GitHub repo import, auto-beautify with grammar and structure fixes, 40+ shields.io badges, real-time quality scoring, live split-view preview, and a full tools suite including table formatter, emoji picker, and license generator.",
+    "html_url": "https://github.com/mrx-arafat/readme-beautifier",
+    "topics": [
+      "nextjs",
+      "typescript",
+      "tailwindcss",
+      "markdown",
+      "readme",
+      "beautifier",
+      "badges",
+      "documentation"
+    ],
+    "language": "TypeScript",
+    "stargazers_count": 0,
+    "homepage": "https://readme-beautifier.vercel.app/",
+    "preview_image": "/images/readme-beautifier.webp"
+  },
+  {
+    "id": 15,
+    "name": "Arafat Git Study",
+    "description": "An interactive learning platform to master Git and GitHub from beginner to advanced. Features 4 structured learning paths with 26+ lessons covering basics, remote operations, collaboration, and advanced techniques like rebase and squash. Built with a terminal-inspired mint-green UI.",
+    "html_url": "https://github.com/mrx-arafat/arafat-git-study",
+    "topics": [
+      "react",
+      "vite",
+      "tailwindcss",
+      "git",
+      "github",
+      "education",
+      "learning-platform",
+      "interactive"
+    ],
+    "language": "JavaScript",
+    "stargazers_count": 0,
+    "homepage": "https://arafat-git-study.vercel.app/",
+    "preview_image": "/images/arafat-git-study.webp"
+  },
+  {
+    "id": 16,
+    "name": "Startise Bookclub",
+    "description": "A full-stack book club application with React frontend and Express.js backend. Features user authentication with JWT, book management, reading progress tracking, and a polished UI built with Radix UI, Tailwind CSS, and Framer Motion. Backend powered by MongoDB with Mongoose.",
+    "html_url": "https://github.com/mrx-arafat/Startise-Bookclub",
+    "topics": [
+      "react",
+      "vite",
+      "tailwindcss",
+      "expressjs",
+      "mongodb",
+      "mongoose",
+      "jwt",
+      "fullstack",
+      "radix-ui"
+    ],
+    "language": "JavaScript",
+    "stargazers_count": 0,
+    "homepage": "",
+    "preview_image": "/images/startise-bookclub.webp"
+  },
+  {
+    "id": 17,
+    "name": "WordPress Plugin DB",
+    "description": "A powerful web app for browsing, searching, and downloading 60,000+ WordPress plugins from the official repository. Features advanced filtering by install count, bulk CLI command generation, one-click WP-CLI install commands, personal notes system, and paginated card-based UI with plugin icons.",
+    "html_url": "https://github.com/mrx-arafat/Wordpress-Plugin-DB",
+    "topics": [
+      "nextjs",
+      "typescript",
+      "tailwindcss",
+      "wordpress",
+      "plugins",
+      "shadcn-ui",
+      "api",
+      "search"
+    ],
+    "language": "TypeScript",
+    "stargazers_count": 0,
+    "homepage": "https://arafat-wp-plugins.vercel.app",
+    "preview_image": "/images/wordpress-plugin-db.webp"
+  },
+  {
+    "id": 18,
+    "name": "GitHub PR Extractor",
+    "description": "A cross-platform browser extension (Chrome & Firefox) that extracts titles with links from any GitHub page — PRs, Issues, Milestones, Repos, Releases, and more. Features inline hover-to-copy as rich text links and a popup for bulk extraction in Markdown, Plain, HTML, or CSV formats.",
+    "html_url": "https://github.com/mrx-arafat/Github-PR-Extractor",
+    "topics": [
+      "browser-extension",
+      "chrome",
+      "firefox",
+      "github",
+      "clipboard",
+      "markdown",
+      "productivity",
+      "javascript"
+    ],
+    "language": "JavaScript",
+    "stargazers_count": 0,
+    "homepage": "",
+    "preview_image": "/images/github-pr-extractor.webp"
   }
 ]
