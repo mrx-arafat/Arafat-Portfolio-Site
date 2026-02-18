@@ -18,7 +18,8 @@ import {
   AlertTriangle,
   CheckCircle,
   ChevronRight,
-  Sparkles,
+  Crosshair,
+  Bot,
 } from "lucide-react";
 import { playClickSound } from "@/utils/sound";
 
@@ -28,7 +29,7 @@ export default function AboutMe() {
   const [showCursor, setShowCursor] = useState(true);
 
   const heroText =
-    "Application Security Engineer focused on system-level security, infrastructure behavior, and real-world risk in cloud platforms.";
+    "Hello! I'm Arafat. I make sure systems don't just work. They survive production.";
 
   useEffect(() => {
     let index = 0;
@@ -54,83 +55,118 @@ export default function AboutMe() {
   const whatIDo = [
     {
       icon: Server,
-      title: "Infrastructure Analysis",
+      title: "Docker Environments",
       description:
-        "Analyze how application features interact with infrastructure components like servers, Docker, Nginx, networking, DNS, and filesystem permissions.",
-    },
-    {
-      icon: Eye,
-      title: "Hidden Risk Detection",
-      description:
-        "Identify security risks that are invisible at the application or framework level but become critical in production.",
-    },
-    {
-      icon: GitBranch,
-      title: "Independent R&D",
-      description:
-        "Perform independent research to understand how complex infrastructure components behave in real environments.",
-    },
-    {
-      icon: Layers,
-      title: "Security Modeling",
-      description:
-        "Translate infrastructure understanding into clear system behavior and security models that developers can implement safely.",
-    },
-  ];
-
-  const focusAreas = [
-    {
-      icon: Lock,
-      title: "Permission & Isolation Boundaries",
-      description: "Ensuring proper separation between tenants and services",
-    },
-    {
-      icon: Shield,
-      title: "Infrastructure Access Control",
-      description: "Managing who and what can access critical infrastructure",
-    },
-    {
-      icon: Cpu,
-      title: "Deployment & Config Safety",
-      description: "Securing the deployment pipeline and configurations",
-    },
-    {
-      icon: AlertTriangle,
-      title: "Multi-Tenant Risk Scenarios",
-      description: "Identifying risks in shared infrastructure environments",
+        "Analyze how application features interact with containerized environments, resource limits, and container orchestration.",
     },
     {
       icon: Network,
-      title: "Failure Mode Analysis",
+      title: "Nginx & Networking",
       description:
-        "Understanding behavior during restarts, scaling, or misconfiguration",
+        "Examine networking layers, reverse proxy configurations, DNS behavior, and traffic routing under real conditions.",
+    },
+    {
+      icon: Lock,
+      title: "Permissions & Filesystem",
+      description:
+        "Investigate filesystem permissions, access controls, and privilege boundaries that applications depend on in production.",
+    },
+    {
+      icon: Layers,
+      title: "Multi-Tenant Isolation",
+      description:
+        "Validate isolation boundaries, firewall rules, and resource separation in shared infrastructure environments.",
+    },
+  ];
+
+  const iLookFor = [
+    {
+      icon: AlertTriangle,
+      title: "Assumptions That Won't Hold",
+      description:
+        "Finding where development assumptions break under real production conditions",
+    },
+    {
+      icon: Shield,
+      title: "Isolation Gaps",
+      description:
+        "Detecting boundaries that aren't as airtight as they appear",
+    },
+    {
+      icon: Lock,
+      title: "Over-Generous Permissions",
+      description:
+        "Identifying access that's broader than necessary across services",
+    },
+    {
+      icon: Eye,
+      title: "Silent Deployment Risk",
+      description:
+        "Spotting deployment flows that introduce risk without visible indicators",
+    },
+    {
+      icon: Target,
+      title: "Escalation Paths",
+      description:
+        "If something can escalate, leak, collide, or fail under pressure — I want to know before users do",
     },
   ];
 
   const myApproach = [
     {
-      question: "Does this feature work?",
+      question: "Does it work?",
       answer:
-        "How does this behave when it's deployed, misused, scaled, restarted, or partially broken?",
+        "What breaks when this scales, misbehaves, or partially fails?",
     },
     {
-      question: "Is the code secure?",
+      question: "Is it optimized for passing tests?",
       answer:
-        "What happens when this code runs on real servers with real permissions and real network conditions?",
+        "Is it optimized for reduced operational risk and predictable behavior under failure?",
     },
     {
-      question: "Did the tests pass?",
+      question: "Is the security strict enough?",
       answer:
-        "What risks exist that tests can't catch — multi-tenant isolation, infrastructure permissions, deployment edge cases?",
+        "Is the security precise enough — strong isolation boundaries, real resilience, not just rigid rules?",
     },
   ];
 
-  const currentFocus = [
-    "Cloud platform security",
-    "Infrastructure-aware application security",
-    'Secure "one-click" product design',
-    "Threat modeling at the system level",
-    "Using AI tools to accelerate security analysis and R&D",
+  const focusPillars = [
+    {
+      icon: GitBranch,
+      title: "DevSecOps & Automation",
+      description:
+        "I work across the full DevSecOps pipeline — from securing infrastructure to automating complex workflows. Not just security automation. All kinds of automation that make processes faster, repeatable, and reliable.",
+      areas: [
+        "CI/CD pipeline security",
+        "Infrastructure automation",
+        "Workflow orchestration",
+        "Secure deployment systems",
+      ],
+    },
+    {
+      icon: Bot,
+      title: "AI, ML & Large Language Models",
+      description:
+        "Actively building with AI, machine learning, and LLMs — not just following the trend. Adapting these tools for real use cases, integrating them into workflows, and exploring how they reshape what's possible in security and automation.",
+      areas: [
+        "LLM-powered tooling",
+        "AI-driven security analysis",
+        "Intelligent automation",
+        "ML-assisted workflows",
+      ],
+    },
+    {
+      icon: Target,
+      title: "Real-World Problem Solving",
+      description:
+        "I don't define myself by a single domain. Security, DevOps, AI — these are tools. The real focus is identifying problems that matter and building solutions that work in production, not just in theory.",
+      areas: [
+        "Production-grade solutions",
+        "Cross-domain thinking",
+        "Systems-level debugging",
+        "Scalable architecture",
+      ],
+    },
   ];
 
   return (
@@ -211,9 +247,13 @@ export default function AboutMe() {
 
               <div className="mt-8 p-4 bg-[#2ed573]/5 rounded-lg border border-[#2ed573]/20">
                 <p className="text-white/70 leading-relaxed">
-                  I help cloud products stay secure by validating how
-                  application features behave in real production environments —
-                  across infrastructure, networking, and security boundaries.
+                  Most production failures don&apos;t happen because someone
+                  wrote bad code. They happen because systems behave differently
+                  under real conditions.
+                </p>
+                <p className="text-[#2ed573] mt-2 font-medium">
+                  That gap — between &quot;it works&quot; and &quot;it survives
+                  production&quot; — is where I work.
                 </p>
               </div>
             </div>
@@ -248,32 +288,26 @@ export default function AboutMe() {
                 <span className="text-[#2ed573] font-semibold">
                   Application Security Engineer
                 </span>{" "}
-                working at the intersection of application security,
-                infrastructure, and cloud platforms.
+                working at the intersection of product features, infrastructure
+                systems, and real-world operational constraints.
               </p>
 
               <p>
-                My work focuses on ensuring that cloud product features are
-                <span className="text-[#2ed573]"> secure</span>,
-                <span className="text-[#2ed573]"> reliable</span>, and
-                <span className="text-[#2ed573]">
-                  {" "}
-                  behave correctly in real-world production environments
+                I focus on what happens{" "}
+                <span className="text-[#2ed573] font-semibold">
+                  after deployment
                 </span>
-                — not just at the code level, but across servers, networking,
-                containers, permissions, and deployment workflows.
+                . When containers restart, permissions drift, tenants share
+                resources, networks behave unpredictably, and edge cases meet
+                scale.
               </p>
 
               <div className="pt-4 border-t border-[#2ed573]/10">
                 <p className="text-[#2ed573] font-mono text-sm">
-                  $ ./philosophy.sh
+                  $ echo $FOCUS
                 </p>
                 <p className="mt-2 text-white italic">
-                  &quot;I don&apos;t just test features. I{" "}
-                  <span className="text-[#2ed573] font-semibold">
-                    validate system behavior
-                  </span>
-                  .&quot;
+                  &quot;That&apos;s where risk hides.&quot;
                 </p>
               </div>
             </div>
@@ -296,18 +330,35 @@ export default function AboutMe() {
             <div className="space-y-4 text-white/80">
               <p>
                 At{" "}
-                <span className="text-[#2ed573] font-semibold">xCloud</span>, I
-                work on a production cloud hosting platform where security meets
-                real infrastructure challenges daily.
+                <a
+                  href="https://startise.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#2ed573] font-semibold hover:underline"
+                >
+                  Startise
+                </a>
+                , working on a production-grade cloud hosting platform (
+                <a
+                  href="https://xcloud.host/about-us/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#2ed573] font-semibold hover:underline"
+                >
+                  xCloud
+                </a>
+                ), where security isn&apos;t abstract — it&apos;s operational.
               </p>
 
               <p>
-                A key part of my work is acting as a{" "}
+                I act as a{" "}
                 <span className="text-[#2ed573] font-semibold">
                   bridge between development and infrastructure
-                </span>{" "}
-                — helping teams turn complex backend systems into safe,
-                repeatable, &quot;one-click&quot; product features.
+                </span>
+                , helping turn complex backend workflows into secure, repeatable
+                &quot;one-click&quot; product features — without breaking tenant
+                isolation, introducing hidden privilege paths, or creating
+                fragile deployment chains.
               </p>
 
               <div className="mt-4 p-3 bg-[#2ed573]/5 rounded-lg border border-[#2ed573]/10">
@@ -323,19 +374,29 @@ export default function AboutMe() {
         </div>
       </section>
 
-      {/* What I Do Section */}
+      {/* What I Actually Do Section */}
       <section className="relative z-10 max-w-6xl mx-auto px-6 py-12">
         <div className="flex items-center gap-3 mb-8">
           <div className="w-10 h-10 rounded-lg bg-[#2ed573]/10 flex items-center justify-center">
             <Target className="w-5 h-5 text-[#2ed573]" />
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-white">What I Actually Do</h2>
+            <h2 className="text-2xl font-bold text-white">
+              What I Actually Do
+            </h2>
             <span className="text-[#2ed573]/60 text-sm font-mono">
               $ ./daily_operations.sh --verbose
             </span>
           </div>
         </div>
+
+        <p className="text-white/80 mb-6 max-w-3xl">
+          I analyze how product features interact with real infrastructure. Not
+          in theory.{" "}
+          <span className="text-[#2ed573] font-semibold">
+            In production-like environments.
+          </span>
+        </p>
 
         <div className="grid md:grid-cols-2 gap-6">
           {whatIDo.map((item, index) => (
@@ -370,37 +431,23 @@ export default function AboutMe() {
         </div>
       </section>
 
-      {/* How I Add Value Section */}
+      {/* I Look For Section */}
       <section className="relative z-10 max-w-6xl mx-auto px-6 py-12">
         <div className="bg-gradient-to-r from-[#2ed573]/10 to-transparent rounded-xl border border-[#2ed573]/30 p-8">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-10 h-10 rounded-lg bg-[#2ed573]/20 flex items-center justify-center">
-              <Sparkles className="w-5 h-5 text-[#2ed573]" />
+              <Crosshair className="w-5 h-5 text-[#2ed573]" />
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-white">How I Add Value</h2>
+              <h2 className="text-2xl font-bold text-white">What I Look For</h2>
               <span className="text-[#2ed573]/60 text-sm font-mono">
-                $ ./value_proposition.sh
+                $ ./risk_detection.sh
               </span>
             </div>
-          </div>
-
-          <div className="mb-8 p-4 bg-[#0f0f14]/50 rounded-lg border-l-4 border-[#2ed573]">
-            <p className="text-white/90 text-lg">
-              Most security issues don&apos;t come from a single line of code.
-              They come from{" "}
-              <span className="text-[#2ed573] font-semibold">
-                how systems interact under real conditions
-              </span>
-              .
-            </p>
-            <p className="text-[#2ed573] mt-2 font-mono text-sm">
-              That&apos;s where I specialize.
-            </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {focusAreas.map((area, index) => (
+            {iLookFor.map((area, index) => (
               <div
                 key={index}
                 className="bg-[#0f0f14] rounded-lg p-4 border border-[#2ed573]/10 hover:border-[#2ed573]/30 transition-colors"
@@ -415,14 +462,58 @@ export default function AboutMe() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
 
-          <div className="mt-6 p-4 bg-[#0f0f14]/50 rounded-lg">
-            <p className="text-white/80 text-sm">
-              <span className="text-[#2ed573]">$</span> I routinely catch
-              problems that look &quot;fine&quot; in the application layer but
-              become{" "}
-              <span className="text-red-400 font-semibold">critical risks</span>{" "}
-              once deployed to real servers.
+      {/* Why It Matters Section */}
+      <section className="relative z-10 max-w-6xl mx-auto px-6 py-12">
+        <div className="bg-[#0f0f14] rounded-xl border border-[#2ed573]/20 p-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 rounded-lg bg-[#2ed573]/10 flex items-center justify-center">
+              <GitBranch className="w-5 h-5 text-[#2ed573]" />
+            </div>
+            <div>
+              <h2 className="text-2xl font-bold text-white">Why It Matters</h2>
+              <span className="text-[#2ed573]/60 text-sm font-mono">
+                $ diff dev.log production.log
+              </span>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            <div className="p-5 bg-[#0f0f14] rounded-lg border border-red-400/20">
+              <span className="text-red-400/70 text-xs font-mono mb-3 block">
+                // Most teams test:
+              </span>
+              <p className="text-white/60 text-lg italic">
+                &quot;Does it work?&quot;
+              </p>
+            </div>
+            <div className="p-5 bg-[#2ed573]/5 rounded-lg border border-[#2ed573]/20">
+              <span className="text-[#2ed573]/70 text-xs font-mono mb-3 block">
+                // I test:
+              </span>
+              <p className="text-white text-lg font-medium">
+                &quot;What breaks when this scales, misbehaves, or partially
+                fails?&quot;
+              </p>
+            </div>
+          </div>
+
+          <div className="p-4 bg-gradient-to-r from-[#2ed573]/10 to-transparent rounded-lg border-l-4 border-[#2ed573]">
+            <p className="text-white/90">
+              That difference is small in development.{" "}
+              <span className="text-[#2ed573] font-semibold">
+                It&apos;s massive in production.
+              </span>
+            </p>
+            <p className="text-white/70 mt-2 text-sm">
+              I routinely catch issues that look fine at the application layer —
+              but become{" "}
+              <span className="text-red-400 font-semibold">
+                high-impact risks
+              </span>{" "}
+              once deployed to real infrastructure.
             </p>
           </div>
         </div>
@@ -443,12 +534,7 @@ export default function AboutMe() {
         </div>
 
         <p className="text-white/80 mb-8 max-w-2xl">
-          I approach security from a{" "}
-          <span className="text-[#2ed573] font-semibold">
-            systems perspective
-          </span>
-          . My goal is to reduce real operational and security risk, not just
-          pass tests.
+          I don&apos;t optimize for passing tests. I optimize for:
         </p>
 
         <div className="space-y-4">
@@ -478,50 +564,78 @@ export default function AboutMe() {
             </div>
           ))}
         </div>
+
+        <div className="mt-8 p-4 bg-[#0f0f14] rounded-lg border border-[#2ed573]/20">
+          <p className="text-white font-medium">
+            Security isn&apos;t about being strict.{" "}
+            <span className="text-[#2ed573]">It&apos;s about being precise.</span>
+          </p>
+        </div>
       </section>
 
       {/* Current Focus Section */}
       <section className="relative z-10 max-w-6xl mx-auto px-6 py-12 pb-24">
-        <div className="bg-[#0f0f14] rounded-xl border border-[#2ed573]/20 p-8">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-lg bg-[#2ed573]/10 flex items-center justify-center">
-              <Target className="w-5 h-5 text-[#2ed573]" />
-            </div>
-            <div>
-              <h2 className="text-2xl font-bold text-white">Current Focus</h2>
-              <span className="text-[#2ed573]/60 text-sm font-mono">
-                $ ./growth_trajectory.sh
-              </span>
-            </div>
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 rounded-lg bg-[#2ed573]/10 flex items-center justify-center">
+            <Crosshair className="w-5 h-5 text-[#2ed573]" />
           </div>
-
-          <p className="text-white/80 mb-6">
-            I&apos;m growing as a{" "}
-            <span className="text-[#2ed573] font-semibold">
-              Product-Focused DevSecOps / Platform Security Engineer
+          <div>
+            <h2 className="text-2xl font-bold text-white">
+              Current Focus &amp; Trajectory
+            </h2>
+            <span className="text-[#2ed573]/60 text-sm font-mono">
+              $ ./growth_trajectory.sh
             </span>
-            , with deep interest in:
+          </div>
+        </div>
+
+        <div className="mb-8 p-4 bg-[#0f0f14] rounded-lg border border-[#2ed573]/20">
+          <p className="text-white/90">
+            Security alone doesn&apos;t solve real-world problems. The world
+            runs on{" "}
+            <span className="text-[#2ed573] font-semibold">
+              AI, automation, and speed
+            </span>{" "}
+            — I&apos;m building at that intersection.
           </p>
+        </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
-            {currentFocus.map((focus, index) => (
-              <div
-                key={index}
-                className="flex items-center gap-3 p-3 bg-[#2ed573]/5 rounded-lg border border-[#2ed573]/10"
-              >
-                <CheckCircle className="w-4 h-4 text-[#2ed573] flex-shrink-0" />
-                <span className="text-white/90 text-sm">{focus}</span>
+        <div className="grid md:grid-cols-3 gap-6">
+          {focusPillars.map((pillar, index) => (
+            <div
+              key={index}
+              className="group bg-[#0f0f14] rounded-xl border border-[#2ed573]/20 p-6 hover:border-[#2ed573]/50 transition-all duration-300"
+            >
+              <div className="w-12 h-12 rounded-lg bg-[#2ed573]/10 flex items-center justify-center mb-4 group-hover:bg-[#2ed573]/20 transition-colors">
+                <pillar.icon className="w-6 h-6 text-[#2ed573]" />
               </div>
-            ))}
-          </div>
 
-          <div className="mt-8 p-4 bg-gradient-to-r from-[#2ed573]/10 to-transparent rounded-lg border-l-4 border-[#2ed573]">
-            <p className="text-white font-medium">
-              My value is{" "}
-              <span className="text-[#2ed573]">above the framework layer</span>,
-              where application behavior meets real infrastructure.
-            </p>
-          </div>
+              <h3 className="text-lg font-semibold text-white mb-3">
+                {pillar.title}
+              </h3>
+
+              <p className="text-white/70 text-sm leading-relaxed mb-4">
+                {pillar.description}
+              </p>
+
+              <div className="space-y-2 pt-4 border-t border-[#2ed573]/10">
+                {pillar.areas.map((area, i) => (
+                  <div key={i} className="flex items-center gap-2">
+                    <CheckCircle className="w-3 h-3 text-[#2ed573] flex-shrink-0" />
+                    <span className="text-white/60 text-xs">{area}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-8 p-4 bg-gradient-to-r from-[#2ed573]/10 to-transparent rounded-lg border-l-4 border-[#2ed573]">
+          <p className="text-white font-medium">
+            I&apos;m not just a security engineer who uses AI. I&apos;m a{" "}
+            <span className="text-[#2ed573]">problem solver</span> who thinks
+            in systems, automates relentlessly, and secures everything I build.
+          </p>
         </div>
       </section>
 
