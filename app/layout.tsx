@@ -3,6 +3,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
+import { MusicProvider } from "@/components/music-provider";
 import StructuredData from "./components/StructuredData";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
@@ -77,7 +78,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <MusicProvider>{children}</MusicProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -6,6 +6,7 @@ import { ArrowLeft, Volume2, VolumeX } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { playClickSound } from "@/utils/sound";
+import { useMusicContext } from "@/components/music-provider";
 import * as LucideIcons from "lucide-react";
 import skillsData from "@/data/skills.json";
 
@@ -19,7 +20,7 @@ interface Skill {
 }
 
 export default function Skills() {
-  const [isMuted, setIsMuted] = useState(true);
+  const { isMuted, toggleMute } = useMusicContext();
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [skills, setSkills] = useState<Skill[]>([]);
   const [isEntering, setIsEntering] = useState(true);
@@ -34,10 +35,6 @@ export default function Skills() {
       clearTimeout(enterTimer);
     };
   }, []);
-
-  const toggleMute = () => {
-    setIsMuted(!isMuted);
-  };
 
   const handleCategoryClick = (category: string) => {
     playClickSound();

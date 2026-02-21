@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/tooltip";
 import Image from "next/image";
 import { playClickSound } from "@/utils/sound";
+import { useMusicContext } from "@/components/music-provider";
 import extracurricularData from "@/data/extracurricular.json";
 
 // Pre-generate stable random values to avoid hydration mismatches
@@ -53,8 +54,8 @@ const MATRIX_RAIN_VALUES = generateStableRandoms(100, 31);
 const FLOATING_CODE_POSITIONS = generateStableRandoms(10, 55);
 
 export default function Dashboard() {
+  const { isMuted, toggleMute } = useMusicContext();
   const [isMounted, setIsMounted] = useState(false);
-  const [isMuted, setIsMuted] = useState(true);
   const [skills, setSkills] = useState({
     security: true,
     business: true,
@@ -88,7 +89,6 @@ export default function Dashboard() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
   const router = useRouter();
-  const clickSoundRef = useRef<HTMLAudioElement | null>(null);
   const profileRef = useRef<HTMLDivElement>(null);
   const countdownRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -122,32 +122,13 @@ export default function Dashboard() {
   ];
 
   useEffect(() => {
-    // Initialize audio elements with proper error handling
-    try {
-      clickSoundRef.current = new Audio();
-
-      // Set sources after creating the elements
-      if (clickSoundRef.current) {
-        clickSoundRef.current.src = "/click.mp3";
-        clickSoundRef.current.preload = "auto";
-      }
-    } catch (error) {
-      console.error("Error initializing audio:", error);
-    }
-
     return () => {
-      if (clickSoundRef.current) clickSoundRef.current.pause();
-
       // Clear countdown interval on unmount
       if (countdownRef.current) {
         clearInterval(countdownRef.current);
       }
     };
   }, []);
-
-  const toggleMute = () => {
-    setIsMuted(!isMuted);
-  };
 
   const toggleSkill = (skill: keyof typeof skills) => {
     playClickSound();
