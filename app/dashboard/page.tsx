@@ -1101,131 +1101,152 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Entrepreneurial Journey - Simple but Creative */}
-          <div className="bg-[#1e272e] rounded-2xl p-6 border border-[#2ed573]/20 relative overflow-hidden group hover:shadow-[0_0_15px_rgba(46,213,115,0.2)] transition-all duration-300">
-            {/* Subtle background pattern */}
-            <div className="absolute inset-0 opacity-5">
-              <div className="absolute right-0 bottom-0 w-64 h-64">
-                <svg
-                  viewBox="0 0 200 200"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-full h-full text-[#2ed573]"
+          {/* Entrepreneurial Journey - Startup Launch Terminal */}
+          <div className="bg-[#0a0a0a] rounded-2xl border border-[#2ed573]/30 relative overflow-hidden group hover:border-[#2ed573]/60 hover:shadow-[0_0_30px_rgba(46,213,115,0.15)] transition-all duration-500">
+            {/* Scan line overlay */}
+            <div className="absolute inset-0 pointer-events-none opacity-[0.03] z-10"
+              style={{
+                background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(46,213,115,0.1) 2px, rgba(46,213,115,0.1) 4px)',
+              }}
+            ></div>
+
+            {/* Corner brackets */}
+            <div className="absolute top-2 left-2 w-4 h-4 border-t border-l border-[#2ed573]/30 group-hover:border-[#2ed573]/60 transition-colors duration-300 z-10"></div>
+            <div className="absolute top-2 right-2 w-4 h-4 border-t border-r border-[#2ed573]/30 group-hover:border-[#2ed573]/60 transition-colors duration-300 z-10"></div>
+            <div className="absolute bottom-2 left-2 w-4 h-4 border-b border-l border-[#2ed573]/30 group-hover:border-[#2ed573]/60 transition-colors duration-300 z-10"></div>
+            <div className="absolute bottom-2 right-2 w-4 h-4 border-b border-r border-[#2ed573]/30 group-hover:border-[#2ed573]/60 transition-colors duration-300 z-10"></div>
+
+            {/* Terminal header */}
+            <div className="flex items-center gap-2 px-4 py-2.5 border-b border-[#2ed573]/15 bg-[#0f0f0f]">
+              <div className="flex gap-1.5">
+                <div className="w-2.5 h-2.5 rounded-full bg-[#ff5f56]/80"></div>
+                <div className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]/80"></div>
+                <div className="w-2.5 h-2.5 rounded-full bg-[#27c93f]/80"></div>
+              </div>
+              <span className="text-[#2ed573]/50 text-[10px] font-mono ml-2 tracking-wider">~/ventures/launch.sh</span>
+              <div className="flex-1"></div>
+              <span className="text-[#2ed573]/20 text-[10px] font-mono">pid: 1337</span>
+            </div>
+
+            {/* Terminal body */}
+            <div className="p-5 md:p-6">
+              {/* Init command */}
+              <div className="font-mono text-[11px] text-[#2ed573]/40 mb-5">
+                <span className="text-[#2ed573]/60">$</span> ./launch.sh --init --mode=entrepreneur
+              </div>
+
+              {/* ASCII Rocket - clickable scroll-to-top */}
+              <div className="flex justify-center mb-5">
+                <div
+                  className="cursor-pointer relative group/rocket"
+                  onClick={() => {
+                    playClickSound();
+                    const rocketEl = document.querySelector(".rocket-ascii");
+                    if (rocketEl) {
+                      rocketEl.classList.add("rocket-launch-effect");
+                      setTimeout(() => rocketEl.classList.remove("rocket-launch-effect"), 800);
+                    }
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                    document.body.classList.add("matrix-scroll");
+                    setTimeout(() => document.body.classList.remove("matrix-scroll"), 1000);
+                  }}
+                  title="Launch to top"
                 >
-                  <path
-                    fill="currentColor"
-                    d="M45.3,-51.2C59.4,-41.7,72,-28.5,76.5,-12.7C81,3.1,77.3,21.5,67.1,35.1C56.9,48.7,40.1,57.5,22.8,63.2C5.5,68.9,-12.4,71.5,-27.4,65.9C-42.5,60.3,-54.8,46.5,-63.1,30.1C-71.4,13.7,-75.7,-5.3,-70.8,-21.5C-65.9,-37.7,-51.8,-51.1,-36.6,-60.1C-21.4,-69.1,-5.2,-73.7,9.2,-70.9C23.6,-68.1,31.2,-60.8,45.3,-51.2Z"
-                    transform="translate(100 100)"
-                  />
-                </svg>
-              </div>
-            </div>
-
-            {/* Icon with enhanced glow animation and scroll-to-top functionality */}
-            <div className="flex justify-center mb-6">
-              <div
-                className="w-20 h-20 relative cursor-pointer"
-                onClick={() => {
-                  // Play click sound
-                  playClickSound();
-
-                  // Add a flash effect to the icon
-                  const iconElement =
-                    document.querySelector(".scroll-top-icon");
-                  if (iconElement) {
-                    iconElement.classList.add("flash-effect");
-
-                    // Remove the class after animation completes
-                    setTimeout(() => {
-                      iconElement.classList.remove("flash-effect");
-                    }, 700);
-                  }
-
-                  // Scroll to top with smooth effect
-                  window.scrollTo({
-                    top: 0,
-                    behavior: "smooth",
-                  });
-
-                  // Add matrix-like effect to the page
-                  document.body.classList.add("matrix-scroll");
-
-                  // Remove matrix effect after scrolling completes
-                  setTimeout(() => {
-                    document.body.classList.remove("matrix-scroll");
-                  }, 1000);
-                }}
-              >
-                <div className="w-20 h-20 rounded-full bg-[#2a3942] flex items-center justify-center border border-[#2ed573]/40 group-hover:border-[#2ed573]/80 transition-all duration-300 scroll-top-icon">
-                  <svg
-                    className="w-10 h-10 text-[#2ed573] transform group-hover:scale-110 transition-transform duration-500"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M12 16L12 8"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                    />
-                    <path
-                      d="M9 11L12 8 15 11"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <circle
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    />
-                  </svg>
+                  <pre className="rocket-ascii text-[#2ed573] text-[10px] md:text-xs leading-[1.2] select-none transition-all duration-300 group-hover/rocket:scale-105">
+{`        /\\
+       /  \\
+      / .. \\
+     /  /\\  \\
+    /  /  \\  \\
+   |  | AR |  |
+   |  | AF |  |
+   |  | AT |  |
+   |__|    |__|
+    \\ \\    / /
+     \\ \\  / /
+      \\ \\/ /
+       \\  /
+        \\/`}
+                  </pre>
+                  {/* Animated rocket flames */}
+                  <div className="flex justify-center -mt-1">
+                    <div className="rocket-flames flex gap-[2px]">
+                      <div className="w-1 h-4 bg-gradient-to-b from-[#ffbd2e] to-[#ff5f56]/0 rounded-full rocket-flame-1"></div>
+                      <div className="w-1.5 h-6 bg-gradient-to-b from-[#2ed573] to-[#ffbd2e]/0 rounded-full rocket-flame-2"></div>
+                      <div className="w-2 h-8 bg-gradient-to-b from-[#2ed573] via-[#ffbd2e] to-[#ff5f56]/0 rounded-full rocket-flame-3"></div>
+                      <div className="w-1.5 h-6 bg-gradient-to-b from-[#2ed573] to-[#ffbd2e]/0 rounded-full rocket-flame-2"></div>
+                      <div className="w-1 h-4 bg-gradient-to-b from-[#ffbd2e] to-[#ff5f56]/0 rounded-full rocket-flame-1"></div>
+                    </div>
+                  </div>
+                  {/* Glow under rocket */}
+                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-16 h-4 bg-[#2ed573]/10 rounded-full blur-md group-hover/rocket:bg-[#2ed573]/25 transition-all duration-300"></div>
                 </div>
-                {/* Enhanced glow effect on hover */}
-                <div className="absolute inset-0 rounded-full bg-[#2ed573]/5 group-hover:bg-[#2ed573]/20 filter blur-lg transition-all duration-500"></div>
-                <div className="absolute inset-0 scale-110 rounded-full bg-[#2ed573]/0 group-hover:bg-[#2ed573]/10 filter blur-xl transition-all duration-700"></div>
               </div>
-            </div>
 
-            {/* Title with enhanced underline animation */}
-            <h3 className="text-[#2ed573] font-bold text-xl mb-4 text-center relative">
-              Entrepreneurial Journey
-              <div className="h-0.5 w-0 bg-[#2ed573]/70 absolute -bottom-2 left-1/2 transform -translate-x-1/2 group-hover:w-48 transition-all duration-700 shadow-glow"></div>
-            </h3>
-
-            {/* Description with better typography */}
-            <p className="text-[#2ed573]/80 text-sm max-w-md mx-auto text-center mb-4">
-              Building innovative solutions to solve real-world problems.
-              Currently working on my startup vision to revolutionize the tech
-              industry.
-            </p>
-
-            {/* Creative element - Command line style */}
-            <div className="bg-[#0f0f0f] rounded-md p-2 mx-auto mb-4 overflow-hidden w-72">
-              <div className="flex justify-center">
-                <p className="font-mono text-[#2ed573] text-xs whitespace-nowrap inline-flex items-center">
-                  <span className="mr-1">$</span>
-                  <span className="typing-text-no-cursor">
-                    ./problem.sh --solution
-                  </span>
-                </p>
+              {/* Mission status log */}
+              <div className="space-y-2 font-mono text-[11px] mb-5 max-w-sm mx-auto">
+                <div className="flex items-center gap-2" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.1s both' }}>
+                  <span className="text-[#27c93f]">[✓]</span>
+                  <span className="text-[#2ed573]/70 flex-1">Vision.init()</span>
+                  <span className="text-[#27c93f] text-[10px]">DONE</span>
+                </div>
+                <div className="flex items-center gap-2" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.25s both' }}>
+                  <span className="text-[#27c93f]">[✓]</span>
+                  <span className="text-[#2ed573]/70 flex-1">Problem.identify()</span>
+                  <span className="text-[#27c93f] text-[10px]">DONE</span>
+                </div>
+                <div className="flex items-center gap-2" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.4s both' }}>
+                  <span className="text-[#27c93f]">[✓]</span>
+                  <span className="text-[#2ed573]/70 flex-1">Solution.build()</span>
+                  <span className="text-[#27c93f] text-[10px]">DONE</span>
+                </div>
+                <div className="flex items-center gap-2" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.55s both' }}>
+                  <span className="text-[#ffbd2e] animate-pulse">[▸]</span>
+                  <span className="text-[#ffbd2e]/80 flex-1">Industry.disrupt()</span>
+                  <span className="text-[#ffbd2e] text-[10px] animate-pulse">RUNNING</span>
+                </div>
+                <div className="flex items-center gap-2" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.7s both' }}>
+                  <span className="text-[#2ed573]/25">[ ]</span>
+                  <span className="text-[#2ed573]/25 flex-1">World.change()</span>
+                  <span className="text-[#2ed573]/25 text-[10px]">QUEUED</span>
+                </div>
               </div>
-            </div>
 
-            {/* Simple choice with subtle animation */}
-            <div className="flex justify-center items-center space-x-3 text-sm">
-              <span className="text-[#2ed573] opacity-80 group-hover:opacity-100 transition-opacity duration-300">
-                Grow
-              </span>
-              <span className="text-[#2ed573]/50">•</span>
-              <span className="text-[#2ed573]/70">or</span>
-              <span className="text-[#2ed573]/50">•</span>
-              <span className="text-[#2ed573] opacity-80 group-hover:opacity-100 transition-opacity duration-300">
-                Die
-              </span>
+              {/* Progress bar */}
+              <div className="max-w-sm mx-auto mb-5" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.85s both' }}>
+                <div className="flex justify-between text-[10px] font-mono mb-1.5">
+                  <span className="text-[#2ed573]/40">mission_progress</span>
+                  <span className="text-[#2ed573]/70">75%</span>
+                </div>
+                <div className="h-1 bg-[#1e272e] rounded-full overflow-hidden">
+                  <div
+                    className="h-full rounded-full relative"
+                    style={{
+                      width: '75%',
+                      background: 'linear-gradient(90deg, #2ed573, #27c93f, #2ed573)',
+                      backgroundSize: '200% 100%',
+                      animation: 'shimmer-bar 2s linear infinite',
+                    }}
+                  >
+                    <div className="absolute right-0 top-0 w-1 h-full bg-white/40 animate-pulse"></div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Separator */}
+              <div className="border-t border-[#2ed573]/10 my-4"></div>
+
+              {/* GROW or DIE motto */}
+              <div className="text-center" style={{ animation: 'fadeSlideIn 0.5s ease-out 1s both' }}>
+                <div className="inline-flex items-center gap-3 font-mono">
+                  <span className="text-[#2ed573] text-lg md:text-xl font-bold tracking-[0.3em] transition-all duration-300 motto-grow">GROW</span>
+                  <span className="text-[#2ed573]/20 text-xs">///</span>
+                  <span className="text-[#ff5f56]/70 text-lg md:text-xl font-bold tracking-[0.3em] group-hover:text-[#ff5f56] transition-all duration-300 motto-die">DIE</span>
+                </div>
+                <div className="mt-2 font-mono text-[10px] text-[#2ed573]/30 tracking-widest">
+                  THERE IS NO THIRD OPTION
+                </div>
+              </div>
             </div>
           </div>
         </div>
