@@ -144,9 +144,8 @@ export default function Dashboard() {
   };
 
   return (
-    <main className={`flex min-h-screen flex-col bg-[#121212] p-4 md:p-8 relative grid-dots transition-all duration-1000 ${
-      matrixModeActive ? "matrix-mode-active" : ""
-    } ${isEntering ? "animate-slideInRight" : ""}`}>
+    <main className={`flex min-h-screen flex-col bg-[#121212] p-4 md:p-8 relative grid-dots transition-all duration-1000 ${matrixModeActive ? "matrix-mode-active" : ""
+      } ${isEntering ? "animate-slideInRight" : ""}`}>
       {/* ELITE SYSTEM INFILTRATION - Only render on client */}
       {isMounted && matrixModeActive && (
         <div className="fixed inset-0 z-50 pointer-events-none elite-infiltration-overlay">
@@ -195,28 +194,28 @@ export default function Dashboard() {
               <span className="terminal-title">ARAFAT MISSION-30</span>
               <span className="security-level">TARGET: 2030</span>
             </div>
-            <div className="command-line" style={{animationDelay: '0.3s'}}>
+            <div className="command-line" style={{ animationDelay: '0.3s' }}>
               <span className="elite-prompt">{isMobile ? 'arafat@K1NGB0B:~$' : 'arafat@K1NGB0B:~$'}</span> <span className="command">{isMobile ? './the_GOAT.sh --activate' : './the_GOAT.sh --activate-goat-mode'}</span>
             </div>
-            <div className="command-line" style={{animationDelay: '0.9s'}}>
+            <div className="command-line" style={{ animationDelay: '0.9s' }}>
               <span className="status-success">{isMobile ? 'GOAT MODE ACTIVATED' : 'GREATEST OF ALL TIME MODE ACTIVATED'}</span>
             </div>
-            <div className="command-line" style={{animationDelay: '1.5s'}}>
+            <div className="command-line" style={{ animationDelay: '1.5s' }}>
               <span className="elite-prompt">{isMobile ? 'arafat@K1NGB0B:~$' : 'arafat@K1NGB0B:~$'}</span> <span className="command">{isMobile ? 'execute --world-change' : 'execute --change-the-world'}</span>
             </div>
-            <div className="command-line" style={{animationDelay: '2.1s'}}>
+            <div className="command-line" style={{ animationDelay: '2.1s' }}>
               <span className="status-warning">{isMobile ? 'WORLD TRANSFORMATION INITIATED' : 'GLOBAL TRANSFORMATION PROTOCOLS INITIATED'}</span>
             </div>
-            <div className="command-line" style={{animationDelay: '2.7s'}}>
+            <div className="command-line" style={{ animationDelay: '2.7s' }}>
               <span className="elite-prompt">{isMobile ? 'arafat@K1NGB0B:~$' : 'arafat@K1NGB0B:~$'}</span> <span className="command">whoami --destiny</span>
             </div>
-            <div className="command-line" style={{animationDelay: '3.3s'}}>
+            <div className="command-line" style={{ animationDelay: '3.3s' }}>
               <span className="architect-identity">{isMobile ? 'ARAFAT - FUTURE GOAT' : 'ARAFAT - THE NEXT GOAT OF THE WORLD'}</span>
             </div>
-            <div className="command-line" style={{animationDelay: '3.9s'}}>
+            <div className="command-line" style={{ animationDelay: '3.9s' }}>
               <span className="status-critical">{isMobile ? 'GREATEST PERSON RISING' : 'BECOMING THE GREATEST PERSON ALIVE'}</span>
             </div>
-            <div className="command-line" style={{animationDelay: '4.5s'}}>
+            <div className="command-line" style={{ animationDelay: '4.5s' }}>
               <span className="final-status">{isMobile ? 'MISSION: CHANGE THE WORLD' : 'MISSION: I WILL CHANGE THE WORLD'}</span>
             </div>
           </div>
@@ -225,16 +224,16 @@ export default function Dashboard() {
           <div className="absolute bottom-4 left-4 right-4 md:top-8 md:right-8 md:left-auto md:bottom-auto status-panel">
             <div className="panel-header">GOAT STATUS</div>
             <div className="grid grid-cols-2 md:block gap-2 md:gap-0">
-              <div className="status-item" style={{animationDelay: '1s'}}>
+              <div className="status-item" style={{ animationDelay: '1s' }}>
                 <span className="metric">GREATNESS:</span> <span className="value critical">RISING</span>
               </div>
-              <div className="status-item" style={{animationDelay: '1.5s'}}>
+              <div className="status-item" style={{ animationDelay: '1.5s' }}>
                 <span className="metric">IMPACT:</span> <span className="value active">WORLD</span>
               </div>
-              <div className="status-item" style={{animationDelay: '2s'}}>
+              <div className="status-item" style={{ animationDelay: '2s' }}>
                 <span className="metric">FUTURE GOAT:</span> <span className="value master">ARAFAT</span>
               </div>
-              <div className="status-item" style={{animationDelay: '2.5s'}}>
+              <div className="status-item" style={{ animationDelay: '2.5s' }}>
                 <span className="metric">DESTINY:</span> <span className="value omega">CHANGE WORLD</span>
               </div>
             </div>
@@ -243,15 +242,15 @@ export default function Dashboard() {
           {/* Quantum Interference */}
           <div className="absolute inset-0 quantum-interference">
             <div className="interference-wave"></div>
-            <div className="interference-wave" style={{animationDelay: '1s'}}></div>
-            <div className="interference-wave" style={{animationDelay: '2s'}}></div>
+            <div className="interference-wave" style={{ animationDelay: '1s' }}></div>
+            <div className="interference-wave" style={{ animationDelay: '2s' }}></div>
           </div>
 
           {/* System Corruption Bars */}
           <div className="absolute inset-0 corruption-bars">
-            <div className="corruption-bar" style={{top: '20%', animationDelay: '0.5s'}}></div>
-            <div className="corruption-bar" style={{top: '45%', animationDelay: '1.2s'}}></div>
-            <div className="corruption-bar" style={{top: '70%', animationDelay: '1.8s'}}></div>
+            <div className="corruption-bar" style={{ top: '20%', animationDelay: '0.5s' }}></div>
+            <div className="corruption-bar" style={{ top: '45%', animationDelay: '1.2s' }}></div>
+            <div className="corruption-bar" style={{ top: '70%', animationDelay: '1.8s' }}></div>
           </div>
 
           {/* Deep System Pulse */}
@@ -275,9 +274,8 @@ export default function Dashboard() {
           <div className="absolute inset-0 bg-[#0f0f0f] rounded-2xl translate-x-3 translate-y-3"></div>
 
           {/* Main Card - Dark Hacker Theme */}
-          <div className={`relative bg-[#0a0a0a] rounded-sm overflow-hidden shadow-lg border border-[#2ed573] z-10 transition-all duration-1000 ${
-            matrixModeActive ? "elite-profile-override border-[#00BFFF] shadow-[0_0_35px_rgba(0,191,255,0.8)] brightness-70 contrast-180" : ""
-          }`}>
+          <div className={`relative bg-[#0a0a0a] rounded-sm overflow-hidden shadow-lg border border-[#2ed573] z-10 transition-all duration-1000 ${matrixModeActive ? "elite-profile-override border-[#00BFFF] shadow-[0_0_35px_rgba(0,191,255,0.8)] brightness-70 contrast-180" : ""
+            }`}>
             {/* Header with name - Hacker Theme */}
             <div className="p-4 flex items-center gap-3 border-b border-[#2ed573]/10 bg-[#0a0a0a]">
               <div
@@ -397,9 +395,8 @@ export default function Dashboard() {
                     }, 500);
                   }
                 }}
-                className={`relative hacker-profile cursor-pointer ${
-                  glitchActive ? "active-glitch" : ""
-                }`}
+                className={`relative hacker-profile cursor-pointer ${glitchActive ? "active-glitch" : ""
+                  }`}
               >
                 {/* Code Rain Effect */}
                 <div className="code-rain">
@@ -548,9 +545,8 @@ export default function Dashboard() {
 
               {/* Button Main Layer */}
               <div
-                className={`relative bg-[#2ed573] text-[#0f0f0f] font-bold py-4 px-6 rounded-lg flex items-center justify-between w-full z-10 shadow-lg transform transition-all duration-200 group-hover:shadow-xl ${
-                  hackerEffect ? "glitch-effect" : ""
-                }`}
+                className={`relative bg-[#2ed573] text-[#0f0f0f] font-bold py-4 px-6 rounded-lg flex items-center justify-between w-full z-10 shadow-lg transform transition-all duration-200 group-hover:shadow-xl ${hackerEffect ? "glitch-effect" : ""
+                  }`}
                 data-text="ACCESS GRANTED"
               >
                 <div className="flex items-center gap-3">
@@ -818,9 +814,8 @@ export default function Dashboard() {
                         window.open(platform.url, "_blank");
                       }}
                     >
-                      <div className={`bg-[#1e272e] rounded-2xl aspect-square flex items-center justify-center relative hover:bg-[#2a3942] transition-colors cursor-pointer border border-[#2ed573]/20 hover-glow ${
-                        matrixModeActive ? "matrix-social-effect border-[#2ed573] shadow-[0_0_20px_rgba(46,213,115,0.8)]" : ""
-                      }`}>
+                      <div className={`bg-[#1e272e] rounded-2xl aspect-square flex items-center justify-center relative hover:bg-[#2a3942] transition-colors cursor-pointer border border-[#2ed573]/20 hover-glow ${matrixModeActive ? "matrix-social-effect border-[#2ed573] shadow-[0_0_20px_rgba(46,213,115,0.8)]" : ""
+                        }`}>
                         <div className="w-12 h-12 rounded-full bg-[#0f0f0f] flex items-center justify-center">
                           {platform.icon}
                         </div>
@@ -843,15 +838,13 @@ export default function Dashboard() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Projects Card */}
             <div
-              className={`group relative bg-[#1e272e] rounded-2xl overflow-hidden flex flex-col border transition-all duration-300 cursor-pointer hover-glow ${
-                cardEffectActive
-                  ? "border-[#2ed573]/60 shadow-[0_0_20px_rgba(46,213,115,0.3)] animate-subtle-pulse"
-                  : "border-[#2ed573]/20 shadow-lg"
-              } ${
-                matrixModeActive
+              className={`group relative bg-[#1e272e] rounded-2xl overflow-hidden flex flex-col border transition-all duration-300 cursor-pointer hover-glow ${cardEffectActive
+                ? "border-[#2ed573]/60 shadow-[0_0_20px_rgba(46,213,115,0.3)] animate-subtle-pulse"
+                : "border-[#2ed573]/20 shadow-lg"
+                } ${matrixModeActive
                   ? "elite-card-override border-[#00BFFF] shadow-[0_0_25px_rgba(0,191,255,0.6)] brightness-80 contrast-120"
                   : ""
-              }`}
+                }`}
               onClick={() => navigateTo("/projects")}
             >
               {/* Card effect overlay */}
@@ -942,15 +935,13 @@ export default function Dashboard() {
 
             {/* Blog Card */}
             <div
-              className={`group relative bg-[#1e272e] rounded-2xl overflow-hidden flex flex-col border transition-all duration-300 cursor-pointer hover-glow ${
-                cardEffectActive
-                  ? "border-[#2ed573]/60 shadow-[0_0_20px_rgba(46,213,115,0.3)] animate-subtle-pulse"
-                  : "border-[#2ed573]/20 shadow-lg"
-              } ${
-                matrixModeActive
+              className={`group relative bg-[#1e272e] rounded-2xl overflow-hidden flex flex-col border transition-all duration-300 cursor-pointer hover-glow ${cardEffectActive
+                ? "border-[#2ed573]/60 shadow-[0_0_20px_rgba(46,213,115,0.3)] animate-subtle-pulse"
+                : "border-[#2ed573]/20 shadow-lg"
+                } ${matrixModeActive
                   ? "elite-card-override border-[#00BFFF] shadow-[0_0_25px_rgba(0,191,255,0.6)] brightness-80 contrast-120"
                   : ""
-              }`}
+                }`}
               onClick={() => navigateTo("/blogs")}
             >
               {/* Card effect overlay */}
@@ -958,8 +949,8 @@ export default function Dashboard() {
                 <div className="absolute inset-0 z-10 pointer-events-none">
                   <div className="absolute inset-0 bg-[#0f0f0f]/20"></div>
                   <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#2ed573]/50 to-transparent animate-scan-subtle-reverse"></div>
-                  <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-[#2ed573]/40 animate-pulse" style={{animationDelay: '0.5s'}}></div>
-                  <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-[#2ed573]/40 animate-pulse" style={{animationDelay: '0.5s'}}></div>
+                  <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-[#2ed573]/40 animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+                  <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-[#2ed573]/40 animate-pulse" style={{ animationDelay: '0.5s' }}></div>
                 </div>
               )}
 
@@ -1103,6 +1094,7 @@ export default function Dashboard() {
 
           {/* Entrepreneurial Journey - Startup Launch Terminal */}
           <div className="bg-[#0a0a0a] rounded-2xl border border-[#2ed573]/30 relative overflow-hidden group hover:border-[#2ed573]/60 hover:shadow-[0_0_30px_rgba(46,213,115,0.15)] transition-all duration-500">
+
             {/* Scan line overlay */}
             <div className="absolute inset-0 pointer-events-none opacity-[0.03] z-10"
               style={{
@@ -1152,31 +1144,143 @@ export default function Dashboard() {
                   }}
                   title="Launch to top"
                 >
-                  <pre className="rocket-ascii text-[#2ed573] text-[10px] md:text-xs leading-[1.2] select-none transition-all duration-300 group-hover/rocket:scale-105">
-{`        /\\
-       /  \\
-      / .. \\
-     /  /\\  \\
-    /  /  \\  \\
-   |  | AR |  |
-   |  | AF |  |
-   |  | AT |  |
-   |__|    |__|
-    \\ \\    / /
-     \\ \\  / /
-      \\ \\/ /
-       \\  /
-        \\/`}
-                  </pre>
-                  {/* Animated rocket flames */}
-                  <div className="flex justify-center -mt-1">
-                    <div className="rocket-flames flex gap-[2px]">
-                      <div className="w-1 h-4 bg-gradient-to-b from-[#ffbd2e] to-[#ff5f56]/0 rounded-full rocket-flame-1"></div>
-                      <div className="w-1.5 h-6 bg-gradient-to-b from-[#2ed573] to-[#ffbd2e]/0 rounded-full rocket-flame-2"></div>
-                      <div className="w-2 h-8 bg-gradient-to-b from-[#2ed573] via-[#ffbd2e] to-[#ff5f56]/0 rounded-full rocket-flame-3"></div>
-                      <div className="w-1.5 h-6 bg-gradient-to-b from-[#2ed573] to-[#ffbd2e]/0 rounded-full rocket-flame-2"></div>
-                      <div className="w-1 h-4 bg-gradient-to-b from-[#ffbd2e] to-[#ff5f56]/0 rounded-full rocket-flame-1"></div>
-                    </div>
+                  <div className="relative group/rocket transition-all duration-500 hover:scale-105 hover:drop-shadow-[0_0_25px_rgba(46,213,115,0.5)]">
+                    <svg
+                      width="140"
+                      height="240"
+                      viewBox="0 -40 200 390"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="rocket-ascii rocket-launch-effect drop-shadow-2xl overflow-visible"
+                    >
+                      <defs>
+                        {/* Photorealistic Metal Gradient */}
+                        <linearGradient id="bodyMetal" x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" stopColor="#87939b" />
+                          <stop offset="15%" stopColor="#ffffff" />
+                          <stop offset="35%" stopColor="#b0bcc4" />
+                          <stop offset="70%" stopColor="#54626b" />
+                          <stop offset="100%" stopColor="#2c363d" />
+                        </linearGradient>
+
+                        {/* Dark Metal for Fins and Engines */}
+                        <linearGradient id="darkMetal" x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" stopColor="#454b51" />
+                          <stop offset="25%" stopColor="#67737c" />
+                          <stop offset="75%" stopColor="#1a1e21" />
+                          <stop offset="100%" stopColor="#0d0f11" />
+                        </linearGradient>
+
+                        {/* Glowing Neon Accent */}
+                        <linearGradient id="neonGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#2ed573" />
+                          <stop offset="100%" stopColor="#27c93f" />
+                        </linearGradient>
+
+                        {/* Intense Flame Gradients */}
+                        <linearGradient id="coreFlame" x1="0%" y1="0%" x2="0%" y2="100%">
+                          <stop offset="0%" stopColor="#ffffff" />
+                          <stop offset="20%" stopColor="#fff200" />
+                          <stop offset="50%" stopColor="#ff7b00" />
+                          <stop offset="90%" stopColor="#c21807" />
+                          <stop offset="100%" stopColor="#000000" stopOpacity="0" />
+                        </linearGradient>
+
+                        <linearGradient id="sideFlame" x1="0%" y1="0%" x2="0%" y2="100%">
+                          <stop offset="0%" stopColor="#ffffff" />
+                          <stop offset="30%" stopColor="#ff9f00" />
+                          <stop offset="80%" stopColor="#9e0c03" />
+                          <stop offset="100%" stopColor="#000000" stopOpacity="0" />
+                        </linearGradient>
+
+                        {/* Glow Filters */}
+                        <filter id="flameGlow" x="-50%" y="-50%" width="200%" height="200%">
+                          <feGaussianBlur stdDeviation="6" result="blur1" />
+                          <feGaussianBlur stdDeviation="15" result="blur2" />
+                          <feMerge>
+                            <feMergeNode in="blur2" />
+                            <feMergeNode in="blur1" />
+                            <feMergeNode in="SourceGraphic" />
+                          </feMerge>
+                        </filter>
+
+                        <filter id="engineGlow" x="-50%" y="-50%" width="200%" height="200%">
+                          <feGaussianBlur stdDeviation="3" result="blur1" />
+                          <feGaussianBlur stdDeviation="8" result="blur2" />
+                          <feMerge>
+                            <feMergeNode in="blur2" />
+                            <feMergeNode in="blur1" />
+                            <feMergeNode in="SourceGraphic" />
+                          </feMerge>
+                        </filter>
+                      </defs>
+
+                      {/* Background Thruster Glow Matrix */}
+                      <circle cx="100" cy="270" r="45" fill="#ff7b00" filter="url(#flameGlow)" opacity="0.3" />
+
+                      {/* Ambient Light from Exhaust */}
+                      <polygon points="40,350 160,350 100,250" fill="url(#coreFlame)" filter="url(#flameGlow)" opacity="0.15" />
+
+                      {/* Left Fin */}
+                      <path d="M 75 180 L 35 245 C 35 250 40 255 45 255 L 75 235 Z" fill="url(#darkMetal)" stroke="#2ed573" strokeWidth="1" strokeOpacity="0.4" />
+                      {/* Right Fin */}
+                      <path d="M 125 180 L 165 245 C 165 250 160 255 155 255 L 125 235 Z" fill="url(#darkMetal)" stroke="#2ed573" strokeWidth="1" strokeOpacity="0.4" />
+                      {/* Center Tail Fin */}
+                      <path d="M 100 160 L 105 245 L 95 245 Z" fill="url(#darkMetal)" />
+
+                      {/* Main Fuselage */}
+                      <path d="M 100 20 C 80 55 70 110 70 230 C 85 235 115 235 130 230 C 130 110 120 55 100 20 Z" fill="url(#bodyMetal)" />
+
+                      {/* Cockpit / Orbital Module Window */}
+                      <ellipse cx="100" cy="90" rx="14" ry="20" fill="#111" stroke="#2c363d" strokeWidth="2.5" />
+                      {/* Realistic Glass Reflections */}
+                      <path d="M 90 85 Q 100 70 110 85 Q 100 100 90 85 Z" fill="#81d4fa" opacity="0.4" />
+                      <circle cx="104" cy="84" r="3" fill="#ffffff" opacity="0.7" />
+
+                      {/* Fuselage Paneling & Decals */}
+                      <path d="M 72 130 Q 100 136 128 130 L 129 133 Q 100 139 71 133 Z" fill="#3b444b" />
+                      <path d="M 70 170 Q 100 176 130 170 L 130 173 Q 100 179 70 173 Z" fill="#3b444b" />
+
+                      <line x1="85" y1="133" x2="82" y2="173" stroke="#54626b" strokeWidth="1" />
+                      <line x1="115" y1="133" x2="118" y2="173" stroke="#54626b" strokeWidth="1" />
+
+                      <circle cx="100" cy="153" r="16" fill="url(#darkMetal)" stroke="#54626b" strokeWidth="1" />
+                      <circle cx="100" cy="153" r="12" fill="#111" />
+                      {/* Launch/Grow Icon */}
+                      <path d="M 94 156 L 100 145 L 106 156 Z" fill="url(#neonGreen)" />
+
+                      {/* Text Branding */}
+                      <g transform="translate(100, -15)" filter="url(#engineGlow)">
+                        <text x="0" y="0" fill="url(#neonGreen)" fontSize="12" fontWeight="900" fontFamily="sans-serif" textAnchor="middle" letterSpacing="5">DISRUPT</text>
+                      </g>
+
+                      {/* Engine Block / Thrust Structure */}
+                      <path d="M 70 230 C 85 235 115 235 130 230 L 125 245 C 110 250 90 250 75 245 Z" fill="url(#darkMetal)" />
+
+                      {/* Three Main Thruster Nozzles */}
+                      <path d="M 78 245 L 72 265 C 78 268 90 268 94 265 L 90 245 Z" fill="url(#darkMetal)" />
+                      <path d="M 122 245 L 128 265 C 122 268 110 268 106 265 L 110 245 Z" fill="url(#darkMetal)" />
+                      {/* Center Nozzle (Slightly larger) */}
+                      <path d="M 92 247 L 88 270 C 94 274 106 274 112 270 L 108 247 Z" fill="url(#bodyMetal)" />
+
+                      {/* Plume Flames */}
+                      <g filter="url(#flameGlow)">
+                        {/* Center large plume */}
+                        <path d="M 88 270 Q 100 280 112 270 Q 120 340 100 350 Q 80 340 88 270 Z" fill="url(#coreFlame)">
+                          <animate attributeName="d" values="M 88 270 Q 100 280 112 270 Q 120 340 100 350 Q 80 340 88 270 Z; M 88 270 Q 100 280 112 270 Q 125 330 100 365 Q 75 330 88 270 Z; M 88 270 Q 100 280 112 270 Q 120 340 100 350 Q 80 340 88 270 Z" dur="0.08s" repeatCount="indefinite" />
+                        </path>
+
+                        {/* Left plume */}
+                        <path d="M 72 265 Q 83 275 94 265 Q 98 310 83 330 Q 68 310 72 265 Z" fill="url(#sideFlame)">
+                          <animate attributeName="d" values="M 72 265 Q 83 275 94 265 Q 98 310 83 330 Q 68 310 72 265 Z; M 72 265 Q 83 275 94 265 Q 102 305 83 340 Q 64 305 72 265 Z; M 72 265 Q 83 275 94 265 Q 98 310 83 330 Q 68 310 72 265 Z" dur="0.10s" repeatCount="indefinite" />
+                        </path>
+
+                        {/* Right plume */}
+                        <path d="M 128 265 Q 117 275 106 265 Q 102 310 117 330 Q 132 310 128 265 Z" fill="url(#sideFlame)">
+                          <animate attributeName="d" values="M 128 265 Q 117 275 106 265 Q 102 310 117 330 Q 132 310 128 265 Z; M 128 265 Q 117 275 106 265 Q 98 305 117 340 Q 136 305 128 265 Z; M 128 265 Q 117 275 106 265 Q 102 310 117 330 Q 132 310 128 265 Z" dur="0.12s" repeatCount="indefinite" />
+                        </path>
+                      </g>
+                    </svg>
                   </div>
                   {/* Glow under rocket */}
                   <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-16 h-4 bg-[#2ed573]/10 rounded-full blur-md group-hover/rocket:bg-[#2ed573]/25 transition-all duration-300"></div>
