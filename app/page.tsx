@@ -12,7 +12,19 @@ export default function Home() {
   const [currentScreen, setCurrentScreen] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isRedirecting, setIsRedirecting] = useState(false);
+  const [countdown, setCountdown] = useState(7);
+  const [isTimerPaused, setIsTimerPaused] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    if (countdown > 0 && !isRedirecting && !isTimerPaused) {
+      const timer = setTimeout(() => setCountdown((prev) => prev - 1), 1000);
+      return () => clearTimeout(timer);
+    } else if (countdown === 0 && !isRedirecting && !isTimerPaused) {
+      setIsRedirecting(true);
+      router.push("/dashboard");
+    }
+  }, [countdown, isRedirecting, isTimerPaused, router]);
 
   const screens = [
     "Hi, I'm Arafat",
@@ -42,9 +54,11 @@ export default function Home() {
   const handleToggle = () => {
     playClickSound();
     if (!isOn) {
+      setIsTimerPaused(true);
       setIsOn(true);
       setCurrentScreen(0);
     } else {
+      setIsTimerPaused(false);
       setIsOn(false);
     }
   };
@@ -60,22 +74,20 @@ export default function Home() {
       {/* Power button */}
       <button
         onClick={handleToggle}
-        className={`w-16 h-16 rounded-full border-4 ${
-          isOn ? "border-[#2ed573]" : "border-[#2ed573]/30"
-        } flex items-center justify-center mb-8 transition-colors duration-300 hover:border-[#2ed573]`}
+        className={`w-16 h-16 rounded-full border-4 ${isOn ? "border-[#2ed573]" : "border-[#2ed573]/30"
+          } flex items-center justify-center mb-8 transition-colors duration-300 hover:border-[#2ed573]`}
       >
         <div
-          className={`w-8 h-8 rounded-full ${
-            isOn ? "bg-[#2ed573]" : "bg-[#2ed573]/30"
-          } transition-colors duration-300`}
+          className={`w-8 h-8 rounded-full ${isOn ? "bg-[#2ed573]" : "bg-[#2ed573]/30"
+            } transition-colors duration-300`}
         />
       </button>
 
       {/* Terminal screen */}
       <div
-        className={`w-full max-w-2xl h-48 bg-[#1e272e] rounded-lg p-6 font-mono relative overflow-hidden border border-[#2ed573]/10 shadow-[0_0_30px_rgba(46,213,115,0.08)] ${
-          isAnimating ? "animate-glitch" : ""
-        }`}
+        onClick={() => setIsTimerPaused(true)}
+        className={`w-full max-w-2xl h-48 bg-[#1e272e] rounded-lg p-6 font-mono relative overflow-hidden border border-[#2ed573]/10 shadow-[0_0_30px_rgba(46,213,115,0.08)] ${isAnimating ? "animate-glitch" : ""
+          }`}
       >
         <div className="flex items-center gap-2 mb-4">
           <div className="w-3 h-3 rounded-full bg-red-500" />
@@ -134,13 +146,20 @@ export default function Home() {
 
       {/* Instruction text */}
       <div className="text-center space-y-3 mt-2">
-        <div className="text-[#2ed573]/50 text-sm font-mono tracking-wide">
+        <div className="text-[#2ed573]/50 text-sm font-mono tracking-wide flex items-center justify-center gap-2">
           <span className="text-[#2ed573]/30">[</span>
-          <span> CLICK TO ENTER </span>
+          {isTimerPaused ? (
+            <span> TERMINAL ACTIVE - CLICK TO ENTER </span>
+          ) : (
+            <>
+              <span> CLICK TO ENTER OR WAIT </span>
+              <span className="text-[#2ed573]">{countdown}s</span>
+            </>
+          )}
           <span className="text-[#2ed573]/30">]</span>
         </div>
         <div className="text-[#2ed573]/40 text-sm font-mono">
-          <span className="text-[#2ed573]/30">&gt;</span> Welcome to My Portfolio
+          <span className="text-[#2ed573]/30">&gt;</span> SYSTEM.AUTO_BOOT {isTimerPaused ? <span className="text-[#e1b12c]">PAUSED</span> : <>IN <span className="text-[#2ed573] animate-pulse">00:{countdown >= 10 ? countdown : `0${countdown}`}</span></>}
         </div>
       </div>
 
