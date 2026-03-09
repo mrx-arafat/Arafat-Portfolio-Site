@@ -529,40 +529,62 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Contact Button - Hacker Style */}
+          {/* Hacker Skills Button */}
           <div className="p-4">
-            <div
-              onClick={() => {
-                setHackerEffect(true);
-                setTimeout(() => {
-                  navigateTo("/contact");
-                }, 800);
-              }}
-              className="relative group cursor-pointer"
-            >
+            <div className="relative group">
               {/* 3D Shadow/Base Layer */}
               <div className="absolute inset-0 bg-[#1f9b53] rounded-lg translate-x-2 translate-y-2 group-hover:translate-x-1 group-hover:translate-y-1 group-active:translate-x-0 group-active:translate-y-0 transition-all duration-200"></div>
 
               {/* Button Main Layer */}
               <div
-                className={`relative bg-[#2ed573] text-[#0f0f0f] font-bold py-4 px-6 rounded-lg flex items-center justify-between w-full z-10 shadow-lg transform transition-all duration-200 group-hover:shadow-xl ${hackerEffect ? "glitch-effect" : ""
-                  }`}
-                data-text="ACCESS GRANTED"
+                onClick={() => {
+                  // Add terminal typing sound effect
+                  playClickSound();
+
+                  // Add multiple hacker effects
+                  const btn = document.querySelector(".skills-btn");
+                  if (btn) {
+                    // 1. Add shake effect
+                    btn.classList.add("shake-effect");
+
+                    // 2. Add scan line effect
+                    const scanLine = btn.querySelector(".scan-line") as HTMLElement | null;
+                    if (scanLine) {
+                      scanLine.style.opacity = "0.7";
+                    }
+
+                    // 3. Add digital noise effect to text
+                    const textElements =
+                      btn.querySelectorAll(".text-lg, .text-xs");
+                    textElements.forEach((el) => {
+                      el.classList.add("digital-noise");
+                    });
+
+                    // Remove effects after animation completes
+                    setTimeout(() => {
+                      btn.classList.remove("shake-effect");
+                      if (scanLine) scanLine.style.opacity = "0";
+                      textElements.forEach((el) => {
+                        el.classList.remove("digital-noise");
+                      });
+
+                      // Navigate to skills page
+                      navigateTo("/skills");
+                    }, 500);
+                  } else {
+                    navigateTo("/skills");
+                  }
+                }}
+                className="skills-btn relative bg-[#2ed573] text-[#0f0f0f] font-bold py-4 px-5 rounded-lg flex items-center justify-between w-full z-10 shadow-lg transform transition-all duration-200 group-hover:shadow-xl cursor-pointer overflow-hidden"
               >
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-[#0f0f0f]/10 flex items-center justify-center">
-                    {hackerEffect ? (
-                      <Unlock className="w-5 h-5 text-[#0f0f0f]" />
-                    ) : (
-                      <Lock className="w-5 h-5 text-[#0f0f0f]" />
-                    )}
+                    <Code size={20} className="text-[#0f0f0f]" />
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-lg tracking-wide">CONTACT ME</span>
+                    <span className="text-lg tracking-wide">MY SKILLS</span>
                     <span className="text-[#0f0f0f]/70 text-xs font-mono whitespace-nowrap overflow-hidden text-ellipsis max-w-[180px]">
-                      {hackerEffect
-                        ? "ACCESS GRANTED..."
-                        : "$ ./connect.sh --secure"}
+                      $ ./skills.sh --view
                     </span>
                   </div>
                 </div>
@@ -570,32 +592,30 @@ export default function Dashboard() {
                 <div className="relative w-8 h-8 flex items-center justify-center overflow-hidden">
                   <div className="text-[#0f0f0f] font-bold text-xl">&gt;</div>
                 </div>
+
+                {/* Scan line effect */}
+                <div className="scan-line"></div>
               </div>
 
               {/* Decorative elements */}
               <div className="absolute top-0 left-0 w-2 h-8 bg-[#1f9b53] rounded-l-lg"></div>
               <div className="absolute bottom-0 right-0 w-8 h-2 bg-[#1f9b53] rounded-b-lg"></div>
 
-              {/* Matrix-like code rain effect (visible on hover) */}
-              <div className="absolute inset-0 bg-[#0f0f0f]/0 group-hover:bg-[#0f0f0f]/5 rounded-lg z-20 overflow-hidden pointer-events-none">
-                {[...Array(10)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="absolute text-[#2ed573]/20 text-xs font-mono"
-                    style={{
-                      left: `${i * 10}%`,
-                      top: "0",
-                      transform: "translateY(-100%)",
-                      animation: `fall 2s linear ${i * 0.1}s infinite`,
-                    }}
-                  >
-                    {[...Array(10)].map((_, j) => (
-                      <div key={j} style={{ animationDelay: `${j * 0.1}s` }}>
-                        {binaryValues[(i * 10 + j) % 100]}
+              {/* Binary code overlay (visible on hover) */}
+              <div className="absolute inset-0 bg-transparent rounded-lg z-20 overflow-hidden pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-[#0f0f0f]/10 font-mono text-xs tracking-widest">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <div key={i} className="flex">
+                        {Array.from({ length: 10 }).map((_, j) => (
+                          <span key={j} className="mx-px">
+                            {binaryValues[(i * 10 + j) % 100]}
+                          </span>
+                        ))}
                       </div>
                     ))}
                   </div>
-                ))}
+                </div>
               </div>
             </div>
           </div>
@@ -666,61 +686,39 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              {/* Hacker Skills Button */}
-              <div className="relative group mt-6">
+              {/* Contact Button - Hacker Style */}
+              <div
+                onClick={() => {
+                  setHackerEffect(true);
+                  setTimeout(() => {
+                    navigateTo("/contact");
+                  }, 800);
+                }}
+                className="relative group cursor-pointer mt-6"
+              >
                 {/* 3D Shadow/Base Layer */}
                 <div className="absolute inset-0 bg-[#1f9b53] rounded-lg translate-x-2 translate-y-2 group-hover:translate-x-1 group-hover:translate-y-1 group-active:translate-x-0 group-active:translate-y-0 transition-all duration-200"></div>
 
                 {/* Button Main Layer */}
                 <div
-                  onClick={() => {
-                    // Add terminal typing sound effect
-                    playClickSound();
-
-                    // Add multiple hacker effects
-                    const btn = document.querySelector(".skills-btn");
-                    if (btn) {
-                      // 1. Add shake effect
-                      btn.classList.add("shake-effect");
-
-                      // 2. Add scan line effect
-                      const scanLine = btn.querySelector(".scan-line") as HTMLElement | null;
-                      if (scanLine) {
-                        scanLine.style.opacity = "0.7";
-                      }
-
-                      // 3. Add digital noise effect to text
-                      const textElements =
-                        btn.querySelectorAll(".text-lg, .text-xs");
-                      textElements.forEach((el) => {
-                        el.classList.add("digital-noise");
-                      });
-
-                      // Remove effects after animation completes
-                      setTimeout(() => {
-                        btn.classList.remove("shake-effect");
-                        if (scanLine) scanLine.style.opacity = "0";
-                        textElements.forEach((el) => {
-                          el.classList.remove("digital-noise");
-                        });
-
-                        // Navigate to skills page
-                        navigateTo("/skills");
-                      }, 500);
-                    } else {
-                      navigateTo("/skills");
-                    }
-                  }}
-                  className="skills-btn relative bg-[#2ed573] text-[#0f0f0f] font-bold py-4 px-5 rounded-lg flex items-center justify-between w-full z-10 shadow-lg transform transition-all duration-200 group-hover:shadow-xl cursor-pointer overflow-hidden"
+                  className={`relative bg-[#2ed573] text-[#0f0f0f] font-bold py-4 px-6 rounded-lg flex items-center justify-between w-full z-10 shadow-lg transform transition-all duration-200 group-hover:shadow-xl ${hackerEffect ? "glitch-effect" : ""
+                    }`}
+                  data-text="ACCESS GRANTED"
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-[#0f0f0f]/10 flex items-center justify-center">
-                      <Code size={20} className="text-[#0f0f0f]" />
+                      {hackerEffect ? (
+                        <Unlock className="w-5 h-5 text-[#0f0f0f]" />
+                      ) : (
+                        <Lock className="w-5 h-5 text-[#0f0f0f]" />
+                      )}
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-lg tracking-wide">MY SKILLS</span>
+                      <span className="text-lg tracking-wide">CONTACT ME</span>
                       <span className="text-[#0f0f0f]/70 text-xs font-mono whitespace-nowrap overflow-hidden text-ellipsis max-w-[180px]">
-                        $ ./skills.sh --view
+                        {hackerEffect
+                          ? "ACCESS GRANTED..."
+                          : "$ ./connect.sh --secure"}
                       </span>
                     </div>
                   </div>
@@ -728,30 +726,32 @@ export default function Dashboard() {
                   <div className="relative w-8 h-8 flex items-center justify-center overflow-hidden">
                     <div className="text-[#0f0f0f] font-bold text-xl">&gt;</div>
                   </div>
-
-                  {/* Scan line effect */}
-                  <div className="scan-line"></div>
                 </div>
 
                 {/* Decorative elements */}
                 <div className="absolute top-0 left-0 w-2 h-8 bg-[#1f9b53] rounded-l-lg"></div>
                 <div className="absolute bottom-0 right-0 w-8 h-2 bg-[#1f9b53] rounded-b-lg"></div>
 
-                {/* Binary code overlay (visible on hover) */}
-                <div className="absolute inset-0 bg-transparent rounded-lg z-20 overflow-hidden pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-[#0f0f0f]/10 font-mono text-xs tracking-widest">
-                      {Array.from({ length: 5 }).map((_, i) => (
-                        <div key={i} className="flex">
-                          {Array.from({ length: 10 }).map((_, j) => (
-                            <span key={j} className="mx-px">
-                              {binaryValues[(i * 10 + j) % 100]}
-                            </span>
-                          ))}
+                {/* Matrix-like code rain effect (visible on hover) */}
+                <div className="absolute inset-0 bg-[#0f0f0f]/0 group-hover:bg-[#0f0f0f]/5 rounded-lg z-20 overflow-hidden pointer-events-none">
+                  {[...Array(10)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="absolute text-[#2ed573]/20 text-xs font-mono"
+                      style={{
+                        left: `${i * 10}%`,
+                        top: "0",
+                        transform: "translateY(-100%)",
+                        animation: `fall 2s linear ${i * 0.1}s infinite`,
+                      }}
+                    >
+                      {[...Array(10)].map((_, j) => (
+                        <div key={j} style={{ animationDelay: `${j * 0.1}s` }}>
+                          {binaryValues[(i * 10 + j) % 100]}
                         </div>
                       ))}
                     </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             </div>

@@ -12,7 +12,7 @@ export default function Home() {
   const [currentScreen, setCurrentScreen] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isRedirecting, setIsRedirecting] = useState(false);
-  const [countdown, setCountdown] = useState(7);
+  const [countdown, setCountdown] = useState(5);
   const [isTimerPaused, setIsTimerPaused] = useState(false);
   const router = useRouter();
 
