@@ -1,5 +1,12 @@
 [
   {
+    "id": "urc-2021",
+    "title": "2021 URC Global Champion",
+    "description": "Software and Communication Lead of team MIST Mongol Barota for the University Mars Rover Challenge.",
+    "imageUrl": "/images/urc-logo.png",
+    "imageAlt": "URC Logo"
+  },
+  {
     "id": "leadership",
     "title": "Leadership",
     "description": "President of MIST Cyber Security Club (2023-2024)",

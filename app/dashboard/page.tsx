@@ -1067,7 +1067,7 @@ export default function Dashboard() {
                     <img
                       src={item.imageUrl}
                       alt={item.imageAlt}
-                      className="w-full h-full object-cover"
+                      className={`w-full h-full ${item.id === 'urc-2021' ? 'object-contain p-1 bg-white' : 'object-cover'}`}
                       loading="lazy"
                       decoding="async"
                     />
