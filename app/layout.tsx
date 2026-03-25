@@ -9,28 +9,35 @@ import StructuredData from "./components/StructuredData";
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("http://profile.arafatbytes.live"),
-  title:
-    "Easin Arafat | Application Security Engineer @ Startise | Cybersecurity Expert",
+  metadataBase: new URL("https://profile.arafatops.com"),
+  title: {
+    default:
+      "Easin Arafat | Application Security Engineer @ Startise | Cybersecurity Expert",
+    template: "%s | Easin Arafat",
+  },
   description:
-    "Easin Arafat is an Application Security Engineer at Startise. Graduated from MIST and Former President of MIST Cyber Security Club. Leading cybersecurity expert in Bangladesh specializing in cybersecurity, web development, and business solutions.",
+    "Easin Arafat is an Application Security Engineer at Startise. MIST graduate and Former President of MIST Cyber Security Club. Cybersecurity expert in Bangladesh specializing in application security, penetration testing, web development, and DevSecOps.",
   keywords:
-    "Easin Arafat, Arafat, Application Security Engineer, Cybersecurity, Web Developer, Entrepreneur, Startise, Security Expert, Bangladesh, MIST, MIST Cyber Security Club, Cyber Security Bangladesh, Easin Arafat MIST, Application Security Engineer Bangladesh, Cybersecurity Expert Bangladesh",
-  authors: [{ name: "Easin Arafat" }],
+    "Easin Arafat, Arafat, easin arafat, Application Security Engineer, Cybersecurity, Web Developer, Entrepreneur, Startise, xCloud, Security Expert, Bangladesh, MIST, MIST Cyber Security Club, Cyber Security Bangladesh, Easin Arafat MIST, Application Security Engineer Bangladesh, Cybersecurity Expert Bangladesh, Penetration Testing, DevSecOps, Secure Coding, arafatops",
+  authors: [{ name: "Easin Arafat", url: "https://profile.arafatops.com" }],
   creator: "Easin Arafat",
+  publisher: "Easin Arafat",
+  alternates: {
+    canonical: "https://profile.arafatops.com",
+  },
   openGraph: {
     title:
       "Easin Arafat | Application Security Engineer @ Startise | Cybersecurity Expert",
     description:
-      "Easin Arafat is an Application Security Engineer at Startise. Graduated from MIST and Former President of MIST Cyber Security Club. Leading cybersecurity expert in Bangladesh specializing in cybersecurity, web development, and business solutions.",
-    url: "http://profile.arafatbytes.live",
-    siteName: "Easin Arafat Portfolio",
+      "Easin Arafat is an Application Security Engineer at Startise. MIST graduate and Former President of MIST Cyber Security Club. Cybersecurity expert in Bangladesh specializing in application security, penetration testing, web development, and DevSecOps.",
+    url: "https://profile.arafatops.com",
+    siteName: "Easin Arafat - Portfolio",
     images: [
       {
         url: "/images/profile.webp",
         width: 800,
         height: 600,
-        alt: "Easin Arafat - Application Security Engineer & Startise Employee",
+        alt: "Easin Arafat - Application Security Engineer at Startise",
       },
     ],
     locale: "en_US",
@@ -41,7 +48,7 @@ export const metadata: Metadata = {
     title:
       "Easin Arafat | Application Security Engineer @ Startise | Cybersecurity Expert",
     description:
-      "Easin Arafat is an Application Security Engineer at Startise. Graduated from MIST and Former President of MIST Cyber Security Club. Leading cybersecurity expert in Bangladesh specializing in cybersecurity, web development, and business solutions.",
+      "Easin Arafat is an Application Security Engineer at Startise. MIST graduate and Former President of MIST Cyber Security Club. Cybersecurity expert in Bangladesh.",
     images: ["/images/profile.webp"],
   },
   robots: {
