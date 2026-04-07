@@ -9,6 +9,8 @@ import {
   Calendar,
   Clock,
   ExternalLink,
+  Play,
+  Pause,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import blogsData from "@/data/blogs.json";
@@ -24,13 +26,19 @@ interface BlogPost {
   tags: string[];
 }
 
+const POSTS_PER_PAGE_DESKTOP = 10;
+const POSTS_PER_PAGE_MOBILE = 5;
+
 export default function Blogs() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
   const [currentPost, setCurrentPost] = useState(0);
   const [isEntering, setIsEntering] = useState(true);
+  const [countdown, setCountdown] = useState(5);
+  const [isAutoAdvancing, setIsAutoAdvancing] = useState(true);
   const clickSoundRef = useRef<HTMLAudioElement | null>(null);
+  const countdownTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Blog posts data is now imported from JSON file
 
@@ -59,6 +67,7 @@ export default function Blogs() {
     return () => {
       clearTimeout(enterTimer);
       if (clickSoundRef.current) clickSoundRef.current.pause();
+      if (countdownTimerRef.current) clearInterval(countdownTimerRef.current);
     };
   }, []);
 
@@ -83,17 +92,58 @@ export default function Blogs() {
   const nextPost = () => {
     playClickSound();
     setCurrentPost((prev) => (prev + 1) % posts.length);
+    setCountdown(3);
   };
 
   const prevPost = () => {
     playClickSound();
     setCurrentPost((prev) => (prev - 1 + posts.length) % posts.length);
+    setCountdown(3);
   };
 
   const openBlogPost = (url: string) => {
     playClickSound();
     window.open(url, "_blank");
   };
+
+  // Countdown timer for auto-advance (3 seconds)
+  useEffect(() => {
+    if (!isAutoAdvancing || posts.length === 0) {
+      if (countdownTimerRef.current) {
+        clearInterval(countdownTimerRef.current);
+        countdownTimerRef.current = null;
+      }
+      return;
+    }
+
+    let timeElapsed = 0;
+
+    // Clear any existing interval first
+    if (countdownTimerRef.current) {
+      clearInterval(countdownTimerRef.current);
+    }
+
+    setCountdown(5);
+
+    countdownTimerRef.current = setInterval(() => {
+      timeElapsed += 1;
+      setCountdown(5 - timeElapsed);
+
+      if (timeElapsed >= 5) {
+        // Auto-advance to next post
+        setCurrentPost((p) => (p + 1) % posts.length);
+        timeElapsed = 0;
+        setCountdown(5);
+      }
+    }, 1000);
+
+    return () => {
+      if (countdownTimerRef.current) {
+        clearInterval(countdownTimerRef.current);
+        countdownTimerRef.current = null;
+      }
+    };
+  }, [isAutoAdvancing, posts.length]);
 
   // Simple preloading for adjacent blog images
   useEffect(() => {
@@ -251,7 +301,13 @@ export default function Blogs() {
                   $ cat article.md
                 </div>
               </div>
-              <div className="absolute top-4 right-4 z-30">
+              <div className="absolute top-4 right-4 z-30 flex items-center gap-2">
+                {isAutoAdvancing && (
+                  <div className="bg-[#0f0f0f]/70 text-[#2ed573] px-2 py-1 rounded text-xs border border-[#2ed573]/20 flex items-center gap-1">
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#2ed573] animate-pulse"></div>
+                    <span>{countdown}s</span>
+                  </div>
+                )}
                 <div className="bg-[#0f0f0f]/70 text-[#2ed573] px-2 py-1 rounded text-xs border border-[#2ed573]/20 flex items-center gap-1">
                   <ExternalLink size={10} />
                   <span>Click to read</span>
@@ -381,66 +437,159 @@ export default function Blogs() {
 
         {posts.length > 0 && (
           <div className="mt-8 bg-[#1a1b26] rounded-lg p-4 border border-[#2ed573]/10 shadow-[0_0_15px_rgba(46,213,115,0.1)]">
-            {/* Desktop pagination */}
-            <div className="hidden md:flex items-center justify-between">
-              <div className="text-[#2ed573]/60 text-xs font-mono">
-                $ navigate_posts.sh
+            {/* Desktop pagination - smart pagination showing only current page */}
+            <div className="hidden md:flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3 flex-1">
+                <div className="text-[#2ed573]/60 text-xs font-mono whitespace-nowrap">
+                  $ navigate_posts.sh
+                </div>
+
+                {/* Current page pagination controls */}
+                <div className="flex items-center gap-2">
+                  {/* Previous page button */}
+                  {Math.floor(currentPost / POSTS_PER_PAGE_DESKTOP) > 0 && (
+                    <button
+                      onClick={() => {
+                        playClickSound();
+                        const prevPage = Math.floor(currentPost / POSTS_PER_PAGE_DESKTOP) - 1;
+                        setCurrentPost(prevPage * POSTS_PER_PAGE_DESKTOP);
+                        setCountdown(5);
+                      }}
+                      className="w-6 h-6 flex items-center justify-center rounded-md transition-colors text-xs font-medium bg-[#0f0f0f] text-[#2ed573]/70 hover:bg-[#0f0f0f]/80 hover:text-[#2ed573]"
+                      aria-label="Previous page"
+                    >
+                      ‹
+                    </button>
+                  )}
+
+                  {/* Current page post numbers */}
+                  <div className="flex items-center gap-1">
+                    {Array.from({
+                      length: Math.min(
+                        POSTS_PER_PAGE_DESKTOP,
+                        posts.length - Math.floor(currentPost / POSTS_PER_PAGE_DESKTOP) * POSTS_PER_PAGE_DESKTOP
+                      ),
+                    }).map((_, i) => {
+                      const currentPageIndex = Math.floor(currentPost / POSTS_PER_PAGE_DESKTOP);
+                      const index = currentPageIndex * POSTS_PER_PAGE_DESKTOP + i;
+                      return (
+                        <button
+                          key={index}
+                          onClick={() => {
+                            playClickSound();
+                            setCurrentPost(index);
+                            setCountdown(5);
+                          }}
+                          className={`w-8 h-8 flex items-center justify-center rounded-md transition-colors text-xs font-medium ${
+                            currentPost === index
+                              ? "bg-[#2ed573] text-[#0f0f0f]"
+                              : "bg-[#0f0f0f] text-[#2ed573]/70 hover:bg-[#0f0f0f]/80 hover:text-[#2ed573]"
+                          }`}
+                          aria-label={`Go to post ${index + 1}`}
+                        >
+                          {index + 1}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Next page button */}
+                  {Math.floor(currentPost / POSTS_PER_PAGE_DESKTOP) < Math.ceil(posts.length / POSTS_PER_PAGE_DESKTOP) - 1 && (
+                    <button
+                      onClick={() => {
+                        playClickSound();
+                        const nextPage = Math.floor(currentPost / POSTS_PER_PAGE_DESKTOP) + 1;
+                        setCurrentPost(nextPage * POSTS_PER_PAGE_DESKTOP);
+                        setCountdown(5);
+                      }}
+                      className="w-6 h-6 flex items-center justify-center rounded-md transition-colors text-xs font-medium bg-[#0f0f0f] text-[#2ed573]/70 hover:bg-[#0f0f0f]/80 hover:text-[#2ed573]"
+                      aria-label="Next page"
+                    >
+                      ›
+                    </button>
+                  )}
+                </div>
               </div>
-              <div className="flex items-center gap-1">
-                {posts.map((_, index) => (
+
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2">
                   <button
-                    key={index}
-                    onClick={() => {
-                      playClickSound();
-                      setCurrentPost(index);
-                    }}
-                    className={`w-8 h-8 flex items-center justify-center rounded-md mx-0.5 transition-colors ${
-                      currentPost === index
-                        ? "bg-[#2ed573] text-[#0f0f0f] font-medium"
-                        : "bg-[#0f0f0f] text-[#2ed573]/70 hover:bg-[#0f0f0f]/80 hover:text-[#2ed573]"
+                    onClick={() => setIsAutoAdvancing(!isAutoAdvancing)}
+                    className={`flex items-center gap-2 px-3 py-1 rounded-md text-xs font-mono transition-colors ${
+                      isAutoAdvancing
+                        ? "bg-[#2ed573]/20 text-[#2ed573] border border-[#2ed573]/40 hover:bg-[#2ed573]/30"
+                        : "bg-[#0f0f0f] text-[#2ed573]/60 border border-[#2ed573]/20 hover:text-[#2ed573] hover:bg-[#0f0f0f]/50"
                     }`}
-                    aria-label={`Go to post ${index + 1}`}
                   >
-                    {index + 1}
+                    {isAutoAdvancing ? (
+                      <>
+                        <Pause size={14} />
+                        <span>Auto ({countdown}s)</span>
+                      </>
+                    ) : (
+                      <>
+                        <Play size={14} />
+                        <span>Paused</span>
+                      </>
+                    )}
                   </button>
-                ))}
-              </div>
-              <div className="text-[#2ed573]/60 text-xs font-mono">
-                {currentPost + 1}/{posts.length}
+                </div>
+                <div className="text-[#2ed573]/60 text-xs font-mono whitespace-nowrap">
+                  {currentPost + 1}/{posts.length}
+                </div>
               </div>
             </div>
 
             {/* Mobile pagination - simplified */}
             <div className="md:hidden">
-              <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center justify-between mb-3 gap-2">
                 <div className="text-[#2ed573]/60 text-xs font-mono">
                   $ navigate_posts.sh
                 </div>
+                <button
+                  onClick={() => setIsAutoAdvancing(!isAutoAdvancing)}
+                  className={`flex items-center gap-1 px-2 py-1 rounded text-xs font-mono transition-colors whitespace-nowrap ${
+                    isAutoAdvancing
+                      ? "bg-[#2ed573]/20 text-[#2ed573] border border-[#2ed573]/40 hover:bg-[#2ed573]/30"
+                      : "bg-[#0f0f0f] text-[#2ed573]/60 border border-[#2ed573]/20 hover:text-[#2ed573] hover:bg-[#0f0f0f]/50"
+                  }`}
+                >
+                  {isAutoAdvancing ? (
+                    <>
+                      <Pause size={12} />
+                      <span>{countdown}s</span>
+                    </>
+                  ) : (
+                    <>
+                      <Play size={12} />
+                    </>
+                  )}
+                </button>
                 <div className="text-[#2ed573]/60 text-xs font-mono">
                   {currentPost + 1}/{posts.length}
                 </div>
               </div>
 
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-2">
                 <Button
                   onClick={prevPost}
                   disabled={posts.length <= 1}
-                  className="bg-[#0f0f0f] hover:bg-[#1e272e] text-[#2ed573] border border-[#2ed573]/30 px-4 py-2 rounded-md transition-colors flex-1 mr-2"
+                  className="bg-[#0f0f0f] hover:bg-[#1e272e] text-[#2ed573] border border-[#2ed573]/30 px-3 py-2 rounded-md transition-colors flex-1 text-sm"
                 >
                   <div className="flex items-center justify-center">
-                    <ArrowLeft size={16} className="mr-2" />
-                    <span>Previous</span>
+                    <ArrowLeft size={14} className="mr-1" />
+                    <span>Prev</span>
                   </div>
                 </Button>
 
                 <Button
                   onClick={nextPost}
                   disabled={posts.length <= 1}
-                  className="bg-[#0f0f0f] hover:bg-[#1e272e] text-[#2ed573] border border-[#2ed573]/30 px-4 py-2 rounded-md transition-colors flex-1 ml-2"
+                  className="bg-[#0f0f0f] hover:bg-[#1e272e] text-[#2ed573] border border-[#2ed573]/30 px-3 py-2 rounded-md transition-colors flex-1 text-sm"
                 >
                   <div className="flex items-center justify-center">
                     <span>Next</span>
-                    <ArrowRight size={16} className="ml-2" />
+                    <ArrowRight size={14} className="ml-1" />
                   </div>
                 </Button>
               </div>

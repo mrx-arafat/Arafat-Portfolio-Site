@@ -1,5 +1,15 @@
 [
   {
+    "id": "8",
+    "title": "Anatomy of the Axios Supply Chain Attack: A Full Technical Breakdown",
+    "description": "How a 3-hour npm compromise turned 100 million weekly downloads into a cross-platform RAT deployment pipeline. A detailed technical analysis of one of the most impactful supply chain attacks.",
+    "publishDate": "2026",
+    "readTime": "10 min read",
+    "url": "https://medium.com/@easinxarafat/anatomy-of-the-axios-supply-chain-attack-a-full-technical-breakdown-650ad88e7865",
+    "imageUrl": "https://miro.medium.com/1*Vv3p_gifuEvbKD3voF1DaA.png",
+    "tags": ["Cybersecurity", "Supply Chain", "npm", "Security Research", "Technical Analysis"]
+  },
+  {
     "id": "1",
     "title": "A Pound of Flesh: The Hidden Math Behind History's Most Infamous Loan",
     "description": "Exploring the mathematical and historical aspects of one of history's most famous loans.",
@@ -28,6 +38,16 @@
     "url": "https://medium.com/@easinxarafat/understanding-dopamine-your-brains-motivation-engine-50b4d6d140a3",
     "imageUrl": "https://miro.medium.com/v2/resize:fit:4800/format:webp/0*7pRQ1jIgUvyv-eO4.jpg",
     "tags": ["Self Improvement", "Dopamine Detox", "Productivity", "Life"]
+  },
+  {
+    "id": "7",
+    "title": "That One Introspective Girl (My Girl)",
+    "description": "She lives in her thoughts, a universe I'm still learning to navigate. My introspective girl - the one who speaks in silences, dreams in questions, and holds mysteries in her eyes. A story of decoding her quiet world, where every glance holds meaning and every pause tells a story.",
+    "publishDate": "2024",
+    "readTime": "3 min read",
+    "url": "https://medium.com/@easinxarafat/that-one-introspective-girl-1b25ced83477",
+    "imageUrl": "https://miro.medium.com/v2/resize:fit:1100/format:webp/0*N6Ac81f0k8y9wsXS.jpg",
+    "tags": ["Personal Story", "Relationships", "Introspection", "Love & Connection","Kaynat"]
   },
   {
     "id": "4",
@@ -60,13 +80,73 @@
     "tags": ["Psychology", "Human Behavior"]
   },
   {
-    "id": "7",
-    "title": "That One Introspective Girl (My Girl)",
-    "description": "She lives in her thoughts, a universe I'm still learning to navigate. My introspective girl - the one who speaks in silences, dreams in questions, and holds mysteries in her eyes. A story of decoding her quiet world, where every glance holds meaning and every pause tells a story.",
-    "publishDate": "2024",
-    "readTime": "3 min read",
-    "url": "https://medium.com/@easinxarafat/that-one-introspective-girl-1b25ced83477",
-    "imageUrl": "https://miro.medium.com/v2/resize:fit:1100/format:webp/0*N6Ac81f0k8y9wsXS.jpg",
-    "tags": ["Personal Story", "Relationships", "Introspection", "Love & Connection","Kaynat"]
+    "id": "9",
+    "title": "I Am the Man from the Underground — And So Are You",
+    "description": "Reading Dostoevsky felt like someone had broken into my head, stolen my thoughts, and published them 160 years ago. An exploration of existential themes and human nature through literature.",
+    "publishDate": "2026",
+    "readTime": "6 min read",
+    "url": "https://medium.com/@easinxarafat/i-am-the-man-from-the-underground-and-so-are-you-b14579a40778",
+    "imageUrl": "https://miro.medium.com/0*ur73QspLJlQVBTLG.jpg",
+    "tags": ["Philosophy", "Literature", "Psychology", "Existentialism"]
+  },
+  {
+    "id": "10",
+    "title": "Beyond Probability: Why Your Path to Wealth Isn't Random (And What You Can Control)",
+    "description": "Exploration of probability concepts and factors influencing financial outcomes. Understanding how to navigate wealth creation beyond chance.",
+    "publishDate": "2025",
+    "readTime": "7 min read",
+    "url": "https://medium.com/@easinxarafat/beyond-probability-why-your-path-to-wealth-isnt-random-and-what-you-can-control-460940a281f6",
+    "imageUrl": "https://miro.medium.com/0*j7IIADWp8jCbo_V8.jpg",
+    "tags": ["Finance", "Probability", "Personal Growth", "Wealth"]
+  },
+  {
+    "id": "11",
+    "title": "Prizes Can Kill Your Passion",
+    "description": "That activity you once loved with your whole heart? The one that pulled you into a state of flow where time disappeared? Explore how external incentives can undermine intrinsic motivation.",
+    "publishDate": "2025",
+    "readTime": "4 min read",
+    "url": "https://medium.com/@easinxarafat/prizes-can-kill-your-passion-3ff29db8e9b7",
+    "imageUrl": "https://miro.medium.com/0*_DtdHmVwm_lXFBA5.jpg",
+    "tags": ["Motivation", "Psychology", "Productivity", "Personal Development"]
+  },
+  {
+    "id": "12",
+    "title": "Brain Fog: The Invisible Barrier to Clarity",
+    "description": "Is brain fog stealing your focus? Let's discover the science-backed secrets to reclaim your mental sharpness and cognitive clarity.",
+    "publishDate": "2025",
+    "readTime": "5 min read",
+    "url": "https://medium.com/@easinxarafat/brain-fog-the-invisible-barrier-to-clarity-ec5c70b3729c",
+    "imageUrl": "https://miro.medium.com/0*NMOA5a5RpvOby4GF.jpg",
+    "tags": ["Health", "Productivity", "Mental Health", "Science"]
+  },
+  {
+    "id": "13",
+    "title": "Finding Meaning When Life Gets Tough: Practical Philosophy for Everyday Challenges",
+    "description": "Philosophical approaches for navigating job loss, relationship endings, illness, and existential uncertainty. Practical wisdom for life's most difficult moments.",
+    "publishDate": "2025",
+    "readTime": "8 min read",
+    "url": "https://medium.com/@easinxarafat/finding-meaning-when-life-gets-tough-practical-philosophy-for-everyday-challenges-1860af93d976",
+    "imageUrl": "https://miro.medium.com/0*HjDzkn3Gk_wzO5Wc.jpg",
+    "tags": ["Philosophy", "Self Improvement", "Life", "Resilience"]
+  },
+  {
+    "id": "14",
+    "title": "Unlocking My Potential: Lessons from My Own Hero's Journey",
+    "description": "Personal narrative documenting transformative self-discovery and growth processes. A story of overcoming challenges and unlocking hidden potential.",
+    "publishDate": "2025",
+    "readTime": "6 min read",
+    "url": "https://medium.com/@easinxarafat/unlocking-my-potential-lessons-from-my-own-heros-journey-e16d8a705d0a",
+    "imageUrl": "https://miro.medium.com/0*GmZ8dzsNZ0MdreGY.jpg",
+    "tags": ["Personal Story", "Growth", "Self Discovery", "Inspiration"]
+  },
+  {
+    "id": "15",
+    "title": "My Journey Through the Personality Maze",
+    "description": "Exploration of personality psychology and its explanatory power for human differences. Understanding yourself and others through personality frameworks.",
+    "publishDate": "2025",
+    "readTime": "5 min read",
+    "url": "https://medium.com/@easinxarafat/my-journey-through-the-personality-maze-ea327de49d71",
+    "imageUrl": "https://miro.medium.com/0*sMgoITkx4h7EdQQg.jpg",
+    "tags": ["Psychology", "Self Improvement", "Personal Development"]
   }
 ]

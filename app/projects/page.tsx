@@ -10,6 +10,8 @@ import {
   ExternalLink,
   Eye,
   Code,
+  Play,
+  Pause,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import projectsData from "@/data/projects.json";
@@ -26,6 +28,9 @@ interface GithubRepo {
   preview_image?: string;
 }
 
+const PROJECTS_PER_PAGE_DESKTOP = 10;
+const PROJECTS_PER_PAGE_MOBILE = 5;
+
 export default function Projects() {
   const [currentProject, setCurrentProject] = useState(0);
   const [projects, setProjects] = useState<GithubRepo[]>([]);
@@ -34,7 +39,10 @@ export default function Projects() {
   const [imageLoading, setImageLoading] = useState<{ [key: number]: boolean }>({});
   const [imageErrors, setImageErrors] = useState<{ [key: number]: boolean }>({});
   const [isEntering, setIsEntering] = useState(true);
+  const [countdown, setCountdown] = useState(5);
+  const [isAutoAdvancing, setIsAutoAdvancing] = useState(true);
   const clickSoundRef = useRef<HTMLAudioElement | null>(null);
+  const countdownTimerRef = useRef<NodeJS.Timeout | null>(null);
 
 
 
@@ -72,8 +80,48 @@ export default function Projects() {
     return () => {
       clearTimeout(enterTimer);
       if (clickSoundRef.current) clickSoundRef.current.pause();
+      if (countdownTimerRef.current) clearInterval(countdownTimerRef.current);
     };
   }, []);
+
+  // Countdown timer for auto-advance (3 seconds)
+  useEffect(() => {
+    if (!isAutoAdvancing || projects.length === 0) {
+      if (countdownTimerRef.current) {
+        clearInterval(countdownTimerRef.current);
+        countdownTimerRef.current = null;
+      }
+      return;
+    }
+
+    let timeElapsed = 0;
+
+    // Clear any existing interval first
+    if (countdownTimerRef.current) {
+      clearInterval(countdownTimerRef.current);
+    }
+
+    setCountdown(5);
+
+    countdownTimerRef.current = setInterval(() => {
+      timeElapsed += 1;
+      setCountdown(5 - timeElapsed);
+
+      if (timeElapsed >= 5) {
+        // Auto-advance to next project
+        setCurrentProject((p) => (p + 1) % projects.length);
+        timeElapsed = 0;
+        setCountdown(5);
+      }
+    }, 1000);
+
+    return () => {
+      if (countdownTimerRef.current) {
+        clearInterval(countdownTimerRef.current);
+        countdownTimerRef.current = null;
+      }
+    };
+  }, [isAutoAdvancing, projects.length]);
 
   const playClickSound = () => {
     if (!isMuted && clickSoundRef.current) {
@@ -96,11 +144,13 @@ export default function Projects() {
   const nextProject = () => {
     playClickSound();
     setCurrentProject((prev) => (prev + 1) % projects.length);
+    setCountdown(3);
   };
 
   const prevProject = () => {
     playClickSound();
     setCurrentProject((prev) => (prev - 1 + projects.length) % projects.length);
+    setCountdown(3);
   };
 
   const getLanguageColor = (language: string) => {
@@ -307,9 +357,15 @@ export default function Projects() {
                 </div>
               </div>
 
-              {/* Star count */}
-              {projects[currentProject].stargazers_count > 0 && (
-                <div className="absolute top-4 right-4 z-30">
+              {/* Star count and countdown timer */}
+              <div className="absolute top-4 right-4 z-30 flex items-center gap-2">
+                {isAutoAdvancing && (
+                  <div className="bg-[#0f0f0f]/70 text-[#2ed573] px-2 py-1 rounded text-xs border border-[#2ed573]/20 flex items-center gap-1">
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#2ed573] animate-pulse"></div>
+                    <span>{countdown}s</span>
+                  </div>
+                )}
+                {projects[currentProject].stargazers_count > 0 && (
                   <div className="bg-[#0f0f0f]/70 text-[#2ed573] px-2 py-1 rounded text-xs border border-[#2ed573]/20 flex items-center gap-1">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -326,8 +382,8 @@ export default function Projects() {
                     </svg>
                     <span>{projects[currentProject].stargazers_count}</span>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
 
               {/* Bottom info */}
               <div className="absolute bottom-0 left-0 right-0 p-4 z-30">
@@ -447,66 +503,159 @@ export default function Projects() {
 
         {projects.length > 0 && (
           <div className="mt-8 bg-[#1a1b26] rounded-lg p-4 border border-[#2ed573]/10 shadow-[0_0_15px_rgba(46,213,115,0.1)]">
-            {/* Desktop pagination */}
-            <div className="hidden md:flex items-center justify-between">
-              <div className="text-[#2ed573]/60 text-xs font-mono">
-                $ navigate_repos.sh
+            {/* Desktop pagination - smart pagination showing only current page */}
+            <div className="hidden md:flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3 flex-1">
+                <div className="text-[#2ed573]/60 text-xs font-mono whitespace-nowrap">
+                  $ navigate_repos.sh
+                </div>
+
+                {/* Current page pagination controls */}
+                <div className="flex items-center gap-2">
+                  {/* Previous page button */}
+                  {Math.floor(currentProject / PROJECTS_PER_PAGE_DESKTOP) > 0 && (
+                    <button
+                      onClick={() => {
+                        playClickSound();
+                        const prevPage = Math.floor(currentProject / PROJECTS_PER_PAGE_DESKTOP) - 1;
+                        setCurrentProject(prevPage * PROJECTS_PER_PAGE_DESKTOP);
+                        setCountdown(5);
+                      }}
+                      className="w-6 h-6 flex items-center justify-center rounded-md transition-colors text-xs font-medium bg-[#0f0f0f] text-[#2ed573]/70 hover:bg-[#0f0f0f]/80 hover:text-[#2ed573]"
+                      aria-label="Previous page"
+                    >
+                      ‹
+                    </button>
+                  )}
+
+                  {/* Current page project numbers */}
+                  <div className="flex items-center gap-1">
+                    {Array.from({
+                      length: Math.min(
+                        PROJECTS_PER_PAGE_DESKTOP,
+                        projects.length - Math.floor(currentProject / PROJECTS_PER_PAGE_DESKTOP) * PROJECTS_PER_PAGE_DESKTOP
+                      ),
+                    }).map((_, i) => {
+                      const currentPageIndex = Math.floor(currentProject / PROJECTS_PER_PAGE_DESKTOP);
+                      const index = currentPageIndex * PROJECTS_PER_PAGE_DESKTOP + i;
+                      return (
+                        <button
+                          key={index}
+                          onClick={() => {
+                            playClickSound();
+                            setCurrentProject(index);
+                            setCountdown(5);
+                          }}
+                          className={`w-8 h-8 flex items-center justify-center rounded-md transition-colors text-xs font-medium ${
+                            currentProject === index
+                              ? "bg-[#2ed573] text-[#0f0f0f]"
+                              : "bg-[#0f0f0f] text-[#2ed573]/70 hover:bg-[#0f0f0f]/80 hover:text-[#2ed573]"
+                          }`}
+                          aria-label={`Go to project ${index + 1}`}
+                        >
+                          {index + 1}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Next page button */}
+                  {Math.floor(currentProject / PROJECTS_PER_PAGE_DESKTOP) < Math.ceil(projects.length / PROJECTS_PER_PAGE_DESKTOP) - 1 && (
+                    <button
+                      onClick={() => {
+                        playClickSound();
+                        const nextPage = Math.floor(currentProject / PROJECTS_PER_PAGE_DESKTOP) + 1;
+                        setCurrentProject(nextPage * PROJECTS_PER_PAGE_DESKTOP);
+                        setCountdown(5);
+                      }}
+                      className="w-6 h-6 flex items-center justify-center rounded-md transition-colors text-xs font-medium bg-[#0f0f0f] text-[#2ed573]/70 hover:bg-[#0f0f0f]/80 hover:text-[#2ed573]"
+                      aria-label="Next page"
+                    >
+                      ›
+                    </button>
+                  )}
+                </div>
               </div>
-              <div className="flex items-center gap-1 overflow-x-auto pb-1 custom-scrollbar">
-                {projects.map((_, index) => (
+
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2">
                   <button
-                    key={index}
-                    onClick={() => {
-                      playClickSound();
-                      setCurrentProject(index);
-                    }}
-                    className={`w-8 h-8 flex items-center justify-center rounded-md mx-0.5 transition-colors ${
-                      currentProject === index
-                        ? "bg-[#2ed573] text-[#0f0f0f] font-medium"
-                        : "bg-[#0f0f0f] text-[#2ed573]/70 hover:bg-[#0f0f0f]/80 hover:text-[#2ed573]"
+                    onClick={() => setIsAutoAdvancing(!isAutoAdvancing)}
+                    className={`flex items-center gap-2 px-3 py-1 rounded-md text-xs font-mono transition-colors ${
+                      isAutoAdvancing
+                        ? "bg-[#2ed573]/20 text-[#2ed573] border border-[#2ed573]/40 hover:bg-[#2ed573]/30"
+                        : "bg-[#0f0f0f] text-[#2ed573]/60 border border-[#2ed573]/20 hover:text-[#2ed573] hover:bg-[#0f0f0f]/50"
                     }`}
-                    aria-label={`Go to project ${index + 1}`}
                   >
-                    {index + 1}
+                    {isAutoAdvancing ? (
+                      <>
+                        <Pause size={14} />
+                        <span>Auto ({countdown}s)</span>
+                      </>
+                    ) : (
+                      <>
+                        <Play size={14} />
+                        <span>Paused</span>
+                      </>
+                    )}
                   </button>
-                ))}
-              </div>
-              <div className="text-[#2ed573]/60 text-xs font-mono">
-                {currentProject + 1}/{projects.length}
+                </div>
+                <div className="text-[#2ed573]/60 text-xs font-mono whitespace-nowrap">
+                  {currentProject + 1}/{projects.length}
+                </div>
               </div>
             </div>
 
             {/* Mobile pagination - simplified */}
             <div className="md:hidden">
-              <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center justify-between mb-3 gap-2">
                 <div className="text-[#2ed573]/60 text-xs font-mono">
                   $ navigate_repos.sh
                 </div>
+                <button
+                  onClick={() => setIsAutoAdvancing(!isAutoAdvancing)}
+                  className={`flex items-center gap-1 px-2 py-1 rounded text-xs font-mono transition-colors whitespace-nowrap ${
+                    isAutoAdvancing
+                      ? "bg-[#2ed573]/20 text-[#2ed573] border border-[#2ed573]/40 hover:bg-[#2ed573]/30"
+                      : "bg-[#0f0f0f] text-[#2ed573]/60 border border-[#2ed573]/20 hover:text-[#2ed573] hover:bg-[#0f0f0f]/50"
+                  }`}
+                >
+                  {isAutoAdvancing ? (
+                    <>
+                      <Pause size={12} />
+                      <span>{countdown}s</span>
+                    </>
+                  ) : (
+                    <>
+                      <Play size={12} />
+                    </>
+                  )}
+                </button>
                 <div className="text-[#2ed573]/60 text-xs font-mono">
                   {currentProject + 1}/{projects.length}
                 </div>
               </div>
 
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-2">
                 <Button
                   onClick={prevProject}
                   disabled={projects.length <= 1}
-                  className="bg-[#0f0f0f] hover:bg-[#1e272e] text-[#2ed573] border border-[#2ed573]/30 px-4 py-2 rounded-md transition-colors flex-1 mr-2"
+                  className="bg-[#0f0f0f] hover:bg-[#1e272e] text-[#2ed573] border border-[#2ed573]/30 px-3 py-2 rounded-md transition-colors flex-1 text-sm"
                 >
                   <div className="flex items-center justify-center">
-                    <ArrowLeft size={16} className="mr-2" />
-                    <span>Previous</span>
+                    <ArrowLeft size={14} className="mr-1" />
+                    <span>Prev</span>
                   </div>
                 </Button>
 
                 <Button
                   onClick={nextProject}
                   disabled={projects.length <= 1}
-                  className="bg-[#0f0f0f] hover:bg-[#1e272e] text-[#2ed573] border border-[#2ed573]/30 px-4 py-2 rounded-md transition-colors flex-1 ml-2"
+                  className="bg-[#0f0f0f] hover:bg-[#1e272e] text-[#2ed573] border border-[#2ed573]/30 px-3 py-2 rounded-md transition-colors flex-1 text-sm"
                 >
                   <div className="flex items-center justify-center">
                     <span>Next</span>
-                    <ArrowRight size={16} className="ml-2" />
+                    <ArrowRight size={14} className="ml-1" />
                   </div>
                 </Button>
               </div>

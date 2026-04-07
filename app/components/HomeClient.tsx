@@ -12,7 +12,7 @@ export default function HomeClient() {
   const [currentScreen, setCurrentScreen] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isRedirecting, setIsRedirecting] = useState(false);
-  const [countdown, setCountdown] = useState(5);
+  const [countdown, setCountdown] = useState(4);
   const [isTimerPaused, setIsTimerPaused] = useState(false);
   const router = useRouter();
 

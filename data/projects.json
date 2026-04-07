@@ -206,7 +206,7 @@
     "language": "TypeScript",
     "stargazers_count": 0,
     "homepage": "https://mission-deck.vercel.app/",
-    "preview_image": "/images/mission-deck.webp"
+    "preview_image": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=1100&h=600&fit=crop"
   },
   {
     "id": 14,
@@ -226,7 +226,7 @@
     "language": "TypeScript",
     "stargazers_count": 0,
     "homepage": "https://readme-beautifier.vercel.app/",
-    "preview_image": "/images/readme-beautifier.webp"
+    "preview_image": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1100&h=600&fit=crop"
   },
   {
     "id": 15,
@@ -246,7 +246,7 @@
     "language": "JavaScript",
     "stargazers_count": 0,
     "homepage": "https://arafat-git-study.vercel.app/",
-    "preview_image": "/images/arafat-git-study.webp"
+    "preview_image": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1100&h=600&fit=crop"
   },
   {
     "id": 16,
@@ -267,7 +267,7 @@
     "language": "JavaScript",
     "stargazers_count": 0,
     "homepage": "",
-    "preview_image": "/images/startise-bookclub.webp"
+    "preview_image": "https://images.unsplash.com/photo-1507842217343-583f20270319?w=1100&h=600&fit=crop"
   },
   {
     "id": 17,
@@ -287,7 +287,7 @@
     "language": "TypeScript",
     "stargazers_count": 0,
     "homepage": "https://arafat-wp-plugins.vercel.app",
-    "preview_image": "/images/wordpress-plugin-db.webp"
+    "preview_image": "https://images.unsplash.com/photo-1460925895917-adf4e5f5e0c5?w=1100&h=600&fit=crop"
   },
   {
     "id": 18,
@@ -307,6 +307,128 @@
     "language": "JavaScript",
     "stargazers_count": 0,
     "homepage": "",
-    "preview_image": "/images/github-pr-extractor.webp"
+    "preview_image": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1100&h=600&fit=crop"
+  },
+  {
+    "id": 19,
+    "name": "OpenClaw",
+    "description": "Your own personal AI assistant. Any OS. Any Platform. The lobster way. An intelligent, cross-platform AI companion that works seamlessly across different operating systems and environments.",
+    "html_url": "https://github.com/mrx-arafat/openclaw",
+    "topics": [
+      "ai",
+      "assistant",
+      "typescript",
+      "cross-platform",
+      "machine-learning"
+    ],
+    "language": "TypeScript",
+    "stargazers_count": 0,
+    "homepage": "https://openclaw.ai",
+    "preview_image": "https://i.imgur.com/openclaw.jpg"
+  },
+  {
+    "id": 20,
+    "name": "Multi-Agent Orchestration",
+    "description": "A sophisticated framework for orchestrating and coordinating multiple AI agents. Designed for complex task execution, parallel processing, and intelligent agent collaboration in production environments.",
+    "html_url": "https://github.com/mrx-arafat/Multi-Agent-Orchestration",
+    "topics": [
+      "typescript",
+      "ai",
+      "agents",
+      "orchestration",
+      "automation",
+      "multi-agent"
+    ],
+    "language": "TypeScript",
+    "stargazers_count": 0,
+    "homepage": "https://maof-stage.arafatops.com/",
+    "preview_image": "https://i.imgur.com/multi-agent.jpg"
+  },
+  {
+    "id": 21,
+    "name": "Social Blocker",
+    "description": "A browser extension designed to help users manage and reduce their social media consumption. Block distracting social platforms and reclaim your focus with customizable blocking rules.",
+    "html_url": "https://github.com/mrx-arafat/social-blocker",
+    "topics": [
+      "typescript",
+      "browser-extension",
+      "productivity",
+      "social-media",
+      "distraction-blocker"
+    ],
+    "language": "TypeScript",
+    "stargazers_count": 0,
+    "homepage": "",
+    "preview_image": "https://i.imgur.com/social-blocker.jpg"
+  },
+  {
+    "id": 22,
+    "name": "Domain Mapper",
+    "description": "A comprehensive tool for mapping and analyzing domain structures. Discover domain relationships, visualize domain hierarchies, and gain insights into domain configurations.",
+    "html_url": "https://github.com/mrx-arafat/domain-mapper",
+    "topics": [
+      "typescript",
+      "domains",
+      "mapping",
+      "analysis",
+      "visualization"
+    ],
+    "language": "TypeScript",
+    "stargazers_count": 0,
+    "homepage": "",
+    "preview_image": "https://i.imgur.com/domain-mapper.jpg"
+  },
+  {
+    "id": 23,
+    "name": "Arafat Pro GPT",
+    "description": "A professional-grade GPT interface built for enhanced productivity and creative tasks. Access powerful language models with a sleek, intuitive interface designed for professionals and developers.",
+    "html_url": "https://github.com/mrx-arafat/arafatProGPT",
+    "topics": [
+      "javascript",
+      "gpt",
+      "ai",
+      "chatbot",
+      "llm",
+      "interface"
+    ],
+    "language": "JavaScript",
+    "stargazers_count": 0,
+    "homepage": "https://llm.arafatops.com/",
+    "preview_image": "https://i.imgur.com/arafat-gpt.jpg"
+  },
+  {
+    "id": 24,
+    "name": "Supabase Showcase",
+    "description": "A demonstration project showcasing Supabase's powerful features including real-time database capabilities, authentication, and edge functions. Perfect for learning modern backend development patterns.",
+    "html_url": "https://github.com/mrx-arafat/supabase-showcase",
+    "topics": [
+      "typescript",
+      "supabase",
+      "backend",
+      "database",
+      "postgresql"
+    ],
+    "language": "TypeScript",
+    "stargazers_count": 1,
+    "homepage": "",
+    "preview_image": "https://i.imgur.com/supabase-showcase.jpg"
+  },
+  {
+    "id": 25,
+    "name": "Supabase RAG",
+    "description": "Retrieval-Augmented Generation (RAG) system powered by Supabase. Combines vector search, semantic similarity, and generative AI for intelligent document retrieval and context-aware responses.",
+    "html_url": "https://github.com/mrx-arafat/supabase-RAG",
+    "topics": [
+      "typescript",
+      "supabase",
+      "rag",
+      "vector-search",
+      "ai",
+      "nlp"
+    ],
+    "language": "TypeScript",
+    "stargazers_count": 0,
+    "homepage": "",
+    "preview_image": "https://i.imgur.com/supabase-rag.jpg"
   }
 ]
