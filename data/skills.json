@@ -121,13 +121,6 @@
       "description": "Containerizing applications for consistent deployment across environments"
     },
     {
-      "id": "kubernetes",
-      "name": "Kubernetes",
-      "icon": "Cpu",
-      "category": "devops",
-      "description": "Orchestrating containerized applications for scalability and resilience"
-    },
-    {
       "id": "ci-cd",
       "name": "CI/CD",
       "icon": "GitBranch",
