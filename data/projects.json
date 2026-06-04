@@ -225,7 +225,7 @@
     "language": "TypeScript",
     "stargazers_count": 0,
     "homepage": "https://mission-deck.vercel.app/",
-    "preview_image": "/images/mission-deck.webp"
+    "preview_image": "/images/mission-deck.svg"
   },
   {
     "id": 14,
@@ -245,7 +245,7 @@
     "language": "TypeScript",
     "stargazers_count": 0,
     "homepage": "https://readme-beautifier.vercel.app/",
-    "preview_image": "/images/readme-beautifier.webp"
+    "preview_image": "/images/readme-beautifier.svg"
   },
   {
     "id": 15,
@@ -265,7 +265,7 @@
     "language": "JavaScript",
     "stargazers_count": 0,
     "homepage": "https://arafat-git-study.vercel.app/",
-    "preview_image": "/images/arafat-git-study.webp"
+    "preview_image": "/images/arafat-git-study.svg"
   },
   {
     "id": 16,
@@ -286,7 +286,7 @@
     "language": "JavaScript",
     "stargazers_count": 0,
     "homepage": "",
-    "preview_image": "/images/startise-bookclub.webp"
+    "preview_image": "/images/startise-bookclub.svg"
   },
   {
     "id": 17,
@@ -306,7 +306,7 @@
     "language": "TypeScript",
     "stargazers_count": 0,
     "homepage": "https://arafat-wp-plugins.vercel.app",
-    "preview_image": "/images/wordpress-plugin-db.webp"
+    "preview_image": "/images/wordpress-plugin-db.svg"
   },
   {
     "id": 18,
@@ -326,7 +326,7 @@
     "language": "JavaScript",
     "stargazers_count": 0,
     "homepage": "",
-    "preview_image": "/images/github-pr-extractor.webp"
+    "preview_image": "/images/github-pr-extractor.svg"
   },
   {
     "id": 19,
