@@ -29,7 +29,6 @@
       "telegram-bot",
       "ai",
       "calorie-tracking",
-
       "image-analysis",
       "sqlite"
     ],
@@ -99,7 +98,12 @@
     "name": "KingBOB Web Crawler",
     "description": "This Python script allows systematic browsing and extraction of links from websites up to a specified depth. It is ideal for site audit, and exploring web structures.",
     "html_url": "https://github.com/mrx-arafat/KingBOB-WebCrawler",
-    "topics": ["python", "web-crawler", "endpoint-scanning", "automation"],
+    "topics": [
+      "python",
+      "web-crawler",
+      "endpoint-scanning",
+      "automation"
+    ],
     "language": "Python",
     "stargazers_count": 0,
     "preview_image": "https://static.vecteezy.com/system/resources/thumbnails/016/855/914/small_2x/web-crawler-crawling-website-data-server-on-computer-internet-with-modern-flat-style-free-vector.jpg"
@@ -143,7 +147,12 @@
     "name": "E-commerce Backend",
     "description": "A robust e-commerce backend built with Node.js and TypeScript, featuring Express.js and Mongoose for database management.",
     "html_url": "https://github.com/mrx-arafat/e-commmerce-backend",
-    "topics": ["nodejs", "typescript", "expressjs", "mongoosejs"],
+    "topics": [
+      "nodejs",
+      "typescript",
+      "expressjs",
+      "mongoosejs"
+    ],
     "language": "TypeScript",
     "stargazers_count": 0,
     "homepage": "https://e-commmerce-backend.vercel.app/",
@@ -154,7 +163,12 @@
     "name": "Binary Exploitation Buffer Overflow Starter Code",
     "description": "A collection of Python scripts and exercises for practicing binary exploitation and buffer overflow techniques.",
     "html_url": "https://github.com/mrx-arafat/Binary-Exploitation-Bufferoverflow-Practice",
-    "topics": ["python", "security", "binary-exploitation", "buffer-overflow"],
+    "topics": [
+      "python",
+      "security",
+      "binary-exploitation",
+      "buffer-overflow"
+    ],
     "language": "Python",
     "stargazers_count": 0,
     "preview_image": "https://pbs.twimg.com/ext_tw_video_thumb/1709973595038822403/pu/img/jcukjOP0NhuvbIpD.jpg:large"
@@ -164,7 +178,12 @@
     "name": "AES Crypto 256 Bits by KingBOB",
     "description": "Python scripts for encrypting and decrypting text files using the Advanced Encryption Standard (AES) in Cipher Block Chaining (CBC) mode with a 256-bit key.",
     "html_url": "https://github.com/mrx-arafat/AES-Crypto-256-Bits-by-KingBOB",
-    "topics": ["python", "cryptography", "aes", "security"],
+    "topics": [
+      "python",
+      "cryptography",
+      "aes",
+      "security"
+    ],
     "language": "Python",
     "stargazers_count": 0,
     "preview_image": "https://cdn.prod.website-files.com/5ff66329429d880392f6cba2/67b431c85d2112aaa730a2f2_618e3f3ff8ffcc7e84a823cd_AES%2520algorithm%2520working.png"
@@ -324,7 +343,7 @@
     "language": "TypeScript",
     "stargazers_count": 0,
     "homepage": "https://openclaw.ai",
-    "preview_image": "https://i.imgur.com/openclaw.jpg"
+    "preview_image": "/images/openclaw.svg"
   },
   {
     "id": 20,
@@ -342,7 +361,7 @@
     "language": "TypeScript",
     "stargazers_count": 0,
     "homepage": "https://maof-stage.arafatops.com/",
-    "preview_image": "https://i.imgur.com/multi-agent.jpg"
+    "preview_image": "/images/multi-agent-orchestration.svg"
   },
   {
     "id": 21,
@@ -359,7 +378,7 @@
     "language": "TypeScript",
     "stargazers_count": 0,
     "homepage": "",
-    "preview_image": "https://i.imgur.com/social-blocker.jpg"
+    "preview_image": "/images/social-blocker.svg"
   },
   {
     "id": 22,
@@ -376,7 +395,7 @@
     "language": "TypeScript",
     "stargazers_count": 0,
     "homepage": "",
-    "preview_image": "https://i.imgur.com/domain-mapper.jpg"
+    "preview_image": "/images/domain-mapper.svg"
   },
   {
     "id": 23,
@@ -394,7 +413,7 @@
     "language": "JavaScript",
     "stargazers_count": 0,
     "homepage": "https://llm.arafatops.com/",
-    "preview_image": "https://i.imgur.com/arafat-gpt.jpg"
+    "preview_image": "/images/arafat-pro-gpt.svg"
   },
   {
     "id": 24,
@@ -411,7 +430,7 @@
     "language": "TypeScript",
     "stargazers_count": 1,
     "homepage": "",
-    "preview_image": "https://i.imgur.com/supabase-showcase.jpg"
+    "preview_image": "/images/supabase-showcase.svg"
   },
   {
     "id": 25,
@@ -429,6 +448,118 @@
     "language": "TypeScript",
     "stargazers_count": 0,
     "homepage": "",
-    "preview_image": "https://i.imgur.com/supabase-rag.jpg"
+    "preview_image": "/images/supabase-rag.svg"
+  },
+  {
+    "id": 26,
+    "name": "CVE-2026-49975 PoC",
+    "description": "Proof-of-concept for CVE-2026-49975 — an HTTP/2 'bomb' combining an HPACK indexed-reference bomb with a flow-control stall to amplify resource exhaustion. Built for responsible disclosure and defensive research into HTTP/2 protocol weaknesses.",
+    "html_url": "https://github.com/mrx-arafat/CVE-2026-49975-POC",
+    "topics": [
+      "python",
+      "http2",
+      "hpack",
+      "cve",
+      "security-research",
+      "dos",
+      "vulnerability"
+    ],
+    "language": "Python",
+    "stargazers_count": 0,
+    "homepage": "",
+    "preview_image": "/images/cve-2026-49975-poc.svg"
+  },
+  {
+    "id": 27,
+    "name": "Docker MERN Stack",
+    "description": "A fully containerized full-stack application wiring together React, Express, and MongoDB with Docker Compose. Demonstrates multi-service orchestration, hot-reload dev workflow, and production-ready container builds for the MERN stack.",
+    "html_url": "https://github.com/mrx-arafat/docker-react-express-mongo",
+    "topics": [
+      "docker",
+      "docker-compose",
+      "react",
+      "express",
+      "mongodb",
+      "mern",
+      "devops"
+    ],
+    "language": "JavaScript",
+    "stargazers_count": 0,
+    "homepage": "",
+    "preview_image": "/images/docker-react-express-mongo.svg"
+  },
+  {
+    "id": 28,
+    "name": "Foodpanda BD Dataset",
+    "description": "An open dataset of Foodpanda Bangladesh restaurants — 5,316 vendors across 12 cities with reviews and menu data. Includes the Python scraping pipeline used to collect and structure the data for analytics and research.",
+    "html_url": "https://github.com/mrx-arafat/foodpanda-bd",
+    "topics": [
+      "python",
+      "dataset",
+      "web-scraping",
+      "data-engineering",
+      "foodpanda",
+      "bangladesh",
+      "analytics"
+    ],
+    "language": "Python",
+    "stargazers_count": 0,
+    "homepage": "",
+    "preview_image": "/images/foodpanda-bd.svg"
+  },
+  {
+    "id": 29,
+    "name": "Agentic Terminal",
+    "description": "An AI-powered terminal that turns natural-language intent into shell actions. A TypeScript command-line agent that plans, executes, and verifies tasks interactively from the console.",
+    "html_url": "https://github.com/mrx-arafat/agentic-terminal",
+    "topics": [
+      "typescript",
+      "ai",
+      "agent",
+      "cli",
+      "terminal",
+      "automation",
+      "llm"
+    ],
+    "language": "TypeScript",
+    "stargazers_count": 0,
+    "homepage": "",
+    "preview_image": "/images/agentic-terminal.svg"
+  },
+  {
+    "id": 30,
+    "name": "Chrome Multi-Session",
+    "description": "A Chrome extension for running multiple isolated login sessions side by side in the same browser. Keep separate cookie and storage containers per profile without juggling browser windows.",
+    "html_url": "https://github.com/mrx-arafat/chrome-multi-session",
+    "topics": [
+      "javascript",
+      "chrome-extension",
+      "sessions",
+      "productivity",
+      "browser",
+      "privacy"
+    ],
+    "language": "JavaScript",
+    "stargazers_count": 0,
+    "homepage": "",
+    "preview_image": "/images/chrome-multi-session.svg"
+  },
+  {
+    "id": 31,
+    "name": "WPDir Updates",
+    "description": "A Go service that tracks the WordPress.org plugin and theme directory for updates. Efficiently polls and diffs directory metadata to surface new releases and version changes at scale.",
+    "html_url": "https://github.com/mrx-arafat/WPDir-Updates",
+    "topics": [
+      "go",
+      "wordpress",
+      "automation",
+      "monitoring",
+      "plugins",
+      "api"
+    ],
+    "language": "Go",
+    "stargazers_count": 0,
+    "homepage": "",
+    "preview_image": "/images/wpdir-updates.svg"
   }
 ]
