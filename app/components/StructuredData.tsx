@@ -40,6 +40,7 @@ export default function StructuredData() {
       "https://www.instagram.com/e4rafat/",
       "https://medium.com/@easinxarafat",
       "https://tryhackme.com/p/KingBOB",
+      "https://x.com/easinxarafat",
       "https://aiflowiz.com/",
     ],
     mainEntityOfPage: {
