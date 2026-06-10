@@ -5,13 +5,13 @@ export const metadata: Metadata = {
   description:
     "Read articles by Easin Arafat on cybersecurity, application security, penetration testing, DevSecOps, and web development.",
   alternates: {
-    canonical: "https://profile.arafatops.com/blogs",
+    canonical: "https://www.arafatops.com/blogs",
   },
   openGraph: {
     title: "Blog | Easin Arafat",
     description:
       "Read articles by Easin Arafat on cybersecurity, application security, penetration testing, and DevSecOps.",
-    url: "https://profile.arafatops.com/blogs",
+    url: "https://www.arafatops.com/blogs",
   },
 };
 

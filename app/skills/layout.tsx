@@ -5,13 +5,13 @@ export const metadata: Metadata = {
   description:
     "Technical skills of Easin Arafat - Application Security, Penetration Testing, DevSecOps, Web Development, Cloud Security, AI/ML, and more.",
   alternates: {
-    canonical: "https://profile.arafatops.com/skills",
+    canonical: "https://www.arafatops.com/skills",
   },
   openGraph: {
     title: "Skills | Easin Arafat",
     description:
       "Technical skills of Easin Arafat - Application Security, Penetration Testing, DevSecOps, Web Development, and more.",
-    url: "https://profile.arafatops.com/skills",
+    url: "https://www.arafatops.com/skills",
   },
 };
 

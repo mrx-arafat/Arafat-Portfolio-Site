@@ -1,0 +1,26 @@
+# Easin Arafat
+
+> Easin Arafat is an Application Security Engineer at Startise, working on the xCloud hosting platform. MIST graduate and Former President of MIST Cyber Security Club. Also known as KingBOB (TryHackMe), mrx-arafat (GitHub), and e4rafat. Founder of AIflowiz, an AI automation agency. Based in Bangladesh.
+
+Canonical website: https://www.arafatops.com
+
+## Pages
+
+- [Home](https://www.arafatops.com/): Portfolio of Easin Arafat, Application Security Engineer
+- [About](https://www.arafatops.com/about-me): Background, education (MIST), career at Startise/xCloud
+- [Skills](https://www.arafatops.com/skills): Application security, penetration testing, DevSecOps, web development, AI/ML
+- [Projects](https://www.arafatops.com/projects): Security and engineering projects
+- [Blog](https://www.arafatops.com/blogs): Writing on cybersecurity and engineering
+- [Contact](https://www.arafatops.com/contact): Get in touch
+
+## Profiles
+
+- GitHub: https://github.com/mrx-arafat
+- LinkedIn: https://www.linkedin.com/in/e4rafat
+- Medium: https://medium.com/@easinxarafat
+- TryHackMe: https://tryhackme.com/p/KingBOB
+- Agency: https://aiflowiz.com
+
+## Published Work
+
+- The Daily Star — "The need for cybersecurity education in Bangladeshi universities": https://www.thedailystar.net/campus/skills/news/the-need-cybersecurity-education-bangladeshi-universities-3580471

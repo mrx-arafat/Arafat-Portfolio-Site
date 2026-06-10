@@ -9,7 +9,7 @@ import StructuredData from "./components/StructuredData";
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://profile.arafatops.com"),
+  metadataBase: new URL("https://www.arafatops.com"),
   title: {
     default:
       "Easin Arafat | Application Security Engineer @ Startise | Cybersecurity Expert",
@@ -19,18 +19,18 @@ export const metadata: Metadata = {
     "Easin Arafat is an Application Security Engineer at Startise. MIST graduate and Former President of MIST Cyber Security Club. Cybersecurity expert in Bangladesh specializing in application security, penetration testing, web development, and DevSecOps.",
   keywords:
     "Easin Arafat, Arafat, easin arafat, Application Security Engineer, Cybersecurity, Web Developer, Entrepreneur, Startise, xCloud, Security Expert, Bangladesh, MIST, MIST Cyber Security Club, Cyber Security Bangladesh, Easin Arafat MIST, Application Security Engineer Bangladesh, Cybersecurity Expert Bangladesh, Penetration Testing, DevSecOps, Secure Coding, arafatops",
-  authors: [{ name: "Easin Arafat", url: "https://profile.arafatops.com" }],
+  authors: [{ name: "Easin Arafat", url: "https://www.arafatops.com" }],
   creator: "Easin Arafat",
   publisher: "Easin Arafat",
   alternates: {
-    canonical: "https://profile.arafatops.com",
+    canonical: "https://www.arafatops.com",
   },
   openGraph: {
     title:
       "Easin Arafat | Application Security Engineer @ Startise | Cybersecurity Expert",
     description:
       "Easin Arafat is an Application Security Engineer at Startise. MIST graduate and Former President of MIST Cyber Security Club. Cybersecurity expert in Bangladesh specializing in application security, penetration testing, web development, and DevSecOps.",
-    url: "https://profile.arafatops.com",
+    url: "https://www.arafatops.com",
     siteName: "Easin Arafat - Portfolio",
     images: [
       {
