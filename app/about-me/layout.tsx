@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import faq from "@/data/faq.json";
 
 export const metadata: Metadata = {
   title: "About Easin Arafat",
@@ -17,17 +16,6 @@ export const metadata: Metadata = {
 };
 
 function StructuredData() {
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "@id": "https://www.arafatops.com/about-me/#faq",
-    mainEntity: faq.map((item) => ({
-      "@type": "Question",
-      name: item.q,
-      acceptedAnswer: { "@type": "Answer", text: item.a },
-    })),
-  };
-
   const profilePageSchema = {
     "@context": "https://schema.org",
     "@type": "ProfilePage",
@@ -40,16 +28,10 @@ function StructuredData() {
   };
 
   return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(profilePageSchema) }}
-      />
-    </>
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(profilePageSchema) }}
+    />
   );
 }
 

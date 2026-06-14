@@ -20,9 +20,9 @@ import {
   ChevronRight,
   Crosshair,
   Bot,
+  HelpCircle,
 } from "lucide-react";
 import { playClickSound } from "@/utils/sound";
-import faq from "@/data/faq.json";
 
 export default function AboutMe() {
   const [activeSection, setActiveSection] = useState<string | null>(null);
@@ -671,24 +671,29 @@ export default function AboutMe() {
         </div>
       </section>
 
-      {/* FAQ — visible Q&A matching FAQPage schema (name-anchored SEO) */}
-      <section className="relative z-10 max-w-4xl mx-auto px-4 md:px-8 py-16 border-t border-[#2ed573]/10">
-        <h2 className="text-2xl md:text-3xl font-bold text-white mb-8">
-          Frequently Asked Questions about{" "}
-          <span className="text-[#2ed573]">Easin Arafat</span>
+      {/* FAQ CTA -> /faq page */}
+      <section className="relative z-10 max-w-4xl mx-auto px-4 md:px-8 py-16 border-t border-[#2ed573]/10 text-center">
+        <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
+          Questions about{" "}
+          <span className="text-[#2ed573]">Easin Arafat</span>?
         </h2>
-        <div className="space-y-4">
-          {faq.map((item, i) => (
-            <div
-              key={i}
-              className="bg-[#0f0f14] border border-[#2ed573]/20 rounded-lg p-5 hover:border-[#2ed573]/40 transition-colors"
-            >
-              <h3 className="text-lg font-semibold text-[#2ed573] mb-2">
-                {item.q}
-              </h3>
-              <p className="text-white/80 leading-relaxed">{item.a}</p>
+        <p className="text-white/70 mb-8 max-w-xl mx-auto">
+          Who he is, what he does, the CVEs he&apos;s disclosed, and his
+          published research — answered.
+        </p>
+        <div className="flex justify-center">
+          <Link
+            href="/faq"
+            onClick={() => playClickSound()}
+            className="group relative"
+          >
+            <div className="absolute inset-0 bg-[#2ed573]/20 rounded-lg translate-x-2 translate-y-2 group-hover:translate-x-1 group-hover:translate-y-1 transition-all duration-200" />
+            <div className="relative bg-[#0f0f14] text-[#2ed573] font-bold py-4 px-8 rounded-lg flex items-center gap-3 border border-[#2ed573]/50">
+              <HelpCircle className="w-5 h-5" />
+              <span>View FAQ</span>
+              <ChevronRight className="w-5 h-5" />
             </div>
-          ))}
+          </Link>
         </div>
 
         {/* sr-only authoritative bio for entity / name SEO */}

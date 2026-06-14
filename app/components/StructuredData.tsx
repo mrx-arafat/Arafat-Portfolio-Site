@@ -195,6 +195,12 @@ export default function StructuredData() {
         name: "Contact",
         item: "https://www.arafatops.com/contact",
       },
+      {
+        "@type": "ListItem",
+        position: 10,
+        name: "FAQ",
+        item: "https://www.arafatops.com/faq",
+      },
     ],
   };
 
