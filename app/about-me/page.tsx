@@ -22,6 +22,7 @@ import {
   Bot,
 } from "lucide-react";
 import { playClickSound } from "@/utils/sound";
+import faq from "@/data/faq.json";
 
 export default function AboutMe() {
   const [activeSection, setActiveSection] = useState<string | null>(null);
@@ -233,7 +234,7 @@ export default function AboutMe() {
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
                 About{" "}
                 <span className="text-[#2ed573] relative">
-                  Arafat
+                  Easin Arafat
                   <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-[#2ed573]/50" />
                 </span>
               </h1>
@@ -667,6 +668,45 @@ export default function AboutMe() {
               <ChevronRight className="w-5 h-5" />
             </div>
           </Link>
+        </div>
+      </section>
+
+      {/* FAQ — visible Q&A matching FAQPage schema (name-anchored SEO) */}
+      <section className="relative z-10 max-w-4xl mx-auto px-4 md:px-8 py-16 border-t border-[#2ed573]/10">
+        <h2 className="text-2xl md:text-3xl font-bold text-white mb-8">
+          Frequently Asked Questions about{" "}
+          <span className="text-[#2ed573]">Easin Arafat</span>
+        </h2>
+        <div className="space-y-4">
+          {faq.map((item, i) => (
+            <div
+              key={i}
+              className="bg-[#0f0f14] border border-[#2ed573]/20 rounded-lg p-5 hover:border-[#2ed573]/40 transition-colors"
+            >
+              <h3 className="text-lg font-semibold text-[#2ed573] mb-2">
+                {item.q}
+              </h3>
+              <p className="text-white/80 leading-relaxed">{item.a}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* sr-only authoritative bio for entity / name SEO */}
+        <div className="sr-only">
+          <h2>Easin Arafat — Application Security Engineer at Startise</h2>
+          <p>
+            Easin Arafat (also known as Sheikh Easin Arafat, handle n0_arafat_n0)
+            is an Application Security Engineer at Startise, working on the xCloud
+            hosting platform. A graduate of the Military Institute of Science and
+            Technology (MIST) in Bangladesh and former President of the MIST Cyber
+            Security Club, he specializes in application security, penetration
+            testing, DevSecOps, and secure coding. He has responsibly disclosed 9
+            CVEs through the Patchstack Vulnerability Disclosure Program and is a
+            co-author of peer-reviewed research published in Array (Elsevier, Q1).
+            Easin Arafat is not affiliated with other individuals of the same name,
+            such as the Eötvös Loránd University PhD student or the University of
+            Dhaka Islamic-finance researcher.
+          </p>
         </div>
       </section>
     </main>

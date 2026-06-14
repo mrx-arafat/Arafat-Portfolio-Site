@@ -1,0 +1,22 @@
+[
+  {
+    "q": "Who is Easin Arafat?",
+    "a": "Easin Arafat is an Application Security Engineer at Startise, working on the xCloud hosting platform. He is a graduate of the Military Institute of Science and Technology (MIST) in Bangladesh and the former President of the MIST Cyber Security Club."
+  },
+  {
+    "q": "What does Easin Arafat do?",
+    "a": "Easin Arafat specializes in application security, penetration testing, DevSecOps, and secure coding. He researches real-world vulnerabilities in web applications and WordPress plugins, and works across product features, infrastructure, and multi-tenant cloud security."
+  },
+  {
+    "q": "What CVEs has Easin Arafat discovered?",
+    "a": "Easin Arafat (handle n0_arafat_n0) has responsibly disclosed 9 CVEs through the Patchstack Vulnerability Disclosure Program, including CVE-2025-62039, CVE-2025-58680, CVE-2025-64277, CVE-2025-59562, CVE-2025-58981, CVE-2025-62932, and CVE-2025-62931 — covering Broken Access Control, Insecure Direct Object Reference (IDOR), and Sensitive Data Exposure."
+  },
+  {
+    "q": "Has Easin Arafat published research?",
+    "a": "Yes. Easin Arafat (Sheikh Easin Arafat) is a co-author of the peer-reviewed paper \"Adaptive User Interface for Mobile Banking Apps: Enhancing UX through Machine Learning\", published in Array (Elsevier, a Q1 open-access journal), DOI 10.1016/j.array.2026.100901."
+  },
+  {
+    "q": "Where is Easin Arafat based?",
+    "a": "Easin Arafat is based in Bangladesh. He graduated from the Military Institute of Science and Technology (MIST) and was featured in The Daily Star for cybersecurity education and the events of the MIST Cyber Security Club."
+  }
+]

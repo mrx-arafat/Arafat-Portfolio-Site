@@ -126,6 +126,17 @@ export default function StructuredData() {
     },
   };
 
+  const profilePageSchema = {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    "@id": "https://www.arafatops.com/#profilepage",
+    url: "https://www.arafatops.com",
+    name: "Easin Arafat — Application Security Engineer",
+    dateModified: "2026-06-15",
+    mainEntity: { "@id": "https://www.arafatops.com/#person" },
+    about: { "@id": "https://www.arafatops.com/#person" },
+  };
+
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -196,6 +207,10 @@ export default function StructuredData() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(profilePageSchema) }}
       />
       <script
         type="application/ld+json"
