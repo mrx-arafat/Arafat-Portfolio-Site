@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   description:
     "Easin Arafat is an Application Security Engineer at Startise. MIST graduate and Former President of MIST Cyber Security Club. Cybersecurity expert in Bangladesh specializing in application security, penetration testing, web development, and DevSecOps.",
   keywords:
-    "Easin Arafat, Arafat, easin arafat, Application Security Engineer, Cybersecurity, Web Developer, Entrepreneur, Startise, xCloud, Security Expert, Bangladesh, MIST, MIST Cyber Security Club, Cyber Security Bangladesh, Easin Arafat MIST, Application Security Engineer Bangladesh, Cybersecurity Expert Bangladesh, Penetration Testing, DevSecOps, Secure Coding, arafatops",
+    "Easin Arafat, Arafat, easin arafat, n0_arafat_n0, Easin Arafat CVE, Easin Arafat security researcher, Patchstack researcher, Application Security Engineer, Cybersecurity, Web Developer, Entrepreneur, Startise, xCloud, Security Expert, Bangladesh, MIST, MIST Cyber Security Club, Cyber Security Bangladesh, Easin Arafat MIST, Application Security Engineer Bangladesh, Cybersecurity Expert Bangladesh, Penetration Testing, DevSecOps, Secure Coding, WordPress CVE, Vulnerability Research, Responsible Disclosure, Sheikh Easin Arafat, Easin Arafat research, Easin Arafat Elsevier, Easin Arafat Array, Adaptive User Interface mobile banking, Easin Arafat Daily Star, MIST LEETCON, University Rover Challenge, arafatops",
   authors: [{ name: "Easin Arafat", url: "https://www.arafatops.com" }],
   creator: "Easin Arafat",
   publisher: "Easin Arafat",

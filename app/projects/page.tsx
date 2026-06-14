@@ -41,6 +41,7 @@ export default function Projects() {
   const [isEntering, setIsEntering] = useState(true);
   const [countdown, setCountdown] = useState(5);
   const [isAutoAdvancing, setIsAutoAdvancing] = useState(true);
+  const [isHoverPaused, setIsHoverPaused] = useState(false);
   const clickSoundRef = useRef<HTMLAudioElement | null>(null);
   const countdownTimerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -86,7 +87,7 @@ export default function Projects() {
 
   // Countdown timer for auto-advance (3 seconds)
   useEffect(() => {
-    if (!isAutoAdvancing || projects.length === 0) {
+    if (!isAutoAdvancing || isHoverPaused || projects.length === 0) {
       if (countdownTimerRef.current) {
         clearInterval(countdownTimerRef.current);
         countdownTimerRef.current = null;
@@ -121,7 +122,7 @@ export default function Projects() {
         countdownTimerRef.current = null;
       }
     };
-  }, [isAutoAdvancing, projects.length]);
+  }, [isAutoAdvancing, isHoverPaused, projects.length]);
 
   const playClickSound = () => {
     if (!isMuted && clickSoundRef.current) {
@@ -305,7 +306,11 @@ export default function Projects() {
         ) : projects.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Left column - Project image */}
-            <div className="md:col-span-1 h-[300px] md:h-[400px] bg-[#1a1b26] rounded-lg overflow-hidden relative group shadow-[0_0_15px_rgba(46,213,115,0.1)] border border-[#2ed573]/10">
+            <div
+              className="md:col-span-1 h-[300px] md:h-[400px] bg-[#1a1b26] rounded-lg overflow-hidden relative group shadow-[0_0_15px_rgba(46,213,115,0.1)] border border-[#2ed573]/10"
+              onMouseEnter={() => setIsHoverPaused(true)}
+              onMouseLeave={() => setIsHoverPaused(false)}
+            >
               <div className="absolute inset-0 flex items-center justify-center bg-[#0f0f0f]/50 z-10">
                 {projects[currentProject].preview_image && !imageErrors[currentProject] ? (
                   <div className="relative w-full h-full">
@@ -403,7 +408,11 @@ export default function Projects() {
                     PROJECT #{currentProject + 1}
                   </div>
                 </div>
-                <h2 className="text-xl md:text-2xl font-bold mb-3 text-[#2ed573]">
+                <h2
+                  className="text-xl md:text-2xl font-bold mb-3 text-[#2ed573] inline-block"
+                  onMouseEnter={() => setIsHoverPaused(true)}
+                  onMouseLeave={() => setIsHoverPaused(false)}
+                >
                   {projects[currentProject].name}
                 </h2>
                 <p className="text-[#2ed573]/80 mb-4 text-sm md:text-base">

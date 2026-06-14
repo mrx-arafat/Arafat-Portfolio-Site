@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Dashboard",
   description:
-    "Easin Arafat's personal dashboard - Application Security Engineer at Startise. View projects, blogs, skills, and get in touch.",
+    "Easin Arafat's personal dashboard - Application Security Engineer at Startise. View projects, articles, skills, and get in touch.",
   alternates: {
     canonical: "https://www.arafatops.com/dashboard",
   },

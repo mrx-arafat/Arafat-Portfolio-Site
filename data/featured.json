@@ -1,0 +1,132 @@
+{
+  "research": [
+    {
+      "id": "array-2026-adaptive-ui",
+      "title": "Adaptive User Interface for Mobile Banking Apps: Enhancing UX through Machine Learning",
+      "venue": "Array — Elsevier",
+      "badges": ["Q1 Journal", "Impact Factor 4.5", "Open Access", "Peer-Reviewed"],
+      "meta": "Volume 30 · Article 100901 · 2026",
+      "role": "Co-author (Sheikh Easin Arafat)",
+      "authors": "Khaled Hasan, Md Rashid Ul Islam, Sheikh Easin Arafat, Iyolita Islam",
+      "summary": "An adaptive UI framework that uses machine learning on user interaction patterns to dynamically personalize mobile banking app interfaces, improving user experience.",
+      "doi": "10.1016/j.array.2026.100901",
+      "url": "https://doi.org/10.1016/j.array.2026.100901"
+    }
+  ],
+  "press": [
+    {
+      "id": "dailystar-cybersecurity-education",
+      "title": "The need for cybersecurity education in Bangladeshi universities",
+      "venue": "The Daily Star",
+      "badges": ["National Daily", "Featured"],
+      "meta": "Campus · Skills",
+      "summary": "Featured for the events and CTFs led by MIST Cyber Security Club in 2023, with commentary on the state of cybersecurity education in Bangladesh.",
+      "url": "https://www.thedailystar.net/campus/skills/news/the-need-cybersecurity-education-bangladeshi-universities-3580471"
+    }
+  ],
+  "speaking": [
+    {
+      "id": "leetcon-2023",
+      "title": "MIST LEETCON 2023 — HackMeIfYouCan",
+      "venue": "Military Institute of Science and Technology",
+      "badges": ["3,500+ Participants", "Organizer"],
+      "meta": "Bangladesh's first international cybersecurity conference",
+      "summary": "Organized Bangladesh's first international cybersecurity conference."
+    },
+    {
+      "id": "flaghunt-2023",
+      "title": "FlagHunt 2023 — National CTF",
+      "venue": "MIST Cyber Security Club × CTFBD",
+      "badges": ["National CTF", "Host"],
+      "meta": "National Capture The Flag competition",
+      "summary": "Hosted a national CTF competition in collaboration with CTFBD."
+    },
+    {
+      "id": "cyber-drill-2023",
+      "title": "Cyber Drill 2023",
+      "venue": "BGD e-GOV CIRT",
+      "badges": ["Critical Infrastructure", "Organizer"],
+      "meta": "Financial Institutes & Critical Information Infrastructures",
+      "summary": "Organizer for the Financial Institute & Critical Information Infrastructures Cyber Drill."
+    },
+    {
+      "id": "cyber-threats-seminar",
+      "title": "Emerging Cyber Threats Seminar",
+      "venue": "Armed Forces Division, Bangladesh",
+      "badges": ["Defense", "Host"],
+      "meta": "National defense cybersecurity seminar",
+      "summary": "Host for an emerging cyber threats seminar with the Armed Forces Division of Bangladesh."
+    }
+  ],
+  "recognition": [
+    {
+      "id": "urc-2021",
+      "title": "University Rover Challenge 2021 — Global Champion",
+      "venue": "Team MIST Mongol Barota",
+      "badges": ["World #1", "2021"],
+      "meta": "Software & Communication Lead",
+      "summary": "Global champion as Software and Communication Lead for the University Rover Challenge."
+    },
+    {
+      "id": "tryhackme-top1",
+      "title": "Top 1% — TryHackMe",
+      "venue": "TryHackMe (KingBOB)",
+      "badges": ["Top 1%", "Global Ranking"],
+      "meta": "CTF player and problem solver",
+      "summary": "Ranked in the top 1% globally on TryHackMe.",
+      "url": "https://tryhackme.com/p/KingBOB"
+    },
+    {
+      "id": "mist-csc-president",
+      "title": "President, MIST Cyber Security Club",
+      "venue": "Military Institute of Science and Technology",
+      "badges": ["2023–2024", "Leadership"],
+      "meta": "Led club events, CTFs, and national conferences",
+      "summary": "President of the MIST Cyber Security Club (2023–2024)."
+    }
+  ],
+  "profiles": [
+    {
+      "id": "patchstack",
+      "label": "Patchstack VDP",
+      "handle": "n0_arafat_n0",
+      "url": "https://vdp.patchstack.com/database/researchers/c4d8ecc2-c599-4f6f-bfca-2d2d755117e8"
+    },
+    {
+      "id": "github",
+      "label": "GitHub",
+      "handle": "mrx-arafat",
+      "url": "https://github.com/mrx-arafat"
+    },
+    {
+      "id": "tryhackme",
+      "label": "TryHackMe",
+      "handle": "KingBOB",
+      "url": "https://tryhackme.com/p/KingBOB"
+    },
+    {
+      "id": "x",
+      "label": "X / Twitter",
+      "handle": "easinxarafat",
+      "url": "https://x.com/easinxarafat"
+    },
+    {
+      "id": "medium",
+      "label": "Medium",
+      "handle": "easinxarafat",
+      "url": "https://medium.com/@easinxarafat"
+    },
+    {
+      "id": "linkedin",
+      "label": "LinkedIn",
+      "handle": "e4rafat",
+      "url": "https://www.linkedin.com/in/e4rafat"
+    },
+    {
+      "id": "goodreads",
+      "label": "Goodreads",
+      "handle": "e4rafat",
+      "url": "https://www.goodreads.com/e4rafat"
+    }
+  ]
+}

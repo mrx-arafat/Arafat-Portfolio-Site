@@ -13,9 +13,9 @@ import {
   Pause,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import blogsData from "@/data/blogs.json";
+import articlesData from "@/data/articles.json";
 
-interface BlogPost {
+interface Article {
   id: string;
   title: string;
   description: string;
@@ -29,18 +29,19 @@ interface BlogPost {
 const POSTS_PER_PAGE_DESKTOP = 10;
 const POSTS_PER_PAGE_MOBILE = 5;
 
-export default function Blogs() {
-  const [posts, setPosts] = useState<BlogPost[]>([]);
+export default function Articles() {
+  const [posts, setPosts] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
   const [currentPost, setCurrentPost] = useState(0);
   const [isEntering, setIsEntering] = useState(true);
-  const [countdown, setCountdown] = useState(5);
+  const [countdown, setCountdown] = useState(6);
+  const [isHoverPaused, setIsHoverPaused] = useState(false);
   const [isAutoAdvancing, setIsAutoAdvancing] = useState(true);
   const clickSoundRef = useRef<HTMLAudioElement | null>(null);
   const countdownTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Blog posts data is now imported from JSON file
+  // Articles data is now imported from JSON file
 
   useEffect(() => {
     // Initialize audio elements with proper error handling
@@ -58,9 +59,9 @@ export default function Blogs() {
 
     const enterTimer = setTimeout(() => setIsEntering(false), 500);
 
-    // Load blog posts from JSON data
+    // Load articles from JSON data
     setTimeout(() => {
-      setPosts(blogsData);
+      setPosts(articlesData);
       setLoading(false);
     }, 1000);
 
@@ -92,23 +93,23 @@ export default function Blogs() {
   const nextPost = () => {
     playClickSound();
     setCurrentPost((prev) => (prev + 1) % posts.length);
-    setCountdown(3);
+    setCountdown(6);
   };
 
   const prevPost = () => {
     playClickSound();
     setCurrentPost((prev) => (prev - 1 + posts.length) % posts.length);
-    setCountdown(3);
+    setCountdown(6);
   };
 
-  const openBlogPost = (url: string) => {
+  const openArticle = (url: string) => {
     playClickSound();
     window.open(url, "_blank");
   };
 
-  // Countdown timer for auto-advance (3 seconds)
+  // Countdown timer for auto-advance (6 seconds)
   useEffect(() => {
-    if (!isAutoAdvancing || posts.length === 0) {
+    if (!isAutoAdvancing || isHoverPaused || posts.length === 0) {
       if (countdownTimerRef.current) {
         clearInterval(countdownTimerRef.current);
         countdownTimerRef.current = null;
@@ -123,17 +124,17 @@ export default function Blogs() {
       clearInterval(countdownTimerRef.current);
     }
 
-    setCountdown(5);
+    setCountdown(6);
 
     countdownTimerRef.current = setInterval(() => {
       timeElapsed += 1;
-      setCountdown(5 - timeElapsed);
+      setCountdown(6 - timeElapsed);
 
-      if (timeElapsed >= 5) {
+      if (timeElapsed >= 6) {
         // Auto-advance to next post
         setCurrentPost((p) => (p + 1) % posts.length);
         timeElapsed = 0;
-        setCountdown(5);
+        setCountdown(6);
       }
     }, 1000);
 
@@ -143,9 +144,9 @@ export default function Blogs() {
         countdownTimerRef.current = null;
       }
     };
-  }, [isAutoAdvancing, posts.length]);
+  }, [isAutoAdvancing, isHoverPaused, posts.length]);
 
-  // Simple preloading for adjacent blog images
+  // Simple preloading for adjacent article images
   useEffect(() => {
     if (posts.length > 0) {
       const preloadImage = (index: number) => {
@@ -174,14 +175,14 @@ export default function Blogs() {
           <div className="w-3 h-3 rounded-full bg-[#ff5f57]"></div>
           <div className="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
           <div className="w-3 h-3 rounded-full bg-[#28ca41]"></div>
-          <div className="ml-2 text-[#2ed573]/70 text-xs">~/blogs</div>
+          <div className="ml-2 text-[#2ed573]/70 text-xs">~/articles</div>
         </div>
 
         <div className="flex items-center">
           <span className="text-[#2ed573] mr-2">$</span>
           <div className="relative">
             <span className="text-[#2ed573]">
-              ./view_blogs.sh --display=latest
+              ./view_articles.sh --display=latest
             </span>
             <span className="animate-blink ml-1">|</span>
           </div>
@@ -201,7 +202,7 @@ export default function Blogs() {
             </Link>
             <h1 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#2ed573] to-[#7bed9f]">
               <span className="text-[#2ed573]/70">[</span>
-              BLOG_ARCHIVE
+              ARTICLE_ARCHIVE
               <span className="text-[#2ed573]/70">]</span>
             </h1>
           </div>
@@ -244,7 +245,7 @@ export default function Blogs() {
           <div className="bg-[#1a1b26] rounded-lg p-8 flex flex-col items-center justify-center border border-[#2ed573]/20 shadow-[0_0_15px_rgba(46,213,115,0.1)]">
             <div className="flex flex-col items-center">
               <div className="text-[#2ed573] mb-4 font-mono text-sm">
-                $ loading_blogs.sh
+                $ loading_articles.sh
               </div>
               <div className="flex gap-2 items-center mb-4">
                 <div className="w-2 h-2 bg-[#2ed573] rounded-full animate-pulse"></div>
@@ -267,7 +268,9 @@ export default function Blogs() {
             {/* Left column - Article image */}
             <div
               className="md:col-span-1 h-[300px] md:h-[400px] bg-[#1a1b26] rounded-lg overflow-hidden cursor-pointer relative group shadow-[0_0_15px_rgba(46,213,115,0.1)] border border-[#2ed573]/10"
-              onClick={() => openBlogPost(posts[currentPost].url)}
+              onClick={() => openArticle(posts[currentPost].url)}
+              onMouseEnter={() => setIsHoverPaused(true)}
+              onMouseLeave={() => setIsHoverPaused(false)}
             >
               <div className="absolute inset-0 flex items-center justify-center bg-[#0f0f0f]/50 z-10">
                 {posts[currentPost].imageUrl ? (
@@ -324,7 +327,11 @@ export default function Blogs() {
                     ARTICLE #{currentPost + 1}
                   </div>
                 </div>
-                <h2 className="text-xl md:text-2xl font-bold mb-3 text-[#2ed573]">
+                <h2
+                  className="text-xl md:text-2xl font-bold mb-3 text-[#2ed573] inline-block"
+                  onMouseEnter={() => setIsHoverPaused(true)}
+                  onMouseLeave={() => setIsHoverPaused(false)}
+                >
                   {posts[currentPost].title}
                 </h2>
                 <p className="text-[#2ed573]/80 mb-4 text-sm md:text-base">
@@ -344,7 +351,7 @@ export default function Blogs() {
 
               <div className="flex flex-wrap gap-3 mt-4">
                 <Button
-                  onClick={() => openBlogPost(posts[currentPost].url)}
+                  onClick={() => openArticle(posts[currentPost].url)}
                   className="inline-flex items-center gap-2 bg-[#2ed573] hover:bg-[#2ed573]/90 text-[#0f0f0f] px-4 py-2 rounded-md hover:translate-y-[-2px] transition-all hover:shadow-[0_5px_15px_rgba(46,213,115,0.4)]"
                 >
                   <BookOpen size={16} />
@@ -416,11 +423,11 @@ export default function Blogs() {
         ) : (
           <div className="bg-[#1a1b26] rounded-lg p-8 flex flex-col items-center justify-center border border-[#2ed573]/20 shadow-[0_0_15px_rgba(46,213,115,0.1)]">
             <div className="font-mono text-[#2ed573]/70 text-sm mb-4">
-              $ cat /dev/blogs
+              $ cat /dev/articles
             </div>
             <div className="bg-[#0f0f0f] p-4 rounded-md border border-[#2ed573]/10 mb-6 w-full max-w-md">
               <div className="text-[#2ed573]/80 font-mono text-sm mb-2">
-                Error: No blog posts found
+                Error: No articles found
               </div>
               <div className="text-[#2ed573]/50 font-mono text-xs">
                 Unable to establish connection with Medium API
@@ -453,7 +460,7 @@ export default function Blogs() {
                         playClickSound();
                         const prevPage = Math.floor(currentPost / POSTS_PER_PAGE_DESKTOP) - 1;
                         setCurrentPost(prevPage * POSTS_PER_PAGE_DESKTOP);
-                        setCountdown(5);
+                        setCountdown(6);
                       }}
                       className="w-6 h-6 flex items-center justify-center rounded-md transition-colors text-xs font-medium bg-[#0f0f0f] text-[#2ed573]/70 hover:bg-[#0f0f0f]/80 hover:text-[#2ed573]"
                       aria-label="Previous page"
@@ -478,7 +485,7 @@ export default function Blogs() {
                           onClick={() => {
                             playClickSound();
                             setCurrentPost(index);
-                            setCountdown(5);
+                            setCountdown(6);
                           }}
                           className={`w-8 h-8 flex items-center justify-center rounded-md transition-colors text-xs font-medium ${
                             currentPost === index
@@ -500,7 +507,7 @@ export default function Blogs() {
                         playClickSound();
                         const nextPage = Math.floor(currentPost / POSTS_PER_PAGE_DESKTOP) + 1;
                         setCurrentPost(nextPage * POSTS_PER_PAGE_DESKTOP);
-                        setCountdown(5);
+                        setCountdown(6);
                       }}
                       className="w-6 h-6 flex items-center justify-center rounded-md transition-colors text-xs font-medium bg-[#0f0f0f] text-[#2ed573]/70 hover:bg-[#0f0f0f]/80 hover:text-[#2ed573]"
                       aria-label="Next page"

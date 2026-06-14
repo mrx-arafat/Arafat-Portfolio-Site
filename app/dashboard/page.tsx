@@ -35,6 +35,14 @@ import Image from "next/image";
 import { playClickSound } from "@/utils/sound";
 import { useMusicContext } from "@/components/music-provider";
 import extracurricularData from "@/data/extracurricular.json";
+import cveData from "@/data/cve.json";
+import articlesData from "@/data/articles.json";
+import {
+  FeaturedIcon,
+  ProjectIcon,
+  CveIcon,
+  ArticleIcon,
+} from "@/components/card-icons";
 
 // Pre-generate stable random values to avoid hydration mismatches
 const generateStableRandoms = (count: number, seed: number = 1) => {
@@ -835,11 +843,135 @@ export default function Dashboard() {
           </div>
 
           {/* Main Content Sections */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Projects Card */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:auto-rows-[minmax(11rem,1fr)]">
+            {/* HERO — Featured */}
             <div
-              className={`group relative bg-[#1e272e] rounded-2xl overflow-hidden flex flex-col border transition-all duration-300 cursor-pointer hover-glow ${cardEffectActive
-                ? "border-[#2ed573]/60 shadow-[0_0_20px_rgba(46,213,115,0.3)] animate-subtle-pulse"
+              className={`group relative bg-gradient-to-br from-[#1e272e] to-[#1a2230] rounded-2xl overflow-hidden flex flex-col border transition-all duration-300 cursor-pointer hover-glow md:col-span-2 md:row-span-2 order-first md:order-1 ${cardEffectActive
+                ? "border-[#2ed573]/60 shadow-[0_0_28px_rgba(46,213,115,0.35)] animate-subtle-pulse"
+                : "border-[#2ed573]/30 shadow-[0_0_20px_rgba(46,213,115,0.12)]"
+                } ${matrixModeActive
+                  ? "elite-card-override border-[#00BFFF] shadow-[0_0_25px_rgba(0,191,255,0.6)] brightness-80 contrast-120"
+                  : ""
+                }`}
+              onClick={() => navigateTo("/featured")}
+            >
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#2ed573]/60 to-transparent"></div>
+
+              {/* Header */}
+              <div className="p-5 flex items-center justify-between border-b border-[#2ed573]/10">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-[#2ed573]/10 rounded-lg flex items-center justify-center border border-[#2ed573]/20 group-hover:bg-[#2ed573]/20 group-hover:border-[#2ed573]/40 transition-all duration-300">
+                    <FeaturedIcon className="w-4 h-4 text-[#2ed573]" />
+                  </div>
+                  <span className="text-[#2ed573] font-semibold tracking-wide">FEATURED</span>
+                </div>
+                <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-1 rounded bg-[#2ed573]/10 text-[#2ed573] border border-[#2ed573]/20">
+                  ★ Most Notable
+                </span>
+              </div>
+
+              {/* Body */}
+              <div className="flex-1 p-5 flex flex-col relative z-10">
+                <div className="mb-4">
+                  <div className="text-[#2ed573]/70 text-xs font-mono mb-1">peer-reviewed · published 2026</div>
+                  <h3 className="text-xl md:text-2xl font-bold text-[#e6edf3] mb-2 leading-tight">
+                    Adaptive UI for Mobile Banking — Enhancing UX through Machine Learning
+                  </h3>
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-wide px-2 py-1 rounded bg-[#2ed573]/10 text-[#2ed573] border border-[#2ed573]/20">Q1 Journal</span>
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-wide px-2 py-1 rounded bg-[#2ed573]/10 text-[#2ed573] border border-[#2ed573]/20">Impact Factor 4.5</span>
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-wide px-2 py-1 rounded bg-[#2ed573]/10 text-[#2ed573] border border-[#2ed573]/20">Open Access</span>
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-wide px-2 py-1 rounded bg-[#7bed9f]/10 text-[#7bed9f] border border-[#7bed9f]/20">Array · Elsevier</span>
+                  </div>
+                  <p className="text-[#8b949e] text-sm leading-relaxed">
+                    Co-authored research, a <span className="text-[#2ed573]">Daily Star</span> feature, and national recognition — the proof beyond the projects.
+                  </p>
+                </div>
+
+                {/* Highlight rows */}
+                <div className="space-y-1 mb-4">
+                  <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[#2a3942] transition-all duration-200 group/row" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.1s both' }}>
+                    <div className="w-1 self-stretch rounded-full bg-[#2ed573] flex-shrink-0"></div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-[#2ed573] text-sm font-medium">Published Research</div>
+                      <div className="text-[#8b949e] text-xs">Elsevier Array (Q1) — DOI 10.1016/j.array.2026.100901</div>
+                    </div>
+                    <ArrowRight size={14} className="text-[#2ed573]/0 group-hover/row:text-[#2ed573]/50 transition-all duration-200 flex-shrink-0" />
+                  </div>
+                  <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[#2a3942] transition-all duration-200 group/row" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.2s both' }}>
+                    <div className="w-1 self-stretch rounded-full bg-[#2ed573] flex-shrink-0"></div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-[#2ed573] text-sm font-medium">Press &amp; Media</div>
+                      <div className="text-[#8b949e] text-xs">Featured in The Daily Star</div>
+                    </div>
+                    <ArrowRight size={14} className="text-[#2ed573]/0 group-hover/row:text-[#2ed573]/40 transition-all duration-200 flex-shrink-0" />
+                  </div>
+                  <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[#2a3942] transition-all duration-200 group/row" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.3s both' }}>
+                    <div className="w-1 self-stretch rounded-full bg-[#7bed9f] flex-shrink-0"></div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-[#2ed573] text-sm font-medium">Recognition</div>
+                      <div className="text-[#8b949e] text-xs">URC 2021 Global Champion · Top 1% TryHackMe</div>
+                    </div>
+                    <ArrowRight size={14} className="text-[#2ed573]/0 group-hover/row:text-[#7bed9f]/50 transition-all duration-200 flex-shrink-0" />
+                  </div>
+                </div>
+
+                <div className="flex-1"></div>
+
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    playClickSound();
+                    navigateTo("/featured");
+                  }}
+                  className="w-full py-2.5 rounded-xl bg-[#2ed573] hover:bg-[#2ed573]/90 text-[#0f0f0f] border border-[#2ed573] font-semibold text-sm flex items-center justify-center gap-2 transition-all duration-300 hover:shadow-[0_0_16px_rgba(46,213,115,0.4)] relative overflow-hidden group/btn"
+                >
+                  <span className="absolute inset-0 bg-gradient-to-r from-[#2ed573]/0 via-white/20 to-[#2ed573]/0 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700"></span>
+                  <FeaturedIcon className="w-4 h-4 relative z-10" />
+                  <span className="relative z-10">Read the Research</span>
+                  <ArrowRight size={16} className="relative z-10 transform group-hover:translate-x-1 transition-transform duration-200" />
+                </button>
+              </div>
+            </div>
+
+            {/* COMPACT — Security Research */}
+            <div
+              className={`group relative bg-[#1e272e] rounded-2xl overflow-hidden flex flex-col border transition-all duration-300 cursor-pointer hover-glow md:order-2 hover:border-[#2ed573]/50 hover:shadow-[0_0_18px_rgba(46,213,115,0.2)] ${cardEffectActive
+                ? "border-[#2ed573]/40"
+                : "border-[#2ed573]/20 shadow-lg"
+                } ${matrixModeActive
+                  ? "elite-card-override border-[#00BFFF] shadow-[0_0_25px_rgba(0,191,255,0.6)] brightness-80 contrast-120"
+                  : ""
+                }`}
+              onClick={() => navigateTo("/security-research")}
+            >
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#2ed573]/50 to-transparent"></div>
+              <div className="p-5 flex flex-col h-full relative z-10">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="w-8 h-8 bg-[#2ed573]/10 rounded-lg flex items-center justify-center border border-[#2ed573]/20 group-hover:bg-[#2ed573]/20 transition-all duration-300">
+                    <CveIcon className="w-4 h-4 text-[#2ed573]" />
+                  </div>
+                  <span className="text-[#2ed573]/50 text-[11px] font-mono">SECURITY</span>
+                </div>
+                <div className="flex items-end gap-2">
+                  <span className="text-5xl font-bold text-[#2ed573] leading-none">{cveData.items.length}</span>
+                  <span className="text-[#2ed573] text-sm font-medium mb-1">CVEs disclosed</span>
+                </div>
+                <p className="text-[#8b949e] text-xs mt-2 leading-relaxed">
+                  Broken Access Control, IDOR &amp; data exposure in WordPress plugins — responsibly disclosed via Patchstack.
+                </p>
+                <div className="flex-1"></div>
+                <div className="flex items-center gap-1.5 text-[#2ed573]/70 text-xs font-mono mt-3 group-hover:text-[#2ed573] transition-colors">
+                  <span>cd security-research</span>
+                  <ArrowRight size={12} className="transform group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            </div>
+
+            {/* COMPACT — Projects */}
+            <div
+              className={`group relative bg-[#1e272e] rounded-2xl overflow-hidden flex flex-col border transition-all duration-300 cursor-pointer hover-glow md:order-3 hover:border-[#2ed573]/50 hover:shadow-[0_0_18px_rgba(46,213,115,0.2)] ${cardEffectActive
+                ? "border-[#2ed573]/40"
                 : "border-[#2ed573]/20 shadow-lg"
                 } ${matrixModeActive
                   ? "elite-card-override border-[#00BFFF] shadow-[0_0_25px_rgba(0,191,255,0.6)] brightness-80 contrast-120"
@@ -847,184 +979,61 @@ export default function Dashboard() {
                 }`}
               onClick={() => navigateTo("/projects")}
             >
-              {/* Card effect overlay */}
-              {cardEffectActive && (
-                <div className="absolute inset-0 z-10 pointer-events-none">
-                  <div className="absolute inset-0 bg-[#0f0f0f]/20"></div>
-                  <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#2ed573]/50 to-transparent animate-scan-subtle"></div>
-                  <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-[#2ed573]/40 animate-pulse"></div>
-                  <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-[#2ed573]/40 animate-pulse"></div>
-                  <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-[#2ed573]/40 animate-pulse"></div>
-                  <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-[#2ed573]/40 animate-pulse"></div>
-                </div>
-              )}
-
-              {/* Top accent glow line */}
-              <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#2ed573]/30 to-transparent"></div>
-
-              {/* Header */}
-              <div className="p-4 flex items-center justify-between border-b border-[#2ed573]/10">
-                <div className="flex items-center gap-3">
-                  <div className="w-7 h-7 bg-[#2ed573]/10 rounded-lg flex items-center justify-center border border-[#2ed573]/20 group-hover:bg-[#2ed573]/20 group-hover:border-[#2ed573]/40 transition-all duration-300">
-                    <Code size={14} className="text-[#2ed573]" />
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#2ed573]/50 to-transparent"></div>
+              <div className="p-5 flex flex-col h-full relative z-10">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="w-8 h-8 bg-[#2ed573]/10 rounded-lg flex items-center justify-center border border-[#2ed573]/20 group-hover:bg-[#2ed573]/20 transition-all duration-300">
+                    <ProjectIcon className="w-4 h-4 text-[#2ed573]" />
                   </div>
-                  <span className="text-[#2ed573] font-medium">
-                    MY PROJECTS
-                  </span>
+                  <span className="text-[#2ed573]/50 text-[11px] font-mono">BUILD</span>
                 </div>
-                <span className="text-[#2ed573]/50 text-xs">25+ Projects</span>
-              </div>
-
-              {/* Body */}
-              <div className="flex-1 p-4 flex flex-col relative z-10">
-                <div className="mb-4">
-                  <h3 className="text-lg font-bold text-[#2ed573] mb-1.5">
-                    What I&apos;ve Built
-                  </h3>
-                  <p className="text-[#8b949e] text-sm leading-relaxed">
-                    Real-world tools and applications — from security research to web apps. Take a look inside.
-                  </p>
+                <div className="flex items-end gap-2">
+                  <span className="text-5xl font-bold text-[#2ed573] leading-none">25+</span>
+                  <span className="text-[#2ed573] text-sm font-medium mb-1">projects shipped</span>
                 </div>
-
-                {/* Category previews */}
-                <div className="space-y-1 mb-4">
-                  <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[#2a3942] transition-all duration-200 group/row" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.1s both' }}>
-                    <div className="w-1 self-stretch rounded-full bg-[#ff6b6b] flex-shrink-0 group-hover/row:shadow-[0_0_6px_rgba(255,107,107,0.4)] transition-shadow duration-200"></div>
-                    <div className="flex-1 min-w-0">
-                      <div className="text-[#2ed573] text-sm font-medium">Security Tools</div>
-                      <div className="text-[#8b949e] text-xs">Security scripts, scanners, and defense utilities</div>
-                    </div>
-                    <ArrowRight size={14} className="text-[#2ed573]/0 group-hover/row:text-[#2ed573]/40 transition-all duration-200 flex-shrink-0" />
-                  </div>
-                  <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[#2a3942] transition-all duration-200 group/row" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.2s both' }}>
-                    <div className="w-1 self-stretch rounded-full bg-[#2ed573] flex-shrink-0 group-hover/row:shadow-[0_0_6px_rgba(46,213,115,0.4)] transition-shadow duration-200"></div>
-                    <div className="flex-1 min-w-0">
-                      <div className="text-[#2ed573] text-sm font-medium">DevSecOps & Automation</div>
-                      <div className="text-[#8b949e] text-xs">Bots, CI/CD pipelines, and deployment tools</div>
-                    </div>
-                    <ArrowRight size={14} className="text-[#2ed573]/0 group-hover/row:text-[#2ed573]/40 transition-all duration-200 flex-shrink-0" />
-                  </div>
-                  <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[#2a3942] transition-all duration-200 group/row" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.3s both' }}>
-                    <div className="w-1 self-stretch rounded-full bg-[#58a6ff] flex-shrink-0 group-hover/row:shadow-[0_0_6px_rgba(88,166,255,0.4)] transition-shadow duration-200"></div>
-                    <div className="flex-1 min-w-0">
-                      <div className="text-[#2ed573] text-sm font-medium">Web Apps & Products</div>
-                      <div className="text-[#8b949e] text-xs">Real-world apps solving real problems</div>
-                    </div>
-                    <ArrowRight size={14} className="text-[#2ed573]/0 group-hover/row:text-[#2ed573]/40 transition-all duration-200 flex-shrink-0" />
-                  </div>
-                </div>
-
+                <p className="text-[#8b949e] text-xs mt-2 leading-relaxed">
+                  Security tools, DevSecOps automation &amp; real-world web apps — from research to production.
+                </p>
                 <div className="flex-1"></div>
-
-                {/* CTA button */}
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    playClickSound();
-                    navigateTo("/projects");
-                  }}
-                  className="w-full py-2.5 rounded-xl bg-[#0f0f0f] hover:bg-[#2ed573] hover:text-[#0f0f0f] text-[#2ed573] border border-[#2ed573]/30 hover:border-[#2ed573] font-medium text-sm flex items-center justify-center gap-2 transition-all duration-300 hover:shadow-[0_0_12px_rgba(46,213,115,0.25)] relative overflow-hidden group/btn"
-                >
-                  <span className="absolute inset-0 bg-gradient-to-r from-[#2ed573]/0 via-[#2ed573]/10 to-[#2ed573]/0 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700"></span>
-                  <Terminal size={16} className="relative z-10" />
-                  <span className="relative z-10">Explore Projects</span>
-                  <ArrowRight size={16} className="relative z-10 transform group-hover:translate-x-1 transition-transform duration-200" />
-                </button>
+                <div className="flex items-center gap-1.5 text-[#2ed573]/70 text-xs font-mono mt-3 group-hover:text-[#2ed573] transition-colors">
+                  <span>cd projects</span>
+                  <ArrowRight size={12} className="transform group-hover:translate-x-1 transition-transform" />
+                </div>
               </div>
             </div>
 
-            {/* Blog Card */}
+            {/* WIDE — Articles strip */}
             <div
-              className={`group relative bg-[#1e272e] rounded-2xl overflow-hidden flex flex-col border transition-all duration-300 cursor-pointer hover-glow ${cardEffectActive
-                ? "border-[#2ed573]/60 shadow-[0_0_20px_rgba(46,213,115,0.3)] animate-subtle-pulse"
+              className={`group relative bg-[#1e272e] rounded-2xl overflow-hidden flex border transition-all duration-300 cursor-pointer hover-glow md:col-span-3 md:order-4 hover:border-[#2ed573]/50 hover:shadow-[0_0_18px_rgba(46,213,115,0.2)] ${cardEffectActive
+                ? "border-[#2ed573]/40"
                 : "border-[#2ed573]/20 shadow-lg"
                 } ${matrixModeActive
                   ? "elite-card-override border-[#00BFFF] shadow-[0_0_25px_rgba(0,191,255,0.6)] brightness-80 contrast-120"
                   : ""
                 }`}
-              onClick={() => navigateTo("/blogs")}
+              onClick={() => navigateTo("/articles")}
             >
-              {/* Card effect overlay */}
-              {cardEffectActive && (
-                <div className="absolute inset-0 z-10 pointer-events-none">
-                  <div className="absolute inset-0 bg-[#0f0f0f]/20"></div>
-                  <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#2ed573]/50 to-transparent animate-scan-subtle-reverse"></div>
-                  <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-[#2ed573]/40 animate-pulse" style={{ animationDelay: '0.5s' }}></div>
-                  <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-[#2ed573]/40 animate-pulse" style={{ animationDelay: '0.5s' }}></div>
-                </div>
-              )}
-
-              {/* Top accent glow line */}
-              <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#2ed573]/30 to-transparent"></div>
-
-              {/* Header */}
-              <div className="p-4 flex items-center justify-between border-b border-[#2ed573]/10">
-                <div className="flex items-center gap-3">
-                  <div className="w-7 h-7 bg-[#2ed573]/10 rounded-lg flex items-center justify-center border border-[#2ed573]/20 group-hover:bg-[#2ed573]/20 group-hover:border-[#2ed573]/40 transition-all duration-300">
-                    <PenLine size={14} className="text-[#2ed573]" />
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#2ed573]/50 to-transparent"></div>
+              <div className="p-5 flex flex-col sm:flex-row sm:items-center gap-4 w-full relative z-10">
+                <div className="flex items-center gap-4 flex-shrink-0">
+                  <div className="w-10 h-10 bg-[#2ed573]/10 rounded-lg flex items-center justify-center border border-[#2ed573]/20 group-hover:bg-[#2ed573]/20 transition-all duration-300">
+                    <ArticleIcon className="w-[18px] h-[18px] text-[#2ed573]" />
                   </div>
-                  <span className="text-[#2ed573] font-medium">
-                    MY BLOGS
-                  </span>
+                  <div className="flex items-end gap-2">
+                    <span className="text-4xl font-bold text-[#2ed573] leading-none">{articlesData.length}</span>
+                    <span className="text-[#2ed573] text-sm font-medium mb-1">articles</span>
+                  </div>
                 </div>
-                <span className="text-[#2ed573]/50 text-xs">New Posts</span>
-              </div>
-
-              {/* Body */}
-              <div className="flex-1 p-4 flex flex-col relative z-10">
-                <div className="mb-4">
-                  <h3 className="text-lg font-bold text-[#2ed573] mb-1.5">
-                    What I Write About
-                  </h3>
-                  <p className="text-[#8b949e] text-sm leading-relaxed">
-                    Ideas and lessons on security, building businesses, psychology, and how the world works.
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-[#e6edf3] font-semibold text-sm">What I Write About</h3>
+                  <p className="text-[#8b949e] text-xs leading-relaxed">
+                    Security, building businesses, psychology, and how the world works.
                   </p>
                 </div>
-
-                {/* Topic previews */}
-                <div className="space-y-1 mb-4">
-                  <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[#2a3942] transition-all duration-200 group/row" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.1s both' }}>
-                    <div className="w-1 self-stretch rounded-full bg-[#2ed573] flex-shrink-0 group-hover/row:shadow-[0_0_6px_rgba(46,213,115,0.4)] transition-shadow duration-200"></div>
-                    <div className="flex-1 min-w-0">
-                      <div className="text-[#2ed573] text-sm font-medium">Security & AppSec</div>
-                      <div className="text-[#8b949e] text-xs">How software gets hacked — and how to stop it</div>
-                    </div>
-                    <ArrowRight size={14} className="text-[#2ed573]/0 group-hover/row:text-[#2ed573]/40 transition-all duration-200 flex-shrink-0" />
-                  </div>
-                  <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[#2a3942] transition-all duration-200 group/row" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.2s both' }}>
-                    <div className="w-1 self-stretch rounded-full bg-[#febc2e] flex-shrink-0 group-hover/row:shadow-[0_0_6px_rgba(254,188,46,0.4)] transition-shadow duration-200"></div>
-                    <div className="flex-1 min-w-0">
-                      <div className="text-[#2ed573] text-sm font-medium">Business & Startups</div>
-                      <div className="text-[#8b949e] text-xs">Lessons from building things from scratch</div>
-                    </div>
-                    <ArrowRight size={14} className="text-[#2ed573]/0 group-hover/row:text-[#2ed573]/40 transition-all duration-200 flex-shrink-0" />
-                  </div>
-                  <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[#2a3942] transition-all duration-200 group/row" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.3s both' }}>
-                    <div className="w-1 self-stretch rounded-full bg-[#58a6ff] flex-shrink-0 group-hover/row:shadow-[0_0_6px_rgba(88,166,255,0.4)] transition-shadow duration-200"></div>
-                    <div className="flex-1 min-w-0">
-                      <div className="text-[#2ed573] text-sm font-medium">Philosophy & Psychology</div>
-                      <div className="text-[#8b949e] text-xs">Deep thinking about people and ideas</div>
-                    </div>
-                    <ArrowRight size={14} className="text-[#2ed573]/0 group-hover/row:text-[#2ed573]/40 transition-all duration-200 flex-shrink-0" />
-                  </div>
+                <div className="flex items-center gap-1.5 text-[#2ed573]/70 text-xs font-mono flex-shrink-0 group-hover:text-[#2ed573] transition-colors">
+                  <span>cd articles</span>
+                  <ArrowRight size={14} className="transform group-hover:translate-x-1 transition-transform" />
                 </div>
-
-                <div className="flex-1"></div>
-
-                {/* CTA button */}
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    playClickSound();
-                    navigateTo("/blogs");
-                  }}
-                  className="w-full py-2.5 rounded-xl bg-[#0f0f0f] hover:bg-[#2ed573] hover:text-[#0f0f0f] text-[#2ed573] border border-[#2ed573]/30 hover:border-[#2ed573] font-medium text-sm flex items-center justify-center gap-2 transition-all duration-300 hover:shadow-[0_0_12px_rgba(46,213,115,0.25)] relative overflow-hidden group/btn"
-                >
-                  <span className="absolute inset-0 bg-gradient-to-r from-[#2ed573]/0 via-[#2ed573]/10 to-[#2ed573]/0 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700"></span>
-                  <PenLine size={16} className="relative z-10" />
-                  <span className="relative z-10">Read My Blogs</span>
-                  <ArrowRight size={16} className="relative z-10 transform group-hover:translate-x-1 transition-transform duration-200" />
-                </button>
               </div>
             </div>
           </div>
