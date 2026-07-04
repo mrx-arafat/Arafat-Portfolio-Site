@@ -12,7 +12,9 @@ export default async function ArticlesPage() {
     publishDate: post.date,
     readTime: post.readTime,
     url: `/blog/${post.category}/${post.slug}`,
-    imageUrl: post.cover ?? "",
+    imageUrl:
+      post.cover ??
+      `/api/og?size=card&title=${encodeURIComponent(post.title)}&category=${encodeURIComponent(post.category)}&meta=${encodeURIComponent(`${post.date} · ${post.readTime}`)}`,
     tags: post.tags,
     source: "native",
   }));
