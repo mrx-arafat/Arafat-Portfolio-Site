@@ -1,11 +1,15 @@
-import fs from "node:fs";
-import path from "node:path";
-import matter from "gray-matter";
+import { supabasePublic } from "./supabase";
 
-/** Default content root — override in tests. */
-export const CONTENT_ROOT = path.join(process.cwd(), "content");
+export const CATEGORIES = [
+  "security",
+  "engineering",
+  "business",
+  "psychology",
+  "life",
+] as const;
+export type CategoryName = (typeof CATEGORIES)[number];
 
-export interface PostMeta {
+export interface Post {
   slug: string;
   category: string;
   title: string;
@@ -14,25 +18,17 @@ export interface PostMeta {
   tags: string[];
   readTime: string;
   draft: boolean;
-  /** Absolute path to the post folder (for image resolution). */
-  dir: string;
   cover: string | null;
-}
-
-export interface Post extends PostMeta {
   content: string;
 }
 
-export interface NoteMeta {
+export interface Note {
   slug: string;
   title: string;
   date: string;
   tags: string[];
   readTime: string;
   draft: boolean;
-}
-
-export interface Note extends NoteMeta {
   content: string;
 }
 
@@ -41,7 +37,19 @@ export interface Category {
   count: number;
 }
 
-const DATE_PREFIX = /^\d{4}-\d{2}-\d{2}-/;
+/** Raw row shape of the posts table. */
+export interface PostRow {
+  type: "essay" | "note";
+  category: string | null;
+  slug: string;
+  title: string;
+  description: string;
+  content_md: string;
+  tags: string[];
+  date: string;
+  draft: boolean;
+  cover_url: string | null;
+}
 
 /** Compute "N min read" from raw text at 200 wpm, floor 1. */
 export function computeReadTime(text: string): string {
@@ -50,125 +58,106 @@ export function computeReadTime(text: string): string {
   return `${minutes} min read`;
 }
 
-function toDateString(value: unknown): string {
-  if (value instanceof Date) return value.toISOString().slice(0, 10);
-  return String(value ?? "");
-}
-
-function findCover(dir: string): string | null {
-  for (const ext of ["png", "jpg", "jpeg", "webp", "avif"]) {
-    const p = path.join(dir, `cover.${ext}`);
-    if (fs.existsSync(p)) return p;
-  }
-  return null;
-}
-
-function readPostFile(dir: string, category: string): Post | null {
-  const file = path.join(dir, "index.mdx");
-  if (!fs.existsSync(file)) return null;
-  const raw = fs.readFileSync(file, "utf8");
-  const { data, content } = matter(raw);
+/** Map a posts row to a Post (essays). */
+export function mapPost(row: PostRow): Post {
   return {
-    slug: path.basename(dir).replace(DATE_PREFIX, ""),
-    category,
-    title: String(data.title ?? ""),
-    description: String(data.description ?? ""),
-    date: toDateString(data.date),
-    tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
-    readTime: computeReadTime(content),
-    draft: data.draft === true,
-    dir,
-    cover: findCover(dir),
-    content,
+    slug: row.slug,
+    category: row.category ?? "",
+    title: row.title,
+    description: row.description,
+    date: row.date,
+    tags: row.tags ?? [],
+    readTime: computeReadTime(row.content_md),
+    draft: row.draft,
+    cover: row.cover_url,
+    content: row.content_md,
   };
 }
 
-function listDirs(parent: string): string[] {
-  if (!fs.existsSync(parent)) return [];
-  return fs
-    .readdirSync(parent, { withFileTypes: true })
-    .filter((e) => e.isDirectory())
-    .map((e) => e.name);
+/** Map a posts row to a Note. */
+export function mapNote(row: PostRow): Note {
+  return {
+    slug: row.slug,
+    title: row.title,
+    date: row.date,
+    tags: row.tags ?? [],
+    readTime: computeReadTime(row.content_md),
+    draft: row.draft,
+    content: row.content_md,
+  };
 }
 
-/** All essays, newest first. Drafts excluded unless includeDrafts. */
-export function getAllPosts(
-  root: string = CONTENT_ROOT,
-  opts: { includeDrafts?: boolean } = {}
-): Post[] {
-  const blogRoot = path.join(root, "blog");
-  const posts: Post[] = [];
-  for (const category of listDirs(blogRoot)) {
-    for (const folder of listDirs(path.join(blogRoot, category))) {
-      const post = readPostFile(path.join(blogRoot, category, folder), category);
-      if (post && (opts.includeDrafts || !post.draft)) posts.push(post);
-    }
-  }
-  return posts.sort((a, b) => b.date.localeCompare(a.date));
+const ROW_COLUMNS =
+  "type, category, slug, title, description, content_md, tags, date, draft, cover_url";
+
+/** All published essays, newest first. */
+export async function getAllPosts(): Promise<Post[]> {
+  const { data, error } = await supabasePublic()
+    .from("posts")
+    .select(ROW_COLUMNS)
+    .eq("type", "essay")
+    .eq("draft", false)
+    .order("date", { ascending: false });
+  if (error) throw error;
+  return (data as PostRow[]).map(mapPost);
 }
 
-/** Single published-or-draft post by category + slug, null if missing. */
-export function getPost(
+/** Single published essay by category + slug, null if missing. */
+export async function getPost(
   category: string,
-  slug: string,
-  root: string = CONTENT_ROOT
-): Post | null {
-  const categoryDir = path.join(root, "blog", category);
-  for (const folder of listDirs(categoryDir)) {
-    if (folder.replace(DATE_PREFIX, "") === slug) {
-      return readPostFile(path.join(categoryDir, folder), category);
-    }
-  }
-  return null;
+  slug: string
+): Promise<Post | null> {
+  const { data, error } = await supabasePublic()
+    .from("posts")
+    .select(ROW_COLUMNS)
+    .eq("type", "essay")
+    .eq("category", category)
+    .eq("slug", slug)
+    .eq("draft", false)
+    .maybeSingle();
+  if (error) throw error;
+  return data ? mapPost(data as PostRow) : null;
 }
 
-/** All notes (content/notes/YYYY/MM/*.mdx), newest first. */
-export function getAllNotes(
-  root: string = CONTENT_ROOT,
-  opts: { includeDrafts?: boolean } = {}
-): Note[] {
-  const notesRoot = path.join(root, "notes");
-  const notes: Note[] = [];
-  for (const year of listDirs(notesRoot)) {
-    for (const month of listDirs(path.join(notesRoot, year))) {
-      const monthDir = path.join(notesRoot, year, month);
-      for (const file of fs.readdirSync(monthDir)) {
-        if (!file.endsWith(".mdx")) continue;
-        const raw = fs.readFileSync(path.join(monthDir, file), "utf8");
-        const { data, content } = matter(raw);
-        const note: Note = {
-          slug: file.replace(/\.mdx$/, "").replace(DATE_PREFIX, ""),
-          title: String(data.title ?? ""),
-          date: toDateString(data.date),
-          tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
-          readTime: computeReadTime(content),
-          draft: data.draft === true,
-          content,
-        };
-        if (opts.includeDrafts || !note.draft) notes.push(note);
-      }
-    }
-  }
-  return notes.sort((a, b) => b.date.localeCompare(a.date));
+/** All published notes, newest first. */
+export async function getAllNotes(): Promise<Note[]> {
+  const { data, error } = await supabasePublic()
+    .from("posts")
+    .select(ROW_COLUMNS)
+    .eq("type", "note")
+    .eq("draft", false)
+    .order("date", { ascending: false });
+  if (error) throw error;
+  return (data as PostRow[]).map(mapNote);
 }
 
-/** Categories that have at least one published post, with counts. */
-export function getCategories(root: string = CONTENT_ROOT): Category[] {
+/** Categories having at least one published essay, with counts. */
+export async function getCategories(): Promise<Category[]> {
+  const posts = await getAllPosts();
   const counts = new Map<string, number>();
-  for (const post of getAllPosts(root)) {
+  for (const post of posts) {
     counts.set(post.category, (counts.get(post.category) ?? 0) + 1);
   }
   return Array.from(counts.entries()).map(([name, count]) => ({ name, count }));
 }
 
-/** Published posts carrying the given tag. */
-export function getPostsByTag(tag: string, root: string = CONTENT_ROOT): Post[] {
-  return getAllPosts(root).filter((p) => p.tags.includes(tag));
+/** Published essays carrying the given tag. */
+export async function getPostsByTag(tag: string): Promise<Post[]> {
+  const { data, error } = await supabasePublic()
+    .from("posts")
+    .select(ROW_COLUMNS)
+    .eq("type", "essay")
+    .eq("draft", false)
+    .contains("tags", [tag])
+    .order("date", { ascending: false });
+  if (error) throw error;
+  return (data as PostRow[]).map(mapPost);
 }
 
-/** All unique tags across published posts. */
-export function getAllTags(root: string = CONTENT_ROOT): string[] {
+/** All unique tags across published essays. */
+export async function getAllTags(): Promise<string[]> {
+  const posts = await getAllPosts();
   const tags = new Set<string>();
-  for (const post of getAllPosts(root)) post.tags.forEach((t) => tags.add(t));
+  for (const post of posts) post.tags.forEach((t) => tags.add(t));
   return Array.from(tags).sort();
 }

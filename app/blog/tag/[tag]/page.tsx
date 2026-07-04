@@ -10,11 +10,13 @@ interface Props {
   params: Promise<{ tag: string }>;
 }
 
-export function generateStaticParams() {
-  return getAllTags().map((tag) => ({ tag }));
+export async function generateStaticParams() {
+  const tags = await getAllTags();
+  return tags.map((tag) => ({ tag }));
 }
 
-export const dynamicParams = false;
+export const revalidate = 300;
+export const dynamicParams = true;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { tag } = await params;
@@ -28,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function TagPage({ params }: Props) {
   const { tag } = await params;
   const decoded = decodeURIComponent(tag);
-  const posts = getPostsByTag(decoded);
+  const posts = await getPostsByTag(decoded);
   if (posts.length === 0) notFound();
 
   return (

@@ -11,12 +11,14 @@ export const metadata: Metadata = {
     "Short daily notes — raw thoughts on security, philosophy, business, and life by Easin Arafat.",
 };
 
-export default function NotesPage() {
-  const notes = getAllNotes();
+export const revalidate = 300;
+
+export default async function NotesPage() {
+  const notes = await getAllNotes();
 
   return (
     <main className="min-h-screen bg-[#121212] text-[#2ed573] p-4 md:p-8 grid-dots">
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-4xl mx-auto">
         <TerminalHeader path="~/notes" command="tail -f daily.log" />
 
         <div className="flex items-center mb-8">

@@ -10,11 +10,13 @@ interface Props {
   params: Promise<{ category: string }>;
 }
 
-export function generateStaticParams() {
-  return getCategories().map((c) => ({ category: c.name }));
+export async function generateStaticParams() {
+  const cats = await getCategories();
+  return cats.map((c) => ({ category: c.name }));
 }
 
-export const dynamicParams = false;
+export const revalidate = 300;
+export const dynamicParams = true;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category } = await params;
@@ -26,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CategoryPage({ params }: Props) {
   const { category } = await params;
-  const posts = getAllPosts().filter((p) => p.category === category);
+  const posts = (await getAllPosts()).filter((p) => p.category === category);
   if (posts.length === 0) notFound();
 
   return (

@@ -12,10 +12,12 @@ export const metadata: Metadata = {
     "Security research, engineering, business, psychology, and life — essays and daily notes by Easin Arafat.",
 };
 
-export default function BlogIndex() {
-  const posts = getAllPosts();
-  const notes = getAllNotes().slice(0, 3);
-  const categories = getCategories();
+export const revalidate = 300;
+
+export default async function BlogIndex() {
+  const posts = await getAllPosts();
+  const notes = (await getAllNotes()).slice(0, 3);
+  const categories = await getCategories();
 
   return (
     <main className="min-h-screen bg-[#121212] text-[#2ed573] p-4 md:p-8 grid-dots">

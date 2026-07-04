@@ -1,158 +1,54 @@
-import { describe, it, expect, beforeAll, afterAll } from "vitest";
-import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from "node:fs";
-import { tmpdir } from "node:os";
-import path from "node:path";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import {
+  computeReadTime,
+  mapPost,
+  mapNote,
   getAllPosts,
   getPost,
   getAllNotes,
   getCategories,
   getPostsByTag,
-  computeReadTime,
+  getAllTags,
+  type PostRow,
 } from "@/lib/blog";
+import { supabasePublic } from "@/lib/supabase";
 
-let root: string;
+vi.mock("@/lib/supabase", () => ({
+  supabasePublic: vi.fn(),
+}));
 
-function writePost(
-  category: string,
-  folder: string,
-  frontmatter: string,
-  body: string
-) {
-  const dir = path.join(root, "blog", category, folder);
-  mkdirSync(dir, { recursive: true });
-  writeFileSync(path.join(dir, "index.mdx"), `---\n${frontmatter}\n---\n\n${body}\n`);
-  return dir;
+function essayRow(overrides: Partial<PostRow> = {}): PostRow {
+  return {
+    type: "essay",
+    category: "security",
+    slug: "axios-attack",
+    title: "Axios Supply Chain Attack",
+    description: "npm compromise breakdown",
+    content_md: "# Intro\n\nSome analysis content here.",
+    tags: ["npm", "supply-chain"],
+    date: "2026-07-01",
+    draft: false,
+    cover_url: null,
+    ...overrides,
+  };
 }
 
-function writeNote(year: string, month: string, file: string, frontmatter: string, body: string) {
-  const dir = path.join(root, "notes", year, month);
-  mkdirSync(dir, { recursive: true });
-  writeFileSync(path.join(dir, file), `---\n${frontmatter}\n---\n\n${body}\n`);
+/** Chainable query builder mock resolving to the given rows. */
+function mockQuery(rows: PostRow[] | PostRow | null) {
+  const result = { data: rows, error: null };
+  const builder: Record<string, unknown> = {};
+  for (const m of ["select", "eq", "contains", "order"]) {
+    builder[m] = vi.fn().mockReturnValue(builder);
+  }
+  builder.maybeSingle = vi.fn().mockResolvedValue(result);
+  // Awaiting the builder itself resolves list queries
+  builder.then = (resolve: (v: unknown) => unknown) =>
+    Promise.resolve(result).then(resolve);
+  return { from: vi.fn().mockReturnValue(builder), builder };
 }
 
-beforeAll(() => {
-  root = mkdtempSync(path.join(tmpdir(), "blog-test-"));
-
-  writePost(
-    "security",
-    "2026-07-01-axios-attack",
-    `title: "Axios Supply Chain Attack"\ndescription: "npm compromise breakdown"\ndate: 2026-07-01\ntags: [npm, supply-chain]`,
-    "# Intro\n\nSome analysis content here."
-  );
-  writePost(
-    "security",
-    "2026-07-03-idor-hunting",
-    `title: "IDOR Hunting"\ndescription: "finding IDORs"\ndate: 2026-07-03\ntags: [idor, web]`,
-    "IDOR content."
-  );
-  writePost(
-    "life",
-    "2026-06-20-discipline",
-    `title: "On Discipline"\ndescription: "daily systems"\ndate: 2026-06-20\ntags: [habits]`,
-    "Discipline content."
-  );
-  writePost(
-    "engineering",
-    "2026-07-04-draft-post",
-    `title: "Unfinished"\ndescription: "wip"\ndate: 2026-07-04\ntags: [wip]\ndraft: true`,
-    "Draft content."
-  );
-
-  writeNote("2026", "07", "2026-07-05-on-focus.mdx", `title: "On Focus"\ndate: 2026-07-05\ntags: [focus]`, "Short note.");
-  writeNote("2026", "06", "2026-06-30-june-wrap.mdx", `title: "June Wrap"\ndate: 2026-06-30`, "Month reflection.");
-});
-
-afterAll(() => {
-  rmSync(root, { recursive: true, force: true });
-});
-
-describe("getAllPosts", () => {
-  it("returns published posts sorted by date desc", () => {
-    const posts = getAllPosts(root);
-    expect(posts.map((p) => p.slug)).toEqual([
-      "idor-hunting",
-      "axios-attack",
-      "discipline",
-    ]);
-  });
-
-  it("excludes drafts by default", () => {
-    const posts = getAllPosts(root);
-    expect(posts.find((p) => p.slug === "draft-post")).toBeUndefined();
-  });
-
-  it("includes drafts when requested", () => {
-    const posts = getAllPosts(root, { includeDrafts: true });
-    expect(posts.find((p) => p.slug === "draft-post")).toBeDefined();
-  });
-
-  it("derives category from folder path", () => {
-    const posts = getAllPosts(root);
-    const axios = posts.find((p) => p.slug === "axios-attack");
-    expect(axios?.category).toBe("security");
-  });
-
-  it("strips date prefix from folder name for slug", () => {
-    const posts = getAllPosts(root);
-    expect(posts.every((p) => !/^\d{4}-\d{2}-\d{2}/.test(p.slug))).toBe(true);
-  });
-
-  it("parses frontmatter fields", () => {
-    const axios = getAllPosts(root).find((p) => p.slug === "axios-attack")!;
-    expect(axios.title).toBe("Axios Supply Chain Attack");
-    expect(axios.description).toBe("npm compromise breakdown");
-    expect(axios.tags).toEqual(["npm", "supply-chain"]);
-    expect(axios.date).toBe("2026-07-01");
-    expect(axios.readTime).toMatch(/min read$/);
-  });
-});
-
-describe("getPost", () => {
-  it("returns a single post with raw content", () => {
-    const post = getPost("security", "axios-attack", root);
-    expect(post?.title).toBe("Axios Supply Chain Attack");
-    expect(post?.content).toContain("Some analysis content");
-  });
-
-  it("returns null for missing post", () => {
-    expect(getPost("security", "nope", root)).toBeNull();
-  });
-});
-
-describe("getAllNotes", () => {
-  it("returns notes sorted by date desc", () => {
-    const notes = getAllNotes(root);
-    expect(notes.map((n) => n.slug)).toEqual(["on-focus", "june-wrap"]);
-  });
-
-  it("parses note frontmatter", () => {
-    const note = getAllNotes(root)[0];
-    expect(note.title).toBe("On Focus");
-    expect(note.tags).toEqual(["focus"]);
-  });
-});
-
-describe("getCategories", () => {
-  it("returns categories with published post counts", () => {
-    const cats = getCategories(root);
-    expect(cats).toEqual(
-      expect.arrayContaining([
-        { name: "security", count: 2 },
-        { name: "life", count: 1 },
-      ])
-    );
-    // engineering only has a draft — zero published
-    expect(cats.find((c) => c.name === "engineering")).toBeUndefined();
-  });
-});
-
-describe("getPostsByTag", () => {
-  it("filters posts by tag", () => {
-    const posts = getPostsByTag("npm", root);
-    expect(posts).toHaveLength(1);
-    expect(posts[0].slug).toBe("axios-attack");
-  });
+beforeEach(() => {
+  vi.mocked(supabasePublic).mockReset();
 });
 
 describe("computeReadTime", () => {
@@ -163,5 +59,116 @@ describe("computeReadTime", () => {
 
   it("has a 1 minute floor", () => {
     expect(computeReadTime("short")).toBe("1 min read");
+  });
+});
+
+describe("mapPost", () => {
+  it("maps a row to a Post with computed read time", () => {
+    const post = mapPost(essayRow());
+    expect(post).toMatchObject({
+      slug: "axios-attack",
+      category: "security",
+      title: "Axios Supply Chain Attack",
+      date: "2026-07-01",
+      tags: ["npm", "supply-chain"],
+      cover: null,
+      draft: false,
+    });
+    expect(post.readTime).toMatch(/min read$/);
+    expect(post.content).toContain("analysis content");
+  });
+
+  it("defaults null category and tags", () => {
+    const post = mapPost(essayRow({ category: null, tags: undefined as unknown as string[] }));
+    expect(post.category).toBe("");
+    expect(post.tags).toEqual([]);
+  });
+});
+
+describe("mapNote", () => {
+  it("maps a note row without category", () => {
+    const note = mapNote(essayRow({ type: "note", category: null, slug: "day-one" }));
+    expect(note.slug).toBe("day-one");
+    expect(note).not.toHaveProperty("category");
+  });
+});
+
+describe("getAllPosts", () => {
+  it("returns mapped essays from supabase", async () => {
+    const { from } = mockQuery([essayRow(), essayRow({ slug: "second", date: "2026-06-01" })]);
+    vi.mocked(supabasePublic).mockReturnValue({ from } as never);
+
+    const posts = await getAllPosts();
+    expect(posts).toHaveLength(2);
+    expect(posts[0].slug).toBe("axios-attack");
+    expect(from).toHaveBeenCalledWith("posts");
+  });
+});
+
+describe("getPost", () => {
+  it("returns single post via maybeSingle", async () => {
+    const { from } = mockQuery(essayRow());
+    vi.mocked(supabasePublic).mockReturnValue({ from } as never);
+
+    const post = await getPost("security", "axios-attack");
+    expect(post?.title).toBe("Axios Supply Chain Attack");
+  });
+
+  it("returns null when not found", async () => {
+    const { from } = mockQuery(null);
+    vi.mocked(supabasePublic).mockReturnValue({ from } as never);
+
+    expect(await getPost("security", "nope")).toBeNull();
+  });
+});
+
+describe("getAllNotes", () => {
+  it("returns mapped notes", async () => {
+    const { from } = mockQuery([essayRow({ type: "note", category: null, slug: "day-one" })]);
+    vi.mocked(supabasePublic).mockReturnValue({ from } as never);
+
+    const notes = await getAllNotes();
+    expect(notes[0].slug).toBe("day-one");
+  });
+});
+
+describe("getCategories", () => {
+  it("counts published posts per category", async () => {
+    const { from } = mockQuery([
+      essayRow(),
+      essayRow({ slug: "b" }),
+      essayRow({ slug: "c", category: "life" }),
+    ]);
+    vi.mocked(supabasePublic).mockReturnValue({ from } as never);
+
+    const cats = await getCategories();
+    expect(cats).toEqual(
+      expect.arrayContaining([
+        { name: "security", count: 2 },
+        { name: "life", count: 1 },
+      ])
+    );
+  });
+});
+
+describe("getPostsByTag", () => {
+  it("passes tag as array to contains filter", async () => {
+    const { from, builder } = mockQuery([essayRow()]);
+    vi.mocked(supabasePublic).mockReturnValue({ from } as never);
+
+    await getPostsByTag("npm");
+    expect(builder.contains).toHaveBeenCalledWith("tags", ["npm"]);
+  });
+});
+
+describe("getAllTags", () => {
+  it("returns sorted unique tags", async () => {
+    const { from } = mockQuery([
+      essayRow(),
+      essayRow({ slug: "b", tags: ["web", "npm"] }),
+    ]);
+    vi.mocked(supabasePublic).mockReturnValue({ from } as never);
+
+    expect(await getAllTags()).toEqual(["npm", "supply-chain", "web"]);
   });
 });

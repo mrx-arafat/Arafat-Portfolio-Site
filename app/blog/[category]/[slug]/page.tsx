@@ -1,5 +1,4 @@
 import Link from "next/link";
-import path from "node:path";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, Calendar, Clock } from "lucide-react";
@@ -11,15 +10,17 @@ interface Props {
   params: Promise<{ category: string; slug: string }>;
 }
 
-export function generateStaticParams() {
-  return getAllPosts().map((p) => ({ category: p.category, slug: p.slug }));
+export async function generateStaticParams() {
+  const posts = await getAllPosts();
+  return posts.map((p) => ({ category: p.category, slug: p.slug }));
 }
 
-export const dynamicParams = false;
+export const revalidate = 300;
+export const dynamicParams = true;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category, slug } = await params;
-  const post = getPost(category, slug);
+  const post = await getPost(category, slug);
   if (!post) return {};
   return {
     title: post.title,
@@ -29,21 +30,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function PostPage({ params }: Props) {
   const { category, slug } = await params;
-  const post = getPost(category, slug);
-  if (!post || post.draft) notFound();
+  const post = await getPost(category, slug);
+  if (!post) notFound();
 
-  const published = getAllPosts();
+  const published = await getAllPosts();
   const index = published.findIndex(
     (p) => p.category === category && p.slug === slug
   );
   const newer = index > 0 ? published[index - 1] : null;
   const older = index < published.length - 1 ? published[index + 1] : null;
 
-  const assetBase = `/blog-assets/${category}/${path.basename(post.dir)}`;
-
   return (
     <main className="min-h-screen bg-[#121212] text-[#2ed573] p-4 md:p-8 grid-dots">
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-4xl mx-auto">
         <TerminalHeader
           path={`~/blog/${category}/${slug}`}
           command="cat index.mdx"
@@ -80,13 +79,13 @@ export default async function PostPage({ params }: Props) {
             <h1 className="text-2xl md:text-4xl font-bold text-[#2ed573] leading-tight mb-3">
               {post.title}
             </h1>
-            <p className="text-[#2ed573]/60 text-sm md:text-base leading-relaxed">
+            <p className="text-[#c9d1d9]/80 text-sm md:text-base leading-relaxed">
               {post.description}
             </p>
           </header>
 
           <div className="blog-prose">
-            <MdxContent source={post.content} assetBase={assetBase} />
+            <MdxContent source={post.content} />
           </div>
 
           {post.tags.length > 0 && (
