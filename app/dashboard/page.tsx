@@ -822,9 +822,9 @@ export default function Dashboard() {
                         window.open(platform.url, "_blank");
                       }}
                     >
-                      <div className={`bg-[#1e272e] rounded-2xl aspect-square flex items-center justify-center relative hover:bg-[#2a3942] transition-colors cursor-pointer border border-[#2ed573]/20 hover-glow ${matrixModeActive ? "matrix-social-effect border-[#2ed573] shadow-[0_0_20px_rgba(46,213,115,0.8)]" : ""
+                      <div className={`bg-[#0f0f0f] rounded-2xl aspect-square flex items-center justify-center relative hover:bg-[#0a0a0a] hover:border-[#2ed573]/50 transition-colors cursor-pointer border border-[#2ed573]/20 hover-glow ${matrixModeActive ? "matrix-social-effect border-[#2ed573] shadow-[0_0_20px_rgba(46,213,115,0.8)]" : ""
                         }`}>
-                        <div className="w-12 h-12 rounded-full bg-[#0f0f0f] flex items-center justify-center">
+                        <div className="w-12 h-12 rounded-full bg-[#0a0a0a] flex items-center justify-center">
                           {platform.icon}
                         </div>
                         <div className="absolute top-2 left-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
@@ -846,7 +846,7 @@ export default function Dashboard() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:auto-rows-[minmax(11rem,1fr)]">
             {/* HERO — Featured */}
             <div
-              className={`group relative bg-gradient-to-br from-[#1e272e] to-[#1a2230] rounded-2xl overflow-hidden flex flex-col border transition-all duration-300 cursor-pointer hover-glow md:col-span-2 md:row-span-2 order-first md:order-1 ${cardEffectActive
+              className={`group relative bg-gradient-to-br from-[#0f0f0f] to-[#0a0a0a] rounded-2xl overflow-hidden flex flex-col border transition-all duration-300 cursor-pointer hover-glow md:col-span-2 md:row-span-2 order-first md:order-1 ${cardEffectActive
                 ? "border-[#2ed573]/60 shadow-[0_0_28px_rgba(46,213,115,0.35)] animate-subtle-pulse"
                 : "border-[#2ed573]/30 shadow-[0_0_20px_rgba(46,213,115,0.12)]"
                 } ${matrixModeActive
@@ -874,7 +874,7 @@ export default function Dashboard() {
               <div className="flex-1 p-5 flex flex-col relative z-10">
                 <div className="mb-4">
                   <div className="text-[#2ed573]/70 text-xs font-mono mb-1">peer-reviewed · published 2026</div>
-                  <h3 className="text-xl md:text-2xl font-bold text-[#e6edf3] mb-2 leading-tight">
+                  <h3 className="text-xl md:text-2xl font-bold text-[#2ed573] mb-2 leading-tight">
                     Adaptive UI for Mobile Banking — Enhancing UX through Machine Learning
                   </h3>
                   <div className="flex flex-wrap gap-2 mb-3">
@@ -883,34 +883,34 @@ export default function Dashboard() {
                     <span className="text-[10px] font-mono font-bold uppercase tracking-wide px-2 py-1 rounded bg-[#2ed573]/10 text-[#2ed573] border border-[#2ed573]/20">Open Access</span>
                     <span className="text-[10px] font-mono font-bold uppercase tracking-wide px-2 py-1 rounded bg-[#7bed9f]/10 text-[#7bed9f] border border-[#7bed9f]/20">Array · Elsevier</span>
                   </div>
-                  <p className="text-[#8b949e] text-sm leading-relaxed">
+                  <p className="text-[#2ed573]/60 text-sm leading-relaxed">
                     Co-authored research, a <span className="text-[#2ed573]">Daily Star</span> feature, and national recognition — the proof beyond the projects.
                   </p>
                 </div>
 
                 {/* Highlight rows */}
                 <div className="space-y-1 mb-4">
-                  <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[#2a3942] transition-all duration-200 group/row" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.1s both' }}>
+                  <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[#2ed573]/5 transition-all duration-200 group/row" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.1s both' }}>
                     <div className="w-1 self-stretch rounded-full bg-[#2ed573] flex-shrink-0"></div>
                     <div className="flex-1 min-w-0">
                       <div className="text-[#2ed573] text-sm font-medium">Published Research</div>
-                      <div className="text-[#8b949e] text-xs">Elsevier Array (Q1) — DOI 10.1016/j.array.2026.100901</div>
+                      <div className="text-[#2ed573]/50 text-xs">Elsevier Array (Q1) — DOI 10.1016/j.array.2026.100901</div>
                     </div>
                     <ArrowRight size={14} className="text-[#2ed573]/0 group-hover/row:text-[#2ed573]/50 transition-all duration-200 flex-shrink-0" />
                   </div>
-                  <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[#2a3942] transition-all duration-200 group/row" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.2s both' }}>
+                  <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[#2ed573]/5 transition-all duration-200 group/row" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.2s both' }}>
                     <div className="w-1 self-stretch rounded-full bg-[#2ed573] flex-shrink-0"></div>
                     <div className="flex-1 min-w-0">
                       <div className="text-[#2ed573] text-sm font-medium">Press &amp; Media</div>
-                      <div className="text-[#8b949e] text-xs">Featured in The Daily Star</div>
+                      <div className="text-[#2ed573]/50 text-xs">Featured in The Daily Star</div>
                     </div>
                     <ArrowRight size={14} className="text-[#2ed573]/0 group-hover/row:text-[#2ed573]/40 transition-all duration-200 flex-shrink-0" />
                   </div>
-                  <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[#2a3942] transition-all duration-200 group/row" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.3s both' }}>
+                  <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[#2ed573]/5 transition-all duration-200 group/row" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.3s both' }}>
                     <div className="w-1 self-stretch rounded-full bg-[#7bed9f] flex-shrink-0"></div>
                     <div className="flex-1 min-w-0">
                       <div className="text-[#2ed573] text-sm font-medium">Recognition</div>
-                      <div className="text-[#8b949e] text-xs">URC 2021 Global Champion · Top 1% TryHackMe</div>
+                      <div className="text-[#2ed573]/50 text-xs">URC 2021 Global Champion · Top 1% TryHackMe</div>
                     </div>
                     <ArrowRight size={14} className="text-[#2ed573]/0 group-hover/row:text-[#7bed9f]/50 transition-all duration-200 flex-shrink-0" />
                   </div>
@@ -936,7 +936,7 @@ export default function Dashboard() {
 
             {/* COMPACT — Security Research */}
             <div
-              className={`group relative bg-[#1e272e] rounded-2xl overflow-hidden flex flex-col border transition-all duration-300 cursor-pointer hover-glow md:order-2 hover:border-[#2ed573]/50 hover:shadow-[0_0_18px_rgba(46,213,115,0.2)] ${cardEffectActive
+              className={`group relative bg-[#0f0f0f] rounded-2xl overflow-hidden flex flex-col border transition-all duration-300 cursor-pointer hover-glow md:order-2 hover:border-[#2ed573]/50 hover:shadow-[0_0_18px_rgba(46,213,115,0.2)] ${cardEffectActive
                 ? "border-[#2ed573]/40"
                 : "border-[#2ed573]/20 shadow-lg"
                 } ${matrixModeActive
@@ -957,7 +957,7 @@ export default function Dashboard() {
                   <span className="text-5xl font-bold text-[#2ed573] leading-none">{cveData.items.length}</span>
                   <span className="text-[#2ed573] text-sm font-medium mb-1">CVEs disclosed</span>
                 </div>
-                <p className="text-[#8b949e] text-xs mt-2 leading-relaxed">
+                <p className="text-[#2ed573]/60 text-xs mt-2 leading-relaxed">
                   Broken Access Control, IDOR &amp; data exposure in WordPress plugins — responsibly disclosed via Patchstack.
                 </p>
                 <div className="flex-1"></div>
@@ -970,7 +970,7 @@ export default function Dashboard() {
 
             {/* COMPACT — Projects */}
             <div
-              className={`group relative bg-[#1e272e] rounded-2xl overflow-hidden flex flex-col border transition-all duration-300 cursor-pointer hover-glow md:order-3 hover:border-[#2ed573]/50 hover:shadow-[0_0_18px_rgba(46,213,115,0.2)] ${cardEffectActive
+              className={`group relative bg-[#0f0f0f] rounded-2xl overflow-hidden flex flex-col border transition-all duration-300 cursor-pointer hover-glow md:order-3 hover:border-[#2ed573]/50 hover:shadow-[0_0_18px_rgba(46,213,115,0.2)] ${cardEffectActive
                 ? "border-[#2ed573]/40"
                 : "border-[#2ed573]/20 shadow-lg"
                 } ${matrixModeActive
@@ -991,7 +991,7 @@ export default function Dashboard() {
                   <span className="text-5xl font-bold text-[#2ed573] leading-none">25+</span>
                   <span className="text-[#2ed573] text-sm font-medium mb-1">projects shipped</span>
                 </div>
-                <p className="text-[#8b949e] text-xs mt-2 leading-relaxed">
+                <p className="text-[#2ed573]/60 text-xs mt-2 leading-relaxed">
                   Security tools, DevSecOps automation &amp; real-world web apps — from research to production.
                 </p>
                 <div className="flex-1"></div>
@@ -1004,7 +1004,7 @@ export default function Dashboard() {
 
             {/* WIDE — Articles strip */}
             <div
-              className={`group relative bg-[#1e272e] rounded-2xl overflow-hidden flex border transition-all duration-300 cursor-pointer hover-glow md:col-span-3 md:order-4 hover:border-[#2ed573]/50 hover:shadow-[0_0_18px_rgba(46,213,115,0.2)] ${cardEffectActive
+              className={`group relative bg-[#0f0f0f] rounded-2xl overflow-hidden flex border transition-all duration-300 cursor-pointer hover-glow md:col-span-3 md:order-4 hover:border-[#2ed573]/50 hover:shadow-[0_0_18px_rgba(46,213,115,0.2)] ${cardEffectActive
                 ? "border-[#2ed573]/40"
                 : "border-[#2ed573]/20 shadow-lg"
                 } ${matrixModeActive
@@ -1025,8 +1025,8 @@ export default function Dashboard() {
                   </div>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-[#e6edf3] font-semibold text-sm">What I Write About</h3>
-                  <p className="text-[#8b949e] text-xs leading-relaxed">
+                  <h3 className="text-[#2ed573] font-semibold text-sm">What I Write About</h3>
+                  <p className="text-[#2ed573]/60 text-xs leading-relaxed">
                     Security, building businesses, psychology, and how the world works.
                   </p>
                 </div>
@@ -1039,7 +1039,7 @@ export default function Dashboard() {
           </div>
 
           {/* Extracurricular Section */}
-          <div className="bg-[#1e272e] rounded-2xl overflow-hidden border border-[#2ed573]/20">
+          <div className="bg-[#0f0f0f] rounded-2xl overflow-hidden border border-[#2ed573]/20">
             <div className="p-4 flex items-center justify-between border-b border-[#2ed573]/10">
               <div className="flex items-center gap-3">
                 <div className="w-6 h-6 bg-[#2ed573]/20 rounded-md flex items-center justify-center border border-[#2ed573]/30">
@@ -1069,10 +1069,10 @@ export default function Dashboard() {
               {extracurricularData.map((item) => (
                 <div
                   key={item.id}
-                  className="bg-[#0f0f0f] rounded-2xl aspect-square flex items-center justify-center relative hover:bg-[#2a3942] transition-colors cursor-pointer border border-[#2ed573]/20 hover-glow group"
+                  className="bg-[#0f0f0f] rounded-2xl aspect-square flex items-center justify-center relative hover:bg-[#0a0a0a] hover:border-[#2ed573]/50 transition-colors cursor-pointer border border-[#2ed573]/20 hover-glow group"
                   onClick={playClickSound}
                 >
-                  <div className="w-16 h-16 rounded-full bg-[#1e272e] flex items-center justify-center overflow-hidden">
+                  <div className="w-16 h-16 rounded-full bg-[#0a0a0a] flex items-center justify-center overflow-hidden">
                     <img
                       src={item.imageUrl}
                       alt={item.imageAlt}
