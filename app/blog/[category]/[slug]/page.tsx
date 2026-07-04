@@ -28,6 +28,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: post.title,
     description: post.description,
+    alternates: {
+      canonical: `https://www.arafatops.com/blog/${category}/${slug}`,
+    },
     openGraph: {
       title: post.title,
       description: post.description,
@@ -56,8 +59,51 @@ export default async function PostPage({ params }: Props) {
   const newer = index > 0 ? published[index - 1] : null;
   const older = index < published.length - 1 ? published[index + 1] : null;
 
+  const baseUrl = "https://www.arafatops.com";
+  const postUrl = `${baseUrl}/blog/${category}/${slug}`;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BlogPosting",
+        headline: post.title,
+        description: post.description,
+        url: postUrl,
+        datePublished: post.date,
+        keywords: post.tags.join(", "),
+        articleSection: category,
+        image:
+          post.cover ??
+          `${baseUrl}/api/og?title=${encodeURIComponent(post.title)}&category=${encodeURIComponent(category)}`,
+        author: {
+          "@type": "Person",
+          name: "Easin Arafat",
+          url: baseUrl,
+        },
+        publisher: {
+          "@type": "Person",
+          name: "Easin Arafat",
+          url: baseUrl,
+        },
+        mainEntityOfPage: { "@type": "WebPage", "@id": postUrl },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Blog", item: `${baseUrl}/blog` },
+          { "@type": "ListItem", position: 2, name: category, item: `${baseUrl}/blog/${category}` },
+          { "@type": "ListItem", position: 3, name: post.title, item: postUrl },
+        ],
+      },
+    ],
+  };
+
   return (
     <main className="min-h-screen bg-[#121212] text-[#2ed573] p-4 md:p-8 grid-dots">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="max-w-4xl mx-auto">
         <TerminalHeader
           path={`~/blog/${category}/${slug}`}

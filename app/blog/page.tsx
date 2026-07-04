@@ -10,6 +10,10 @@ export const metadata: Metadata = {
   title: "Blog",
   description:
     "Security research, engineering, business, psychology, and life — essays and daily notes by Easin Arafat.",
+  alternates: {
+    canonical: "https://www.arafatops.com/blog",
+    types: { "application/rss+xml": "https://www.arafatops.com/blog/rss.xml" },
+  },
 };
 
 export const revalidate = 300;
