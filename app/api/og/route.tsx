@@ -12,7 +12,7 @@ export async function GET(req: NextRequest): Promise<ImageResponse> {
   // "card" = portrait for article-carousel thumbnails; default = 1200x630 social OG
   const isCard = searchParams.get("size") === "card";
   const width = isCard ? 800 : 1200;
-  const height = isCard ? 1060 : 630;
+  const height = isCard ? 1000 : 630;
   const titleSize = isCard
     ? title.length > 70
       ? 40
@@ -62,7 +62,7 @@ export async function GET(req: NextRequest): Promise<ImageResponse> {
             fontWeight: 700,
             lineHeight: 1.25,
             display: "flex",
-            maxWidth: 1050,
+            maxWidth: width - 120,
           }}
         >
           {title}
