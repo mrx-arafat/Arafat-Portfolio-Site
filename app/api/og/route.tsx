@@ -68,6 +68,40 @@ export async function GET(req: NextRequest): Promise<ImageResponse> {
           {title}
         </div>
 
+        {/* Decorative deterministic binary rain filling the empty middle */}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            flexGrow: 1,
+            justifyContent: "center",
+            gap: 14,
+            marginTop: 30,
+            marginBottom: 60,
+          }}
+        >
+          {Array.from({ length: isCard ? 7 : 4 }).map((_, row) => (
+            <div
+              key={row}
+              style={{
+                display: "flex",
+                fontSize: 22,
+                letterSpacing: 6,
+                color: `rgba(46,213,115,${Math.max(0.05, 0.22 - row * 0.025)})`,
+              }}
+            >
+              {Array.from({ length: isCard ? 24 : 40 })
+                .map((_, col) =>
+                  (title.charCodeAt((row * 7 + col) % title.length) + row + col) %
+                  2
+                    ? "1"
+                    : "0"
+                )
+                .join("")}
+            </div>
+          ))}
+        </div>
+
         {/* Footer */}
         <div
           style={{
