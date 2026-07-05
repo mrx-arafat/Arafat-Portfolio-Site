@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { supabaseAdmin } from "@/lib/supabase";
-import { CATEGORIES } from "@/lib/blog";
+import { CATEGORIES, ROW_COLUMNS } from "@/lib/blog";
 
 interface PublishImage {
   name: string;
@@ -109,6 +109,60 @@ function validate(body: PublishBody): string | null {
     }
   }
   return null;
+}
+
+const ADMIN_ROW_COLUMNS = `${ROW_COLUMNS}, created_at, updated_at`;
+const LIST_COLUMNS =
+  "type, category, slug, title, description, tags, date, draft, updated_at";
+
+/**
+ * Read posts back (authenticated) — including drafts, which the public site
+ * and RLS hide. Uses the admin client to bypass RLS.
+ *
+ *   GET ?type=essay&slug=my-post   -> single post (full row incl. content_md)
+ *   GET ?draft=true                -> list drafts only (metadata, newest first)
+ *   GET ?type=note                 -> list all notes (metadata)
+ *   GET                            -> list all posts (metadata)
+ */
+export async function GET(req: NextRequest): Promise<NextResponse> {
+  if (!checkAuth(req)) return unauthorized();
+
+  const { searchParams } = new URL(req.url);
+  const type = searchParams.get("type");
+  const slug = searchParams.get("slug");
+  const draftsOnly = searchParams.get("draft") === "true";
+
+  try {
+    // Single post by type+slug
+    if (type && slug) {
+      const { data, error } = await supabaseAdmin()
+        .from("posts")
+        .select(ADMIN_ROW_COLUMNS)
+        .eq("type", type)
+        .eq("slug", slug)
+        .maybeSingle();
+      if (error) throw new Error(error.message);
+      if (!data) return NextResponse.json({ error: "post not found" }, { status: 404 });
+      return NextResponse.json({ ok: true, post: data });
+    }
+
+    // Listing (metadata only)
+    let query = supabaseAdmin()
+      .from("posts")
+      .select(LIST_COLUMNS)
+      .order("date", { ascending: false });
+    if (type) query = query.eq("type", type);
+    if (draftsOnly) query = query.eq("draft", true);
+
+    const { data, error } = await query;
+    if (error) throw new Error(error.message);
+    return NextResponse.json({ ok: true, count: data?.length ?? 0, posts: data ?? [] });
+  } catch (e) {
+    return NextResponse.json(
+      { error: e instanceof Error ? e.message : "read failed" },
+      { status: 500 }
+    );
+  }
 }
 
 /** Create (or upsert) a post. */

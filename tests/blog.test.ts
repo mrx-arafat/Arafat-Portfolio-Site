@@ -4,17 +4,27 @@ import {
   mapPost,
   mapNote,
   getAllPosts,
+  getAdjacentPosts,
   getPost,
   getAllNotes,
   getCategories,
   getPostsByTag,
   getAllTags,
+  previewTargetKey,
+  PREVIEW_COOKIE,
   type PostRow,
 } from "@/lib/blog";
-import { supabasePublic } from "@/lib/supabase";
+import { supabasePublic, supabaseAdmin } from "@/lib/supabase";
+import { cookies, draftMode } from "next/headers";
 
 vi.mock("@/lib/supabase", () => ({
   supabasePublic: vi.fn(),
+  supabaseAdmin: vi.fn(),
+}));
+
+vi.mock("next/headers", () => ({
+  draftMode: vi.fn(async () => ({ isEnabled: false })),
+  cookies: vi.fn(async () => ({ get: () => undefined })),
 }));
 
 function essayRow(overrides: Partial<PostRow> = {}): PostRow {
@@ -49,6 +59,11 @@ function mockQuery(rows: PostRow[] | PostRow | null) {
 
 beforeEach(() => {
   vi.mocked(supabasePublic).mockReset();
+  vi.mocked(supabaseAdmin).mockReset();
+  vi.mocked(draftMode).mockReset();
+  vi.mocked(draftMode).mockResolvedValue({ isEnabled: false } as never);
+  vi.mocked(cookies).mockReset();
+  vi.mocked(cookies).mockResolvedValue({ get: () => undefined } as never);
 });
 
 describe("computeReadTime", () => {
@@ -119,6 +134,86 @@ describe("getPost", () => {
     vi.mocked(supabasePublic).mockReturnValue({ from } as never);
 
     expect(await getPost("security", "nope")).toBeNull();
+  });
+
+  it("filters to published (draft=false) using the public client when not previewing", async () => {
+    const { from, builder } = mockQuery(essayRow());
+    vi.mocked(supabasePublic).mockReturnValue({ from } as never);
+
+    await getPost("security", "axios-attack");
+
+    expect(supabasePublic).toHaveBeenCalled();
+    expect(supabaseAdmin).not.toHaveBeenCalled();
+    expect(vi.mocked(builder.eq as never)).toHaveBeenCalledWith("draft", false);
+  });
+
+  it("in draft-preview mode for the authorized post, uses the admin client and returns a draft without the draft filter", async () => {
+    vi.mocked(draftMode).mockResolvedValue({ isEnabled: true } as never);
+    vi.mocked(cookies).mockResolvedValue({
+      get: (name: string) =>
+        name === PREVIEW_COOKIE
+          ? { value: previewTargetKey("essay", "security", "axios-attack") }
+          : undefined,
+    } as never);
+    const { from, builder } = mockQuery(essayRow({ draft: true }));
+    vi.mocked(supabaseAdmin).mockReturnValue({ from } as never);
+
+    const post = await getPost("security", "axios-attack");
+
+    expect(post?.draft).toBe(true);
+    expect(supabaseAdmin).toHaveBeenCalled();
+    expect(supabasePublic).not.toHaveBeenCalled();
+    expect(vi.mocked(builder.eq as never)).not.toHaveBeenCalledWith("draft", false);
+  });
+
+  it("does not bypass the draft filter for a different post than the preview cookie authorizes", async () => {
+    vi.mocked(draftMode).mockResolvedValue({ isEnabled: true } as never);
+    vi.mocked(cookies).mockResolvedValue({
+      get: (name: string) =>
+        name === PREVIEW_COOKIE
+          ? { value: previewTargetKey("essay", "security", "draft-a") }
+          : undefined,
+    } as never);
+    const { from, builder } = mockQuery(essayRow({ slug: "draft-b", draft: true }));
+    vi.mocked(supabasePublic).mockReturnValue({ from } as never);
+
+    await getPost("security", "draft-b");
+
+    expect(supabasePublic).toHaveBeenCalled();
+    expect(supabaseAdmin).not.toHaveBeenCalled();
+    expect(vi.mocked(builder.eq as never)).toHaveBeenCalledWith("draft", false);
+  });
+});
+
+describe("getAdjacentPosts", () => {
+  const posts = [
+    mapPost(essayRow({ slug: "c", date: "2026-07-03" })),
+    mapPost(essayRow({ slug: "b", date: "2026-07-02" })),
+    mapPost(essayRow({ slug: "a", date: "2026-07-01" })),
+  ];
+
+  it("returns older/newer around a middle post", () => {
+    const { older, newer } = getAdjacentPosts(posts, "security", "b");
+    expect(older?.slug).toBe("a");
+    expect(newer?.slug).toBe("c");
+  });
+
+  it("has no newer for the first (newest) post", () => {
+    const { older, newer } = getAdjacentPosts(posts, "security", "c");
+    expect(newer).toBeNull();
+    expect(older?.slug).toBe("b");
+  });
+
+  it("has no older for the last (oldest) post", () => {
+    const { older, newer } = getAdjacentPosts(posts, "security", "a");
+    expect(older).toBeNull();
+    expect(newer?.slug).toBe("b");
+  });
+
+  it("returns both null when the post isn't in the published list (e.g. an unpublished draft preview)", () => {
+    const { older, newer } = getAdjacentPosts(posts, "security", "draft-not-published");
+    expect(older).toBeNull();
+    expect(newer).toBeNull();
   });
 });
 

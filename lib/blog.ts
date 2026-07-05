@@ -1,4 +1,45 @@
-import { supabasePublic } from "./supabase";
+import { cookies, draftMode } from "next/headers";
+import { supabasePublic, supabaseAdmin } from "./supabase";
+
+/** Cookie naming which single post a preview link authorized (see /api/blog/preview). */
+export const PREVIEW_COOKIE = "blog_preview_target";
+
+/** Cookie value identifying one post — keeps a preview link scoped to that post only. */
+export function previewTargetKey(
+  type: "essay" | "note",
+  category: string | null,
+  slug: string
+): string {
+  return `${type}:${category ?? ""}:${slug}`;
+}
+
+/**
+ * True when Next.js Draft Mode is enabled for this request (preview cookie set
+ * by /api/blog/preview). Guarded so build-time/static contexts — where
+ * draftMode() is unavailable — safely fall back to published-only reads.
+ */
+export async function isPreviewMode(): Promise<boolean> {
+  try {
+    return (await draftMode()).isEnabled;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * The specific post the current preview cookie authorizes, or null.
+ * Scoped per-post so one preview link can't expose every other draft on the site.
+ */
+async function authorizedPreviewTarget(): Promise<string | null> {
+  try {
+    const { isEnabled } = await draftMode();
+    if (!isEnabled) return null;
+    const store = await cookies();
+    return store.get(PREVIEW_COOKIE)?.value ?? null;
+  } catch {
+    return null;
+  }
+}
 
 export const CATEGORIES = [
   "security",
@@ -87,7 +128,7 @@ export function mapNote(row: PostRow): Note {
   };
 }
 
-const ROW_COLUMNS =
+export const ROW_COLUMNS =
   "type, category, slug, title, description, content_md, tags, date, draft, cover_url";
 
 /** All published essays, newest first. */
@@ -102,21 +143,43 @@ export async function getAllPosts(): Promise<Post[]> {
   return (data as PostRow[]).map(mapPost);
 }
 
-/** Single published essay by category + slug, null if missing. */
+/**
+ * Single essay by category + slug, null if missing.
+ * Published-only by default. Bypasses the draft filter (via the admin client,
+ * skipping RLS) only when the request's preview cookie authorizes this exact
+ * post — a preview link for one draft must not expose every other draft.
+ */
 export async function getPost(
   category: string,
   slug: string
 ): Promise<Post | null> {
-  const { data, error } = await supabasePublic()
+  const target = await authorizedPreviewTarget();
+  const authorized = target === previewTargetKey("essay", category, slug);
+  const client = authorized ? supabaseAdmin() : supabasePublic();
+  let query = client
     .from("posts")
     .select(ROW_COLUMNS)
     .eq("type", "essay")
     .eq("category", category)
-    .eq("slug", slug)
-    .eq("draft", false)
-    .maybeSingle();
+    .eq("slug", slug);
+  if (!authorized) query = query.eq("draft", false);
+  const { data, error } = await query.maybeSingle();
   if (error) throw error;
   return data ? mapPost(data as PostRow) : null;
+}
+
+/** Adjacent published posts around (category, slug); both null if the post isn't published (e.g. draft preview). */
+export function getAdjacentPosts(
+  published: Post[],
+  category: string,
+  slug: string
+): { older: Post | null; newer: Post | null } {
+  const index = published.findIndex((p) => p.category === category && p.slug === slug);
+  if (index === -1) return { older: null, newer: null };
+  return {
+    newer: index > 0 ? published[index - 1] : null,
+    older: index < published.length - 1 ? published[index + 1] : null,
+  };
 }
 
 /** All published notes, newest first. */

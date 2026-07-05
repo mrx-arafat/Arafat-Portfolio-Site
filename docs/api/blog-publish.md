@@ -105,12 +105,35 @@ Response: `{"ok": true, "deleted": "essay/some-post"}`.
 ## Recommended AI workflow
 
 1. `POST` with `draft: true`
-2. Human reviews at `/blog/<category>/<slug>` (drafts 404 publicly — check the DB row or flip briefly; draft-preview URL is a future improvement)
-3. `PUT {draft: false}` → live instantly
+2. Verify what was stored: `GET /api/blog/publish?type=essay&slug=<slug>` (returns the full row incl. `content_md`), or list all drafts with `GET /api/blog/publish?draft=true`
+3. Human previews the rendered draft via a preview link (see below) — no need to publish first
+4. `PUT {draft: false}` → live instantly
+
+## Reading posts back (`GET`)
+
+Authenticated (same bearer token), reads through the admin client so **drafts are included**.
+
+| Request | Returns |
+|---------|---------|
+| `GET /api/blog/publish?type=essay&slug=<slug>` | single post, full row (incl. `content_md`) |
+| `GET /api/blog/publish?draft=true` | all drafts (metadata, newest first) |
+| `GET /api/blog/publish?type=note` | all notes (metadata) |
+| `GET /api/blog/publish` | all posts (metadata) |
+
+## Draft preview
+
+Drafts 404 on the public site (hidden by RLS). To view a draft rendered, open a preview link — it sets a Draft Mode cookie and shows the unpublished post with a "DRAFT PREVIEW" banner:
+
+```
+/api/blog/preview?token=<BLOG_API_TOKEN>&type=essay&category=<cat>&slug=<slug>
+```
+
+Exit preview any time via `/api/blog/preview?exit=1` (or the banner's "exit preview" link). The token appears in the preview URL — treat these links as secret.
 
 ## Where things live
 
-- Route handler: `app/api/blog/publish/route.ts`
+- Route handlers: `app/api/blog/publish/route.ts` (POST/PUT/DELETE/GET), `app/api/blog/preview/route.ts` (Draft Mode enable/exit)
+- Draft-aware read: `getPost` in `lib/blog.ts` (uses the admin client + drops the `draft=false` filter when Draft Mode is on)
 - DB: Supabase `posts` table (`supabase/migrations/001_posts.sql`)
 - Images: Supabase Storage bucket `blog-images` (public read)
 - Generated covers: `app/api/og/route.tsx` (`?size=card` for portrait thumbnails)

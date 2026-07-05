@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, Calendar, Clock } from "lucide-react";
-import { getAllPosts, getPost } from "@/lib/blog";
+import { getAllPosts, getAdjacentPosts, getPost, isPreviewMode } from "@/lib/blog";
 import { MdxContent } from "@/components/mdx-content";
 import { TerminalHeader } from "@/components/blog/terminal-header";
 
@@ -52,12 +52,10 @@ export default async function PostPage({ params }: Props) {
   const post = await getPost(category, slug);
   if (!post) notFound();
 
+  const preview = await isPreviewMode();
+
   const published = await getAllPosts();
-  const index = published.findIndex(
-    (p) => p.category === category && p.slug === slug
-  );
-  const newer = index > 0 ? published[index - 1] : null;
-  const older = index < published.length - 1 ? published[index + 1] : null;
+  const { older, newer } = getAdjacentPosts(published, category, slug);
 
   const baseUrl = "https://www.arafatops.com";
   const postUrl = `${baseUrl}/blog/${category}/${slug}`;
@@ -105,6 +103,19 @@ export default async function PostPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <div className="max-w-4xl mx-auto">
+        {preview && (
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-2 rounded-md border border-amber-400/40 bg-amber-400/10 px-3 py-2 font-mono text-xs text-amber-300">
+            <span>
+              {post.draft ? "● DRAFT PREVIEW" : "● PREVIEW MODE"} — visible only via your preview link
+            </span>
+            <a
+              href="/api/blog/preview?exit=1"
+              className="rounded border border-amber-400/40 px-2 py-0.5 hover:bg-amber-400/20 transition-colors"
+            >
+              exit preview
+            </a>
+          </div>
+        )}
         <TerminalHeader
           path={`~/blog/${category}/${slug}`}
           command="cat index.mdx"
