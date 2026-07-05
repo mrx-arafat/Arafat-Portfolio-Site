@@ -74,11 +74,11 @@ export default function Skills() {
   };
 
   return (
-    <main className={`flex min-h-screen flex-col bg-[#121212] p-4 md:p-8 relative grid-dots ${isEntering ? "animate-slideInRight" : ""}`}>
+    <main className={`flex min-h-screen flex-col bg-surface-base p-4 md:p-8 relative grid-dots ${isEntering ? "animate-slideInRight" : ""}`}>
       {/* Sound toggle button */}
       <button
         onClick={toggleMute}
-        className="absolute top-4 right-4 text-[#2ed573]/50 hover:text-[#2ed573] transition-colors"
+        className="absolute top-4 right-4 text-terminal-green/50 hover:text-terminal-green transition-colors"
         aria-label={isMuted ? "Unmute" : "Mute"}
       >
         {isMuted ? <VolumeX size={24} /> : <Volume2 size={24} />}
@@ -86,7 +86,7 @@ export default function Skills() {
 
       <Link
         href="/dashboard"
-        className="inline-flex items-center text-[#2ed573] hover:text-[#2ed573]/80 mb-8"
+        className="inline-flex items-center text-terminal-green hover:text-terminal-green/80 mb-8"
         onClick={() => playClickSound()}
       >
         <ArrowLeft size={20} className="mr-2" />
@@ -94,25 +94,25 @@ export default function Skills() {
       </Link>
 
       <div className="max-w-7xl mx-auto w-full">
-        <div className="bg-[#1e272e] rounded-2xl overflow-hidden shadow-lg border border-[#2ed573]/20 mb-8">
-          <div className="p-4 flex items-center gap-3 border-b border-[#2ed573]/10">
+        <div className="bg-surface-panel rounded-2xl overflow-hidden shadow-lg border border-terminal-green/20 mb-8">
+          <div className="p-4 flex items-center gap-3 border-b border-terminal-green/10">
             <div className="w-6 h-6 flex justify-center flex-col gap-[2px]">
               <div className="flex gap-[2px]">
-                <div className="w-[8px] h-[8px] bg-[#2ed573] rounded-sm"></div>
-                <div className="w-[8px] h-[8px] bg-[#2ed573] rounded-sm"></div>
+                <div className="w-[8px] h-[8px] bg-terminal-green rounded-sm"></div>
+                <div className="w-[8px] h-[8px] bg-terminal-green rounded-sm"></div>
               </div>
               <div className="flex gap-[2px]">
-                <div className="w-[8px] h-[8px] bg-[#2ed573] rounded-sm"></div>
-                <div className="w-[8px] h-[8px] bg-[#2ed573] rounded-sm"></div>
+                <div className="w-[8px] h-[8px] bg-terminal-green rounded-sm"></div>
+                <div className="w-[8px] h-[8px] bg-terminal-green rounded-sm"></div>
               </div>
             </div>
-            <h2 className="text-[#2ed573] font-medium tracking-wide">
+            <h2 className="text-terminal-green font-medium tracking-wide">
               MY SKILLS
             </h2>
           </div>
 
           <div className="p-6">
-            <p className="text-[#2ed573]/80 mb-6">
+            <p className="text-terminal-green/80 mb-6">
               These are the skills I've acquired throughout my journey in
               technology, security, and business. Each badge represents a skill
               or technology I'm proficient in.
@@ -126,8 +126,8 @@ export default function Skills() {
                   onClick={() => handleCategoryClick(category)}
                   className={`${
                     activeCategory === category
-                      ? "bg-[#2ed573] text-[#0f0f0f]"
-                      : "bg-[#0f0f0f] text-[#2ed573] border border-[#2ed573]/30"
+                      ? "bg-terminal-green text-surface-raised"
+                      : "bg-surface-raised text-terminal-green border border-terminal-green/30"
                   } capitalize`}
                   size="sm"
                 >
@@ -140,7 +140,7 @@ export default function Skills() {
                     playClickSound();
                     setActiveCategory(null);
                   }}
-                  className="bg-[#0f0f0f] text-[#2ed573] border border-[#2ed573]/30"
+                  className="bg-surface-raised text-terminal-green border border-terminal-green/30"
                   size="sm"
                 >
                   Show All
@@ -153,20 +153,20 @@ export default function Skills() {
               {filteredSkills.map((skill) => (
                 <div
                   key={skill.id}
-                  className="bg-[#0f0f0f] p-4 rounded-lg border border-[#2ed573]/20 hover:border-[#2ed573]/50 transition-all hover:transform hover:scale-105 cursor-pointer"
+                  className="bg-surface-raised p-4 rounded-lg border border-terminal-green/20 hover:border-terminal-green/50 transition-all hover:transform hover:scale-105 cursor-pointer"
                   onClick={() => playClickSound()}
                 >
                   <div className="flex items-center gap-2 mb-2">
-                    <div className="w-8 h-8 rounded-full bg-[#2ed573]/10 flex items-center justify-center text-[#2ed573]">
+                    <div className="w-8 h-8 rounded-full bg-terminal-green/10 flex items-center justify-center text-terminal-green">
                       <DynamicIcon name={skill.icon} />
                     </div>
-                    <h3 className="text-[#2ed573] font-medium">{skill.name}</h3>
+                    <h3 className="text-terminal-green font-medium">{skill.name}</h3>
                   </div>
-                  <p className="text-[#2ed573]/70 text-sm">
+                  <p className="text-terminal-green/70 text-sm">
                     {skill.description}
                   </p>
                   <div className="mt-3">
-                    <Badge className="bg-[#2ed573]/20 text-[#2ed573] hover:bg-[#2ed573]/30 border-none">
+                    <Badge className="bg-terminal-green/20 text-terminal-green hover:bg-terminal-green/30 border-none">
                       {skill.category}
                     </Badge>
                   </div>
@@ -178,8 +178,8 @@ export default function Skills() {
       </div>
 
       {/* Footer */}
-      <div className="text-[#2ed573]/30 text-xs tracking-widest mt-8 text-center w-full max-w-7xl mx-auto px-4">
-        <div className="border-t border-[#2ed573]/10 pt-4">
+      <div className="text-terminal-green/30 text-xs tracking-widest mt-8 text-center w-full max-w-7xl mx-auto px-4">
+        <div className="border-t border-terminal-green/10 pt-4">
           ARAFAT © {new Date().getFullYear()} - ALL RIGHTS RESERVED
         </div>
       </div>

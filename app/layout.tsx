@@ -5,6 +5,8 @@ import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { MusicProvider } from "@/components/music-provider";
 import StructuredData from "./components/StructuredData";
+import { SiteNav } from "@/components/site-nav";
+import { SiteFooter } from "@/components/site-footer";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
@@ -85,7 +87,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <MusicProvider>{children}</MusicProvider>
+          <MusicProvider>
+            <SiteNav />
+            {children}
+            <SiteFooter />
+          </MusicProvider>
         </ThemeProvider>
       </body>
     </html>

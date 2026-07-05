@@ -21,21 +21,21 @@ export default function BlogApiDocsPage() {
   );
 
   return (
-    <main className="min-h-screen bg-[#121212] text-[#2ed573] p-4 md:p-8 grid-dots">
+    <main className="min-h-screen bg-surface-base text-terminal-green p-4 md:p-8 grid-dots">
       <div className="max-w-4xl mx-auto">
         <TerminalHeader path="~/docs/blog-api" command="man blog-publish" />
 
         <div className="flex items-center mb-8">
           <Link
             href="/blog"
-            className="inline-flex items-center text-[#2ed573] hover:text-[#2ed573]/80 bg-[#0f0f0f] px-3 py-2 rounded-md border border-[#2ed573]/20 hover:border-[#2ed573]/40 transition-colors"
+            className="inline-flex items-center text-terminal-green hover:text-terminal-green/80 bg-surface-raised px-3 py-2 rounded-md border border-terminal-green/20 hover:border-terminal-green/40 transition-colors"
           >
             <ArrowLeft size={16} className="mr-2" />
             <span className="text-sm">cd ../blog</span>
           </Link>
         </div>
 
-        <article className="bg-[#0f0f0f] rounded-2xl border border-[#2ed573]/20 p-6 md:p-10">
+        <article className="bg-surface-raised rounded-2xl border border-terminal-green/20 p-6 md:p-10">
           <div className="blog-prose">
             <MdxContent source={doc} />
           </div>

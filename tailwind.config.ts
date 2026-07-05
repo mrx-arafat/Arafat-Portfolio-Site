@@ -11,6 +11,20 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        terminal: {
+          green: "#2ed573",
+          soft: "#7bed9f",
+          amber: "#e1b12c",
+          red: "#ff6b6b",
+        },
+        surface: {
+          base: "#121212",
+          raised: "#0f0f0f",
+          deep: "#0a0a0a",
+          night: "#1a1b26",
+          panel: "#1e272e",
+          input: "#151620",
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

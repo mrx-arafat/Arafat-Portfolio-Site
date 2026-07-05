@@ -18,6 +18,11 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        source: "/about-me",
+        destination: "/about",
+        permanent: true,
+      },
+      {
         source: "/:path*",
         has: [{ type: "host", value: "profile.arafatops.com" }],
         destination: "https://www.arafatops.com/:path*",

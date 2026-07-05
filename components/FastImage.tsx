@@ -48,7 +48,7 @@ export default function FastImage({
 
   if (imageError) {
     return (
-      <div className={`flex items-center justify-center bg-[#1a1b26] text-[#2ed573]/50 ${className}`}>
+      <div className={`flex items-center justify-center bg-surface-night text-terminal-green/50 ${className}`}>
         <div className="text-center">
           <div className="w-12 h-12 mx-auto mb-2 opacity-50">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -66,8 +66,8 @@ export default function FastImage({
   return (
     <>
       {imageLoading && (
-        <div className={`absolute inset-0 bg-[#1a1b26] flex items-center justify-center z-10 ${className}`}>
-          <div className="w-6 h-6 border-2 border-[#2ed573]/30 border-t-[#2ed573] rounded-full animate-spin"></div>
+        <div className={`absolute inset-0 bg-surface-night flex items-center justify-center z-10 ${className}`}>
+          <div className="w-6 h-6 border-2 border-terminal-green/30 border-t-terminal-green rounded-full animate-spin"></div>
         </div>
       )}
       <Image

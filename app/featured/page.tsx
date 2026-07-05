@@ -1,4 +1,3 @@
-"use client";
 
 import Link from "next/link";
 import {
@@ -46,9 +45,9 @@ function ItemCard({ item }: { item: Item }) {
   return (
     <Wrapper
       {...wrapperProps}
-      className={`group relative bg-[#1a1b26] rounded-lg p-5 border border-[#2ed573]/10 transition-all duration-300 flex flex-col ${
+      className={`group relative bg-surface-night rounded-lg p-5 border border-terminal-green/10 transition-all duration-300 flex flex-col ${
         item.url
-          ? "hover:border-[#2ed573]/40 hover:translate-y-[-3px] hover:shadow-[0_8px_20px_rgba(46,213,115,0.15)]"
+          ? "hover:border-terminal-green/40 hover:translate-y-[-3px] hover:shadow-[0_8px_20px_rgba(46,213,115,0.15)]"
           : ""
       }`}
     >
@@ -56,21 +55,21 @@ function ItemCard({ item }: { item: Item }) {
         {item.badges.map((b) => (
           <span
             key={b}
-            className="text-[10px] font-mono font-bold uppercase tracking-wide px-2 py-0.5 rounded bg-[#2ed573]/10 text-[#2ed573] border border-[#2ed573]/20"
+            className="text-[10px] font-mono font-bold uppercase tracking-wide px-2 py-0.5 rounded bg-terminal-green/10 text-terminal-green border border-terminal-green/20"
           >
             {b}
           </span>
         ))}
       </div>
 
-      <h3 className="text-base font-bold text-[#e6edf3] mb-1 leading-snug group-hover:text-[#2ed573] transition-colors">
+      <h3 className="text-base font-bold text-[#e6edf3] mb-1 leading-snug group-hover:text-terminal-green transition-colors">
         {item.title}
       </h3>
-      <div className="text-[#2ed573]/70 text-sm font-mono mb-1">{item.venue}</div>
-      <div className="text-[#2ed573]/50 text-xs font-mono mb-3">{item.meta}</div>
+      <div className="text-terminal-green/70 text-sm font-mono mb-1">{item.venue}</div>
+      <div className="text-terminal-green/50 text-xs font-mono mb-3">{item.meta}</div>
 
       {item.role && (
-        <div className="text-[#7bed9f] text-xs font-mono mb-2">{item.role}</div>
+        <div className="text-terminal-soft text-xs font-mono mb-2">{item.role}</div>
       )}
       {item.authors && (
         <div className="text-[#8b949e] text-xs mb-2 italic">{item.authors}</div>
@@ -81,15 +80,15 @@ function ItemCard({ item }: { item: Item }) {
       <div className="flex-1"></div>
 
       {item.url && (
-        <div className="flex items-center justify-between pt-3 border-t border-[#2ed573]/10">
+        <div className="flex items-center justify-between pt-3 border-t border-terminal-green/10">
           {item.doi ? (
-            <span className="text-[#2ed573]/50 text-xs font-mono">
+            <span className="text-terminal-green/50 text-xs font-mono">
               DOI: {item.doi}
             </span>
           ) : (
             <span></span>
           )}
-          <span className="inline-flex items-center gap-1 text-[#2ed573]/50 text-xs group-hover:text-[#2ed573] transition-colors">
+          <span className="inline-flex items-center gap-1 text-terminal-green/50 text-xs group-hover:text-terminal-green transition-colors">
             {item.doi ? "Read Paper" : "View"} <ExternalLink size={12} />
           </span>
         </div>
@@ -115,11 +114,11 @@ function Section({
   return (
     <section className="mb-10">
       <div className="flex items-center gap-2 mb-4">
-        <div className="w-7 h-7 bg-[#2ed573]/10 rounded-lg flex items-center justify-center border border-[#2ed573]/20">
+        <div className="w-7 h-7 bg-terminal-green/10 rounded-lg flex items-center justify-center border border-terminal-green/20">
           {icon}
         </div>
-        <h2 className="text-xl font-bold text-[#2ed573]">{title}</h2>
-        <span className="text-[#2ed573]/40 text-xs font-mono ml-2 hidden sm:inline">
+        <h2 className="text-xl font-bold text-terminal-green">{title}</h2>
+        <span className="text-terminal-green/40 text-xs font-mono ml-2 hidden sm:inline">
           $ {command}
         </span>
       </div>
@@ -134,18 +133,18 @@ function Section({
 
 export default function Featured() {
   return (
-    <main className="min-h-screen bg-[#121212] text-[#2ed573] p-4 md:p-8 grid-dots overflow-hidden">
+    <main className="min-h-screen bg-surface-base text-terminal-green p-4 md:p-8 grid-dots overflow-hidden">
       {/* Terminal header */}
-      <div className="mb-8 bg-[#0f0f0f] border border-[#2ed573]/30 rounded-lg p-3 shadow-[0_0_15px_rgba(46,213,115,0.2)]">
+      <div className="mb-8 bg-surface-raised border border-terminal-green/30 rounded-lg p-3 shadow-[0_0_15px_rgba(46,213,115,0.2)]">
         <div className="flex items-center gap-2 mb-2">
           <div className="w-3 h-3 rounded-full bg-[#ff5f57]"></div>
           <div className="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
           <div className="w-3 h-3 rounded-full bg-[#28ca41]"></div>
-          <div className="ml-2 text-[#2ed573]/70 text-xs">~/featured</div>
+          <div className="ml-2 text-terminal-green/70 text-xs">~/featured</div>
         </div>
         <div className="flex items-center">
-          <span className="text-[#2ed573] mr-2">$</span>
-          <span className="text-[#2ed573]">cat research.md press.md recognition.md</span>
+          <span className="text-terminal-green mr-2">$</span>
+          <span className="text-terminal-green">cat research.md press.md recognition.md</span>
           <span className="animate-blink ml-1">|</span>
         </div>
       </div>
@@ -156,41 +155,41 @@ export default function Featured() {
           <div className="flex items-center">
             <Link
               href="/dashboard"
-              className="inline-flex items-center text-[#2ed573] hover:text-[#2ed573]/80 mr-4 bg-[#1a1b26] px-3 py-2 rounded-md border border-[#2ed573]/20 hover:border-[#2ed573]/40 transition-colors"
+              className="inline-flex items-center text-terminal-green hover:text-terminal-green/80 mr-4 bg-surface-night px-3 py-2 rounded-md border border-terminal-green/20 hover:border-terminal-green/40 transition-colors"
             >
               <ArrowLeft size={16} className="mr-2" />
               <span className="text-sm">cd ..</span>
             </Link>
-            <h1 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#2ed573] to-[#7bed9f]">
-              <span className="text-[#2ed573]/70">[</span>
+            <h1 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-terminal-green to-terminal-soft">
+              <span className="text-terminal-green/70">[</span>
               FEATURED
-              <span className="text-[#2ed573]/70">]</span>
+              <span className="text-terminal-green/70">]</span>
             </h1>
           </div>
         </div>
 
         <Section
-          icon={<FileText size={14} className="text-[#2ed573]" />}
+          icon={<FileText size={14} className="text-terminal-green" />}
           title="Published Research"
           command="./list_papers.sh"
           items={research}
           cols="lg:grid-cols-1"
         />
         <Section
-          icon={<Newspaper size={14} className="text-[#2ed573]" />}
+          icon={<Newspaper size={14} className="text-terminal-green" />}
           title="Press & Media"
           command="./list_press.sh"
           items={press}
           cols="lg:grid-cols-2"
         />
         <Section
-          icon={<Mic size={14} className="text-[#2ed573]" />}
+          icon={<Mic size={14} className="text-terminal-green" />}
           title="Speaking & Events"
           command="./list_events.sh"
           items={speaking}
         />
         <Section
-          icon={<Award size={14} className="text-[#2ed573]" />}
+          icon={<Award size={14} className="text-terminal-green" />}
           title="Recognition"
           command="./list_awards.sh"
           items={recognition}
@@ -199,10 +198,10 @@ export default function Featured() {
         {/* Profiles strip */}
         <section className="mb-6">
           <div className="flex items-center gap-2 mb-4">
-            <div className="w-7 h-7 bg-[#2ed573]/10 rounded-lg flex items-center justify-center border border-[#2ed573]/20">
-              <Link2 size={14} className="text-[#2ed573]" />
+            <div className="w-7 h-7 bg-terminal-green/10 rounded-lg flex items-center justify-center border border-terminal-green/20">
+              <Link2 size={14} className="text-terminal-green" />
             </div>
-            <h2 className="text-xl font-bold text-[#2ed573]">Find Me Online</h2>
+            <h2 className="text-xl font-bold text-terminal-green">Find Me Online</h2>
           </div>
           <div className="flex flex-wrap gap-2">
             {profiles.map((p) => (
@@ -211,13 +210,13 @@ export default function Featured() {
                 href={p.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-[#1a1b26] border border-[#2ed573]/20 hover:border-[#2ed573]/50 hover:bg-[#2a3942] rounded-md px-3 py-2 transition-colors group"
+                className="inline-flex items-center gap-2 bg-surface-night border border-terminal-green/20 hover:border-terminal-green/50 hover:bg-[#2a3942] rounded-md px-3 py-2 transition-colors group"
               >
-                <span className="text-[#2ed573] text-sm font-medium">{p.label}</span>
-                <span className="text-[#2ed573]/50 text-xs font-mono">@{p.handle}</span>
+                <span className="text-terminal-green text-sm font-medium">{p.label}</span>
+                <span className="text-terminal-green/50 text-xs font-mono">@{p.handle}</span>
                 <ExternalLink
                   size={12}
-                  className="text-[#2ed573]/40 group-hover:text-[#2ed573] transition-colors"
+                  className="text-terminal-green/40 group-hover:text-terminal-green transition-colors"
                 />
               </a>
             ))}

@@ -132,43 +132,47 @@ export default function Contact() {
   };
 
   return (
-    <main className="min-h-screen bg-[#121212] text-[#2ed573] p-4 md:p-8 relative overflow-hidden grid-dots">
+    <main className="min-h-screen bg-surface-base text-terminal-green p-4 md:p-8 relative overflow-hidden grid-dots">
       {/* Matrix rain effect background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-10">
-        {[...Array(20)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute text-[#2ed573] text-xs font-mono animate-matrix-fall"
-            style={{
-              left: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 5}s`,
-              animationDuration: `${5 + Math.random() * 10}s`
-            }}
-          >
-            {Math.random() > 0.5 ? '01' : '10'}
-          </div>
-        ))}
+        {[...Array(20)].map((_, i) => {
+          // Seeded pseudo-random keeps server and client render identical
+          const rand = (n: number) => ((n * 9301 + 49297) % 233280) / 233280;
+          return (
+            <div
+              key={i}
+              className="absolute text-terminal-green text-xs font-mono animate-matrix-fall"
+              style={{
+                left: `${rand(i + 1) * 100}%`,
+                animationDelay: `${rand(i + 5) * 5}s`,
+                animationDuration: `${5 + rand(i + 11) * 10}s`
+              }}
+            >
+              {rand(i + 3) > 0.5 ? '01' : '10'}
+            </div>
+          );
+        })}
       </div>
 
       {/* Terminal-style Toast Notification */}
       {showToast && (
         <div
-          className={`fixed top-4 right-4 p-4 bg-[#0f0f0f] border ${
+          className={`fixed top-4 right-4 p-4 bg-surface-raised border ${
             toastType === "success"
-              ? "border-[#2ed573]/60"
+              ? "border-terminal-green/60"
               : "border-red-500/60"
           } shadow-[0_0_20px_rgba(46,213,115,0.2)] z-50 transition-all duration-300 font-mono text-sm max-w-md`}
         >
           <div className="flex items-start gap-3">
-            <span className={toastType === "success" ? "text-[#2ed573]" : "text-red-500"}>
+            <span className={toastType === "success" ? "text-terminal-green" : "text-red-500"}>
               [{toastType === "success" ? "SUCCESS" : "ERROR"}]
             </span>
-            <p className={toastType === "success" ? "text-[#2ed573]/80" : "text-red-400/80"}>
+            <p className={toastType === "success" ? "text-terminal-green/80" : "text-red-400/80"}>
               {toastMessage}
             </p>
             <button
               onClick={() => setShowToast(false)}
-              className="ml-auto text-[#2ed573]/60 hover:text-[#2ed573]"
+              className="ml-auto text-terminal-green/60 hover:text-terminal-green"
             >
               [X]
             </button>
@@ -180,47 +184,47 @@ export default function Contact() {
       <div className="max-w-4xl mx-auto mb-6">
         <Link
           href="/dashboard"
-          className="inline-flex items-center gap-2 text-[#2ed573]/70 hover:text-[#2ed573] font-mono text-sm transition-all duration-300 group"
+          className="inline-flex items-center gap-2 text-terminal-green/70 hover:text-terminal-green font-mono text-sm transition-all duration-300 group"
           onClick={playClickSound}
         >
-          <span className="text-[#2ed573]/50 group-hover:text-[#2ed573]/70">[</span>
+          <span className="text-terminal-green/50 group-hover:text-terminal-green/70">[</span>
           <span className="group-hover:translate-x-[-2px] transition-transform duration-300">←</span>
           <span>cd ../dashboard</span>
-          <span className="text-[#2ed573]/50 group-hover:text-[#2ed573]/70">]</span>
+          <span className="text-terminal-green/50 group-hover:text-terminal-green/70">]</span>
         </Link>
       </div>
 
       {/* Terminal header */}
-      <div className="mb-8 bg-[#0f0f0f] border border-[#2ed573]/30 rounded-lg p-3 shadow-[0_0_15px_rgba(46,213,115,0.2)] max-w-4xl mx-auto relative z-10">
+      <div className="mb-8 bg-surface-raised border border-terminal-green/30 rounded-lg p-3 shadow-[0_0_15px_rgba(46,213,115,0.2)] max-w-4xl mx-auto relative z-10">
         <div className="flex items-center gap-2 mb-2">
           <div className="w-3 h-3 rounded-full bg-[#ff5f57]"></div>
           <div className="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
           <div className="w-3 h-3 rounded-full bg-[#28ca41]"></div>
-          <div className="ml-2 text-[#2ed573]/70 text-xs">arafat@K1NGB0B:~/contact</div>
+          <div className="ml-2 text-terminal-green/70 text-xs">arafat@K1NGB0B:~/contact</div>
         </div>
         <div className="flex items-center">
-          <span className="text-[#2ed573] mr-2">$</span>
-          <span className="text-[#2ed573]">contact --arafat</span>
+          <span className="text-terminal-green mr-2">$</span>
+          <span className="text-terminal-green">contact --arafat</span>
           <span className="animate-blink ml-1">|</span>
         </div>
       </div>
 
       <div className="max-w-2xl mx-auto">
-        <div className="bg-[#0f0f0f] border border-[#2ed573]/30 rounded-lg shadow-[0_0_20px_rgba(46,213,115,0.1)] relative overflow-hidden">
+        <div className="bg-surface-raised border border-terminal-green/30 rounded-lg shadow-[0_0_20px_rgba(46,213,115,0.1)] relative overflow-hidden">
           {/* Terminal-style header inside form */}
-          <div className="bg-[#1a1b26] border-b border-[#2ed573]/20 px-6 py-3">
+          <div className="bg-surface-night border-b border-terminal-green/20 px-6 py-3">
             <div className="flex items-center gap-2">
-              <span className="text-[#2ed573] text-sm font-mono">&gt;_</span>
-              <span className="text-[#2ed573]/70 text-sm font-mono">Contact Form</span>
+              <span className="text-terminal-green text-sm font-mono">&gt;_</span>
+              <span className="text-terminal-green/70 text-sm font-mono">Contact Form</span>
             </div>
           </div>
 
           <div className="p-8 md:p-10">
             <div className="mb-8">
-              <h1 className="text-2xl text-[#2ed573] font-mono mb-2">
+              <h1 className="text-2xl text-terminal-green font-mono mb-2">
                 Anything on your mind?
               </h1>
-              <div className="text-[#2ed573]/60 text-sm font-mono">
+              <div className="text-terminal-green/60 text-sm font-mono">
                 Feel free to reach out - I'm always open to meaningful conversations.
               </div>
             </div>
@@ -228,13 +232,13 @@ export default function Contact() {
             {isSuccess ? (
               <div className="text-center py-8">
                 <div className="mb-6 font-mono">
-                  <div className="text-[#2ed573] text-lg mb-2">Message Sent Successfully!</div>
-                  <div className="text-[#2ed573]/60 text-sm">
+                  <div className="text-terminal-green text-lg mb-2">Message Sent Successfully!</div>
+                  <div className="text-terminal-green/60 text-sm">
                     Thank you for reaching out. I'll get back to you soon.
                   </div>
                 </div>
                 <div className="my-8">
-                  <pre className="text-[#2ed573] text-xs font-mono">
+                  <pre className="text-terminal-green text-xs font-mono">
 {`    _____ _   _  ____ ____ _____ ____ ____
    / ____| | | |/ ___/ ___| ____/ ___/ ___|
   | (___ | | | | |  | |   |  _| \\___ \\___ \\
@@ -248,7 +252,7 @@ export default function Contact() {
                     playClickSound();
                     setIsSuccess(false);
                   }}
-                  className="bg-[#151620] border border-[#2ed573]/30 hover:border-[#2ed573]/60 hover:bg-[#2ed573]/10 text-[#2ed573] px-6 py-3 font-mono transition-all duration-300"
+                  className="bg-surface-input border border-terminal-green/30 hover:border-terminal-green/60 hover:bg-terminal-green/10 text-terminal-green px-6 py-3 font-mono transition-all duration-300"
                 >
                   <span className="mr-2">&gt;_</span>
                   Send Another Message
@@ -265,8 +269,8 @@ export default function Contact() {
                 }`}
               >
                 <div className="space-y-1">
-                  <label className="text-[#2ed573] text-sm font-mono block">
-                    <span className="text-[#2ed573]/60">&gt;</span> Your Name
+                  <label className="text-terminal-green text-sm font-mono block">
+                    <span className="text-terminal-green/60">&gt;</span> Your Name
                   </label>
                   <input
                     type="text"
@@ -274,16 +278,16 @@ export default function Contact() {
                     name="name"
                     required
                     onKeyDown={handleKeyPress}
-                    className="w-full px-4 py-3 bg-[#1a1b26] border border-[#2ed573]/20 text-[#2ed573] font-mono
-                    focus:outline-none focus:border-[#2ed573]/60 focus:bg-[#151620]
-                    transition-all duration-300 hover:border-[#2ed573]/40 placeholder-[#2ed573]/30"
+                    className="w-full px-4 py-3 bg-surface-night border border-terminal-green/20 text-terminal-green font-mono
+                    focus:outline-none focus:border-terminal-green/60 focus:bg-surface-input
+                    transition-all duration-300 hover:border-terminal-green/40 placeholder-terminal-green/30"
                     placeholder="Ingrid Bergman"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[#2ed573] text-sm font-mono block">
-                    <span className="text-[#2ed573]/60">&gt;</span> Your Email
+                  <label className="text-terminal-green text-sm font-mono block">
+                    <span className="text-terminal-green/60">&gt;</span> Your Email
                   </label>
                   <input
                     type="email"
@@ -292,13 +296,13 @@ export default function Contact() {
                     required
                     onKeyDown={handleKeyPress}
                     onBlur={handleEmailBlur}
-                    className={`w-full px-4 py-3 bg-[#1a1b26] border ${
-                      emailError ? "border-red-500" : "border-[#2ed573]/20"
-                    } text-[#2ed573] font-mono
+                    className={`w-full px-4 py-3 bg-surface-night border ${
+                      emailError ? "border-red-500" : "border-terminal-green/20"
+                    } text-terminal-green font-mono
                     focus:outline-none ${
-                      emailError ? "focus:border-red-500" : "focus:border-[#2ed573]/60"
-                    } focus:bg-[#151620]
-                    transition-all duration-300 hover:border-[#2ed573]/40 placeholder-[#2ed573]/30`}
+                      emailError ? "focus:border-red-500" : "focus:border-terminal-green/60"
+                    } focus:bg-surface-input
+                    transition-all duration-300 hover:border-terminal-green/40 placeholder-terminal-green/30`}
                     placeholder="ingrid@example.com"
                   />
                   {emailError && (
@@ -309,8 +313,8 @@ export default function Contact() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[#2ed573] text-sm font-mono block">
-                    <span className="text-[#2ed573]/60">&gt;</span> Your Message
+                  <label className="text-terminal-green text-sm font-mono block">
+                    <span className="text-terminal-green/60">&gt;</span> Your Message
                   </label>
                   <textarea
                     id="message"
@@ -318,9 +322,9 @@ export default function Contact() {
                     rows={6}
                     required
                     onKeyDown={handleKeyPress}
-                    className="w-full px-4 py-3 bg-[#1a1b26] border border-[#2ed573]/20 text-[#2ed573] font-mono
-                    focus:outline-none focus:border-[#2ed573]/60 focus:bg-[#151620]
-                    transition-all duration-300 hover:border-[#2ed573]/40 resize-none placeholder-[#2ed573]/30"
+                    className="w-full px-4 py-3 bg-surface-night border border-terminal-green/20 text-terminal-green font-mono
+                    focus:outline-none focus:border-terminal-green/60 focus:bg-surface-input
+                    transition-all duration-300 hover:border-terminal-green/40 resize-none placeholder-terminal-green/30"
                     placeholder="Hello Arafat, I wanna reach out to you for..."
                   ></textarea>
                 </div>
@@ -329,8 +333,8 @@ export default function Contact() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full py-4 px-6 bg-[#151620] border border-[#2ed573]/30 text-[#2ed573] font-mono
-                    transition-all duration-300 hover:border-[#2ed573]/60 hover:bg-[#2ed573]/10
+                    className="w-full py-4 px-6 bg-surface-input border border-terminal-green/30 text-terminal-green font-mono
+                    transition-all duration-300 hover:border-terminal-green/60 hover:bg-terminal-green/10
                     disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group"
                   >
                     <div className="flex items-center justify-center gap-3">
@@ -346,7 +350,7 @@ export default function Contact() {
                         </div>
                       )}
                     </div>
-                    <div className="absolute inset-0 bg-[#2ed573]/5 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                    <div className="absolute inset-0 bg-terminal-green/5 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
                   </button>
                 </div>
               </form>

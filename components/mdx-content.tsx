@@ -29,7 +29,7 @@ export function MdxContent({ source, assetBase }: MdxContentProps) {
         alt={props.alt ?? ""}
         loading="lazy"
         decoding="async"
-        className="rounded-xl border border-[#2ed573]/20 my-6 max-w-full"
+        className="rounded-xl border border-terminal-green/20 my-6 max-w-full"
       />
     ),
   };

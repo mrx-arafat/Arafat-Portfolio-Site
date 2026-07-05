@@ -53,7 +53,7 @@ export default function ArticlesClient({ items }: { items: UnifiedArticle[] }) {
 
       // Set sources after creating the elements
       if (clickSoundRef.current) {
-        clickSoundRef.current.src = "/click.mp3";
+        clickSoundRef.current.src = "/sounds/click.mp3";
         clickSoundRef.current.preload = "auto";
       }
     } catch (error) {
@@ -181,20 +181,20 @@ export default function ArticlesClient({ items }: { items: UnifiedArticle[] }) {
   }, [currentPost, posts]);
 
   return (
-    <main className={`min-h-screen bg-[#121212] text-[#2ed573] p-4 md:p-8 grid-dots overflow-hidden ${isEntering ? "animate-slideInRight" : ""}`}>
+    <main className={`min-h-screen bg-surface-base text-terminal-green p-4 md:p-8 grid-dots overflow-hidden ${isEntering ? "animate-slideInRight" : ""}`}>
       {/* Terminal-style header */}
-      <div className="mb-8 bg-[#0f0f0f] border border-[#2ed573]/30 rounded-lg p-3 shadow-[0_0_15px_rgba(46,213,115,0.2)]">
+      <div className="mb-8 bg-surface-raised border border-terminal-green/30 rounded-lg p-3 shadow-[0_0_15px_rgba(46,213,115,0.2)]">
         <div className="flex items-center gap-2 mb-2">
           <div className="w-3 h-3 rounded-full bg-[#ff5f57]"></div>
           <div className="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
           <div className="w-3 h-3 rounded-full bg-[#28ca41]"></div>
-          <div className="ml-2 text-[#2ed573]/70 text-xs">~/articles</div>
+          <div className="ml-2 text-terminal-green/70 text-xs">~/articles</div>
         </div>
 
         <div className="flex items-center">
-          <span className="text-[#2ed573] mr-2">$</span>
+          <span className="text-terminal-green mr-2">$</span>
           <div className="relative">
-            <span className="text-[#2ed573]">
+            <span className="text-terminal-green">
               ./view_articles.sh --display=latest
             </span>
             <span className="animate-blink ml-1">|</span>
@@ -207,23 +207,23 @@ export default function ArticlesClient({ items }: { items: UnifiedArticle[] }) {
           <div className="flex items-center">
             <Link
               href="/dashboard"
-              className="inline-flex items-center text-[#2ed573] hover:text-[#2ed573]/80 mr-4 bg-[#1a1b26] px-3 py-2 rounded-md border border-[#2ed573]/20 hover:border-[#2ed573]/40 transition-colors"
+              className="inline-flex items-center text-terminal-green hover:text-terminal-green/80 mr-4 bg-surface-night px-3 py-2 rounded-md border border-terminal-green/20 hover:border-terminal-green/40 transition-colors"
               onClick={playClickSound}
             >
               <ArrowLeft size={16} className="mr-2" />
               <span className="text-sm">cd ..</span>
             </Link>
-            <h1 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#2ed573] to-[#7bed9f]">
-              <span className="text-[#2ed573]/70">[</span>
+            <h1 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-terminal-green to-terminal-soft">
+              <span className="text-terminal-green/70">[</span>
               ARTICLE_ARCHIVE
-              <span className="text-[#2ed573]/70">]</span>
+              <span className="text-terminal-green/70">]</span>
             </h1>
           </div>
 
           <div className="flex items-center gap-3">
             <Link
               href="/blog"
-              className="inline-flex items-center gap-2 text-[#0f0f0f] text-sm bg-[#2ed573] px-3 py-2 rounded-md transform transition-all hover:translate-y-[-2px] hover:shadow-[0_5px_15px_rgba(46,213,115,0.4)] border border-[#2ed573]"
+              className="inline-flex items-center gap-2 text-surface-raised text-sm bg-terminal-green px-3 py-2 rounded-md transform transition-all hover:translate-y-[-2px] hover:shadow-[0_5px_15px_rgba(46,213,115,0.4)] border border-terminal-green"
               onClick={() => playClickSound()}
             >
               <BookOpen size={16} />
@@ -235,41 +235,41 @@ export default function ArticlesClient({ items }: { items: UnifiedArticle[] }) {
               <Button
                 onClick={prevPost}
                 disabled={loading || posts.length === 0}
-                className="w-9 h-9 p-0 rounded-md bg-[#1a1b26] hover:bg-[#2a3942] border border-[#2ed573]/20"
+                className="w-9 h-9 p-0 rounded-md bg-surface-night hover:bg-[#2a3942] border border-terminal-green/20"
                 aria-label="Previous post"
               >
-                <ArrowLeft size={16} className="text-[#2ed573]" />
+                <ArrowLeft size={16} className="text-terminal-green" />
               </Button>
               <Button
                 onClick={nextPost}
                 disabled={loading || posts.length === 0}
-                className="w-9 h-9 p-0 rounded-md bg-[#1a1b26] hover:bg-[#2a3942] border border-[#2ed573]/20"
+                className="w-9 h-9 p-0 rounded-md bg-surface-night hover:bg-[#2a3942] border border-terminal-green/20"
                 aria-label="Next post"
               >
-                <ArrowRight size={16} className="text-[#2ed573]" />
+                <ArrowRight size={16} className="text-terminal-green" />
               </Button>
             </div>
           </div>
         </div>
 
         {loading ? (
-          <div className="bg-[#1a1b26] rounded-lg p-8 flex flex-col items-center justify-center border border-[#2ed573]/20 shadow-[0_0_15px_rgba(46,213,115,0.1)]">
+          <div className="bg-surface-night rounded-lg p-8 flex flex-col items-center justify-center border border-terminal-green/20 shadow-[0_0_15px_rgba(46,213,115,0.1)]">
             <div className="flex flex-col items-center">
-              <div className="text-[#2ed573] mb-4 font-mono text-sm">
+              <div className="text-terminal-green mb-4 font-mono text-sm">
                 $ loading_articles.sh
               </div>
               <div className="flex gap-2 items-center mb-4">
-                <div className="w-2 h-2 bg-[#2ed573] rounded-full animate-pulse"></div>
+                <div className="w-2 h-2 bg-terminal-green rounded-full animate-pulse"></div>
                 <div
-                  className="w-2 h-2 bg-[#2ed573] rounded-full animate-pulse"
+                  className="w-2 h-2 bg-terminal-green rounded-full animate-pulse"
                   style={{ animationDelay: "0.2s" }}
                 ></div>
                 <div
-                  className="w-2 h-2 bg-[#2ed573] rounded-full animate-pulse"
+                  className="w-2 h-2 bg-terminal-green rounded-full animate-pulse"
                   style={{ animationDelay: "0.4s" }}
                 ></div>
               </div>
-              <div className="text-[#2ed573]/70 font-mono text-xs">
+              <div className="text-terminal-green/70 font-mono text-xs">
                 Decrypting content...
               </div>
             </div>
@@ -278,12 +278,12 @@ export default function ArticlesClient({ items }: { items: UnifiedArticle[] }) {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Left column - Article image */}
             <div
-              className="md:col-span-1 h-[300px] md:h-[400px] bg-[#1a1b26] rounded-lg overflow-hidden cursor-pointer relative group shadow-[0_0_15px_rgba(46,213,115,0.1)] border border-[#2ed573]/10"
+              className="md:col-span-1 h-[300px] md:h-[400px] bg-surface-night rounded-lg overflow-hidden cursor-pointer relative group shadow-[0_0_15px_rgba(46,213,115,0.1)] border border-terminal-green/10"
               onClick={() => openArticle(posts[currentPost])}
               onMouseEnter={() => setIsHoverPaused(true)}
               onMouseLeave={() => setIsHoverPaused(false)}
             >
-              <div className="absolute inset-0 flex items-center justify-center bg-[#0f0f0f]/50 z-10">
+              <div className="absolute inset-0 flex items-center justify-center bg-surface-raised/50 z-10">
                 {posts[currentPost].imageUrl ? (
                   <img
                     src={posts[currentPost].imageUrl || "/placeholder.svg"}
@@ -293,36 +293,36 @@ export default function ArticlesClient({ items }: { items: UnifiedArticle[] }) {
                     decoding="async"
                   />
                 ) : (
-                  <div className="flex flex-col items-center justify-center h-full w-full bg-[#1a1b26] text-[#2ed573]/30">
+                  <div className="flex flex-col items-center justify-center h-full w-full bg-surface-night text-terminal-green/30">
                     <BookOpen size={64} className="mb-2" />
                     <span className="text-sm">No preview available</span>
                   </div>
                 )}
               </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f0f]/90 via-[#0f0f0f]/30 to-transparent opacity-80 group-hover:opacity-90 transition-opacity z-20"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-surface-raised/90 via-surface-raised/30 to-transparent opacity-80 group-hover:opacity-90 transition-opacity z-20"></div>
               <div className="absolute bottom-0 left-0 right-0 p-4 z-30">
                 <div className="flex items-center gap-2 mb-2">
-                  <div className="flex items-center gap-1 bg-[#0f0f0f]/70 px-2 py-1 rounded text-xs text-[#2ed573]/80">
+                  <div className="flex items-center gap-1 bg-surface-raised/70 px-2 py-1 rounded text-xs text-terminal-green/80">
                     <Calendar size={12} />
                     <span>{posts[currentPost].publishDate}</span>
                   </div>
-                  <div className="flex items-center gap-1 bg-[#0f0f0f]/70 px-2 py-1 rounded text-xs text-[#2ed573]/80">
+                  <div className="flex items-center gap-1 bg-surface-raised/70 px-2 py-1 rounded text-xs text-terminal-green/80">
                     <Clock size={12} />
                     <span>{posts[currentPost].readTime}</span>
                   </div>
                 </div>
-                <div className="font-mono text-xs text-[#2ed573]/60 mb-1">
+                <div className="font-mono text-xs text-terminal-green/60 mb-1">
                   $ cat article.md
                 </div>
               </div>
               <div className="absolute top-4 right-4 z-30 flex items-center gap-2">
                 {isAutoAdvancing && (
-                  <div className="bg-[#0f0f0f]/70 text-[#2ed573] px-2 py-1 rounded text-xs border border-[#2ed573]/20 flex items-center gap-1">
-                    <div className="w-1.5 h-1.5 rounded-full bg-[#2ed573] animate-pulse"></div>
+                  <div className="bg-surface-raised/70 text-terminal-green px-2 py-1 rounded text-xs border border-terminal-green/20 flex items-center gap-1">
+                    <div className="w-1.5 h-1.5 rounded-full bg-terminal-green animate-pulse"></div>
                     <span>{countdown}s</span>
                   </div>
                 )}
-                <div className="bg-[#0f0f0f]/70 text-[#2ed573] px-2 py-1 rounded text-xs border border-[#2ed573]/20 flex items-center gap-1">
+                <div className="bg-surface-raised/70 text-terminal-green px-2 py-1 rounded text-xs border border-terminal-green/20 flex items-center gap-1">
                   {posts[currentPost].source === "medium" && (
                     <ExternalLink size={10} />
                   )}
@@ -336,38 +336,38 @@ export default function ArticlesClient({ items }: { items: UnifiedArticle[] }) {
             </div>
 
             {/* Right column - Article content */}
-            <div className="md:col-span-2 bg-[#1a1b26] rounded-lg p-6 border border-[#2ed573]/10 shadow-[0_0_15px_rgba(46,213,115,0.1)] flex flex-col justify-between h-[300px] md:h-[400px]">
+            <div className="md:col-span-2 bg-surface-night rounded-lg p-6 border border-terminal-green/10 shadow-[0_0_15px_rgba(46,213,115,0.1)] flex flex-col justify-between h-[300px] md:h-[400px]">
               <div className="overflow-y-auto pr-2 custom-scrollbar">
                 <div className="flex items-center gap-2 mb-1">
-                  <div className="w-2 h-2 rounded-full bg-[#2ed573]/40"></div>
-                  <div className="text-[#2ed573]/60 text-xs font-mono">
+                  <div className="w-2 h-2 rounded-full bg-terminal-green/40"></div>
+                  <div className="text-terminal-green/60 text-xs font-mono">
                     ARTICLE #{currentPost + 1}
                   </div>
                   {posts[currentPost].source === "native" ? (
-                    <span className="text-[9px] font-mono font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-[#2ed573]/15 text-[#2ed573] border border-[#2ed573]/30">
+                    <span className="text-[9px] font-mono font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-terminal-green/15 text-terminal-green border border-terminal-green/30">
                       ⌂ On This Site
                     </span>
                   ) : (
-                    <span className="text-[9px] font-mono font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-[#0f0f0f] text-[#2ed573]/50 border border-[#2ed573]/15">
+                    <span className="text-[9px] font-mono font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-surface-raised text-terminal-green/50 border border-terminal-green/15">
                       ↗ Medium
                     </span>
                   )}
                 </div>
                 <h2
-                  className="text-xl md:text-2xl font-bold mb-3 text-[#2ed573] inline-block"
+                  className="text-xl md:text-2xl font-bold mb-3 text-terminal-green inline-block"
                   onMouseEnter={() => setIsHoverPaused(true)}
                   onMouseLeave={() => setIsHoverPaused(false)}
                 >
                   {posts[currentPost].title}
                 </h2>
-                <p className="text-[#2ed573]/80 mb-4 text-sm md:text-base">
+                <p className="text-terminal-green/80 mb-4 text-sm md:text-base">
                   {posts[currentPost].description}
                 </p>
                 <div className="flex flex-wrap gap-2 mb-6">
                   {posts[currentPost].tags.map((tag, i) => (
                     <span
                       key={i}
-                      className="px-2 py-1 bg-[#0f0f0f] text-[#2ed573]/80 rounded text-xs border border-[#2ed573]/10 hover:border-[#2ed573]/30 transition-colors"
+                      className="px-2 py-1 bg-surface-raised text-terminal-green/80 rounded text-xs border border-terminal-green/10 hover:border-terminal-green/30 transition-colors"
                     >
                       #{tag}
                     </span>
@@ -378,7 +378,7 @@ export default function ArticlesClient({ items }: { items: UnifiedArticle[] }) {
               <div className="flex flex-wrap gap-3 mt-4">
                 <Button
                   onClick={() => openArticle(posts[currentPost])}
-                  className="inline-flex items-center gap-2 bg-[#2ed573] hover:bg-[#2ed573]/90 text-[#0f0f0f] px-4 py-2 rounded-md hover:translate-y-[-2px] transition-all hover:shadow-[0_5px_15px_rgba(46,213,115,0.4)]"
+                  className="inline-flex items-center gap-2 bg-terminal-green hover:bg-terminal-green/90 text-surface-raised px-4 py-2 rounded-md hover:translate-y-[-2px] transition-all hover:shadow-[0_5px_15px_rgba(46,213,115,0.4)]"
                 >
                   <BookOpen size={16} />
                   <span className="font-medium">Read Full Article</span>
@@ -389,7 +389,7 @@ export default function ArticlesClient({ items }: { items: UnifiedArticle[] }) {
                     navigator.clipboard.writeText(articleShareUrl(posts[currentPost]));
                     playClickSound();
                   }}
-                  className="inline-flex items-center gap-2 bg-[#0f0f0f] hover:bg-[#1e272e] text-[#2ed573] border border-[#2ed573]/30 px-3 py-2 rounded-md transition-colors"
+                  className="inline-flex items-center gap-2 bg-surface-raised hover:bg-surface-panel text-terminal-green border border-terminal-green/30 px-3 py-2 rounded-md transition-colors"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -426,7 +426,7 @@ export default function ArticlesClient({ items }: { items: UnifiedArticle[] }) {
                     );
                     playClickSound();
                   }}
-                  className="inline-flex items-center gap-2 bg-[#0f0f0f] hover:bg-[#1e272e] text-[#2ed573] border border-[#2ed573]/30 px-3 py-2 rounded-md transition-colors"
+                  className="inline-flex items-center gap-2 bg-surface-raised hover:bg-surface-panel text-terminal-green border border-terminal-green/30 px-3 py-2 rounded-md transition-colors"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -447,21 +447,21 @@ export default function ArticlesClient({ items }: { items: UnifiedArticle[] }) {
             </div>
           </div>
         ) : (
-          <div className="bg-[#1a1b26] rounded-lg p-8 flex flex-col items-center justify-center border border-[#2ed573]/20 shadow-[0_0_15px_rgba(46,213,115,0.1)]">
-            <div className="font-mono text-[#2ed573]/70 text-sm mb-4">
+          <div className="bg-surface-night rounded-lg p-8 flex flex-col items-center justify-center border border-terminal-green/20 shadow-[0_0_15px_rgba(46,213,115,0.1)]">
+            <div className="font-mono text-terminal-green/70 text-sm mb-4">
               $ cat /dev/articles
             </div>
-            <div className="bg-[#0f0f0f] p-4 rounded-md border border-[#2ed573]/10 mb-6 w-full max-w-md">
-              <div className="text-[#2ed573]/80 font-mono text-sm mb-2">
+            <div className="bg-surface-raised p-4 rounded-md border border-terminal-green/10 mb-6 w-full max-w-md">
+              <div className="text-terminal-green/80 font-mono text-sm mb-2">
                 Error: No articles found
               </div>
-              <div className="text-[#2ed573]/50 font-mono text-xs">
+              <div className="text-terminal-green/50 font-mono text-xs">
                 Unable to establish connection with Medium API
               </div>
             </div>
             <Button
               onClick={() => window.location.reload()}
-              className="bg-[#2ed573] hover:bg-[#2ed573]/90 text-[#0f0f0f] px-4 py-2 rounded-md hover:translate-y-[-2px] transition-all hover:shadow-[0_5px_15px_rgba(46,213,115,0.4)] font-medium"
+              className="bg-terminal-green hover:bg-terminal-green/90 text-surface-raised px-4 py-2 rounded-md hover:translate-y-[-2px] transition-all hover:shadow-[0_5px_15px_rgba(46,213,115,0.4)] font-medium"
             >
               Retry Connection
             </Button>
@@ -469,11 +469,11 @@ export default function ArticlesClient({ items }: { items: UnifiedArticle[] }) {
         )}
 
         {posts.length > 0 && (
-          <div className="mt-8 bg-[#1a1b26] rounded-lg p-4 border border-[#2ed573]/10 shadow-[0_0_15px_rgba(46,213,115,0.1)]">
+          <div className="mt-8 bg-surface-night rounded-lg p-4 border border-terminal-green/10 shadow-[0_0_15px_rgba(46,213,115,0.1)]">
             {/* Desktop pagination - smart pagination showing only current page */}
             <div className="hidden md:flex items-center justify-between gap-4">
               <div className="flex items-center gap-3 flex-1">
-                <div className="text-[#2ed573]/60 text-xs font-mono whitespace-nowrap">
+                <div className="text-terminal-green/60 text-xs font-mono whitespace-nowrap">
                   $ navigate_posts.sh
                 </div>
 
@@ -488,7 +488,7 @@ export default function ArticlesClient({ items }: { items: UnifiedArticle[] }) {
                         setCurrentPost(prevPage * POSTS_PER_PAGE_DESKTOP);
                         setCountdown(6);
                       }}
-                      className="w-6 h-6 flex items-center justify-center rounded-md transition-colors text-xs font-medium bg-[#0f0f0f] text-[#2ed573]/70 hover:bg-[#0f0f0f]/80 hover:text-[#2ed573]"
+                      className="w-6 h-6 flex items-center justify-center rounded-md transition-colors text-xs font-medium bg-surface-raised text-terminal-green/70 hover:bg-surface-raised/80 hover:text-terminal-green"
                       aria-label="Previous page"
                     >
                       ‹
@@ -515,8 +515,8 @@ export default function ArticlesClient({ items }: { items: UnifiedArticle[] }) {
                           }}
                           className={`w-8 h-8 flex items-center justify-center rounded-md transition-colors text-xs font-medium ${
                             currentPost === index
-                              ? "bg-[#2ed573] text-[#0f0f0f]"
-                              : "bg-[#0f0f0f] text-[#2ed573]/70 hover:bg-[#0f0f0f]/80 hover:text-[#2ed573]"
+                              ? "bg-terminal-green text-surface-raised"
+                              : "bg-surface-raised text-terminal-green/70 hover:bg-surface-raised/80 hover:text-terminal-green"
                           }`}
                           aria-label={`Go to post ${index + 1}`}
                         >
@@ -535,7 +535,7 @@ export default function ArticlesClient({ items }: { items: UnifiedArticle[] }) {
                         setCurrentPost(nextPage * POSTS_PER_PAGE_DESKTOP);
                         setCountdown(6);
                       }}
-                      className="w-6 h-6 flex items-center justify-center rounded-md transition-colors text-xs font-medium bg-[#0f0f0f] text-[#2ed573]/70 hover:bg-[#0f0f0f]/80 hover:text-[#2ed573]"
+                      className="w-6 h-6 flex items-center justify-center rounded-md transition-colors text-xs font-medium bg-surface-raised text-terminal-green/70 hover:bg-surface-raised/80 hover:text-terminal-green"
                       aria-label="Next page"
                     >
                       ›
@@ -550,8 +550,8 @@ export default function ArticlesClient({ items }: { items: UnifiedArticle[] }) {
                     onClick={() => setIsAutoAdvancing(!isAutoAdvancing)}
                     className={`flex items-center gap-2 px-3 py-1 rounded-md text-xs font-mono transition-colors ${
                       isAutoAdvancing
-                        ? "bg-[#2ed573]/20 text-[#2ed573] border border-[#2ed573]/40 hover:bg-[#2ed573]/30"
-                        : "bg-[#0f0f0f] text-[#2ed573]/60 border border-[#2ed573]/20 hover:text-[#2ed573] hover:bg-[#0f0f0f]/50"
+                        ? "bg-terminal-green/20 text-terminal-green border border-terminal-green/40 hover:bg-terminal-green/30"
+                        : "bg-surface-raised text-terminal-green/60 border border-terminal-green/20 hover:text-terminal-green hover:bg-surface-raised/50"
                     }`}
                   >
                     {isAutoAdvancing ? (
@@ -567,7 +567,7 @@ export default function ArticlesClient({ items }: { items: UnifiedArticle[] }) {
                     )}
                   </button>
                 </div>
-                <div className="text-[#2ed573]/60 text-xs font-mono whitespace-nowrap">
+                <div className="text-terminal-green/60 text-xs font-mono whitespace-nowrap">
                   {currentPost + 1}/{posts.length}
                 </div>
               </div>
@@ -576,15 +576,15 @@ export default function ArticlesClient({ items }: { items: UnifiedArticle[] }) {
             {/* Mobile pagination - simplified */}
             <div className="md:hidden">
               <div className="flex items-center justify-between mb-3 gap-2">
-                <div className="text-[#2ed573]/60 text-xs font-mono">
+                <div className="text-terminal-green/60 text-xs font-mono">
                   $ navigate_posts.sh
                 </div>
                 <button
                   onClick={() => setIsAutoAdvancing(!isAutoAdvancing)}
                   className={`flex items-center gap-1 px-2 py-1 rounded text-xs font-mono transition-colors whitespace-nowrap ${
                     isAutoAdvancing
-                      ? "bg-[#2ed573]/20 text-[#2ed573] border border-[#2ed573]/40 hover:bg-[#2ed573]/30"
-                      : "bg-[#0f0f0f] text-[#2ed573]/60 border border-[#2ed573]/20 hover:text-[#2ed573] hover:bg-[#0f0f0f]/50"
+                      ? "bg-terminal-green/20 text-terminal-green border border-terminal-green/40 hover:bg-terminal-green/30"
+                      : "bg-surface-raised text-terminal-green/60 border border-terminal-green/20 hover:text-terminal-green hover:bg-surface-raised/50"
                   }`}
                 >
                   {isAutoAdvancing ? (
@@ -598,7 +598,7 @@ export default function ArticlesClient({ items }: { items: UnifiedArticle[] }) {
                     </>
                   )}
                 </button>
-                <div className="text-[#2ed573]/60 text-xs font-mono">
+                <div className="text-terminal-green/60 text-xs font-mono">
                   {currentPost + 1}/{posts.length}
                 </div>
               </div>
@@ -607,7 +607,7 @@ export default function ArticlesClient({ items }: { items: UnifiedArticle[] }) {
                 <Button
                   onClick={prevPost}
                   disabled={posts.length <= 1}
-                  className="bg-[#0f0f0f] hover:bg-[#1e272e] text-[#2ed573] border border-[#2ed573]/30 px-3 py-2 rounded-md transition-colors flex-1 text-sm"
+                  className="bg-surface-raised hover:bg-surface-panel text-terminal-green border border-terminal-green/30 px-3 py-2 rounded-md transition-colors flex-1 text-sm"
                 >
                   <div className="flex items-center justify-center">
                     <ArrowLeft size={14} className="mr-1" />
@@ -618,7 +618,7 @@ export default function ArticlesClient({ items }: { items: UnifiedArticle[] }) {
                 <Button
                   onClick={nextPost}
                   disabled={posts.length <= 1}
-                  className="bg-[#0f0f0f] hover:bg-[#1e272e] text-[#2ed573] border border-[#2ed573]/30 px-3 py-2 rounded-md transition-colors flex-1 text-sm"
+                  className="bg-surface-raised hover:bg-surface-panel text-terminal-green border border-terminal-green/30 px-3 py-2 rounded-md transition-colors flex-1 text-sm"
                 >
                   <div className="flex items-center justify-center">
                     <span>Next</span>

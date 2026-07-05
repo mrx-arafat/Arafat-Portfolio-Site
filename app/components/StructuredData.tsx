@@ -157,7 +157,7 @@ export default function StructuredData() {
         "@type": "ListItem",
         position: 3,
         name: "About",
-        item: "https://www.arafatops.com/about-me",
+        item: "https://www.arafatops.com/about",
       },
       {
         "@type": "ListItem",

@@ -2024,3 +2024,9 @@ body {
   text-align: left;
 }
 .blog-prose th { color: #2ed573; background: rgba(46, 213, 115, 0.05); }
+
+/* Mission-control launch section */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.12; }
+  50% { opacity: 0.85; }
+}

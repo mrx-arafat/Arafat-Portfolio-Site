@@ -54,6 +54,20 @@ const generateStableRandoms = (count: number, seed: number = 1) => {
   return randoms;
 };
 
+// Terminal-style zone label separating dashboard content categories
+function ZoneHeader({ path, comment }: { path: string; comment: string }) {
+  return (
+    <div className="flex items-center gap-3 font-mono text-xs select-none">
+      <span className="text-terminal-green/80 font-bold tracking-wide">
+        <span className="text-terminal-green/40">$ ls </span>
+        {path}
+      </span>
+      <span className="text-terminal-green/35 hidden sm:inline"># {comment}</span>
+      <div className="flex-1 h-px bg-gradient-to-r from-terminal-green/25 to-transparent" />
+    </div>
+  );
+}
+
 // Pre-computed stable values
 const NEURAL_NODE_POSITIONS = generateStableRandoms(40, 42);
 const DATA_STREAM_DELAYS = generateStableRandoms(12, 17);
@@ -152,7 +166,7 @@ export default function Dashboard() {
   };
 
   return (
-    <main className={`flex min-h-screen flex-col bg-[#121212] p-4 md:p-8 relative grid-dots transition-all duration-1000 ${matrixModeActive ? "matrix-mode-active" : ""
+    <main className={`flex min-h-screen flex-col bg-surface-base p-4 md:p-8 relative grid-dots transition-all duration-1000 ${matrixModeActive ? "matrix-mode-active" : ""
       } ${isEntering ? "animate-slideInRight" : ""}`}>
       {/* ELITE SYSTEM INFILTRATION - Only render on client */}
       {isMounted && matrixModeActive && (
@@ -269,7 +283,7 @@ export default function Dashboard() {
       {/* Sound toggle button */}
       <button
         onClick={toggleMute}
-        className="absolute top-4 right-4 text-[#2ed573]/50 hover:text-[#2ed573] transition-colors"
+        className="absolute top-4 right-4 text-terminal-green/50 hover:text-terminal-green transition-colors"
         aria-label={isMuted ? "Unmute" : "Mute"}
       >
         {isMuted ? <VolumeX size={24} /> : <Volume2 size={24} />}
@@ -279,13 +293,13 @@ export default function Dashboard() {
         {/* Left Panel - Profile Card with 3D Effect */}
         <div className="relative">
           {/* 3D Shadow Layer */}
-          <div className="absolute inset-0 bg-[#0f0f0f] rounded-2xl translate-x-3 translate-y-3"></div>
+          <div className="absolute inset-0 bg-surface-raised rounded-2xl translate-x-3 translate-y-3"></div>
 
           {/* Main Card - Dark Hacker Theme */}
-          <div className={`relative bg-[#0a0a0a] rounded-sm overflow-hidden shadow-lg border border-[#2ed573] z-10 transition-all duration-1000 ${matrixModeActive ? "elite-profile-override border-[#00BFFF] shadow-[0_0_35px_rgba(0,191,255,0.8)] brightness-70 contrast-180" : ""
+          <div className={`relative bg-surface-deep rounded-sm overflow-hidden shadow-lg border border-terminal-green z-10 transition-all duration-1000 ${matrixModeActive ? "elite-profile-override border-[#00BFFF] shadow-[0_0_35px_rgba(0,191,255,0.8)] brightness-70 contrast-180" : ""
             }`}>
             {/* Header with name - Hacker Theme */}
-            <div className="p-4 flex items-center gap-3 border-b border-[#2ed573]/10 bg-[#0a0a0a]">
+            <div className="px-4 py-2.5 flex items-center gap-3 border-b border-terminal-green/10 bg-surface-deep">
               <div
                 className="w-8 h-8 flex justify-center items-center relative cursor-pointer group"
                 onClick={(e) => {
@@ -293,7 +307,7 @@ export default function Dashboard() {
                   playClickSound();
 
                   // Play deeper, more sophisticated sound
-                  const eliteAudio = new Audio("/click.mp3");
+                  const eliteAudio = new Audio("/sounds/click.mp3");
                   eliteAudio.volume = 0.7;
                   eliteAudio.playbackRate = 0.6; // Deep, professional tone
                   eliteAudio.play().catch((e) => console.log("Elite audio failed:", e));
@@ -311,18 +325,18 @@ export default function Dashboard() {
                   }, 5000);
                 }}
               >
-                <div className="absolute inset-[2px] bg-[#2ed573]/10 rounded-sm animate-pulse group-hover:bg-[#2ed573]/20 transition-colors duration-200"></div>
+                <div className="absolute inset-[2px] bg-terminal-green/10 rounded-sm animate-pulse group-hover:bg-terminal-green/20 transition-colors duration-200"></div>
                 <div className="w-6 h-6 grid grid-cols-2 gap-[1px] place-items-center">
                   {[...Array(4)].map((_, i) => (
                     <div
                       key={i}
-                      className="w-[9px] h-[9px] bg-[#2ed573] rounded-none group-hover:shadow-[0_0_4px_#2ed573] transition-all duration-200"
+                      className="w-[9px] h-[9px] bg-terminal-green rounded-none group-hover:shadow-[0_0_4px_#2ed573] transition-all duration-200"
                     ></div>
                   ))}
                 </div>
               </div>
               <h2
-                className="text-[#2ed573] font-mono tracking-wide text-lg hacker-text cursor-pointer hover:text-[#2ed573]/80 transition-colors duration-200"
+                className="text-terminal-green font-mono tracking-wide text-lg hacker-text cursor-pointer hover:text-terminal-green/80 transition-colors duration-200"
                 onClick={(e) => {
                   e.stopPropagation();
                   playClickSound();
@@ -336,13 +350,16 @@ export default function Dashboard() {
               >
                 ARAFAT
               </h2>
-              <div className="ml-auto flex items-center">
-                <div className="w-3 h-3 rounded-full bg-[#2ed573]/80 animate-pulse"></div>
+              <div className="ml-auto flex items-center gap-2">
+                <span className="font-mono text-[10px] text-terminal-green/40 tracking-wider">
+                  $ whoami
+                </span>
+                <div className="w-3 h-3 rounded-full bg-terminal-green/80 animate-pulse"></div>
               </div>
             </div>
 
             {/* Profile Image - Hacker Theme */}
-            <div className="p-4 bg-[#0a0a0a]">
+            <div className="px-4 pb-4 pt-2.5 bg-surface-deep">
               <div
                 ref={profileRef}
                 onClick={() => {
@@ -391,7 +408,7 @@ export default function Dashboard() {
                     element.classList.add("animate-glitch");
 
                     // Play hacker sound effect
-                    const audio = new Audio("/click.mp3");
+                    const audio = new Audio("/sounds/click.mp3");
                     audio.volume = 0.3;
                     audio
                       .play()
@@ -429,9 +446,9 @@ export default function Dashboard() {
                 <div className="edge-glow-effect"></div>
 
                 {/* Image Container */}
-                <div className="relative bg-[#0f0f0f] rounded-none aspect-square flex items-center justify-center border border-[#2ed573] overflow-hidden cursor-crosshair">
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#2ed573]/5 to-transparent mix-blend-overlay pointer-events-none"></div>
-                  <div className="w-full h-full bg-transparent flex items-center justify-center border border-[#2ed573] overflow-hidden">
+                <div className="relative bg-surface-raised rounded-none aspect-square flex items-center justify-center border border-terminal-green overflow-hidden cursor-crosshair">
+                  <div className="absolute inset-0 bg-gradient-to-br from-terminal-green/5 to-transparent mix-blend-overlay pointer-events-none"></div>
+                  <div className="w-full h-full bg-transparent flex items-center justify-center border border-terminal-green overflow-hidden">
                     <Image
                       src="/images/profile.webp"
                       alt="Profile Image"
@@ -454,13 +471,13 @@ export default function Dashboard() {
                             COUNTDOWN:{" "}
                             <span className="text-[#ff3333]">{countdown}</span>
                           </p>
-                          <div className="w-full bg-[#0a0a0a] h-2 mb-4 border border-[#2ed573]/30">
+                          <div className="w-full bg-surface-deep h-2 mb-4 border border-terminal-green/30">
                             <div
-                              className="bg-[#2ed573] h-full"
+                              className="bg-terminal-green h-full"
                               style={{ width: `${(countdown / 11) * 100}%` }}
                             ></div>
                           </div>
-                          <div className="font-mono text-[#2ed573] text-xs text-left max-w-[200px] mx-auto">
+                          <div className="font-mono text-terminal-green text-xs text-left max-w-[200px] mx-auto">
                             {hackerInfo.map((line, index) => (
                               <p
                                 key={index}
@@ -479,7 +496,7 @@ export default function Dashboard() {
                           <p className="hacker-text text-xs mb-4">
                             ACCESS LEVEL: root
                           </p>
-                          <div className="font-mono text-[#2ed573] text-xs">
+                          <div className="font-mono text-terminal-green text-xs">
                             <p>$ hack_me.sh</p>
 
                             <p className="mt-1">$ chmod +x hack_me.sh </p>
@@ -491,10 +508,10 @@ export default function Dashboard() {
                   </div>
 
                   {/* Corner Accents */}
-                  <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-[#2ed573]"></div>
-                  <div className="absolute top-0 right-0 w-4 h-4 border-t border-r border-[#2ed573]"></div>
-                  <div className="absolute bottom-0 left-0 w-4 h-4 border-b border-l border-[#2ed573]"></div>
-                  <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-[#2ed573]"></div>
+                  <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-terminal-green"></div>
+                  <div className="absolute top-0 right-0 w-4 h-4 border-t border-r border-terminal-green"></div>
+                  <div className="absolute bottom-0 left-0 w-4 h-4 border-b border-l border-terminal-green"></div>
+                  <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-terminal-green"></div>
                 </div>
               </div>
             </div>
@@ -505,35 +522,35 @@ export default function Dashboard() {
             <div
               onClick={() => {
                 playClickSound();
-                navigateTo("/about-me");
+                navigateTo("/about");
               }}
               className="relative group cursor-pointer"
             >
               {/* 3D Shadow/Base Layer */}
-              <div className="absolute inset-0 bg-[#2ed573]/30 rounded-lg translate-x-2 translate-y-2 group-hover:translate-x-1 group-hover:translate-y-1 group-active:translate-x-0 group-active:translate-y-0 transition-all duration-200"></div>
+              <div className="absolute inset-0 bg-terminal-green/30 rounded-lg translate-x-2 translate-y-2 group-hover:translate-x-1 group-hover:translate-y-1 group-active:translate-x-0 group-active:translate-y-0 transition-all duration-200"></div>
 
               {/* Button Main Layer */}
-              <div className="relative bg-[#0f0f0f] text-[#2ed573] font-bold py-4 px-6 rounded-lg flex items-center justify-between w-full z-10 shadow-lg border border-[#2ed573]/50 transform transition-all duration-200 group-hover:shadow-xl group-hover:border-[#2ed573]">
+              <div className="relative bg-surface-raised text-terminal-green font-bold py-4 px-6 rounded-lg flex items-center justify-between w-full z-10 shadow-lg border border-terminal-green/50 transform transition-all duration-200 group-hover:shadow-xl group-hover:border-terminal-green">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-[#2ed573]/10 flex items-center justify-center">
-                    <User className="w-5 h-5 text-[#2ed573]" />
+                  <div className="w-10 h-10 rounded-full bg-terminal-green/10 flex items-center justify-center">
+                    <User className="w-5 h-5 text-terminal-green" />
                   </div>
                   <div className="flex flex-col">
                     <span className="text-lg tracking-wide">WHAT DO I DO?</span>
-                    <span className="text-[#2ed573]/70 text-xs font-mono whitespace-nowrap overflow-hidden text-ellipsis max-w-[180px]">
+                    <span className="text-terminal-green/70 text-xs font-mono whitespace-nowrap overflow-hidden text-ellipsis max-w-[180px]">
                       $ ./about_me.sh --role
                     </span>
                   </div>
                 </div>
 
                 <div className="relative w-8 h-8 flex items-center justify-center overflow-hidden">
-                  <div className="text-[#2ed573] font-bold text-xl">&gt;</div>
+                  <div className="text-terminal-green font-bold text-xl">&gt;</div>
                 </div>
               </div>
 
               {/* Decorative elements */}
-              <div className="absolute top-0 left-0 w-2 h-8 bg-[#2ed573]/30 rounded-l-lg"></div>
-              <div className="absolute bottom-0 right-0 w-8 h-2 bg-[#2ed573]/30 rounded-b-lg"></div>
+              <div className="absolute top-0 left-0 w-2 h-8 bg-terminal-green/30 rounded-l-lg"></div>
+              <div className="absolute bottom-0 right-0 w-8 h-2 bg-terminal-green/30 rounded-b-lg"></div>
             </div>
           </div>
 
@@ -583,22 +600,22 @@ export default function Dashboard() {
                     navigateTo("/skills");
                   }
                 }}
-                className="skills-btn relative bg-[#2ed573] text-[#0f0f0f] font-bold py-4 px-5 rounded-lg flex items-center justify-between w-full z-10 shadow-lg transform transition-all duration-200 group-hover:shadow-xl cursor-pointer overflow-hidden"
+                className="skills-btn relative bg-terminal-green text-surface-raised font-bold py-4 px-5 rounded-lg flex items-center justify-between w-full z-10 shadow-lg transform transition-all duration-200 group-hover:shadow-xl cursor-pointer overflow-hidden"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-[#0f0f0f]/10 flex items-center justify-center">
-                    <Code size={20} className="text-[#0f0f0f]" />
+                  <div className="w-10 h-10 rounded-full bg-surface-raised/10 flex items-center justify-center">
+                    <Code size={20} className="text-surface-raised" />
                   </div>
                   <div className="flex flex-col">
                     <span className="text-lg tracking-wide">MY SKILLS</span>
-                    <span className="text-[#0f0f0f]/70 text-xs font-mono whitespace-nowrap overflow-hidden text-ellipsis max-w-[180px]">
+                    <span className="text-surface-raised/70 text-xs font-mono whitespace-nowrap overflow-hidden text-ellipsis max-w-[180px]">
                       $ ./skills.sh --view
                     </span>
                   </div>
                 </div>
 
                 <div className="relative w-8 h-8 flex items-center justify-center overflow-hidden">
-                  <div className="text-[#0f0f0f] font-bold text-xl">&gt;</div>
+                  <div className="text-surface-raised font-bold text-xl">&gt;</div>
                 </div>
 
                 {/* Scan line effect */}
@@ -612,7 +629,7 @@ export default function Dashboard() {
               {/* Binary code overlay (visible on hover) */}
               <div className="absolute inset-0 bg-transparent rounded-lg z-20 overflow-hidden pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-[#0f0f0f]/10 font-mono text-xs tracking-widest">
+                  <div className="text-surface-raised/10 font-mono text-xs tracking-widest">
                     {Array.from({ length: 5 }).map((_, i) => (
                       <div key={i} className="flex">
                         {Array.from({ length: 10 }).map((_, j) => (
@@ -630,66 +647,66 @@ export default function Dashboard() {
 
           {/* Skills Toggles - 3D Style */}
           <div className="p-4">
-            <div className="flex items-center gap-2 text-[#2ed573]/70 mb-4">
-              <div className="w-8 h-8 rounded-full bg-[#0f0f0f] flex items-center justify-center">
-                <Settings size={16} className="text-[#2ed573]" />
+            <div className="flex items-center gap-2 text-terminal-green/70 mb-4">
+              <div className="w-8 h-8 rounded-full bg-surface-raised flex items-center justify-center">
+                <Settings size={16} className="text-terminal-green" />
               </div>
               <span className="text-sm font-medium">Skills Explorer</span>
             </div>
 
             <div className="space-y-4">
               <div className="relative group">
-                <div className="absolute inset-0 bg-[#2ed573]/20 rounded-lg translate-x-1 translate-y-1 group-hover:translate-x-0.5 group-hover:translate-y-0.5 transition-all duration-200"></div>
-                <div className="relative bg-[#0f0f0f] p-3 rounded-lg flex items-center justify-between border border-[#2ed573]/20 z-10">
-                  <span className="text-[#2ed573] font-medium">
+                <div className="absolute inset-0 bg-terminal-green/20 rounded-lg translate-x-1 translate-y-1 group-hover:translate-x-0.5 group-hover:translate-y-0.5 transition-all duration-200"></div>
+                <div className="relative bg-surface-raised p-3 rounded-lg flex items-center justify-between border border-terminal-green/20 z-10">
+                  <span className="text-terminal-green font-medium">
                     SECURITY ENGINEER
                   </span>
                   <Switch
                     checked={skills.security}
                     onCheckedChange={() => toggleSkill("security")}
-                    className="data-[state=checked]:bg-[#2ed573]"
+                    className="data-[state=checked]:bg-terminal-green"
                   />
                 </div>
               </div>
 
               <div className="relative group">
-                <div className="absolute inset-0 bg-[#2ed573]/20 rounded-lg translate-x-1 translate-y-1 group-hover:translate-x-0.5 group-hover:translate-y-0.5 transition-all duration-200"></div>
-                <div className="relative bg-[#0f0f0f] p-3 rounded-lg flex items-center justify-between border border-[#2ed573]/20 z-10">
-                  <span className="text-[#2ed573] font-medium">
+                <div className="absolute inset-0 bg-terminal-green/20 rounded-lg translate-x-1 translate-y-1 group-hover:translate-x-0.5 group-hover:translate-y-0.5 transition-all duration-200"></div>
+                <div className="relative bg-surface-raised p-3 rounded-lg flex items-center justify-between border border-terminal-green/20 z-10">
+                  <span className="text-terminal-green font-medium">
                     ASPIRING ENTREPRENEUR
                   </span>
                   <Switch
                     checked={skills.business}
                     onCheckedChange={() => toggleSkill("business")}
-                    className="data-[state=checked]:bg-[#2ed573]"
+                    className="data-[state=checked]:bg-terminal-green"
                   />
                 </div>
               </div>
 
               <div className="relative group">
-                <div className="absolute inset-0 bg-[#2ed573]/20 rounded-lg translate-x-1 translate-y-1 group-hover:translate-x-0.5 group-hover:translate-y-0.5 transition-all duration-200"></div>
-                <div className="relative bg-[#0f0f0f] p-3 rounded-lg flex items-center justify-between border border-[#2ed573]/20 z-10">
-                  <span className="text-[#2ed573] font-medium">
+                <div className="absolute inset-0 bg-terminal-green/20 rounded-lg translate-x-1 translate-y-1 group-hover:translate-x-0.5 group-hover:translate-y-0.5 transition-all duration-200"></div>
+                <div className="relative bg-surface-raised p-3 rounded-lg flex items-center justify-between border border-terminal-green/20 z-10">
+                  <span className="text-terminal-green font-medium">
                     FINANCIAL INTELLIGENCE
                   </span>
                   <Switch
                     checked={skills.business}
                     onCheckedChange={() => toggleSkill("business")}
-                    className="data-[state=checked]:bg-[#2ed573]"
+                    className="data-[state=checked]:bg-terminal-green"
                   />
                 </div>
               </div>
 
               <div className="relative group">
-                <div className="absolute inset-0 bg-[#2ed573]/20 rounded-lg translate-x-1 translate-y-1 group-hover:translate-x-0.5 group-hover:translate-y-0.5 transition-all duration-200"></div>
-                <div className="relative bg-[#0f0f0f] p-3 rounded-lg flex items-center justify-between border border-[#2ed573]/20 z-10">
-                  <span className="text-[#2ed573] font-medium">
+                <div className="absolute inset-0 bg-terminal-green/20 rounded-lg translate-x-1 translate-y-1 group-hover:translate-x-0.5 group-hover:translate-y-0.5 transition-all duration-200"></div>
+                <div className="relative bg-surface-raised p-3 rounded-lg flex items-center justify-between border border-terminal-green/20 z-10">
+                  <span className="text-terminal-green font-medium">
                     WEB DEVELOPER
                   </span>
                   <Switch
                     checked={skills.webdev}
                     onCheckedChange={() => toggleSkill("webdev")}
-                    className="data-[state=checked]:bg-[#2ed573]"
+                    className="data-[state=checked]:bg-terminal-green"
                   />
                 </div>
               </div>
@@ -709,21 +726,21 @@ export default function Dashboard() {
 
                 {/* Button Main Layer */}
                 <div
-                  className={`relative bg-[#2ed573] text-[#0f0f0f] font-bold py-4 px-6 rounded-lg flex items-center justify-between w-full z-10 shadow-lg transform transition-all duration-200 group-hover:shadow-xl ${hackerEffect ? "glitch-effect" : ""
+                  className={`relative bg-terminal-green text-surface-raised font-bold py-4 px-6 rounded-lg flex items-center justify-between w-full z-10 shadow-lg transform transition-all duration-200 group-hover:shadow-xl ${hackerEffect ? "glitch-effect" : ""
                     }`}
                   data-text="ACCESS GRANTED"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-[#0f0f0f]/10 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-full bg-surface-raised/10 flex items-center justify-center">
                       {hackerEffect ? (
-                        <Unlock className="w-5 h-5 text-[#0f0f0f]" />
+                        <Unlock className="w-5 h-5 text-surface-raised" />
                       ) : (
-                        <Lock className="w-5 h-5 text-[#0f0f0f]" />
+                        <Lock className="w-5 h-5 text-surface-raised" />
                       )}
                     </div>
                     <div className="flex flex-col">
                       <span className="text-lg tracking-wide">CONTACT ME</span>
-                      <span className="text-[#0f0f0f]/70 text-xs font-mono whitespace-nowrap overflow-hidden text-ellipsis max-w-[180px]">
+                      <span className="text-surface-raised/70 text-xs font-mono whitespace-nowrap overflow-hidden text-ellipsis max-w-[180px]">
                         {hackerEffect
                           ? "ACCESS GRANTED..."
                           : "$ ./connect.sh --secure"}
@@ -732,7 +749,7 @@ export default function Dashboard() {
                   </div>
 
                   <div className="relative w-8 h-8 flex items-center justify-center overflow-hidden">
-                    <div className="text-[#0f0f0f] font-bold text-xl">&gt;</div>
+                    <div className="text-surface-raised font-bold text-xl">&gt;</div>
                   </div>
                 </div>
 
@@ -741,11 +758,11 @@ export default function Dashboard() {
                 <div className="absolute bottom-0 right-0 w-8 h-2 bg-[#1f9b53] rounded-b-lg"></div>
 
                 {/* Matrix-like code rain effect (visible on hover) */}
-                <div className="absolute inset-0 bg-[#0f0f0f]/0 group-hover:bg-[#0f0f0f]/5 rounded-lg z-20 overflow-hidden pointer-events-none">
+                <div className="absolute inset-0 bg-surface-raised/0 group-hover:bg-surface-raised/5 rounded-lg z-20 overflow-hidden pointer-events-none">
                   {[...Array(10)].map((_, i) => (
                     <div
                       key={i}
-                      className="absolute text-[#2ed573]/20 text-xs font-mono"
+                      className="absolute text-terminal-green/20 text-xs font-mono"
                       style={{
                         left: `${i * 10}%`,
                         top: "0",
@@ -774,37 +791,37 @@ export default function Dashboard() {
               {[
                 {
                   name: "github",
-                  icon: <Github size={24} className="text-[#2ed573]" />,
+                  icon: <Github size={24} className="text-terminal-green" />,
                   tooltip: "GitHub Projects",
                   url: "https://github.com/mrx-arafat",
                 },
                 {
                   name: "linkedin",
-                  icon: <Linkedin size={24} className="text-[#2ed573]" />,
+                  icon: <Linkedin size={24} className="text-terminal-green" />,
                   tooltip: "LinkedIn Profile",
                   url: "https://www.linkedin.com/in/e4rafat",
                 },
                 {
                   name: "facebook",
-                  icon: <Facebook size={24} className="text-[#2ed573]" />,
+                  icon: <Facebook size={24} className="text-terminal-green" />,
                   tooltip: "Facebook",
                   url: "https://www.facebook.com/e4rafat",
                 },
                 {
                   name: "instagram",
-                  icon: <Instagram size={24} className="text-[#2ed573]" />,
+                  icon: <Instagram size={24} className="text-terminal-green" />,
                   tooltip: "Instagram",
                   url: "https://www.instagram.com/e4rafat/",
                 },
                 {
                   name: "medium",
-                  icon: <BookOpen size={24} className="text-[#2ed573]" />,
+                  icon: <BookOpen size={24} className="text-terminal-green" />,
                   tooltip: "Medium Blog",
                   url: "https://medium.com/@easinxarafat",
                 },
                 {
                   name: "tryhackme",
-                  icon: <Shield size={24} className="text-[#2ed573]" />,
+                  icon: <Shield size={24} className="text-terminal-green" />,
                   tooltip: "TryHackMe Profile",
                   url: "https://tryhackme.com/p/KingBOB",
                 },
@@ -822,19 +839,19 @@ export default function Dashboard() {
                         window.open(platform.url, "_blank");
                       }}
                     >
-                      <div className={`bg-[#0f0f0f] rounded-2xl aspect-square flex items-center justify-center relative hover:bg-[#0a0a0a] hover:border-[#2ed573]/50 transition-colors cursor-pointer border border-[#2ed573]/20 hover-glow ${matrixModeActive ? "matrix-social-effect border-[#2ed573] shadow-[0_0_20px_rgba(46,213,115,0.8)]" : ""
+                      <div className={`bg-surface-raised rounded-2xl aspect-square flex items-center justify-center relative hover:bg-surface-deep hover:border-terminal-green/50 transition-colors cursor-pointer border border-terminal-green/20 hover-glow ${matrixModeActive ? "matrix-social-effect border-terminal-green shadow-[0_0_20px_rgba(46,213,115,0.8)]" : ""
                         }`}>
-                        <div className="w-12 h-12 rounded-full bg-[#0a0a0a] flex items-center justify-center">
+                        <div className="w-12 h-12 rounded-full bg-surface-deep flex items-center justify-center">
                           {platform.icon}
                         </div>
-                        <div className="absolute top-2 left-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
-                        <div className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
-                        <div className="absolute bottom-2 left-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
-                        <div className="absolute bottom-2 right-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
+                        <div className="absolute top-2 left-2 w-2 h-2 rounded-full bg-terminal-green/20"></div>
+                        <div className="absolute top-2 right-2 w-2 h-2 rounded-full bg-terminal-green/20"></div>
+                        <div className="absolute bottom-2 left-2 w-2 h-2 rounded-full bg-terminal-green/20"></div>
+                        <div className="absolute bottom-2 right-2 w-2 h-2 rounded-full bg-terminal-green/20"></div>
                       </div>
                     </a>
                   </TooltipTrigger>
-                  <TooltipContent className="bg-[#0f0f0f] text-[#2ed573] border border-[#2ed573]/30">
+                  <TooltipContent className="bg-surface-raised text-terminal-green border border-terminal-green/30">
                     {platform.tooltip}
                   </TooltipContent>
                 </Tooltip>
@@ -842,30 +859,31 @@ export default function Dashboard() {
             </TooltipProvider>
           </div>
 
-          {/* Main Content Sections */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:auto-rows-[minmax(11rem,1fr)]">
+          {/* ZONE: ~/proof — recognition, research, press */}
+          <ZoneHeader path="~/proof" comment="recognition · research · press" />
+          <div className="grid grid-cols-1 gap-4">
             {/* HERO — Featured */}
             <div
-              className={`group relative bg-gradient-to-br from-[#0f0f0f] to-[#0a0a0a] rounded-2xl overflow-hidden flex flex-col border transition-all duration-300 cursor-pointer hover-glow md:col-span-2 md:row-span-2 order-first md:order-1 ${cardEffectActive
-                ? "border-[#2ed573]/60 shadow-[0_0_28px_rgba(46,213,115,0.35)] animate-subtle-pulse"
-                : "border-[#2ed573]/30 shadow-[0_0_20px_rgba(46,213,115,0.12)]"
+              className={`group relative bg-gradient-to-br from-surface-raised to-surface-deep rounded-2xl overflow-hidden flex flex-col border transition-all duration-300 cursor-pointer hover-glow ${cardEffectActive
+                ? "border-terminal-green/60 shadow-[0_0_28px_rgba(46,213,115,0.35)] animate-subtle-pulse"
+                : "border-terminal-green/30 shadow-[0_0_20px_rgba(46,213,115,0.12)]"
                 } ${matrixModeActive
                   ? "elite-card-override border-[#00BFFF] shadow-[0_0_25px_rgba(0,191,255,0.6)] brightness-80 contrast-120"
                   : ""
                 }`}
               onClick={() => navigateTo("/featured")}
             >
-              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#2ed573]/60 to-transparent"></div>
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-terminal-green/60 to-transparent"></div>
 
               {/* Header */}
-              <div className="p-5 flex items-center justify-between border-b border-[#2ed573]/10">
+              <div className="p-5 flex items-center justify-between border-b border-terminal-green/10">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-[#2ed573]/10 rounded-lg flex items-center justify-center border border-[#2ed573]/20 group-hover:bg-[#2ed573]/20 group-hover:border-[#2ed573]/40 transition-all duration-300">
-                    <FeaturedIcon className="w-4 h-4 text-[#2ed573]" />
+                  <div className="w-8 h-8 bg-terminal-green/10 rounded-lg flex items-center justify-center border border-terminal-green/20 group-hover:bg-terminal-green/20 group-hover:border-terminal-green/40 transition-all duration-300">
+                    <FeaturedIcon className="w-4 h-4 text-terminal-green" />
                   </div>
-                  <span className="text-[#2ed573] font-semibold tracking-wide">FEATURED</span>
+                  <span className="text-terminal-green font-semibold tracking-wide">FEATURED</span>
                 </div>
-                <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-1 rounded bg-[#2ed573]/10 text-[#2ed573] border border-[#2ed573]/20">
+                <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-1 rounded bg-terminal-green/10 text-terminal-green border border-terminal-green/20">
                   ★ Most Notable
                 </span>
               </div>
@@ -873,46 +891,46 @@ export default function Dashboard() {
               {/* Body */}
               <div className="flex-1 p-5 flex flex-col relative z-10">
                 <div className="mb-4">
-                  <div className="text-[#2ed573]/70 text-xs font-mono mb-1">peer-reviewed · published 2026</div>
-                  <h3 className="text-xl md:text-2xl font-bold text-[#2ed573] mb-2 leading-tight">
+                  <div className="text-terminal-green/70 text-xs font-mono mb-1">peer-reviewed · published 2026</div>
+                  <h3 className="text-xl md:text-2xl font-bold text-terminal-green mb-2 leading-tight">
                     Adaptive UI for Mobile Banking — Enhancing UX through Machine Learning
                   </h3>
                   <div className="flex flex-wrap gap-2 mb-3">
-                    <span className="text-[10px] font-mono font-bold uppercase tracking-wide px-2 py-1 rounded bg-[#2ed573]/10 text-[#2ed573] border border-[#2ed573]/20">Q1 Journal</span>
-                    <span className="text-[10px] font-mono font-bold uppercase tracking-wide px-2 py-1 rounded bg-[#2ed573]/10 text-[#2ed573] border border-[#2ed573]/20">Impact Factor 4.5</span>
-                    <span className="text-[10px] font-mono font-bold uppercase tracking-wide px-2 py-1 rounded bg-[#2ed573]/10 text-[#2ed573] border border-[#2ed573]/20">Open Access</span>
-                    <span className="text-[10px] font-mono font-bold uppercase tracking-wide px-2 py-1 rounded bg-[#7bed9f]/10 text-[#7bed9f] border border-[#7bed9f]/20">Array · Elsevier</span>
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-wide px-2 py-1 rounded bg-terminal-green/10 text-terminal-green border border-terminal-green/20">Q1 Journal</span>
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-wide px-2 py-1 rounded bg-terminal-green/10 text-terminal-green border border-terminal-green/20">Impact Factor 4.5</span>
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-wide px-2 py-1 rounded bg-terminal-green/10 text-terminal-green border border-terminal-green/20">Open Access</span>
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-wide px-2 py-1 rounded bg-terminal-soft/10 text-terminal-soft border border-terminal-soft/20">Array · Elsevier</span>
                   </div>
-                  <p className="text-[#2ed573]/60 text-sm leading-relaxed">
-                    Co-authored research, a <span className="text-[#2ed573]">Daily Star</span> feature, and national recognition — the proof beyond the projects.
+                  <p className="text-terminal-green/60 text-sm leading-relaxed">
+                    Co-authored research, a <span className="text-terminal-green">Daily Star</span> feature, and national recognition — the proof beyond the projects.
                   </p>
                 </div>
 
                 {/* Highlight rows */}
                 <div className="space-y-1 mb-4">
-                  <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[#2ed573]/5 transition-all duration-200 group/row" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.1s both' }}>
-                    <div className="w-1 self-stretch rounded-full bg-[#2ed573] flex-shrink-0"></div>
+                  <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-terminal-green/5 transition-all duration-200 group/row" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.1s both' }}>
+                    <div className="w-1 self-stretch rounded-full bg-terminal-green flex-shrink-0"></div>
                     <div className="flex-1 min-w-0">
-                      <div className="text-[#2ed573] text-sm font-medium">Published Research</div>
-                      <div className="text-[#2ed573]/50 text-xs">Elsevier Array (Q1) — DOI 10.1016/j.array.2026.100901</div>
+                      <div className="text-terminal-green text-sm font-medium">Published Research</div>
+                      <div className="text-terminal-green/50 text-xs">Elsevier Array (Q1) — DOI 10.1016/j.array.2026.100901</div>
                     </div>
-                    <ArrowRight size={14} className="text-[#2ed573]/0 group-hover/row:text-[#2ed573]/50 transition-all duration-200 flex-shrink-0" />
+                    <ArrowRight size={14} className="text-terminal-green/0 group-hover/row:text-terminal-green/50 transition-all duration-200 flex-shrink-0" />
                   </div>
-                  <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[#2ed573]/5 transition-all duration-200 group/row" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.2s both' }}>
-                    <div className="w-1 self-stretch rounded-full bg-[#2ed573] flex-shrink-0"></div>
+                  <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-terminal-green/5 transition-all duration-200 group/row" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.2s both' }}>
+                    <div className="w-1 self-stretch rounded-full bg-terminal-green flex-shrink-0"></div>
                     <div className="flex-1 min-w-0">
-                      <div className="text-[#2ed573] text-sm font-medium">Press &amp; Media</div>
-                      <div className="text-[#2ed573]/50 text-xs">Featured in The Daily Star</div>
+                      <div className="text-terminal-green text-sm font-medium">Press &amp; Media</div>
+                      <div className="text-terminal-green/50 text-xs">Featured in The Daily Star</div>
                     </div>
-                    <ArrowRight size={14} className="text-[#2ed573]/0 group-hover/row:text-[#2ed573]/40 transition-all duration-200 flex-shrink-0" />
+                    <ArrowRight size={14} className="text-terminal-green/0 group-hover/row:text-terminal-green/40 transition-all duration-200 flex-shrink-0" />
                   </div>
-                  <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-[#2ed573]/5 transition-all duration-200 group/row" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.3s both' }}>
-                    <div className="w-1 self-stretch rounded-full bg-[#7bed9f] flex-shrink-0"></div>
+                  <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-terminal-green/5 transition-all duration-200 group/row" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.3s both' }}>
+                    <div className="w-1 self-stretch rounded-full bg-terminal-soft flex-shrink-0"></div>
                     <div className="flex-1 min-w-0">
-                      <div className="text-[#2ed573] text-sm font-medium">Recognition</div>
-                      <div className="text-[#2ed573]/50 text-xs">URC 2021 Global Champion · Top 1% TryHackMe</div>
+                      <div className="text-terminal-green text-sm font-medium">Recognition</div>
+                      <div className="text-terminal-green/50 text-xs">URC 2021 Global Champion · Top 1% TryHackMe</div>
                     </div>
-                    <ArrowRight size={14} className="text-[#2ed573]/0 group-hover/row:text-[#7bed9f]/50 transition-all duration-200 flex-shrink-0" />
+                    <ArrowRight size={14} className="text-terminal-green/0 group-hover/row:text-terminal-soft/50 transition-all duration-200 flex-shrink-0" />
                   </div>
                 </div>
 
@@ -924,44 +942,48 @@ export default function Dashboard() {
                     playClickSound();
                     navigateTo("/featured");
                   }}
-                  className="w-full py-2.5 rounded-xl bg-[#2ed573] hover:bg-[#2ed573]/90 text-[#0f0f0f] border border-[#2ed573] font-semibold text-sm flex items-center justify-center gap-2 transition-all duration-300 hover:shadow-[0_0_16px_rgba(46,213,115,0.4)] relative overflow-hidden group/btn"
+                  className="w-full py-2.5 rounded-xl bg-terminal-green hover:bg-terminal-green/90 text-surface-raised border border-terminal-green font-semibold text-sm flex items-center justify-center gap-2 transition-all duration-300 hover:shadow-[0_0_16px_rgba(46,213,115,0.4)] relative overflow-hidden group/btn"
                 >
-                  <span className="absolute inset-0 bg-gradient-to-r from-[#2ed573]/0 via-white/20 to-[#2ed573]/0 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700"></span>
+                  <span className="absolute inset-0 bg-gradient-to-r from-terminal-green/0 via-white/20 to-terminal-green/0 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700"></span>
                   <FeaturedIcon className="w-4 h-4 relative z-10" />
                   <span className="relative z-10">Read the Research</span>
                   <ArrowRight size={16} className="relative z-10 transform group-hover:translate-x-1 transition-transform duration-200" />
                 </button>
               </div>
             </div>
+          </div>
 
+          {/* ZONE: ~/work — built & broken */}
+          <ZoneHeader path="~/work" comment="what I build & break" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* COMPACT — Security Research */}
             <div
-              className={`group relative bg-[#0f0f0f] rounded-2xl overflow-hidden flex flex-col border transition-all duration-300 cursor-pointer hover-glow md:order-2 hover:border-[#2ed573]/50 hover:shadow-[0_0_18px_rgba(46,213,115,0.2)] ${cardEffectActive
-                ? "border-[#2ed573]/40"
-                : "border-[#2ed573]/20 shadow-lg"
+              className={`group relative bg-surface-raised rounded-2xl overflow-hidden flex flex-col border transition-all duration-300 cursor-pointer hover-glow hover:border-terminal-green/50 hover:shadow-[0_0_18px_rgba(46,213,115,0.2)] ${cardEffectActive
+                ? "border-terminal-green/40"
+                : "border-terminal-green/20 shadow-lg"
                 } ${matrixModeActive
                   ? "elite-card-override border-[#00BFFF] shadow-[0_0_25px_rgba(0,191,255,0.6)] brightness-80 contrast-120"
                   : ""
                 }`}
               onClick={() => navigateTo("/security-research")}
             >
-              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#2ed573]/50 to-transparent"></div>
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-terminal-green/50 to-transparent"></div>
               <div className="p-5 flex flex-col h-full relative z-10">
                 <div className="flex items-center justify-between mb-3">
-                  <div className="w-8 h-8 bg-[#2ed573]/10 rounded-lg flex items-center justify-center border border-[#2ed573]/20 group-hover:bg-[#2ed573]/20 transition-all duration-300">
-                    <CveIcon className="w-4 h-4 text-[#2ed573]" />
+                  <div className="w-8 h-8 bg-terminal-green/10 rounded-lg flex items-center justify-center border border-terminal-green/20 group-hover:bg-terminal-green/20 transition-all duration-300">
+                    <CveIcon className="w-4 h-4 text-terminal-green" />
                   </div>
-                  <span className="text-[#2ed573]/50 text-[11px] font-mono">SECURITY</span>
+                  <span className="text-terminal-green/50 text-[11px] font-mono">SECURITY</span>
                 </div>
                 <div className="flex items-end gap-2">
-                  <span className="text-5xl font-bold text-[#2ed573] leading-none">{cveData.items.length}</span>
-                  <span className="text-[#2ed573] text-sm font-medium mb-1">CVEs disclosed</span>
+                  <span className="text-5xl font-bold text-terminal-green leading-none">{cveData.items.length}</span>
+                  <span className="text-terminal-green text-sm font-medium mb-1">CVEs disclosed</span>
                 </div>
-                <p className="text-[#2ed573]/60 text-xs mt-2 leading-relaxed">
+                <p className="text-terminal-green/60 text-xs mt-2 leading-relaxed">
                   Broken Access Control, IDOR &amp; data exposure in WordPress plugins — responsibly disclosed via Patchstack.
                 </p>
                 <div className="flex-1"></div>
-                <div className="flex items-center gap-1.5 text-[#2ed573]/70 text-xs font-mono mt-3 group-hover:text-[#2ed573] transition-colors">
+                <div className="flex items-center gap-1.5 text-terminal-green/70 text-xs font-mono mt-3 group-hover:text-terminal-green transition-colors">
                   <span>cd security-research</span>
                   <ArrowRight size={12} className="transform group-hover:translate-x-1 transition-transform" />
                 </div>
@@ -970,67 +992,72 @@ export default function Dashboard() {
 
             {/* COMPACT — Projects */}
             <div
-              className={`group relative bg-[#0f0f0f] rounded-2xl overflow-hidden flex flex-col border transition-all duration-300 cursor-pointer hover-glow md:order-3 hover:border-[#2ed573]/50 hover:shadow-[0_0_18px_rgba(46,213,115,0.2)] ${cardEffectActive
-                ? "border-[#2ed573]/40"
-                : "border-[#2ed573]/20 shadow-lg"
+              className={`group relative bg-surface-raised rounded-2xl overflow-hidden flex flex-col border transition-all duration-300 cursor-pointer hover-glow hover:border-terminal-green/50 hover:shadow-[0_0_18px_rgba(46,213,115,0.2)] ${cardEffectActive
+                ? "border-terminal-green/40"
+                : "border-terminal-green/20 shadow-lg"
                 } ${matrixModeActive
                   ? "elite-card-override border-[#00BFFF] shadow-[0_0_25px_rgba(0,191,255,0.6)] brightness-80 contrast-120"
                   : ""
                 }`}
               onClick={() => navigateTo("/projects")}
             >
-              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#2ed573]/50 to-transparent"></div>
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-terminal-green/50 to-transparent"></div>
               <div className="p-5 flex flex-col h-full relative z-10">
                 <div className="flex items-center justify-between mb-3">
-                  <div className="w-8 h-8 bg-[#2ed573]/10 rounded-lg flex items-center justify-center border border-[#2ed573]/20 group-hover:bg-[#2ed573]/20 transition-all duration-300">
-                    <ProjectIcon className="w-4 h-4 text-[#2ed573]" />
+                  <div className="w-8 h-8 bg-terminal-green/10 rounded-lg flex items-center justify-center border border-terminal-green/20 group-hover:bg-terminal-green/20 transition-all duration-300">
+                    <ProjectIcon className="w-4 h-4 text-terminal-green" />
                   </div>
-                  <span className="text-[#2ed573]/50 text-[11px] font-mono">BUILD</span>
+                  <span className="text-terminal-green/50 text-[11px] font-mono">BUILD</span>
                 </div>
                 <div className="flex items-end gap-2">
-                  <span className="text-5xl font-bold text-[#2ed573] leading-none">25+</span>
-                  <span className="text-[#2ed573] text-sm font-medium mb-1">projects shipped</span>
+                  <span className="text-5xl font-bold text-terminal-green leading-none">25+</span>
+                  <span className="text-terminal-green text-sm font-medium mb-1">projects shipped</span>
                 </div>
-                <p className="text-[#2ed573]/60 text-xs mt-2 leading-relaxed">
+                <p className="text-terminal-green/60 text-xs mt-2 leading-relaxed">
                   Security tools, DevSecOps automation &amp; real-world web apps — from research to production.
                 </p>
                 <div className="flex-1"></div>
-                <div className="flex items-center gap-1.5 text-[#2ed573]/70 text-xs font-mono mt-3 group-hover:text-[#2ed573] transition-colors">
+                <div className="flex items-center gap-1.5 text-terminal-green/70 text-xs font-mono mt-3 group-hover:text-terminal-green transition-colors">
                   <span>cd projects</span>
                   <ArrowRight size={12} className="transform group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
             </div>
 
+          </div>
+
+          {/* ZONE: ~/write — articles, blog, notes */}
+          <ZoneHeader path="~/write" comment="articles · blog · notes" />
+          <div className="grid grid-cols-1 gap-4">
             {/* WIDE — Articles strip */}
             <div
-              className={`group relative bg-[#0f0f0f] rounded-2xl overflow-hidden flex border transition-all duration-300 cursor-pointer hover-glow md:col-span-3 md:order-4 hover:border-[#2ed573]/50 hover:shadow-[0_0_18px_rgba(46,213,115,0.2)] ${cardEffectActive
-                ? "border-[#2ed573]/40"
-                : "border-[#2ed573]/20 shadow-lg"
+              className={`group relative bg-surface-raised rounded-2xl overflow-hidden flex border transition-all duration-300 cursor-pointer hover-glow hover:border-terminal-green/50 hover:shadow-[0_0_18px_rgba(46,213,115,0.2)] ${cardEffectActive
+                ? "border-terminal-green/40"
+                : "border-terminal-green/20 shadow-lg"
                 } ${matrixModeActive
                   ? "elite-card-override border-[#00BFFF] shadow-[0_0_25px_rgba(0,191,255,0.6)] brightness-80 contrast-120"
                   : ""
                 }`}
               onClick={() => navigateTo("/articles")}
             >
-              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#2ed573]/50 to-transparent"></div>
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-terminal-green/50 to-transparent"></div>
               <div className="p-5 flex flex-col sm:flex-row sm:items-center gap-4 w-full relative z-10">
                 <div className="flex items-center gap-4 flex-shrink-0">
-                  <div className="w-10 h-10 bg-[#2ed573]/10 rounded-lg flex items-center justify-center border border-[#2ed573]/20 group-hover:bg-[#2ed573]/20 transition-all duration-300">
-                    <ArticleIcon className="w-[18px] h-[18px] text-[#2ed573]" />
+                  <div className="w-10 h-10 bg-terminal-green/10 rounded-lg flex items-center justify-center border border-terminal-green/20 group-hover:bg-terminal-green/20 transition-all duration-300">
+                    <ArticleIcon className="w-[18px] h-[18px] text-terminal-green" />
                   </div>
                   <div className="flex items-end gap-2">
-                    <span className="text-4xl font-bold text-[#2ed573] leading-none">{articlesData.length}</span>
-                    <span className="text-[#2ed573] text-sm font-medium mb-1">articles</span>
+                    <span className="text-4xl font-bold text-terminal-green leading-none">{articlesData.length}</span>
+                    <span className="text-terminal-green text-sm font-medium mb-1">articles</span>
                   </div>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-[#2ed573] font-semibold text-sm">What I Write About</h3>
-                  <p className="text-[#2ed573]/60 text-xs leading-relaxed">
+                  <h3 className="text-terminal-green font-semibold text-sm">What I Write About</h3>
+                  <p className="text-terminal-green/60 text-xs leading-relaxed">
                     Security, building businesses, psychology, and how the world works.
                   </p>
                 </div>
-                <div className="flex items-center gap-1.5 text-[#2ed573]/70 text-xs font-mono flex-shrink-0 group-hover:text-[#2ed573] transition-colors">
+                <div className="flex items-center gap-1.5 text-terminal-green/70 text-xs font-mono flex-shrink-0 group-hover:text-terminal-green transition-colors">
                   <span>cd articles</span>
                   <ArrowRight size={14} className="transform group-hover:translate-x-1 transition-transform" />
                 </div>
@@ -1038,25 +1065,27 @@ export default function Dashboard() {
             </div>
           </div>
 
+          {/* ZONE: ~/etc — extracurricular & misc */}
+          <ZoneHeader path="~/etc" comment="beyond the terminal" />
           {/* Extracurricular Section */}
-          <div className="bg-[#0f0f0f] rounded-2xl overflow-hidden border border-[#2ed573]/20">
-            <div className="p-4 flex items-center justify-between border-b border-[#2ed573]/10">
+          <div className="bg-surface-raised rounded-2xl overflow-hidden border border-terminal-green/20">
+            <div className="p-4 flex items-center justify-between border-b border-terminal-green/10">
               <div className="flex items-center gap-3">
-                <div className="w-6 h-6 bg-[#2ed573]/20 rounded-md flex items-center justify-center border border-[#2ed573]/30">
-                  <Zap size={14} className="text-[#2ed573]" />
+                <div className="w-6 h-6 bg-terminal-green/20 rounded-md flex items-center justify-center border border-terminal-green/30">
+                  <Zap size={14} className="text-terminal-green" />
                 </div>
-                <span className="text-[#2ed573] font-medium">
+                <span className="text-terminal-green font-medium">
                   EXTRACURRICULAR
                 </span>
               </div>
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <button className="text-[#2ed573]/50 hover:text-[#2ed573]">
+                    <button className="text-terminal-green/50 hover:text-terminal-green">
                       <Info size={16} />
                     </button>
                   </TooltipTrigger>
-                  <TooltipContent className="bg-[#0f0f0f] text-[#2ed573] border border-[#2ed573]/30 max-w-xs">
+                  <TooltipContent className="bg-surface-raised text-terminal-green border border-terminal-green/30 max-w-xs">
                     Activities and interests outside of my professional work,
                     including community involvement, hobbies, and personal
                     projects.
@@ -1069,10 +1098,10 @@ export default function Dashboard() {
               {extracurricularData.map((item) => (
                 <div
                   key={item.id}
-                  className="bg-[#0f0f0f] rounded-2xl aspect-square flex items-center justify-center relative hover:bg-[#0a0a0a] hover:border-[#2ed573]/50 transition-colors cursor-pointer border border-[#2ed573]/20 hover-glow group"
+                  className="bg-surface-raised rounded-2xl aspect-square flex items-center justify-center relative hover:bg-surface-deep hover:border-terminal-green/50 transition-colors cursor-pointer border border-terminal-green/20 hover-glow group"
                   onClick={playClickSound}
                 >
-                  <div className="w-16 h-16 rounded-full bg-[#0a0a0a] flex items-center justify-center overflow-hidden">
+                  <div className="w-16 h-16 rounded-full bg-surface-deep flex items-center justify-center overflow-hidden">
                     <img
                       src={item.imageUrl}
                       alt={item.imageAlt}
@@ -1082,17 +1111,17 @@ export default function Dashboard() {
                     />
                   </div>
                   {/* Corner dots for decoration */}
-                  <div className="absolute top-2 left-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
-                  <div className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
-                  <div className="absolute bottom-2 left-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
-                  <div className="absolute bottom-2 right-2 w-2 h-2 rounded-full bg-[#2ed573]/20"></div>
+                  <div className="absolute top-2 left-2 w-2 h-2 rounded-full bg-terminal-green/20"></div>
+                  <div className="absolute top-2 right-2 w-2 h-2 rounded-full bg-terminal-green/20"></div>
+                  <div className="absolute bottom-2 left-2 w-2 h-2 rounded-full bg-terminal-green/20"></div>
+                  <div className="absolute bottom-2 right-2 w-2 h-2 rounded-full bg-terminal-green/20"></div>
 
                   {/* Hover tooltip with details */}
-                  <div className="absolute inset-0 bg-[#0f0f0f]/90 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-4 text-center">
-                    <h4 className="text-[#2ed573] font-bold mb-2">
+                  <div className="absolute inset-0 bg-surface-raised/90 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-4 text-center">
+                    <h4 className="text-terminal-green font-bold mb-2">
                       {item.title}
                     </h4>
-                    <p className="text-[#2ed573]/80 text-xs">
+                    <p className="text-terminal-green/80 text-xs">
                       {item.description}
                     </p>
                   </div>
@@ -1102,7 +1131,7 @@ export default function Dashboard() {
           </div>
 
           {/* Entrepreneurial Journey - Startup Launch Terminal */}
-          <div className="bg-[#0a0a0a] rounded-2xl border border-[#2ed573]/30 relative overflow-hidden group hover:border-[#2ed573]/60 hover:shadow-[0_0_30px_rgba(46,213,115,0.15)] transition-all duration-500">
+          <div className="bg-surface-deep rounded-2xl border border-terminal-green/30 relative overflow-hidden group hover:border-terminal-green/60 hover:shadow-[0_0_30px_rgba(46,213,115,0.15)] transition-all duration-500">
 
             {/* Scan line overlay */}
             <div className="absolute inset-0 pointer-events-none opacity-[0.03] z-10"
@@ -1112,32 +1141,106 @@ export default function Dashboard() {
             ></div>
 
             {/* Corner brackets */}
-            <div className="absolute top-2 left-2 w-4 h-4 border-t border-l border-[#2ed573]/30 group-hover:border-[#2ed573]/60 transition-colors duration-300 z-10"></div>
-            <div className="absolute top-2 right-2 w-4 h-4 border-t border-r border-[#2ed573]/30 group-hover:border-[#2ed573]/60 transition-colors duration-300 z-10"></div>
-            <div className="absolute bottom-2 left-2 w-4 h-4 border-b border-l border-[#2ed573]/30 group-hover:border-[#2ed573]/60 transition-colors duration-300 z-10"></div>
-            <div className="absolute bottom-2 right-2 w-4 h-4 border-b border-r border-[#2ed573]/30 group-hover:border-[#2ed573]/60 transition-colors duration-300 z-10"></div>
+            <div className="absolute top-2 left-2 w-4 h-4 border-t border-l border-terminal-green/30 group-hover:border-terminal-green/60 transition-colors duration-300 z-10"></div>
+            <div className="absolute top-2 right-2 w-4 h-4 border-t border-r border-terminal-green/30 group-hover:border-terminal-green/60 transition-colors duration-300 z-10"></div>
+            <div className="absolute bottom-2 left-2 w-4 h-4 border-b border-l border-terminal-green/30 group-hover:border-terminal-green/60 transition-colors duration-300 z-10"></div>
+            <div className="absolute bottom-2 right-2 w-4 h-4 border-b border-r border-terminal-green/30 group-hover:border-terminal-green/60 transition-colors duration-300 z-10"></div>
 
             {/* Terminal header */}
-            <div className="flex items-center gap-2 px-4 py-2.5 border-b border-[#2ed573]/15 bg-[#0f0f0f]">
+            <div className="flex items-center gap-2 px-4 py-2.5 border-b border-terminal-green/15 bg-surface-raised">
               <div className="flex gap-1.5">
                 <div className="w-2.5 h-2.5 rounded-full bg-[#ff5f56]/80"></div>
                 <div className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]/80"></div>
                 <div className="w-2.5 h-2.5 rounded-full bg-[#27c93f]/80"></div>
               </div>
-              <span className="text-[#2ed573]/50 text-[10px] font-mono ml-2 tracking-wider">~/ventures/launch.sh</span>
+              <span className="text-terminal-green/50 text-[10px] font-mono ml-2 tracking-wider">~/ventures/launch.sh</span>
               <div className="flex-1"></div>
-              <span className="text-[#2ed573]/20 text-[10px] font-mono">pid: 1337</span>
+              <span className="text-terminal-green/20 text-[10px] font-mono">pid: 1337</span>
             </div>
 
             {/* Terminal body */}
             <div className="p-5 md:p-6">
               {/* Init command */}
-              <div className="font-mono text-[11px] text-[#2ed573]/40 mb-5">
-                <span className="text-[#2ed573]/60">$</span> ./launch.sh --init --mode=entrepreneur
+              <div className="font-mono text-[11px] text-terminal-green/40 mb-5">
+                <span className="text-terminal-green/60">$</span> ./launch.sh --init --mode=entrepreneur
+                <span className="animate-blink ml-1 text-terminal-green/60">▊</span>
               </div>
 
-              {/* ASCII Rocket - clickable scroll-to-top */}
-              <div className="flex justify-center mb-5">
+              {/* Mission control: boot log | rocket | telemetry */}
+              <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-5 lg:gap-8 items-stretch mb-5">
+                {/* LEFT — boot sequence log */}
+                <div className="hidden lg:flex flex-col justify-between rounded-lg border border-terminal-green/10 bg-surface-deep/60 p-4 relative overflow-hidden font-mono">
+                  <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-terminal-green/40 to-transparent"></div>
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-[9px] tracking-[0.25em] text-terminal-green/30">BOOT_SEQUENCE</span>
+                      <span className="text-[9px] text-terminal-green/25">tty1</span>
+                    </div>
+                    <div className="space-y-2.5 text-[11px]">
+                      {[
+                        { t: "00:00:01", msg: "kernel: ambition loaded", ok: "OK" },
+                        { t: "00:00:02", msg: "mount /dev/vision → /life", ok: "OK" },
+                        { t: "00:00:03", msg: "fear.threshold set to 0", ok: "OK" },
+                        { t: "00:00:04", msg: "comfort_zone unmounted", ok: "OK" },
+                        { t: "00:00:05", msg: "excuses.service masked", ok: "OK" },
+                        { t: "00:00:07", msg: "main engine ignition", ok: "HOT" },
+                      ].map((line, i) => (
+                        <div
+                          key={line.t}
+                          className="flex items-baseline gap-2"
+                          style={{ animation: `fadeSlideIn 0.4s ease-out ${0.1 + i * 0.15}s both` }}
+                        >
+                          <span className="text-terminal-green/25 text-[9px]">[{line.t}]</span>
+                          <span className="text-terminal-green/60 flex-1">{line.msg}</span>
+                          <span className={line.ok === "HOT" ? "text-[#ffbd2e] text-[9px] animate-pulse" : "text-[#27c93f] text-[9px]"}>
+                            [{line.ok}]
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* System gauges */}
+                  <div className="mt-5 space-y-2.5">
+                    <div className="text-[9px] tracking-[0.25em] text-terminal-green/30 mb-1">VITALS</div>
+                    {[
+                      { label: "ambition", pct: 98, color: "#2ed573" },
+                      { label: "risk_appetite", pct: 87, color: "#2ed573" },
+                      { label: "caffeine", pct: 91, color: "#ffbd2e" },
+                      { label: "sleep", pct: 34, color: "#ff6b6b" },
+                    ].map((g) => (
+                      <div key={g.label} className="flex items-center gap-2 text-[10px]">
+                        <span className="w-24 text-terminal-green/45">{g.label}</span>
+                        <div className="flex-1 h-[3px] bg-surface-panel rounded-full overflow-hidden">
+                          <div className="h-full rounded-full" style={{ width: `${g.pct}%`, background: g.color, opacity: 0.8 }}></div>
+                        </div>
+                        <span className="w-8 text-right" style={{ color: g.color, opacity: 0.7 }}>{g.pct}%</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* CENTER — rocket over starfield */}
+                <div className="relative flex justify-center items-center order-first lg:order-none lg:px-6">
+                  {/* Starfield */}
+                  <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+                    {[...Array(28)].map((_, i) => {
+                      const rand = (n: number) => ((n * 9301 + 49297) % 233280) / 233280;
+                      return (
+                        <span
+                          key={i}
+                          className="absolute rounded-full bg-terminal-green"
+                          style={{
+                            left: `${rand(i + 1) * 100}%`,
+                            top: `${rand(i + 31) * 100}%`,
+                            width: rand(i + 7) > 0.7 ? 2 : 1,
+                            height: rand(i + 7) > 0.7 ? 2 : 1,
+                            animation: `twinkle ${2 + rand(i + 3) * 3}s ease-in-out ${rand(i + 11) * 3}s infinite`,
+                          }}
+                        />
+                      );
+                    })}
+                  </div>
                 <div
                   className="cursor-pointer relative group/rocket"
                   onClick={() => {
@@ -1292,25 +1395,32 @@ export default function Dashboard() {
                     </svg>
                   </div>
                   {/* Glow under rocket */}
-                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-16 h-4 bg-[#2ed573]/10 rounded-full blur-md group-hover/rocket:bg-[#2ed573]/25 transition-all duration-300"></div>
+                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-16 h-4 bg-terminal-green/10 rounded-full blur-md group-hover/rocket:bg-terminal-green/25 transition-all duration-300"></div>
                 </div>
               </div>
 
-              {/* Mission status log */}
-              <div className="space-y-2 font-mono text-[11px] mb-5 max-w-sm mx-auto">
+                {/* RIGHT — mission checklist + progress */}
+                <div className="flex flex-col justify-between rounded-lg border border-terminal-green/10 bg-surface-deep/60 p-4 relative overflow-hidden font-mono">
+                  <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-terminal-green/40 to-transparent"></div>
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-[9px] tracking-[0.25em] text-terminal-green/30">MISSION_LOG</span>
+                      <span className="text-[9px] text-terminal-green/25">T-minus ∞</span>
+                    </div>
+              <div className="space-y-2.5 font-mono text-[11px]">
                 <div className="flex items-center gap-2" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.1s both' }}>
                   <span className="text-[#27c93f]">[✓]</span>
-                  <span className="text-[#2ed573]/70 flex-1">Vision.init()</span>
+                  <span className="text-terminal-green/70 flex-1">Vision.init()</span>
                   <span className="text-[#27c93f] text-[10px]">DONE</span>
                 </div>
                 <div className="flex items-center gap-2" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.25s both' }}>
                   <span className="text-[#27c93f]">[✓]</span>
-                  <span className="text-[#2ed573]/70 flex-1">Problem.identify()</span>
+                  <span className="text-terminal-green/70 flex-1">Problem.identify()</span>
                   <span className="text-[#27c93f] text-[10px]">DONE</span>
                 </div>
                 <div className="flex items-center gap-2" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.4s both' }}>
                   <span className="text-[#27c93f]">[✓]</span>
-                  <span className="text-[#2ed573]/70 flex-1">Solution.build()</span>
+                  <span className="text-terminal-green/70 flex-1">Solution.build()</span>
                   <span className="text-[#27c93f] text-[10px]">DONE</span>
                 </div>
                 <div className="flex items-center gap-2" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.55s both' }}>
@@ -1319,19 +1429,37 @@ export default function Dashboard() {
                   <span className="text-[#ffbd2e] text-[10px] animate-pulse">RUNNING</span>
                 </div>
                 <div className="flex items-center gap-2" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.7s both' }}>
-                  <span className="text-[#2ed573]/25">[ ]</span>
-                  <span className="text-[#2ed573]/25 flex-1">World.change()</span>
-                  <span className="text-[#2ed573]/25 text-[10px]">QUEUED</span>
+                  <span className="text-terminal-green/25">[ ]</span>
+                  <span className="text-terminal-green/25 flex-1">World.change()</span>
+                  <span className="text-terminal-green/25 text-[10px]">QUEUED</span>
                 </div>
               </div>
 
+                  </div>
+
+                  {/* Next targets */}
+                  <div className="hidden lg:block mt-5 rounded-md border border-terminal-green/10 bg-surface-raised/60 p-3">
+                    <div className="text-[9px] tracking-[0.25em] text-terminal-green/30 mb-2">$ cat next_targets.txt</div>
+                    <div className="space-y-1.5 text-[10px]">
+                      <div className="flex items-center gap-2 text-terminal-green/55">
+                        <span className="text-terminal-green/30">▸</span> build products that outlive the hype
+                      </div>
+                      <div className="flex items-center gap-2 text-terminal-green/55">
+                        <span className="text-terminal-green/30">▸</span> break things before attackers do
+                      </div>
+                      <div className="flex items-center gap-2 text-terminal-green/55">
+                        <span className="text-terminal-green/30">▸</span> compound skills daily — no zero days
+                      </div>
+                    </div>
+                  </div>
+
               {/* Progress bar */}
-              <div className="max-w-sm mx-auto mb-5" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.85s both' }}>
+              <div className="mt-5" style={{ animation: 'fadeSlideIn 0.4s ease-out 0.85s both' }}>
                 <div className="flex justify-between text-[10px] font-mono mb-1.5">
-                  <span className="text-[#2ed573]/40">mission_progress</span>
-                  <span className="text-[#2ed573]/70">75%</span>
+                  <span className="text-terminal-green/40">mission_progress</span>
+                  <span className="text-terminal-green/70">75%</span>
                 </div>
-                <div className="h-1 bg-[#1e272e] rounded-full overflow-hidden">
+                <div className="h-1 bg-surface-panel rounded-full overflow-hidden">
                   <div
                     className="h-full rounded-full relative"
                     style={{
@@ -1346,19 +1474,29 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              {/* Separator */}
-              <div className="border-t border-[#2ed573]/10 my-4"></div>
+                </div>
+              </div>
 
-              {/* GROW or DIE motto */}
-              <div className="text-center" style={{ animation: 'fadeSlideIn 0.5s ease-out 1s both' }}>
-                <div className="inline-flex items-center gap-3 font-mono">
-                  <span className="text-[#2ed573] text-lg md:text-xl font-bold tracking-[0.3em] transition-all duration-300 motto-grow">GROW</span>
-                  <span className="text-[#2ed573]/20 text-xs">///</span>
-                  <span className="text-[#ff5f56]/70 text-lg md:text-xl font-bold tracking-[0.3em] group-hover:text-[#ff5f56] transition-all duration-300 motto-die">DIE</span>
+              {/* GROW or DIE — hazard strip */}
+              <div className="mt-6 flex items-center gap-4" style={{ animation: 'fadeSlideIn 0.5s ease-out 1s both' }}>
+                <div
+                  className="flex-1 h-2 rounded-sm opacity-30"
+                  style={{ background: 'repeating-linear-gradient(-45deg, #2ed573 0 8px, transparent 8px 16px)' }}
+                ></div>
+                <div className="text-center shrink-0">
+                  <div className="inline-flex items-center gap-3 font-mono">
+                    <span className="text-terminal-green text-lg md:text-xl font-bold tracking-[0.3em] transition-all duration-300 motto-grow drop-shadow-[0_0_10px_rgba(46,213,115,0.5)]">GROW</span>
+                    <span className="text-terminal-green/20 text-xs">///</span>
+                    <span className="text-[#ff5f56]/70 text-lg md:text-xl font-bold tracking-[0.3em] group-hover:text-[#ff5f56] transition-all duration-300 motto-die">DIE</span>
+                  </div>
+                  <div className="mt-1.5 font-mono text-[10px] text-terminal-green/30 tracking-widest">
+                    THERE IS NO THIRD OPTION
+                  </div>
                 </div>
-                <div className="mt-2 font-mono text-[10px] text-[#2ed573]/30 tracking-widest">
-                  THERE IS NO THIRD OPTION
-                </div>
+                <div
+                  className="flex-1 h-2 rounded-sm opacity-30"
+                  style={{ background: 'repeating-linear-gradient(-45deg, #ff5f56 0 8px, transparent 8px 16px)' }}
+                ></div>
               </div>
             </div>
           </div>
@@ -1366,8 +1504,8 @@ export default function Dashboard() {
       </div>
 
       {/* Footer */}
-      <div className="text-[#2ed573]/30 text-xs tracking-widest mt-8 text-center w-full max-w-7xl mx-auto px-4">
-        <div className="border-t border-[#2ed573]/10 pt-4">
+      <div className="text-terminal-green/30 text-xs tracking-widest mt-8 text-center w-full max-w-7xl mx-auto px-4">
+        <div className="border-t border-terminal-green/10 pt-4">
           ARAFAT © {new Date().getFullYear()} - ALL RIGHTS RESERVED
         </div>
       </div>

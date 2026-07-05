@@ -70,15 +70,15 @@ export default function HomeClient() {
   };
 
   return (
-    <main className="min-h-screen bg-[#1a1b26] text-white flex flex-col items-center justify-center p-8 relative">
+    <main className="min-h-screen bg-surface-night text-white flex flex-col items-center justify-center p-8 relative">
       {/* Power button */}
       <button
         onClick={handleToggle}
-        className={`w-16 h-16 rounded-full border-4 ${isOn ? "border-[#2ed573]" : "border-[#2ed573]/30"
-          } flex items-center justify-center mb-8 transition-colors duration-300 hover:border-[#2ed573]`}
+        className={`w-16 h-16 rounded-full border-4 ${isOn ? "border-terminal-green" : "border-terminal-green/30"
+          } flex items-center justify-center mb-8 transition-colors duration-300 hover:border-terminal-green`}
       >
         <div
-          className={`w-8 h-8 rounded-full ${isOn ? "bg-[#2ed573]" : "bg-[#2ed573]/30"
+          className={`w-8 h-8 rounded-full ${isOn ? "bg-terminal-green" : "bg-terminal-green/30"
             } transition-colors duration-300`}
         />
       </button>
@@ -86,7 +86,7 @@ export default function HomeClient() {
       {/* Terminal screen */}
       <div
         onClick={() => setIsTimerPaused(true)}
-        className={`w-full max-w-2xl h-48 bg-[#1e272e] rounded-lg p-6 font-mono relative overflow-hidden border border-[#2ed573]/10 shadow-[0_0_30px_rgba(46,213,115,0.08)] ${isAnimating ? "animate-glitch" : ""
+        className={`w-full max-w-2xl h-48 bg-surface-panel rounded-lg p-6 font-mono relative overflow-hidden border border-terminal-green/10 shadow-[0_0_30px_rgba(46,213,115,0.08)] ${isAnimating ? "animate-glitch" : ""
           }`}
       >
         <div className="flex items-center gap-2 mb-4">
@@ -94,28 +94,28 @@ export default function HomeClient() {
           <div className="w-3 h-3 rounded-full bg-yellow-500" />
           <div className="w-3 h-3 rounded-full bg-green-500" />
         </div>
-        <div className="text-[#2ed573] text-lg">
+        <div className="text-terminal-green text-lg">
           {isOn ? (
             <>
-              <span className="text-[#2ed573]/50">{">"}</span>{" "}
+              <span className="text-terminal-green/50">{">"}</span>{" "}
               {screens[currentScreen]}
               <span className="animate-blink">_</span>
             </>
           ) : (
-            <span className="text-[#2ed573]/30">Turn on the terminal...</span>
+            <span className="text-terminal-green/30">Turn on the terminal...</span>
           )}
         </div>
       </div>
 
       {/* Turn on your sound text */}
-      <div className="text-[#2ed573]/30 text-xs tracking-widest mt-6 flex items-center gap-2">
+      <div className="text-terminal-green/30 text-xs tracking-widest mt-6 flex items-center gap-2">
         TURN ON YOUR <Volume2 size={16} />
       </div>
 
       {/* Enter dashboard button with animated border */}
       <div className="relative mt-8 mb-4 group/cta">
         {/* Breathing glow background */}
-        <div className="absolute -inset-3 bg-[#2ed573]/8 blur-2xl rounded-2xl animate-cta-breathe" />
+        <div className="absolute -inset-3 bg-terminal-green/8 blur-2xl rounded-2xl animate-cta-breathe" />
 
         {/* Animated orbiting border container */}
         <div className="relative rounded-lg p-[2px] overflow-hidden">
@@ -124,18 +124,18 @@ export default function HomeClient() {
             background: 'conic-gradient(from 0deg, transparent 0%, transparent 30%, #2ed573 50%, transparent 70%, transparent 100%)',
           }} />
           {/* Static subtle border underneath */}
-          <div className="absolute inset-0 rounded-lg border border-[#2ed573]/15" />
+          <div className="absolute inset-0 rounded-lg border border-terminal-green/15" />
 
           <Button
             onClick={goToDashboard}
-            className="relative bg-[#151620] hover:bg-[#2ed573]/10 text-[#2ed573] flex items-center gap-3 px-10 py-5 font-mono tracking-wide transition-all duration-300 shadow-[0_0_20px_rgba(46,213,115,0.15)] hover:shadow-[0_0_35px_rgba(46,213,115,0.4)] hover:scale-105 group overflow-hidden rounded-[6px] border-0"
+            className="relative bg-surface-input hover:bg-terminal-green/10 text-terminal-green flex items-center gap-3 px-10 py-5 font-mono tracking-wide transition-all duration-300 shadow-[0_0_20px_rgba(46,213,115,0.15)] hover:shadow-[0_0_35px_rgba(46,213,115,0.4)] hover:scale-105 group overflow-hidden rounded-[6px] border-0"
           >
             {/* Shimmer sweep on hover */}
             <div className="absolute inset-0 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#2ed573]/20 to-transparent animate-shimmer" />
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-terminal-green/20 to-transparent animate-shimmer" />
             </div>
 
-            <span className="relative z-10 text-[#2ed573] text-lg">{'>_'}</span>
+            <span className="relative z-10 text-terminal-green text-lg">{'>_'}</span>
             <span className="relative z-10 text-base">Initialize Dashboard</span>
 
             {/* Blinking cursor */}
@@ -146,20 +146,20 @@ export default function HomeClient() {
 
       {/* Instruction text */}
       <div className="text-center space-y-3 mt-2">
-        <div className="text-[#2ed573]/50 text-sm font-mono tracking-wide flex items-center justify-center gap-2">
-          <span className="text-[#2ed573]/30">[</span>
+        <div className="text-terminal-green/50 text-sm font-mono tracking-wide flex items-center justify-center gap-2">
+          <span className="text-terminal-green/30">[</span>
           {isTimerPaused ? (
             <span> TERMINAL ACTIVE - CLICK TO ENTER </span>
           ) : (
             <>
               <span> CLICK TO ENTER OR WAIT </span>
-              <span className="text-[#2ed573]">{countdown}s</span>
+              <span className="text-terminal-green">{countdown}s</span>
             </>
           )}
-          <span className="text-[#2ed573]/30">]</span>
+          <span className="text-terminal-green/30">]</span>
         </div>
-        <div className="text-[#2ed573]/40 text-sm font-mono">
-          <span className="text-[#2ed573]/30">&gt;</span> SYSTEM.AUTO_BOOT {isTimerPaused ? <span className="text-[#e1b12c]">PAUSED</span> : <>IN <span className="text-[#2ed573] animate-pulse">00:{countdown >= 10 ? countdown : `0${countdown}`}</span></>}
+        <div className="text-terminal-green/40 text-sm font-mono">
+          <span className="text-terminal-green/30">&gt;</span> SYSTEM.AUTO_BOOT {isTimerPaused ? <span className="text-terminal-amber">PAUSED</span> : <>IN <span className="text-terminal-green animate-pulse">00:{countdown >= 10 ? countdown : `0${countdown}`}</span></>}
         </div>
       </div>
 

@@ -24,7 +24,7 @@ export default async function BlogIndex() {
   const categories = await getCategories();
 
   return (
-    <main className="min-h-screen bg-[#121212] text-[#2ed573] p-4 md:p-8 grid-dots">
+    <main className="min-h-screen bg-surface-base text-terminal-green p-4 md:p-8 grid-dots">
       <div className="max-w-5xl mx-auto">
         <TerminalHeader path="~/blog" command="./read.sh --all --sort=latest" />
 
@@ -32,20 +32,20 @@ export default async function BlogIndex() {
           <div className="flex items-center">
             <Link
               href="/dashboard"
-              className="inline-flex items-center text-[#2ed573] hover:text-[#2ed573]/80 mr-4 bg-[#0f0f0f] px-3 py-2 rounded-md border border-[#2ed573]/20 hover:border-[#2ed573]/40 transition-colors"
+              className="inline-flex items-center text-terminal-green hover:text-terminal-green/80 mr-4 bg-surface-raised px-3 py-2 rounded-md border border-terminal-green/20 hover:border-terminal-green/40 transition-colors"
             >
               <ArrowLeft size={16} className="mr-2" />
               <span className="text-sm">cd ..</span>
             </Link>
-            <h1 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#2ed573] to-[#7bed9f]">
-              <span className="text-[#2ed573]/70">[</span>
+            <h1 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-terminal-green to-terminal-soft">
+              <span className="text-terminal-green/70">[</span>
               BLOG
-              <span className="text-[#2ed573]/70">]</span>
+              <span className="text-terminal-green/70">]</span>
             </h1>
           </div>
           <Link
             href="/notes"
-            className="inline-flex items-center gap-2 text-[#2ed573] text-sm bg-[#0f0f0f] px-3 py-2 rounded-md border border-[#2ed573]/30 hover:border-[#2ed573]/60 transition-colors"
+            className="inline-flex items-center gap-2 text-terminal-green text-sm bg-surface-raised px-3 py-2 rounded-md border border-terminal-green/30 hover:border-terminal-green/60 transition-colors"
           >
             <PenLine size={16} />
             <span>Daily Notes</span>
@@ -59,9 +59,9 @@ export default async function BlogIndex() {
             <Link
               key={cat.name}
               href={`/blog/${cat.name}`}
-              className="text-xs font-mono px-3 py-1.5 rounded-lg bg-[#0f0f0f] text-[#2ed573]/70 border border-[#2ed573]/20 hover:text-[#2ed573] hover:border-[#2ed573]/50 transition-colors"
+              className="text-xs font-mono px-3 py-1.5 rounded-lg bg-surface-raised text-terminal-green/70 border border-terminal-green/20 hover:text-terminal-green hover:border-terminal-green/50 transition-colors"
             >
-              cd {cat.name}/ <span className="text-[#2ed573]/40">({cat.count})</span>
+              cd {cat.name}/ <span className="text-terminal-green/40">({cat.count})</span>
             </Link>
           ))}
         </div>
@@ -75,14 +75,14 @@ export default async function BlogIndex() {
 
         {/* Latest notes strip */}
         {notes.length > 0 && (
-          <div className="mb-10 bg-[#0f0f0f] rounded-2xl border border-[#2ed573]/20 p-5">
+          <div className="mb-10 bg-surface-raised rounded-2xl border border-terminal-green/20 p-5">
             <div className="flex items-center justify-between mb-4">
-              <span className="text-[#2ed573] font-semibold tracking-wide text-sm">
+              <span className="text-terminal-green font-semibold tracking-wide text-sm">
                 LATEST NOTES
               </span>
               <Link
                 href="/notes"
-                className="flex items-center gap-1 text-[#2ed573]/60 hover:text-[#2ed573] text-xs font-mono transition-colors"
+                className="flex items-center gap-1 text-terminal-green/60 hover:text-terminal-green text-xs font-mono transition-colors"
               >
                 cd notes <ArrowRight size={12} />
               </Link>
@@ -93,10 +93,10 @@ export default async function BlogIndex() {
                   key={note.slug}
                   className="flex items-center gap-3 text-sm"
                 >
-                  <span className="text-[#2ed573]/40 font-mono text-xs whitespace-nowrap">
+                  <span className="text-terminal-green/40 font-mono text-xs whitespace-nowrap">
                     {note.date}
                   </span>
-                  <span className="text-[#2ed573]/80">{note.title}</span>
+                  <span className="text-terminal-green/80">{note.title}</span>
                 </div>
               ))}
             </div>
@@ -104,14 +104,14 @@ export default async function BlogIndex() {
         )}
 
         {/* Medium archive */}
-        <div className="bg-[#0f0f0f] rounded-2xl border border-[#2ed573]/20 p-5">
+        <div className="bg-surface-raised rounded-2xl border border-terminal-green/20 p-5">
           <div className="flex items-center gap-2 mb-1">
-            <BookOpen size={16} className="text-[#2ed573]/60" />
-            <span className="text-[#2ed573] font-semibold tracking-wide text-sm">
+            <BookOpen size={16} className="text-terminal-green/60" />
+            <span className="text-terminal-green font-semibold tracking-wide text-sm">
               ARCHIVE — ON MEDIUM
             </span>
           </div>
-          <p className="text-[#2ed573]/40 text-xs font-mono mb-4">
+          <p className="text-terminal-green/40 text-xs font-mono mb-4">
             older writing lives on Medium — new posts are native
           </p>
           <div className="space-y-1">
@@ -121,17 +121,17 @@ export default async function BlogIndex() {
                 href={article.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#2ed573]/5 transition-colors"
+                className="group flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-terminal-green/5 transition-colors"
               >
-                <span className="text-[#2ed573]/40 font-mono text-xs whitespace-nowrap">
+                <span className="text-terminal-green/40 font-mono text-xs whitespace-nowrap">
                   {article.publishDate}
                 </span>
-                <span className="text-[#2ed573]/70 group-hover:text-[#2ed573] text-sm flex-1 transition-colors">
+                <span className="text-terminal-green/70 group-hover:text-terminal-green text-sm flex-1 transition-colors">
                   {article.title}
                 </span>
                 <ExternalLink
                   size={12}
-                  className="text-[#2ed573]/30 group-hover:text-[#2ed573]/60 flex-shrink-0 transition-colors"
+                  className="text-terminal-green/30 group-hover:text-terminal-green/60 flex-shrink-0 transition-colors"
                 />
               </a>
             ))}
