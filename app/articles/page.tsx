@@ -24,6 +24,6 @@ export default async function ArticlesPage() {
     source: "medium" as const,
   }));
 
-  // Native posts lead — they're the fresh, canonical content
-  return <ArticlesClient items={[...native, ...medium]} />;
+  // Medium archive first, then native site posts after it's exhausted
+  return <ArticlesClient items={[...medium, ...native]} />;
 }

@@ -38,11 +38,12 @@ export default function ArticlesClient({ items }: { items: UnifiedArticle[] }) {
   const [isMuted, setIsMuted] = useState(true);
   const [currentPost, setCurrentPost] = useState(0);
   const [isEntering, setIsEntering] = useState(true);
-  const [countdown, setCountdown] = useState(6);
+  const [countdown, setCountdown] = useState(10);
   const [isHoverPaused, setIsHoverPaused] = useState(false);
   const [isAutoAdvancing, setIsAutoAdvancing] = useState(true);
   const clickSoundRef = useRef<HTMLAudioElement | null>(null);
   const countdownTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const elapsedRef = useRef(0);
 
   // Articles data is now imported from JSON file
 
@@ -97,13 +98,11 @@ export default function ArticlesClient({ items }: { items: UnifiedArticle[] }) {
   const nextPost = () => {
     playClickSound();
     setCurrentPost((prev) => (prev + 1) % posts.length);
-    setCountdown(6);
   };
 
   const prevPost = () => {
     playClickSound();
     setCurrentPost((prev) => (prev - 1 + posts.length) % posts.length);
-    setCountdown(6);
   };
 
   const openArticle = (article: UnifiedArticle) => {
@@ -120,7 +119,13 @@ export default function ArticlesClient({ items }: { items: UnifiedArticle[] }) {
       ? `${window.location.origin}${article.url}`
       : article.url;
 
-  // Countdown timer for auto-advance (6 seconds)
+  // Any change of post — auto-advance or manual (arrows/pagination) — restarts the 10s window.
+  useEffect(() => {
+    elapsedRef.current = 0;
+    setCountdown(10);
+  }, [currentPost]);
+
+  // Countdown timer for auto-advance (10 seconds)
   useEffect(() => {
     if (!isAutoAdvancing || isHoverPaused || posts.length === 0) {
       if (countdownTimerRef.current) {
@@ -130,24 +135,18 @@ export default function ArticlesClient({ items }: { items: UnifiedArticle[] }) {
       return;
     }
 
-    let timeElapsed = 0;
-
     // Clear any existing interval first
     if (countdownTimerRef.current) {
       clearInterval(countdownTimerRef.current);
     }
 
-    setCountdown(6);
-
     countdownTimerRef.current = setInterval(() => {
-      timeElapsed += 1;
-      setCountdown(6 - timeElapsed);
+      elapsedRef.current += 1;
+      setCountdown(10 - elapsedRef.current);
 
-      if (timeElapsed >= 6) {
-        // Auto-advance to next post
+      if (elapsedRef.current >= 10) {
+        // Auto-advance to next post — the [currentPost] effect above resets elapsedRef/countdown
         setCurrentPost((p) => (p + 1) % posts.length);
-        timeElapsed = 0;
-        setCountdown(6);
       }
     }, 1000);
 
@@ -486,7 +485,6 @@ export default function ArticlesClient({ items }: { items: UnifiedArticle[] }) {
                         playClickSound();
                         const prevPage = Math.floor(currentPost / POSTS_PER_PAGE_DESKTOP) - 1;
                         setCurrentPost(prevPage * POSTS_PER_PAGE_DESKTOP);
-                        setCountdown(6);
                       }}
                       className="w-6 h-6 flex items-center justify-center rounded-md transition-colors text-xs font-medium bg-surface-raised text-terminal-green/70 hover:bg-surface-raised/80 hover:text-terminal-green"
                       aria-label="Previous page"
@@ -511,7 +509,6 @@ export default function ArticlesClient({ items }: { items: UnifiedArticle[] }) {
                           onClick={() => {
                             playClickSound();
                             setCurrentPost(index);
-                            setCountdown(6);
                           }}
                           className={`w-8 h-8 flex items-center justify-center rounded-md transition-colors text-xs font-medium ${
                             currentPost === index
@@ -533,7 +530,6 @@ export default function ArticlesClient({ items }: { items: UnifiedArticle[] }) {
                         playClickSound();
                         const nextPage = Math.floor(currentPost / POSTS_PER_PAGE_DESKTOP) + 1;
                         setCurrentPost(nextPage * POSTS_PER_PAGE_DESKTOP);
-                        setCountdown(6);
                       }}
                       className="w-6 h-6 flex items-center justify-center rounded-md transition-colors text-xs font-medium bg-surface-raised text-terminal-green/70 hover:bg-surface-raised/80 hover:text-terminal-green"
                       aria-label="Next page"
