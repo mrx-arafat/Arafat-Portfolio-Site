@@ -12,18 +12,18 @@ const config: Config = {
     extend: {
       colors: {
         terminal: {
-          green: "#2ed573",
-          soft: "#7bed9f",
-          amber: "#e1b12c",
-          red: "#ff6b6b",
+          green: "rgb(var(--terminal-green) / <alpha-value>)",
+          soft: "rgb(var(--terminal-soft) / <alpha-value>)",
+          amber: "rgb(var(--terminal-amber) / <alpha-value>)",
+          red: "rgb(var(--terminal-red) / <alpha-value>)",
         },
         surface: {
-          base: "#121212",
-          raised: "#0f0f0f",
-          deep: "#0a0a0a",
-          night: "#1a1b26",
-          panel: "#1e272e",
-          input: "#151620",
+          base: "rgb(var(--surface-base) / <alpha-value>)",
+          raised: "rgb(var(--surface-raised) / <alpha-value>)",
+          deep: "rgb(var(--surface-deep) / <alpha-value>)",
+          night: "rgb(var(--surface-night) / <alpha-value>)",
+          panel: "rgb(var(--surface-panel) / <alpha-value>)",
+          input: "rgb(var(--surface-input) / <alpha-value>)",
         },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

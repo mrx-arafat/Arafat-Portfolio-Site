@@ -1588,6 +1588,39 @@
 }
 
 :root {
+  /* Light theme — cream/tan palette
+     #F9F8F6 base · #EFE9E3 raised · #D9CFC7 panel · #C9B59C tan accent */
+  --background: 40 20% 97%;
+  --foreground: 30 10% 15%;
+
+  --primary: 148 69% 28%;
+  --primary-foreground: 40 20% 97%;
+
+  --secondary: 33 29% 70%;
+  --secondary-foreground: 30 10% 15%;
+
+  --accent: 33 29% 70%;
+  --accent-foreground: 30 10% 15%;
+
+  --muted: 30 27% 91%;
+  --muted-foreground: 30 8% 38%;
+
+  /* RGB channels for Tailwind tokens (alpha-modifier compatible) */
+  --terminal-green: 22 122 72;
+  --terminal-soft: 23 128 77;
+  --terminal-amber: 154 115 40;
+  --terminal-red: 185 55 55;
+
+  --surface-base: 249 248 246;   /* #F9F8F6 */
+  --surface-raised: 239 233 227; /* #EFE9E3 */
+  --surface-deep: 249 248 246;   /* #F9F8F6 */
+  --surface-night: 239 233 227;  /* #EFE9E3 */
+  --surface-panel: 217 207 199;  /* #D9CFC7 */
+  --surface-input: 239 233 227;  /* #EFE9E3 */
+  --palette-tan: 201 181 156;    /* #C9B59C */
+}
+
+.dark {
   --background: 220 14% 10%;
   --foreground: 210 40% 98%;
 
@@ -1603,6 +1636,18 @@
 
   --muted: 217 19% 16%;
   --muted-foreground: 215 20% 65%;
+
+  --terminal-green: 46 213 115;
+  --terminal-soft: 123 237 159;
+  --terminal-amber: 225 177 44;
+  --terminal-red: 255 107 107;
+
+  --surface-base: 18 18 18;
+  --surface-raised: 15 15 15;
+  --surface-deep: 10 10 10;
+  --surface-night: 26 27 38;
+  --surface-panel: 30 39 46;
+  --surface-input: 21 22 32;
 }
 
 body {
@@ -2029,4 +2074,116 @@ body {
 @keyframes twinkle {
   0%, 100% { opacity: 0.12; }
   50% { opacity: 0.85; }
+}
+
+/* ===== Light theme overrides — cream/tan palette =====
+   Remaps utilities hardcoded for the dark hacker theme. */
+html:not(.dark) .text-white {
+  color: #2b2721;
+}
+html:not(.dark) .text-white\/60 {
+  color: rgba(43, 39, 33, 0.65);
+}
+html:not(.dark) .text-white\/70 {
+  color: rgba(43, 39, 33, 0.78);
+}
+html:not(.dark) .text-white\/80 {
+  color: rgba(43, 39, 33, 0.85);
+}
+html:not(.dark) .text-white\/90 {
+  color: rgba(43, 39, 33, 0.92);
+}
+html:not(.dark) .hover\:text-white:hover {
+  color: #2b2721;
+}
+html:not(.dark) [class*="bg-[#0f0f14]"] {
+  background-color: #efe9e3;
+}
+html:not(.dark) [class*="bg-[#1a1a24]"] {
+  background-color: #e6dfd7;
+}
+html:not(.dark) [class*="bg-[#0a0a0f]"] {
+  background-color: #f9f8f6;
+}
+html:not(.dark) [class*="bg-[#2a3942]"] {
+  background-color: #d9cfc7;
+}
+html:not(.dark) [class*="text-[#e6edf3]"],
+html:not(.dark) [class*="text-[#c9d1d9]"] {
+  color: #3a352e;
+}
+html:not(.dark) [class*="text-[#8b949e]"] {
+  color: #6b6257;
+}
+
+/* Blinking "ARAFAT" name — glow off, readable dark green */
+html:not(.dark) .hacker-text {
+  color: #14663d;
+  text-shadow: none;
+}
+
+/* Blog prose in light mode */
+html:not(.dark) .blog-prose {
+  color: #3a352e;
+}
+html:not(.dark) .blog-prose h1,
+html:not(.dark) .blog-prose h2,
+html:not(.dark) .blog-prose h3,
+html:not(.dark) .blog-prose h4 {
+  color: #167a48;
+}
+html:not(.dark) .blog-prose strong,
+html:not(.dark) .blog-prose em {
+  color: #23201b;
+}
+html:not(.dark) .blog-prose a {
+  color: #14663d;
+  text-decoration-color: rgba(20, 102, 61, 0.4);
+}
+html:not(.dark) .blog-prose a:hover {
+  text-decoration-color: #14663d;
+}
+html:not(.dark) .blog-prose blockquote {
+  border-left-color: #c9b59c;
+  color: #6b6257;
+}
+html:not(.dark) .blog-prose :not(pre) > code {
+  background: rgba(201, 181, 156, 0.2);
+  border-color: #d9cfc7;
+  color: #14663d;
+}
+html:not(.dark) .blog-prose pre {
+  background: #efe9e3 !important;
+  border-color: #d9cfc7;
+}
+html:not(.dark) .blog-prose th {
+  color: #167a48;
+  background: rgba(201, 181, 156, 0.15);
+}
+html:not(.dark) .blog-prose th,
+html:not(.dark) .blog-prose td {
+  border-color: #d9cfc7;
+}
+html:not(.dark) .blog-prose hr {
+  border-top-color: #d9cfc7;
+}
+
+/* Scrollbars in light mode */
+html:not(.dark) .custom-scrollbar::-webkit-scrollbar-track {
+  background: #efe9e3;
+}
+html:not(.dark) .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #c9b59c;
+}
+html:not(.dark) .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #b9a186;
+}
+html:not(.dark) ::-webkit-scrollbar-thumb {
+  background: rgb(var(--palette-tan));
+}
+html:not(.dark) ::-webkit-scrollbar-thumb:hover {
+  background: #b9a186;
+}
+html:not(.dark) ::selection {
+  background: rgba(201, 181, 156, 0.45);
 }

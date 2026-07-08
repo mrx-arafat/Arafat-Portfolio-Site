@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import { useTheme } from "next-themes";
+import { Menu, Moon, Sun, X } from "lucide-react";
 
 const NAV_LINKS = [
   { href: "/about", label: "about" },
@@ -19,6 +20,12 @@ export function SiteNav(): React.ReactElement | null {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [time, setTime] = useState("");
+  const [mounted, setMounted] = useState(false);
+  const { resolvedTheme, setTheme } = useTheme();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const tick = () =>
@@ -129,16 +136,50 @@ export function SiteNav(): React.ReactElement | null {
             </div>
           </div>
 
-          {/* Mobile toggle */}
-          <button
-            type="button"
-            aria-label={open ? "Close menu" : "Open menu"}
-            aria-expanded={open}
-            onClick={() => setOpen(!open)}
-            className="my-2.5 self-center rounded-md border border-terminal-green/25 bg-terminal-green/5 p-2 text-terminal-green md:hidden"
-          >
-            {open ? <X size={16} /> : <Menu size={16} />}
-          </button>
+          {/* Right controls: theme + mobile menu */}
+          <div className="flex items-center gap-2 self-center">
+            <button
+              type="button"
+              role="switch"
+              aria-checked={mounted ? resolvedTheme === "light" : false}
+              aria-label="Toggle light/dark theme"
+              onClick={() =>
+                setTheme(resolvedTheme === "dark" ? "light" : "dark")
+              }
+              className="relative my-2.5 h-6 w-12 rounded-full border border-terminal-green/30 bg-terminal-green/10 transition-colors hover:bg-terminal-green/20"
+            >
+              <Moon
+                size={11}
+                className="absolute left-1.5 top-1/2 -translate-y-1/2 text-terminal-green/50"
+              />
+              <Sun
+                size={11}
+                className="absolute right-1.5 top-1/2 -translate-y-1/2 text-terminal-green/50"
+              />
+              <span
+                className={`absolute top-1/2 flex h-5 w-5 -translate-y-1/2 items-center justify-center rounded-full bg-terminal-green text-surface-deep shadow transition-all duration-300 ${
+                  mounted && resolvedTheme === "light"
+                    ? "left-[calc(100%-1.375rem)]"
+                    : "left-0.5"
+                }`}
+              >
+                {mounted && resolvedTheme === "light" ? (
+                  <Sun size={12} />
+                ) : (
+                  <Moon size={12} />
+                )}
+              </span>
+            </button>
+            <button
+              type="button"
+              aria-label={open ? "Close menu" : "Open menu"}
+              aria-expanded={open}
+              onClick={() => setOpen(!open)}
+              className="my-2.5 rounded-md border border-terminal-green/25 bg-terminal-green/5 p-2 text-terminal-green md:hidden"
+            >
+              {open ? <X size={16} /> : <Menu size={16} />}
+            </button>
+          </div>
         </nav>
       </div>
 
