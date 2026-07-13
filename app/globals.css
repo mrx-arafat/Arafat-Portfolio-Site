@@ -2198,6 +2198,12 @@ html:not(.dark) ::selection {
 .dark [class*="bg-[#0a0a0a]"] { background-color: #101319; }
 .dark [class*="bg-[#1a1a24]"] { background-color: #1c1f29; }
 
+/* Header sits darker than the page in dark mode; dim border, no light band */
+.dark .site-header {
+  background-color: rgba(9, 11, 14, 0.92);
+  border-bottom-color: rgba(60, 191, 120, 0.12);
+}
+
 /* Soften the neon text/box glow that drives eye strain */
 .dark .hacker-text {
   text-shadow: 0 0 3px rgba(60, 191, 120, 0.35);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
@@ -15,30 +15,15 @@ const NAV_LINKS = [
   { href: "/contact", label: "contact" },
 ] as const;
 
-/** Persistent terminal-window site header. Hidden on the boot screen (/). */
+/** Persistent site header. Hidden on the boot screen (/). */
 export function SiteNav(): React.ReactElement | null {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const [time, setTime] = useState("");
   const [mounted, setMounted] = useState(false);
   const { resolvedTheme, setTheme } = useTheme();
 
   useEffect(() => {
     setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    const tick = () =>
-      setTime(
-        new Date().toLocaleTimeString("en-GB", {
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-        }),
-      );
-    tick();
-    const id = setInterval(tick, 1000);
-    return () => clearInterval(id);
   }, []);
 
   // Boot screen keeps its immersive intro — no chrome.
@@ -51,157 +36,99 @@ export function SiteNav(): React.ReactElement | null {
     NAV_LINKS.find((l) => isActive(l.href))?.label ?? "dashboard";
 
   return (
-    <header className="sticky top-0 z-50 font-mono">
-      {/* Top scan line */}
-      <div className="h-[2px] bg-gradient-to-r from-transparent via-terminal-green/70 to-transparent" />
-
-      <div className="border-b border-terminal-green/20 bg-surface-deep/95 backdrop-blur supports-[backdrop-filter]:bg-surface-deep/80 shadow-[0_4px_30px_rgba(46,213,115,0.07)]">
-        <nav
-          aria-label="Main navigation"
-          className="mx-auto flex max-w-6xl items-stretch justify-between px-4 md:px-8"
+    <header className="site-header sticky top-0 z-50 border-b border-terminal-green/[0.12] bg-surface-deep/90 font-mono backdrop-blur supports-[backdrop-filter]:bg-surface-deep/70">
+      <nav
+        aria-label="Main navigation"
+        className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-6 px-4 md:px-8"
+      >
+        {/* Wordmark — mirrors the current route, the one real terminal cue */}
+        <Link
+          href="/dashboard"
+          aria-label="Go to dashboard"
+          className="shrink-0 text-sm tracking-tight text-terminal-green/90 transition-opacity hover:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-terminal-green/50"
         >
-          {/* Brand: terminal prompt */}
-          <Link
-            href="/dashboard"
-            className="group flex items-center gap-3 py-3 text-sm"
-          >
-            {/* Traffic lights */}
-            <span className="hidden items-center gap-1.5 sm:flex" aria-hidden="true">
-              <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]/80 transition-colors group-hover:bg-[#ff5f57]" />
-              <span className="h-2.5 w-2.5 rounded-full bg-[#ffbd2e]/80 transition-colors group-hover:bg-[#ffbd2e]" />
-              <span className="h-2.5 w-2.5 rounded-full bg-[#28ca41]/80 transition-colors group-hover:bg-[#28ca41]" />
-            </span>
-            <span className="text-terminal-green/50 hidden sm:inline">|</span>
-            <span className="flex items-baseline gap-0">
-              <span className="text-terminal-soft/80">arafat</span>
-              <span className="text-terminal-green/40">@</span>
-              <span className="text-terminal-green/80">ops</span>
-              <span className="text-terminal-green/40">:</span>
-              <span className="text-terminal-green/60">~/{activeLabel}</span>
-              <span className="ml-1 inline-block w-[7px] animate-blink bg-terminal-green/80 text-transparent">
-                _
-              </span>
-            </span>
-          </Link>
+          <span className="font-semibold">arafat</span>
+          <span className="text-terminal-green/35">@ops</span>
+          <span className="hidden text-terminal-green/35 sm:inline">
+            :~/{activeLabel}
+          </span>
+          <span className="ml-0.5 hidden animate-blink text-terminal-green/70 motion-reduce:animate-none sm:inline">
+            ▍
+          </span>
+        </Link>
 
-          {/* Desktop links — command tabs */}
-          <div className="hidden items-stretch md:flex">
-            {NAV_LINKS.map((link) => {
-              const active = isActive(link.href);
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`relative flex items-center px-3.5 text-xs tracking-wider transition-all duration-200 ${
-                    active
-                      ? "text-terminal-green bg-terminal-green/[0.07]"
-                      : "text-terminal-green/50 hover:text-terminal-green hover:bg-terminal-green/[0.04]"
-                  }`}
-                >
-                  <span
-                    className={`mr-1 transition-opacity ${
-                      active ? "text-terminal-green/60 opacity-100" : "opacity-0"
-                    }`}
-                  >
-                    ./
-                  </span>
-                  {link.label}
-                  {/* Active underline beam */}
-                  <span
-                    className={`absolute inset-x-2 bottom-0 h-[2px] rounded-full transition-all duration-300 ${
-                      active
-                        ? "bg-terminal-green shadow-[0_0_8px_rgba(46,213,115,0.8)]"
-                        : "bg-transparent"
-                    }`}
-                  />
-                </Link>
-              );
-            })}
-
-            {/* Status cluster */}
-            <div className="ml-4 hidden items-center gap-2 border-l border-terminal-green/15 pl-4 lg:flex">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-terminal-green opacity-60" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-terminal-green" />
-              </span>
-              <span className="text-[10px] tracking-widest text-terminal-green/50">
-                ONLINE
-              </span>
-              <span
-                className="w-[70px] text-[10px] tabular-nums tracking-widest text-terminal-green/35"
-                suppressHydrationWarning
-              >
-                {time}
-              </span>
-            </div>
-          </div>
-
-          {/* Right controls: theme + mobile menu */}
-          <div className="flex items-center gap-2 self-center">
-            <button
-              type="button"
-              role="switch"
-              aria-checked={mounted ? resolvedTheme === "light" : false}
-              aria-label="Toggle light/dark theme"
-              onClick={() =>
-                setTheme(resolvedTheme === "dark" ? "light" : "dark")
-              }
-              className="relative my-2.5 h-6 w-12 rounded-full border border-terminal-green/30 bg-terminal-green/10 transition-colors hover:bg-terminal-green/20"
-            >
-              <Moon
-                size={11}
-                className="absolute left-1.5 top-1/2 -translate-y-1/2 text-terminal-green/50"
-              />
-              <Sun
-                size={11}
-                className="absolute right-1.5 top-1/2 -translate-y-1/2 text-terminal-green/50"
-              />
-              <span
-                className={`absolute top-1/2 flex h-5 w-5 -translate-y-1/2 items-center justify-center rounded-full bg-terminal-green text-surface-deep shadow transition-all duration-300 ${
-                  mounted && resolvedTheme === "light"
-                    ? "left-[calc(100%-1.375rem)]"
-                    : "left-0.5"
-                }`}
-              >
-                {mounted && resolvedTheme === "light" ? (
-                  <Sun size={12} />
-                ) : (
-                  <Moon size={12} />
-                )}
-              </span>
-            </button>
-            <button
-              type="button"
-              aria-label={open ? "Close menu" : "Open menu"}
-              aria-expanded={open}
-              onClick={() => setOpen(!open)}
-              className="my-2.5 rounded-md border border-terminal-green/25 bg-terminal-green/5 p-2 text-terminal-green md:hidden"
-            >
-              {open ? <X size={16} /> : <Menu size={16} />}
-            </button>
-          </div>
-        </nav>
-      </div>
-
-      {/* Mobile menu */}
-      {open && (
-        <div className="border-b border-terminal-green/15 bg-surface-deep/95 px-4 pb-4 pt-2 backdrop-blur md:hidden">
+        {/* Desktop links — restrained, active gets a solid underline */}
+        <div className="hidden items-center gap-7 md:flex">
           {NAV_LINKS.map((link) => {
             const active = isActive(link.href);
             return (
               <Link
                 key={link.href}
                 href={link.href}
-                onClick={() => setOpen(false)}
-                className={`block rounded-md px-3 py-2.5 text-sm ${
+                aria-current={active ? "page" : undefined}
+                className={`relative py-1 text-[13px] transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-terminal-green/50 ${
                   active
-                    ? "bg-terminal-green/10 text-terminal-green"
-                    : "text-terminal-green/60 hover:text-terminal-green"
+                    ? "text-terminal-green"
+                    : "text-terminal-green/45 hover:text-terminal-green/90"
                 }`}
               >
-                <span className="text-terminal-green/40">$ cd </span>
                 {link.label}
-                {active && <span className="animate-blink ml-1">_</span>}
+                <span
+                  className={`absolute -bottom-[3px] left-0 h-px w-full origin-left bg-terminal-green transition-transform duration-200 ${
+                    active ? "scale-x-100" : "scale-x-0"
+                  }`}
+                />
+              </Link>
+            );
+          })}
+        </div>
+
+        {/* Right: theme toggle + mobile menu */}
+        <div className="flex shrink-0 items-center gap-2">
+          <button
+            type="button"
+            role="switch"
+            aria-checked={mounted ? resolvedTheme === "light" : false}
+            aria-label="Toggle light/dark theme"
+            onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+            className="grid h-8 w-8 place-items-center rounded-md text-terminal-green/60 transition-colors hover:bg-terminal-green/10 hover:text-terminal-green focus:outline-none focus-visible:ring-2 focus-visible:ring-terminal-green/50"
+          >
+            {mounted && resolvedTheme === "light" ? (
+              <Sun size={16} />
+            ) : (
+              <Moon size={16} />
+            )}
+          </button>
+          <button
+            type="button"
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            onClick={() => setOpen(!open)}
+            className="grid h-8 w-8 place-items-center rounded-md text-terminal-green/70 transition-colors hover:bg-terminal-green/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-terminal-green/50 md:hidden"
+          >
+            {open ? <X size={16} /> : <Menu size={16} />}
+          </button>
+        </div>
+      </nav>
+
+      {/* Mobile menu */}
+      {open && (
+        <div className="border-t border-terminal-green/10 bg-surface-deep/95 px-4 pb-4 pt-2 backdrop-blur md:hidden">
+          {NAV_LINKS.map((link) => {
+            const active = isActive(link.href);
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                aria-current={active ? "page" : undefined}
+                onClick={() => setOpen(false)}
+                className={`block rounded-md px-3 py-2.5 text-sm transition-colors ${
+                  active
+                    ? "bg-terminal-green/10 text-terminal-green"
+                    : "text-terminal-green/55 hover:text-terminal-green/90"
+                }`}
+              >
+                {link.label}
               </Link>
             );
           })}
