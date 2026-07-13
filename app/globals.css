@@ -2239,3 +2239,93 @@ html:not(.dark) ::selection {
 .dark .hover-glow:hover {
   box-shadow: 0 0 12px rgba(60, 191, 120, 0.4);
 }
+
+/* ——— Mission-control launch sequence (dashboard → /skills) ——— */
+@keyframes mcx-shake {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(-1px, 0.5px); }
+  50% { transform: translate(1px, -0.5px); }
+  75% { transform: translate(-0.5px, -1px); }
+}
+
+@keyframes mcx-ascent {
+  0% { transform: translateY(0); }
+  30% { transform: translateY(-30px); }
+  55% { transform: translateY(-120px); }
+  78% { transform: translateY(-380px); }
+  100% { transform: translateY(-1050px); }
+}
+
+@keyframes mcx-smoke-grow {
+  0% { opacity: 0; transform: scale(0.3); }
+  30% { opacity: 0.9; }
+  100% { opacity: 0.7; transform: scale(2.8) translateX(0px); }
+}
+
+@keyframes mcx-flash-pulse {
+  0% { opacity: 0; }
+  40% { opacity: 0.9; }
+  100% { opacity: 0.45; }
+}
+
+@keyframes mcx-whiteout-in {
+  to { opacity: 1; }
+}
+
+.mcx-stage .mcx-vehicle,
+.mcx-stage .mcx-padsmoke,
+.mcx-stage .mcx-ascent-flame,
+.mcx-stage .mcx-flash,
+.mcx-stage .mcx-vapor {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.mcx-ignition .mcx-vehicle {
+  animation: mcx-shake 0.12s linear infinite;
+}
+
+.mcx-ignition .mcx-flash,
+.mcx-liftoff .mcx-flash {
+  animation: mcx-flash-pulse 0.65s ease-out forwards;
+}
+
+.mcx-ignition .mcx-padsmoke,
+.mcx-liftoff .mcx-padsmoke {
+  animation: mcx-smoke-grow 2.6s ease-out forwards;
+}
+
+.mcx-liftoff .mcx-vehicle {
+  animation: mcx-ascent 2.1s linear forwards;
+}
+
+.mcx-liftoff .mcx-ascent-flame {
+  opacity: 1;
+}
+
+.mcx-liftoff .mcx-vapor {
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+}
+
+.mcx-whiteout {
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 52% 78%, rgba(255, 244, 224, 0.95), rgba(236, 244, 250, 0.85) 60%, rgba(220, 234, 246, 0.8));
+}
+
+.mcx-liftoff .mcx-whiteout {
+  animation: mcx-whiteout-in 0.45s ease-in 1.8s forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mcx-ignition .mcx-vehicle,
+  .mcx-liftoff .mcx-vehicle,
+  .mcx-ignition .mcx-flash,
+  .mcx-liftoff .mcx-flash,
+  .mcx-ignition .mcx-padsmoke,
+  .mcx-liftoff .mcx-padsmoke,
+  .mcx-liftoff .mcx-whiteout {
+    animation: none;
+  }
+}
