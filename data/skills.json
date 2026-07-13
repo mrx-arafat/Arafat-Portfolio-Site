@@ -1,4 +1,69 @@
 {
+  "categories": [
+    {
+      "id": "security",
+      "label": "Security",
+      "tagline": "I break things so they can't be broken",
+      "color": "#e5484d",
+      "order": 1
+    },
+    {
+      "id": "development",
+      "label": "Development",
+      "tagline": "Ideas turned into working products",
+      "color": "#22d3ee",
+      "order": 2
+    },
+    {
+      "id": "devops",
+      "label": "DevOps",
+      "tagline": "Keeping the machines humming",
+      "color": "#f59e0b",
+      "order": 3
+    },
+    {
+      "id": "ai",
+      "label": "AI",
+      "tagline": "Teaching software to think",
+      "color": "#a78bfa",
+      "order": 4
+    },
+    {
+      "id": "automation",
+      "label": "Automation",
+      "tagline": "If I do it twice, a robot does it next",
+      "color": "#fb923c",
+      "order": 5
+    },
+    {
+      "id": "database",
+      "label": "Database",
+      "tagline": "Where the data lives, safely",
+      "color": "#2dd4bf",
+      "order": 6
+    },
+    {
+      "id": "testing",
+      "label": "Testing",
+      "tagline": "Trust, but verify — automatically",
+      "color": "#a3e635",
+      "order": 7
+    },
+    {
+      "id": "business",
+      "label": "Business",
+      "tagline": "Building things people actually need",
+      "color": "#eab308",
+      "order": 8
+    },
+    {
+      "id": "soft-skill",
+      "label": "Soft Skills",
+      "tagline": "The human side of engineering",
+      "color": "#fb7185",
+      "order": 9
+    }
+  ],
   "skills": [
     {
       "id": "security",
@@ -265,7 +330,8 @@
       "name": "WordPress Security",
       "icon": "Shield",
       "category": "security",
-      "description": "Plugin vulnerability research and exploitation: auditing WordPress plugins, reproducing CVEs and responsible disclosure. Got multiple CVEs and PoCs accepted."
+      "description": "Plugin vulnerability research and exploitation: auditing WordPress plugins, reproducing CVEs and responsible disclosure. Got multiple CVEs and PoCs accepted.",
+      "flagship": true
     }
 ,
     {
