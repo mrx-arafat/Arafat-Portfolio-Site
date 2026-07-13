@@ -26,7 +26,7 @@ export default async function BlogIndex() {
   return (
     <main className="min-h-screen bg-surface-base text-terminal-green p-4 md:p-8 grid-dots">
       <div className="max-w-5xl mx-auto">
-        <TerminalHeader path="~/blog" command="./read.sh --all --sort=latest" />
+        <TerminalHeader path="~/blogs" command="./read.sh --all --sort=latest" />
 
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4">
           <div className="flex items-center">
@@ -58,7 +58,7 @@ export default async function BlogIndex() {
           {categories.map((cat) => (
             <Link
               key={cat.name}
-              href={`/blog/${cat.name}`}
+              href={`/blogs/${cat.name}`}
               className="text-xs font-mono px-3 py-1.5 rounded-lg bg-surface-raised text-terminal-green/70 border border-terminal-green/20 hover:text-terminal-green hover:border-terminal-green/50 transition-colors"
             >
               cd {cat.name}/ <span className="text-terminal-green/40">({cat.count})</span>

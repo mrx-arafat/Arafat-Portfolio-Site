@@ -6,7 +6,7 @@ import type { Post } from "@/lib/blog";
 export function PostCard({ post }: { post: Post }) {
   return (
     <Link
-      href={`/blog/${post.category}/${post.slug}`}
+      href={`/blogs/${post.category}/${post.slug}`}
       className="group block bg-surface-raised rounded-2xl border border-terminal-green/20 hover:border-terminal-green/50 hover:shadow-[0_0_18px_rgba(46,213,115,0.2)] transition-all duration-300 p-5"
     >
       <div className="flex items-center gap-2 mb-3">

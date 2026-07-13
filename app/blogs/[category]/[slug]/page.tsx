@@ -58,7 +58,7 @@ export default async function PostPage({ params }: Props) {
   const { older, newer } = getAdjacentPosts(published, category, slug);
 
   const baseUrl = "https://www.arafatops.com";
-  const postUrl = `${baseUrl}/blog/${category}/${slug}`;
+  const postUrl = `${baseUrl}/blogs/${category}/${slug}`;
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -88,8 +88,8 @@ export default async function PostPage({ params }: Props) {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Blog", item: `${baseUrl}/blog` },
-          { "@type": "ListItem", position: 2, name: category, item: `${baseUrl}/blog/${category}` },
+          { "@type": "ListItem", position: 1, name: "Blog", item: `${baseUrl}/blogs` },
+          { "@type": "ListItem", position: 2, name: category, item: `${baseUrl}/blogs/${category}` },
           { "@type": "ListItem", position: 3, name: post.title, item: postUrl },
         ],
       },
@@ -117,13 +117,13 @@ export default async function PostPage({ params }: Props) {
           </div>
         )}
         <TerminalHeader
-          path={`~/blog/${category}/${slug}`}
+          path={`~/blogs/${category}/${slug}`}
           command="cat index.mdx"
         />
 
         <div className="flex items-center mb-8">
           <Link
-            href={`/blog/${category}`}
+            href={`/blogs/${category}`}
             className="inline-flex items-center text-terminal-green hover:text-terminal-green/80 bg-surface-raised px-3 py-2 rounded-md border border-terminal-green/20 hover:border-terminal-green/40 transition-colors"
           >
             <ArrowLeft size={16} className="mr-2" />
@@ -135,7 +135,7 @@ export default async function PostPage({ params }: Props) {
           <header className="mb-8 border-b border-terminal-green/10 pb-6">
             <div className="flex flex-wrap items-center gap-3 mb-4">
               <Link
-                href={`/blog/${category}`}
+                href={`/blogs/${category}`}
                 className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-1 rounded bg-terminal-green/10 text-terminal-green border border-terminal-green/20 hover:bg-terminal-green/20 transition-colors"
               >
                 cd blog/{category}
@@ -166,7 +166,7 @@ export default async function PostPage({ params }: Props) {
               {post.tags.map((tag) => (
                 <Link
                   key={tag}
-                  href={`/blog/tag/${encodeURIComponent(tag)}`}
+                  href={`/blogs/tag/${encodeURIComponent(tag)}`}
                   className="text-xs font-mono text-terminal-green/60 bg-surface-deep border border-terminal-green/15 hover:border-terminal-green/40 hover:text-terminal-green rounded px-2 py-1 transition-colors"
                 >
                   #{tag}
@@ -180,7 +180,7 @@ export default async function PostPage({ params }: Props) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
           {older ? (
             <Link
-              href={`/blog/${older.category}/${older.slug}`}
+              href={`/blogs/${older.category}/${older.slug}`}
               className="group bg-surface-raised rounded-xl border border-terminal-green/20 hover:border-terminal-green/50 p-4 transition-colors"
             >
               <div className="flex items-center gap-1 text-terminal-green/40 text-xs font-mono mb-1">
@@ -195,7 +195,7 @@ export default async function PostPage({ params }: Props) {
           )}
           {newer && (
             <Link
-              href={`/blog/${newer.category}/${newer.slug}`}
+              href={`/blogs/${newer.category}/${newer.slug}`}
               className="group bg-surface-raised rounded-xl border border-terminal-green/20 hover:border-terminal-green/50 p-4 text-right transition-colors"
             >
               <div className="flex items-center justify-end gap-1 text-terminal-green/40 text-xs font-mono mb-1">

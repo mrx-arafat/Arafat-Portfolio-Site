@@ -18,7 +18,7 @@ export async function GET(): Promise<Response> {
 
   const items = posts
     .map((post) => {
-      const url = `${BASE_URL}/blog/${post.category}/${post.slug}`;
+      const url = `${BASE_URL}/blogs/${post.category}/${post.slug}`;
       return `    <item>
       <title>${escapeXml(post.title)}</title>
       <link>${url}</link>
@@ -34,10 +34,10 @@ export async function GET(): Promise<Response> {
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Easin Arafat — Blog</title>
-    <link>${BASE_URL}/blog</link>
+    <link>${BASE_URL}/blogs</link>
     <description>Security research, engineering, business, psychology, and life — essays by Easin Arafat.</description>
     <language>en</language>
-    <atom:link href="${BASE_URL}/blog/rss.xml" rel="self" type="application/rss+xml"/>
+    <atom:link href="${BASE_URL}/blogs/rss.xml" rel="self" type="application/rss+xml"/>
 ${items}
   </channel>
 </rss>`;

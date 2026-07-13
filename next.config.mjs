@@ -23,6 +23,16 @@ const nextConfig = {
         permanent: true,
       },
       {
+        source: "/blog",
+        destination: "/blogs",
+        permanent: true,
+      },
+      {
+        source: "/blog/:path*",
+        destination: "/blogs/:path*",
+        permanent: true,
+      },
+      {
         source: "/:path*",
         has: [{ type: "host", value: "profile.arafatops.com" }],
         destination: "https://www.arafatops.com/:path*",

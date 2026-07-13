@@ -14,7 +14,7 @@ const EXPLORE_LINKS = [
 
 const WRITING_LINKS = [
   { href: "/articles", label: "articles" },
-  { href: "/blog", label: "blog" },
+  { href: "/blogs", label: "blog" },
   { href: "/notes", label: "notes" },
 ] as const;
 

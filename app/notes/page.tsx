@@ -23,7 +23,7 @@ export default async function NotesPage() {
 
         <div className="flex items-center mb-8">
           <Link
-            href="/blog"
+            href="/blogs"
             className="inline-flex items-center text-terminal-green hover:text-terminal-green/80 mr-4 bg-surface-raised px-3 py-2 rounded-md border border-terminal-green/20 hover:border-terminal-green/40 transition-colors"
           >
             <ArrowLeft size={16} className="mr-2" />

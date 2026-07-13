@@ -47,7 +47,7 @@ export async function GET(req: NextRequest): Promise<ImageResponse> {
           <div style={{ width: 16, height: 16, borderRadius: 8, background: "#ffbd2e", display: "flex" }} />
           <div style={{ width: 16, height: 16, borderRadius: 8, background: "#28ca41", display: "flex" }} />
           <div style={{ color: "rgba(46,213,115,0.7)", fontSize: 24, marginLeft: 14, display: "flex" }}>
-            ~/blog/{category}
+            ~/blogs/{category}
           </div>
         </div>
 

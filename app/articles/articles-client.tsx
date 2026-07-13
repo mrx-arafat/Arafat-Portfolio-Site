@@ -21,7 +21,7 @@ export interface UnifiedArticle {
   description: string;
   publishDate: string;
   readTime: string;
-  /** External Medium URL, or internal /blog/... path for native posts. */
+  /** External Medium URL, or internal /blogs/... path for native posts. */
   url: string;
   imageUrl: string;
   tags: string[];
@@ -221,7 +221,7 @@ export default function ArticlesClient({ items }: { items: UnifiedArticle[] }) {
 
           <div className="flex items-center gap-3">
             <Link
-              href="/blog"
+              href="/blogs"
               className="inline-flex items-center gap-2 text-surface-raised text-sm bg-terminal-green px-3 py-2 rounded-md transform transition-all hover:translate-y-[-2px] hover:shadow-[0_5px_15px_rgba(46,213,115,0.4)] border border-terminal-green"
               onClick={() => playClickSound()}
             >

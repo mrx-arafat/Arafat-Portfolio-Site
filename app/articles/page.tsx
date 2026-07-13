@@ -11,7 +11,7 @@ export default async function ArticlesPage() {
     description: post.description,
     publishDate: post.date,
     readTime: post.readTime,
-    url: `/blog/${post.category}/${post.slug}`,
+    url: `/blogs/${post.category}/${post.slug}`,
     imageUrl:
       post.cover ??
       `/api/og?size=card&title=${encodeURIComponent(post.title)}&category=${encodeURIComponent(post.category)}&meta=${encodeURIComponent(`${post.date} · ${post.readTime}`)}`,
