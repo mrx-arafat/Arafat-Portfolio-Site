@@ -133,6 +133,8 @@ function PadScene(): ReactElement {
       </g>
 
       {/* ——— Vehicle (side-lit from left floodlight) ——— */}
+      {/* Outer group: ascent translation. Inner group: ignition shake. */}
+      <g className="mcx-lift">
       <g className="mcx-vehicle">
         {/* Fairing */}
         <path d="M604 148 C604 118 611 100 620 94 C629 100 636 118 636 148 L636 196 L604 196 Z" fill="url(#mcxHull)" />
@@ -175,11 +177,12 @@ function PadScene(): ReactElement {
         {/* Sticker accent tick above the wordmark */}
         <rect x="616" y="302" width="8" height="2" fill="#2ed573" opacity="0.7" transform="rotate(90 620 303)" />
 
-        {/* Ascent flame — hidden until liftoff */}
+        {/* Ascent flame — ignites small, stretches at liftoff */}
         <g className="mcx-ascent-flame" opacity="0">
           <path d="M604 428 Q620 440 636 428 Q646 500 620 560 Q594 500 604 428 Z" fill="url(#mcxFlame)" filter="url(#mcxBlurM)" />
           <path d="M610 428 Q620 436 630 428 Q634 470 620 500 Q606 470 610 428 Z" fill="#ffffff" opacity="0.85" filter="url(#mcxBlurS)" />
         </g>
+      </g>
       </g>
 
       {/* LOX vapor drifting off the vehicle */}
@@ -279,8 +282,8 @@ export function MissionControl(): ReactElement {
       >
         <PadScene />
 
-        {/* White-out at the end of liftoff */}
-        <span aria-hidden="true" className="mcx-whiteout absolute inset-0"></span>
+        {/* White-out at the end of liftoff — z-30 so it washes over the OSD text too */}
+        <span aria-hidden="true" className="mcx-whiteout absolute inset-0 z-30"></span>
 
         {/* ——— Camera OSD ——— */}
         {/* Frame corners */}
@@ -297,7 +300,7 @@ export function MissionControl(): ReactElement {
 
         {/* Top-right: pad id */}
         <span className="pointer-events-none absolute right-6 top-5 font-mono text-[10px] tracking-[0.25em] text-white/75">
-          PAD 39-ARAFAT · NIGHT OPS
+          PAD 04-ARAFAT · NIGHT OPS
         </span>
 
         {/* Bottom-left: mission data */}
@@ -312,7 +315,8 @@ export function MissionControl(): ReactElement {
         {/* Bottom-right: countdown */}
         <span className="pointer-events-none absolute bottom-6 right-6 flex flex-col items-end gap-1.5 font-mono">
           <span
-            className={`text-xl tracking-[0.2em] md:text-2xl ${
+            key={phase}
+            className={`mcx-count-swap text-xl tracking-[0.2em] md:text-2xl ${
               phase === "ignition"
                 ? "text-[#ffbd2e]"
                 : phase === "liftoff"
