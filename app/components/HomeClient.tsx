@@ -74,6 +74,9 @@ export default function HomeClient() {
       {/* Power button */}
       <button
         onClick={handleToggle}
+        type="button"
+        aria-pressed={isOn}
+        aria-label={isOn ? "Turn off terminal" : "Turn on terminal"}
         className={`w-16 h-16 rounded-full border-4 ${isOn ? "border-terminal-green" : "border-terminal-green/30"
           } flex items-center justify-center mb-8 transition-colors duration-300 hover:border-terminal-green`}
       >
@@ -97,19 +100,19 @@ export default function HomeClient() {
         <div className="text-terminal-green text-lg">
           {isOn ? (
             <>
-              <span className="text-terminal-green/50">{">"}</span>{" "}
+              <span className="text-terminal-green/90">{">"}</span>{" "}
               {screens[currentScreen]}
               <span className="animate-blink">_</span>
             </>
           ) : (
-            <span className="text-terminal-green/30">Turn on the terminal...</span>
+            <span className="text-terminal-green/90">Turn on the terminal...</span>
           )}
         </div>
       </div>
 
       {/* Turn on your sound text */}
-      <div className="text-terminal-green/30 text-xs tracking-widest mt-6 flex items-center gap-2">
-        TURN ON YOUR <Volume2 size={16} />
+      <div className="text-terminal-green/90 text-xs tracking-widest mt-6 flex items-center gap-2">
+        TURN ON YOUR <Volume2 size={16} aria-hidden="true" />
       </div>
 
       {/* Enter dashboard button with animated border */}
@@ -146,8 +149,8 @@ export default function HomeClient() {
 
       {/* Instruction text */}
       <div className="text-center space-y-3 mt-2">
-        <div className="text-terminal-green/50 text-sm font-mono tracking-wide flex items-center justify-center gap-2">
-          <span className="text-terminal-green/30">[</span>
+        <div className="text-terminal-green/90 text-sm font-mono tracking-wide flex items-center justify-center gap-2">
+          <span className="text-terminal-green/90" aria-hidden="true">[</span>
           {isTimerPaused ? (
             <span> TERMINAL ACTIVE - CLICK TO ENTER </span>
           ) : (
@@ -156,10 +159,10 @@ export default function HomeClient() {
               <span className="text-terminal-green">{countdown}s</span>
             </>
           )}
-          <span className="text-terminal-green/30">]</span>
+          <span className="text-terminal-green/90" aria-hidden="true">]</span>
         </div>
-        <div className="text-terminal-green/40 text-sm font-mono">
-          <span className="text-terminal-green/30">&gt;</span> SYSTEM.AUTO_BOOT {isTimerPaused ? <span className="text-terminal-amber">PAUSED</span> : <>IN <span className="text-terminal-green animate-pulse">00:{countdown >= 10 ? countdown : `0${countdown}`}</span></>}
+        <div className="text-terminal-green/90 text-sm font-mono">
+          <span className="text-terminal-green/90" aria-hidden="true">&gt;</span> SYSTEM.AUTO_BOOT {isTimerPaused ? <span className="text-terminal-amber">PAUSED</span> : <>IN <span className="text-terminal-green">00:{countdown >= 10 ? countdown : `0${countdown}`}</span></>}
         </div>
       </div>
 

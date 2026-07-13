@@ -662,6 +662,7 @@ export default function Dashboard() {
                     SECURITY ENGINEER
                   </span>
                   <Switch
+                    aria-label="Toggle Security Engineer"
                     checked={skills.security}
                     onCheckedChange={() => toggleSkill("security")}
                     className="data-[state=checked]:bg-terminal-green"
@@ -676,6 +677,7 @@ export default function Dashboard() {
                     ASPIRING ENTREPRENEUR
                   </span>
                   <Switch
+                    aria-label="Toggle Aspiring Entrepreneur"
                     checked={skills.business}
                     onCheckedChange={() => toggleSkill("business")}
                     className="data-[state=checked]:bg-terminal-green"
@@ -690,6 +692,7 @@ export default function Dashboard() {
                     FINANCIAL INTELLIGENCE
                   </span>
                   <Switch
+                    aria-label="Toggle Financial Intelligence"
                     checked={skills.business}
                     onCheckedChange={() => toggleSkill("business")}
                     className="data-[state=checked]:bg-terminal-green"
@@ -704,6 +707,7 @@ export default function Dashboard() {
                     WEB DEVELOPER
                   </span>
                   <Switch
+                    aria-label="Toggle Web Developer"
                     checked={skills.webdev}
                     onCheckedChange={() => toggleSkill("webdev")}
                     className="data-[state=checked]:bg-terminal-green"
@@ -832,6 +836,7 @@ export default function Dashboard() {
                       href={platform.url}
                       target="_blank"
                       rel="noopener noreferrer"
+                      aria-label={platform.tooltip}
                       className="block"
                       onClick={(e) => {
                         e.preventDefault();
@@ -1081,8 +1086,8 @@ export default function Dashboard() {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <button className="text-terminal-green/50 hover:text-terminal-green">
-                      <Info size={16} />
+                    <button type="button" aria-label="Extracurricular info" className="text-terminal-green/50 hover:text-terminal-green">
+                      <Info size={16} aria-hidden="true" />
                     </button>
                   </TooltipTrigger>
                   <TooltipContent className="bg-surface-raised text-terminal-green border border-terminal-green/30 max-w-xs">

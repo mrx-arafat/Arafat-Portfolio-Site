@@ -2198,6 +2198,31 @@ html:not(.dark) ::selection {
 .dark [class*="bg-[#0a0a0a]"] { background-color: #101319; }
 .dark [class*="bg-[#1a1a24]"] { background-color: #1c1f29; }
 
+/* A11y: floor dim terminal text to WCAG-AA (>=4.5:1) in dark mode.
+   Low-opacity green (and dark-on-green) text fails contrast; raise it.
+   Backgrounds, borders and icons keep their own opacity utilities. */
+.dark .text-terminal-green\/30,
+.dark .text-terminal-green\/35,
+.dark .text-terminal-green\/40,
+.dark .text-terminal-green\/45,
+.dark .text-terminal-green\/50,
+.dark .text-terminal-green\/55,
+.dark .text-terminal-green\/60,
+.dark .text-terminal-green\/70,
+.dark .text-terminal-green\/80 {
+  color: rgb(var(--terminal-green) / 0.9);
+}
+.dark .text-terminal-soft\/50 {
+  color: rgb(var(--terminal-soft) / 0.95);
+}
+.dark .text-surface-raised\/70 {
+  color: rgb(var(--surface-raised));
+}
+.dark .text-red-400\/70,
+.dark .text-red-400\/80 {
+  color: rgb(248 113 113);
+}
+
 /* Header sits darker than the page in dark mode; dim border, no light band */
 .dark .site-header {
   background-color: rgba(9, 11, 14, 0.92);
