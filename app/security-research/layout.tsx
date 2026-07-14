@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Security Research & CVEs | Easin Arafat (n0_arafat_n0)",
     description:
-      "9 published CVEs disclosed by Easin Arafat via Patchstack — Broken Access Control, IDOR, and Sensitive Data Exposure in WordPress plugins.",
+      "9 security findings disclosed by Easin Arafat via Patchstack, covering Broken Access Control, IDOR, and Sensitive Data Exposure in WordPress plugins.",
     url: "https://www.arafatops.com/security-research",
     type: "website",
   },
@@ -42,7 +42,7 @@ function StructuredData() {
       itemListElement: cveData.items.map((c, i) => ({
         "@type": "ListItem",
         position: i + 1,
-        name: `${c.cve !== "Reserved" ? c.cve + " — " : ""}${c.software} ${c.affected} ${c.type}`,
+        name: `${c.cve !== "Reserved" ? c.cve + ": " : ""}${c.software} ${c.affected} ${c.type}`,
         url: c.url,
       })),
     },
