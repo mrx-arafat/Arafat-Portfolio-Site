@@ -11,8 +11,8 @@ export const metadata: Metadata = {
   description:
     "Security research, engineering, business, psychology, and life — essays and daily notes by Easin Arafat.",
   alternates: {
-    canonical: "https://www.arafatops.com/blog",
-    types: { "application/rss+xml": "https://www.arafatops.com/blog/rss.xml" },
+    canonical: "https://www.arafatops.com/blogs",
+    types: { "application/rss+xml": "https://www.arafatops.com/blogs/rss.xml" },
   },
 };
 

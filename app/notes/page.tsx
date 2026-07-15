@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   title: "Daily Notes",
   description:
     "Short daily notes — raw thoughts on security, philosophy, business, and life by Easin Arafat.",
+  alternates: {
+    canonical: "https://www.arafatops.com/notes",
+  },
 };
 
 export const revalidate = 300;

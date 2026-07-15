@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   description:
     "API reference for publishing posts to arafatops.com — endpoints, auth, fields, and examples.",
   alternates: { canonical: "https://www.arafatops.com/docs/blog-api" },
+  robots: { index: false, follow: false },
 };
 
 export default function BlogApiDocsPage() {

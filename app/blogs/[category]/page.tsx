@@ -23,6 +23,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${category.charAt(0).toUpperCase() + category.slice(1)}`,
     description: `Essays on ${category} by Easin Arafat.`,
+    alternates: {
+      canonical: `https://www.arafatops.com/blogs/${category}`,
+    },
   };
 }
 

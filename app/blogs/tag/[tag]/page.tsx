@@ -24,6 +24,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `#${decoded}`,
     description: `Posts tagged ${decoded}.`,
+    alternates: {
+      canonical: `https://www.arafatops.com/blogs/tag/${tag}`,
+    },
   };
 }
 
