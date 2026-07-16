@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { supabaseAdmin } from "@/lib/supabase";
-import { CATEGORIES, ROW_COLUMNS } from "@/lib/blog";
+import { ROW_COLUMNS, isValidCategorySlug } from "@/lib/blog";
 
 interface PublishImage {
   name: string;
@@ -104,8 +104,8 @@ function validate(body: PublishBody): string | null {
   if (body.type !== "essay" && body.type !== "note") return "type must be essay or note";
   if (body.type === "essay") {
     if (!body.category) return "category is required for essays";
-    if (!(CATEGORIES as readonly string[]).includes(body.category)) {
-      return `category must be one of: ${CATEGORIES.join(", ")}`;
+    if (!isValidCategorySlug(body.category)) {
+      return "category must be lowercase letters, numbers, and hyphens only";
     }
   }
   return null;

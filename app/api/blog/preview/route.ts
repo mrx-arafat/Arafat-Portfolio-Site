@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies, draftMode } from "next/headers";
 import { redirect } from "next/navigation";
-import { CATEGORIES, PREVIEW_COOKIE, previewTargetKey } from "@/lib/blog";
+import { PREVIEW_COOKIE, previewTargetKey, isValidCategorySlug } from "@/lib/blog";
 
 /**
  * Enable/disable Next.js Draft Mode so authors can view unpublished posts.
@@ -39,9 +39,9 @@ export async function GET(req: NextRequest): Promise<NextResponse | never> {
   if (!slug) {
     return NextResponse.json({ error: "slug is required" }, { status: 400 });
   }
-  if (type === "essay" && (!category || !(CATEGORIES as readonly string[]).includes(category))) {
+  if (type === "essay" && (!category || !isValidCategorySlug(category))) {
     return NextResponse.json(
-      { error: `category is required for essays and must be one of: ${CATEGORIES.join(", ")}` },
+      { error: "category is required for essays and must be lowercase letters, numbers, and hyphens only" },
       { status: 400 }
     );
   }

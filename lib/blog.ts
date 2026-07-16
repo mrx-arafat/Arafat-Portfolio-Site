@@ -41,14 +41,16 @@ async function authorizedPreviewTarget(): Promise<string | null> {
   }
 }
 
-export const CATEGORIES = [
-  "security",
-  "engineering",
-  "business",
-  "psychology",
-  "life",
-] as const;
-export type CategoryName = (typeof CATEGORIES)[number];
+const CATEGORY_SLUG_RE = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+
+/**
+ * Categories aren't a fixed list — publishing a post under a new category
+ * creates it. Only the slug shape (lowercase, hyphen-separated) is enforced,
+ * since the category is used directly as a URL segment.
+ */
+export function isValidCategorySlug(category: string): boolean {
+  return CATEGORY_SLUG_RE.test(category);
+}
 
 export interface Post {
   slug: string;
