@@ -1108,12 +1108,12 @@ export default function DashboardClient() {
                   onClick={playClickSound}
                 >
                   <div className="w-16 h-16 rounded-full bg-surface-deep flex items-center justify-center overflow-hidden">
-                    <img
+                    <Image
                       src={item.imageUrl}
                       alt={item.imageAlt}
+                      width={64}
+                      height={64}
                       className={`w-full h-full ${item.id === 'urc-2021' ? 'object-contain p-1 bg-white' : 'object-cover'}`}
-                      loading="lazy"
-                      decoding="async"
                     />
                   </div>
                   {/* Corner dots for decoration */}

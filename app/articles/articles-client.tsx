@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -283,12 +284,13 @@ export default function ArticlesClient({ items }: { items: UnifiedArticle[] }) {
             >
               <div className="absolute inset-0 flex items-center justify-center bg-surface-raised/50 z-10">
                 {posts[currentPost].imageUrl ? (
-                  <img
+                  <Image
                     src={posts[currentPost].imageUrl || "/placeholder.svg"}
                     alt={`${posts[currentPost].title} preview`}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    loading="eager"
-                    decoding="async"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    priority
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                 ) : (
                   <div className="flex flex-col items-center justify-center h-full w-full bg-surface-night text-terminal-green/30">

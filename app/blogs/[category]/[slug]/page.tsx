@@ -75,11 +75,13 @@ export default async function PostPage({ params }: Props) {
           `${baseUrl}/api/og?title=${encodeURIComponent(post.title)}&category=${encodeURIComponent(category)}`,
         author: {
           "@type": "Person",
+          "@id": `${baseUrl}/#person`,
           name: "Easin Arafat",
           url: baseUrl,
         },
         publisher: {
           "@type": "Person",
+          "@id": `${baseUrl}/#person`,
           name: "Easin Arafat",
           url: baseUrl,
         },
