@@ -1,9 +1,17 @@
-import HomeClient from "./components/HomeClient";
+import HomeShell from "./components/HomeShell";
 
 export default function Home() {
   return (
     <>
-      <HomeClient />
+      {/* Pre-hydration: hide the boot overlay if this tab already booted,
+          so reloads don't flash the intro (state catches up in HomeShell). */}
+      <script
+        dangerouslySetInnerHTML={{
+          __html:
+            'try{if(sessionStorage.getItem("arafat-booted")==="1")document.documentElement.setAttribute("data-booted","")}catch(e){}',
+        }}
+      />
+      <HomeShell />
       {/* SEO: Server-rendered content for search engine crawlers */}
       <div className="sr-only">
         <h1>Easin Arafat - Application Security Engineer</h1>

@@ -1,11 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { Github, Linkedin, BookOpen } from "lucide-react";
 
 const EXPLORE_LINKS = [
-  { href: "/dashboard", label: "dashboard" },
+  { href: "/", label: "dashboard" },
   { href: "/about", label: "about" },
   { href: "/featured", label: "featured" },
   { href: "/projects", label: "projects" },
@@ -58,11 +57,8 @@ function LinkColumn({
   );
 }
 
-/** Sitewide footer with secondary links and socials. Hidden on the boot screen (/). */
+/** Sitewide footer with secondary links and socials. The boot overlay on / covers it until boot completes. */
 export function SiteFooter(): React.ReactElement | null {
-  const pathname = usePathname();
-  if (pathname === "/") return null;
-
   return (
     <footer className="border-t border-terminal-green/10 bg-surface-raised font-mono">
       <div className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-4 py-10 md:grid-cols-4 md:px-8">

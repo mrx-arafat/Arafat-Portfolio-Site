@@ -2420,3 +2420,8 @@ html:not(.dark) ::selection {
     animation: none;
   }
 }
+
+/* Boot overlay: hidden pre-hydration when this tab already booted (see HomeShell) */
+html[data-booted] .boot-overlay {
+  display: none;
+}

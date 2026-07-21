@@ -155,7 +155,7 @@ export default function AboutMe(): ReactElement {
       {/* Back link */}
       <div className="relative z-20 mx-auto w-full max-w-6xl px-5 pt-12 md:px-10">
         <Link
-          href="/dashboard"
+          href="/"
           onClick={() => playClickSound()}
           className="group inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-terminal-green/80 transition-colors hover:text-terminal-green"
         >
@@ -163,7 +163,7 @@ export default function AboutMe(): ReactElement {
             size={16}
             className="transition-transform group-hover:-translate-x-0.5"
           />
-          cd ~/dashboard
+          cd ~
         </Link>
       </div>
 

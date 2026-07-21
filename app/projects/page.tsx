@@ -233,7 +233,7 @@ export default function Projects() {
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4">
           <div className="flex items-center">
             <Link
-              href="/dashboard"
+              href="/"
               className="inline-flex items-center text-terminal-green hover:text-terminal-green/80 mr-4 bg-surface-night px-3 py-2 rounded-md border border-terminal-green/20 hover:border-terminal-green/40 transition-colors"
               onClick={playClickSound}
             >

@@ -185,7 +185,7 @@ export default function SkillsPage(): ReactElement {
       </button>
 
       <Link
-        href="/dashboard"
+        href="/"
         className="mb-8 inline-flex items-center text-terminal-green hover:text-terminal-green/80"
         onClick={() => playClickSound()}
       >

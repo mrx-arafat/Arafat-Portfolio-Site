@@ -76,7 +76,7 @@ const CODE_RAIN_DURATIONS = generateStableRandoms(20, 23);
 const MATRIX_RAIN_VALUES = generateStableRandoms(100, 31);
 const FLOATING_CODE_POSITIONS = generateStableRandoms(10, 55);
 
-export default function Dashboard() {
+export default function DashboardClient() {
   const { isMuted, toggleMute } = useMusicContext();
   const [isMounted, setIsMounted] = useState(false);
   const [skills, setSkills] = useState({

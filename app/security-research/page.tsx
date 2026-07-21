@@ -22,7 +22,7 @@ export default function SecurityResearch() {
 
       <section className={styles.hero}>
         <div className={styles.heroTopline}>
-          <Link href="/dashboard" className={styles.backLink}>
+          <Link href="/" className={styles.backLink}>
             <ArrowLeft size={15} />
             Back to dashboard
           </Link>

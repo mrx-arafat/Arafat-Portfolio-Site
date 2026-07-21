@@ -9,6 +9,8 @@ export async function GET(req: NextRequest): Promise<ImageResponse> {
   const title = (searchParams.get("title") ?? "Untitled").slice(0, 120);
   const category = (searchParams.get("category") ?? "blog").slice(0, 24);
   const meta = (searchParams.get("meta") ?? "arafatops.com").slice(0, 48);
+  const path = (searchParams.get("path") ?? `blogs/${category}`).slice(0, 48);
+  const prompt = (searchParams.get("prompt") ?? "cat post.md").slice(0, 48);
   // "card" = portrait for article-carousel thumbnails; default = 1200x630 social OG
   const isCard = searchParams.get("size") === "card";
   const width = isCard ? 800 : 1200;
@@ -47,13 +49,13 @@ export async function GET(req: NextRequest): Promise<ImageResponse> {
           <div style={{ width: 16, height: 16, borderRadius: 8, background: "#ffbd2e", display: "flex" }} />
           <div style={{ width: 16, height: 16, borderRadius: 8, background: "#28ca41", display: "flex" }} />
           <div style={{ color: "rgba(46,213,115,0.7)", fontSize: 24, marginLeft: 14, display: "flex" }}>
-            ~/blogs/{category}
+            ~/{path}
           </div>
         </div>
 
         {/* Prompt + title */}
         <div style={{ color: "rgba(46,213,115,0.55)", fontSize: 26, display: "flex", marginBottom: 18 }}>
-          $ cat post.md
+          $ {prompt}
         </div>
         <div
           style={{

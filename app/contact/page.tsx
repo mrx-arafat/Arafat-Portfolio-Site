@@ -183,13 +183,13 @@ export default function Contact() {
       {/* Back to Dashboard Button */}
       <div className="max-w-4xl mx-auto mb-6">
         <Link
-          href="/dashboard"
+          href="/"
           className="inline-flex items-center gap-2 text-terminal-green/70 hover:text-terminal-green font-mono text-sm transition-all duration-300 group"
           onClick={playClickSound}
         >
           <span className="text-terminal-green/50 group-hover:text-terminal-green/70">[</span>
           <span className="group-hover:translate-x-[-2px] transition-transform duration-300">←</span>
-          <span>cd ../dashboard</span>
+          <span>cd ~</span>
           <span className="text-terminal-green/50 group-hover:text-terminal-green/70">]</span>
         </Link>
       </div>
@@ -225,7 +225,7 @@ export default function Contact() {
                 Anything on your mind?
               </h1>
               <div className="text-terminal-green/60 text-sm font-mono">
-                Feel free to reach out - I'm always open to meaningful conversations.
+                Feel free to reach out - I&apos;m always open to meaningful conversations.
               </div>
             </div>
 
@@ -234,7 +234,7 @@ export default function Contact() {
                 <div className="mb-6 font-mono">
                   <div className="text-terminal-green text-lg mb-2">Message Sent Successfully!</div>
                   <div className="text-terminal-green/60 text-sm">
-                    Thank you for reaching out. I'll get back to you soon.
+                    Thank you for reaching out. I&apos;ll get back to you soon.
                   </div>
                 </div>
                 <div className="my-8">

@@ -13,8 +13,7 @@ const inter = Inter({ subsets: ["latin"], display: "swap" });
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.arafatops.com"),
   title: {
-    default:
-      "Easin Arafat | Application Security Engineer @ Startise | Cybersecurity Expert",
+    default: "Easin Arafat - Application Security Engineer | Startise",
     template: "%s | Easin Arafat",
   },
   description:
@@ -26,19 +25,23 @@ export const metadata: Metadata = {
   publisher: "Easin Arafat",
   alternates: {
     canonical: "https://www.arafatops.com",
+    types: {
+      "application/rss+xml": [
+        { url: "/blogs/rss.xml", title: "Easin Arafat - Blog RSS" },
+      ],
+    },
   },
   openGraph: {
-    title:
-      "Easin Arafat | Application Security Engineer @ Startise | Cybersecurity Expert",
+    title: "Easin Arafat - Application Security Engineer | Startise",
     description:
       "Easin Arafat is an Application Security Engineer at Startise. MIST graduate and Former President of MIST Cyber Security Club. Cybersecurity expert in Bangladesh specializing in application security, penetration testing, web development, and DevSecOps.",
     url: "https://www.arafatops.com",
     siteName: "Easin Arafat - Portfolio",
     images: [
       {
-        url: "/images/profile.webp",
-        width: 800,
-        height: 600,
+        url: "/api/og?title=Easin%20Arafat&meta=Application%20Security%20Engineer&path=home&prompt=whoami&category=portfolio",
+        width: 1200,
+        height: 630,
         alt: "Easin Arafat - Application Security Engineer at Startise",
       },
     ],
@@ -47,11 +50,12 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title:
-      "Easin Arafat | Application Security Engineer @ Startise | Cybersecurity Expert",
+    title: "Easin Arafat - Application Security Engineer | Startise",
     description:
       "Easin Arafat is an Application Security Engineer at Startise. MIST graduate and Former President of MIST Cyber Security Club. Cybersecurity expert in Bangladesh.",
-    images: ["/images/profile.webp"],
+    images: [
+      "/api/og?title=Easin%20Arafat&meta=Application%20Security%20Engineer&path=home&prompt=whoami&category=portfolio",
+    ],
   },
   robots: {
     index: true,

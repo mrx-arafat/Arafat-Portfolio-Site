@@ -15,7 +15,7 @@ const NAV_LINKS = [
   { href: "/contact", label: "contact" },
 ] as const;
 
-/** Persistent site header. Hidden on the boot screen (/). */
+/** Persistent site header. The boot overlay on / covers it until boot completes. */
 export function SiteNav(): React.ReactElement | null {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -25,9 +25,6 @@ export function SiteNav(): React.ReactElement | null {
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  // Boot screen keeps its immersive intro — no chrome.
-  if (pathname === "/") return null;
 
   const isActive = (href: string): boolean =>
     pathname === href || pathname.startsWith(`${href}/`);
@@ -43,7 +40,7 @@ export function SiteNav(): React.ReactElement | null {
       >
         {/* Wordmark — mirrors the current route, the one real terminal cue */}
         <Link
-          href="/dashboard"
+          href="/"
           aria-label="Go to dashboard"
           className="shrink-0 text-sm tracking-tight text-terminal-green/90 transition-opacity hover:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-terminal-green/50"
         >

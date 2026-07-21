@@ -2,19 +2,21 @@
 
 import { useState, useEffect } from "react";
 import { Volume2, VolumeX } from "lucide-react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { playClickSound, playKeyboardSound } from "@/utils/sound";
 
-export default function HomeClient() {
+/**
+ * Boot-screen overlay. Instead of navigating to /dashboard it calls
+ * onEnter, which reveals the dashboard already rendered underneath -
+ * the crawler sees the full content at / with no client-side redirect.
+ */
+export default function HomeClient({ onEnter }: { onEnter: () => void }) {
   const [isOn, setIsOn] = useState(false);
   const [currentScreen, setCurrentScreen] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [countdown, setCountdown] = useState(4);
   const [isTimerPaused, setIsTimerPaused] = useState(false);
-  const router = useRouter();
 
   useEffect(() => {
     if (countdown > 0 && !isRedirecting && !isTimerPaused) {
@@ -22,9 +24,9 @@ export default function HomeClient() {
       return () => clearTimeout(timer);
     } else if (countdown === 0 && !isRedirecting && !isTimerPaused) {
       setIsRedirecting(true);
-      router.push("/dashboard");
+      onEnter();
     }
-  }, [countdown, isRedirecting, isTimerPaused, router]);
+  }, [countdown, isRedirecting, isTimerPaused, onEnter]);
 
   const screens = [
     "Hi, I'm Arafat",
@@ -66,11 +68,11 @@ export default function HomeClient() {
   const goToDashboard = () => {
     playClickSound();
     setIsRedirecting(true);
-    router.push("/dashboard");
+    onEnter();
   };
 
   return (
-    <main className="min-h-screen bg-surface-night text-white flex flex-col items-center justify-center p-8 relative">
+    <main className="boot-overlay fixed inset-0 z-[100] min-h-screen bg-surface-night text-white flex flex-col items-center justify-center p-8">
       {/* Power button */}
       <button
         onClick={handleToggle}
@@ -165,9 +167,6 @@ export default function HomeClient() {
           <span className="text-terminal-green/90" aria-hidden="true">&gt;</span> SYSTEM.AUTO_BOOT {isTimerPaused ? <span className="text-terminal-amber">PAUSED</span> : <>IN <span className="text-terminal-green">00:{countdown >= 10 ? countdown : `0${countdown}`}</span></>}
         </div>
       </div>
-
-      {/* Prefetch dashboard for faster navigation */}
-      <Link href="/dashboard" prefetch={true} className="hidden" aria-hidden="true" />
     </main>
   );
 }

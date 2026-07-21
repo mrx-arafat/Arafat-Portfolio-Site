@@ -5,7 +5,8 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: "*",
-        allow: "/",
+        // /api/og stays crawlable - it serves the OG/social card images
+        allow: ["/", "/api/og"],
         disallow: ["/api/", "/private/"],
       },
     ],
