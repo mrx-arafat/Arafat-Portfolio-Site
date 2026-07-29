@@ -3,14 +3,14 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "About Easin Arafat",
   description:
-    "Learn about Easin Arafat - Application Security Engineer at Startise working on xCloud. MIST graduate, former President of MIST Cyber Security Club, security researcher (n0_arafat_n0) with 9 CVEs and peer-reviewed Elsevier research.",
+    "Easin Arafat is an Application Security Engineer at Startise, security researcher, systems builder, and founder of AIFlowiz. Explore his work across xCloud, application security, DevOps, and secure AI automation.",
   alternates: {
     canonical: "https://www.arafatops.com/about",
   },
   openGraph: {
     title: "About Easin Arafat | Application Security Engineer",
     description:
-      "Learn about Easin Arafat - Application Security Engineer at Startise working on xCloud. MIST graduate specializing in application security, DevSecOps, and AI/ML.",
+      "Application security, product engineering, platform operations, and secure AI automation by Easin Arafat, founder of AIFlowiz.",
     url: "https://www.arafatops.com/about",
   },
 };

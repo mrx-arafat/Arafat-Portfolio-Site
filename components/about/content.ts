@@ -1,169 +1,163 @@
-/** Content for the About page — six sections, straightforward professional copy. */
-
-export interface SectionCard {
-  id: string;
+export interface EvolutionStage {
+  id: "builder" | "researcher" | "operator";
+  label: string;
   title: string;
   body: string;
-  tags: string[];
 }
 
-export interface SectionQuote {
-  quote: string;
-  note: string;
-}
-
-export interface SectionBeat {
-  label: string;
-  text: string;
-}
-
-export interface Section {
-  id: string;
-  /** Mono label, e.g. "01 · WHO I AM". */
-  label: string;
+export interface CapabilityPipeline {
+  id: "build" | "secure" | "operate" | "automate";
+  command: string;
   title: string;
-  paragraphs: string[];
-  /** Section index 3 only — four discipline cards. */
-  cards?: SectionCard[];
-  /** Section index 4 only — PLAN/BUILD/SECURE/AUTOMATE. */
-  beats?: SectionBeat[];
-  /** Section index 4 only — three principles. */
-  quotes?: SectionQuote[];
-  align: "center" | "left";
+  summary: string;
+  output: string;
 }
 
-export const SECTIONS: Section[] = [
+export interface EvidenceItem {
+  id: "github" | "security" | "research" | "aiflowiz";
+  label: string;
+  description: string;
+  href: string;
+  isExternal: boolean;
+}
+
+export interface OperatingPrinciple {
+  title: string;
+  body: string;
+}
+
+export const PROFILE = {
+  command: "$ whoami --expanded",
+  headline:
+    "I build, secure, and operate systems where infrastructure, product engineering, and AI meet.",
+  introduction:
+    "I am an Application Security Engineer at Startise working on xCloud, a managed cloud hosting platform. My work connects offensive security, full-stack engineering, infrastructure, and practical AI automation.",
+  role: "Application Security Engineer at Startise",
+  context: "Building and securing xCloud",
+  focus: "Secure AI automation and developer workflows",
+  research: "9 Patchstack records and an Elsevier Q1 paper",
+} as const;
+
+export const EVOLUTION: EvolutionStage[] = [
   {
-    id: "who",
-    label: "01 · WHO I AM",
-    title: "EASIN ARAFAT",
-    paragraphs: [
-      "I'm an Application Security Engineer at Startise. I work on xCloud, a managed cloud hosting platform, and my job is to keep it and the sites it hosts secure.",
-      "Day to day that means security, but I don't stay in one lane. I build features, run infrastructure, work with AI tooling, and automate whatever I end up doing twice.",
-    ],
-    align: "center",
+    id: "builder",
+    label: "The builder",
+    title: "Full-stack foundations",
+    body:
+      "I started with front-end work, moved into full-stack systems, and learned by shipping real projects. That foundation still shapes how I approach security: understand the complete product before deciding what to protect.",
   },
   {
-    id: "background",
-    label: "02 · BACKGROUND",
-    title: "Background",
-    paragraphs: [
-      "I'm self-taught. I started with front-end, moved to full-stack, and learned by building actual projects instead of following tutorials. I still learn new tools the same way.",
-      "I graduated from MIST (Military Institute of Science and Technology), where I was President of the MIST Cyber Security Club. We ran CTFs and training sessions for anyone on campus who wanted in.",
-    ],
-    align: "left",
+    id: "researcher",
+    label: "The researcher",
+    title: "Security, community, and research",
+    body:
+      "I moved into offensive security through CTFs, cryptography, recon tooling, and vulnerability research. I led the MIST Cyber Security Club, reported vulnerabilities through Patchstack, and co-authored peer-reviewed research on adaptive mobile banking interfaces.",
   },
   {
-    id: "security",
-    label: "03 · SECURITY",
-    title: "Security research",
-    paragraphs: [
-      "I came into security from the offensive side. CTFs, cryptography, recon tooling, and eventually real vulnerability research.",
-      "That research led to 9 CVEs reported through Patchstack's disclosure program, and a co-authored paper in Array (Elsevier, Q1). The short version: I look for the bugs an attacker would use, and I get to them first.",
-    ],
-    align: "left",
-  },
-  {
-    id: "disciplines",
-    label: "04 · WHAT I DO",
-    title: "Four disciplines",
-    paragraphs: [
-      "Four areas, one job. Here's where my time actually goes.",
-    ],
-    cards: [
-      {
-        id: "appsec",
-        title: "Application Security",
-        body: "The core of what I do. I test systems the way an attacker would: broken assumptions, isolation that leaks, permissions that quietly grow over time.",
-        tags: ["offensive security", "threat modeling", "exploitation", "hardening"],
-      },
-      {
-        id: "devops",
-        title: "DevOps & Automation",
-        body: "Containers, networks, deployment pipelines. If it sits between the code and the servers, I've probably touched it.",
-        tags: ["CI/CD", "infrastructure", "orchestration", "observability"],
-      },
-      {
-        id: "ai",
-        title: "AI & Agents",
-        body: "I picked up LLMs and agent systems early and use them like any other engineering tool. Most of what I build with them ends up speeding up the rest of my work.",
-        tags: ["LLM tooling", "agent orchestration", "AI automation", "R&D"],
-      },
-      {
-        id: "product",
-        title: "R&D & Product",
-        body: "Sometimes the job is deciding what to build, not just how. I've planned features end to end and carried them from idea to production.",
-        tags: ["product thinking", "prototyping", "systems design", "strategy"],
-      },
-    ],
-    align: "left",
-  },
-  {
-    id: "method",
-    label: "05 · HOW I WORK",
-    title: "How I work",
-    paragraphs: [
-      "Whether it's a feature, a pipeline, or a security fix, I work through the same four steps.",
-    ],
-    beats: [
-      {
-        label: "PLAN",
-        text: "I start on paper, not in the editor. What can this break, what does it touch, what's the shortest honest path to something that works.",
-      },
-      {
-        label: "BUILD",
-        text: "Then I build whatever the problem actually needs. Could be app code, could be infrastructure, could be a one-off tool. It ships to production, not to a demo.",
-      },
-      {
-        label: "SECURE",
-        text: "Before release I put on the attacker hat and try to break what I just built. Anything I find gets fixed before it ships.",
-      },
-      {
-        label: "AUTOMATE",
-        text: "If I do something twice, I script it. Manual checklists turn into jobs that run themselves and tell me when something's off.",
-      },
-    ],
-    quotes: [
-      {
-        quote:
-          "Most failures aren't attacks. They're systems doing something in production that they never did in testing. That gap is where I spend my time.",
-        note: "SYSTEMS THINKING",
-      },
-      {
-        quote:
-          "I don't wait until I'm qualified for a problem. I take it, and I learn whatever's missing on the way.",
-        note: "GROWTH MINDSET",
-      },
-      {
-        quote:
-          "Code is half the picture. The other half is understanding why people build things, break things, and decide the way they do.",
-        note: "THE LONG GAME",
-      },
-    ],
-    align: "center",
-  },
-  {
-    id: "contact",
-    label: "06 · CONTACT",
-    title: "Get in touch",
-    paragraphs: [
-      "These days most of my spare energy goes into agents and AI tooling. It's the most interesting ground I've worked on in years.",
-      "If you're working on a problem worth solving, I'd like to hear about it.",
-    ],
-    align: "center",
+    id: "operator",
+    label: "The operator",
+    title: "Production systems and AI workflows",
+    body:
+      "Today I work across application security, product engineering, infrastructure, and automation. Through AIFlowiz, I turn repeated development, QA, documentation, and server tasks into bounded workflows that teams can inspect and approve.",
   },
 ];
 
-/** Accent per discipline card (section 04). */
-export const CARD_COLOR: Record<string, string> = {
-  appsec: "#f87171",
-  devops: "#38bdf8",
-  ai: "#a78bfa",
-  product: "#ffd60a",
-};
+export const CAPABILITY_PIPELINES: CapabilityPipeline[] = [
+  {
+    id: "build",
+    command: "[BUILD]",
+    title: "Secure product engineering",
+    summary:
+      "Plan and build full-stack features, agentic tools, internal workflows, and technical prototypes with the production environment in mind.",
+    output: "Review-ready code, tested features, and clear implementation notes.",
+  },
+  {
+    id: "secure",
+    command: "[SECURE]",
+    title: "Application security and research",
+    summary:
+      "Threat modeling, vulnerability research, authorization review, attack-path analysis, and hardening for web applications and developer platforms.",
+    output: "Reproducible findings, risk context, remediation, and verification evidence.",
+  },
+  {
+    id: "operate",
+    command: "[OPERATE]",
+    title: "Platform and DevOps",
+    summary:
+      "Work across containers, deployments, networks, observability, and server procedures while keeping recovery and failure modes visible.",
+    output: "Repeatable operations, useful logs, recovery notes, and fewer manual steps.",
+  },
+  {
+    id: "automate",
+    command: "[AUTOMATE]",
+    title: "AI workflows and agents",
+    summary:
+      "Connect approved tools and project context to automate repeated development, QA, documentation, and server work without hiding important decisions.",
+    output: "A bounded workflow with test evidence, approval points, and a setup guide.",
+  },
+];
+
+export const EVIDENCE: EvidenceItem[] = [
+  {
+    id: "github",
+    label: "Public repositories",
+    description:
+      "Agentic tools, automation systems, security projects, and working product experiments.",
+    href: "https://github.com/mrx-arafat",
+    isExternal: true,
+  },
+  {
+    id: "security",
+    label: "Security research",
+    description:
+      "9 vulnerability records reported through Patchstack across access control, IDOR, and sensitive data exposure.",
+    href: "/security-research",
+    isExternal: false,
+  },
+  {
+    id: "research",
+    label: "Peer-reviewed research",
+    description:
+      "Co-author of an Array paper on machine-learning-driven adaptive interfaces for mobile banking.",
+    href: "https://doi.org/10.1016/j.array.2026.100901",
+    isExternal: true,
+  },
+  {
+    id: "aiflowiz",
+    label: "AIFlowiz",
+    description:
+      "Founder-led AI automation for repeated development, QA, documentation, and server tasks.",
+    href: "https://aiflowiz.com/",
+    isExternal: true,
+  },
+];
+
+export const OPERATING_PRINCIPLES: OperatingPrinciple[] = [
+  {
+    title: "Small first",
+    body:
+      "Start with one bounded problem and a clear result before expanding the scope.",
+  },
+  {
+    title: "Least privilege",
+    body:
+      "Give every person, service, and workflow only the access the task requires.",
+  },
+  {
+    title: "Approval before risky actions",
+    body:
+      "Keep destructive, public, or difficult-to-reverse actions behind an explicit human decision.",
+  },
+  {
+    title: "Evidence at delivery",
+    body:
+      "Return test results, visible activity, setup instructions, and known limitations with the work.",
+  },
+];
 
 export const LINKS = {
-  github: "https://github.com/mrx-arafat",
-  linkedin: "https://www.linkedin.com/in/e4rafat",
+  projects: "/projects",
+  security: "/security-research",
   contact: "/contact",
+  aiflowiz: "https://aiflowiz.com/",
 } as const;

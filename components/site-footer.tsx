@@ -87,7 +87,7 @@ export function SiteFooter(): React.ReactElement | null {
       </div>
       <div className="border-t border-terminal-green/10 px-4 py-4 text-center text-[11px] text-terminal-green/40">
         <span className="text-terminal-green/30">&gt;</span> © {new Date().getFullYear()} Easin
-        Arafat — systems that survive production
+        Arafat - systems that survive production
       </div>
     </footer>
   );

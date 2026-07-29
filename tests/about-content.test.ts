@@ -1,65 +1,58 @@
 import { describe, expect, it } from "vitest";
 
-import { SECTIONS, LINKS } from "@/components/about/content";
+import {
+  CAPABILITY_PIPELINES,
+  EVIDENCE,
+  EVOLUTION,
+  LINKS,
+  PROFILE,
+} from "@/components/about/content";
 
-describe("SECTIONS", () => {
-  it("has exactly six sections with the expected labels", () => {
-    expect(SECTIONS).toHaveLength(6);
-    expect(SECTIONS.map((s) => s.label)).toEqual([
-      "01 · WHO I AM",
-      "02 · BACKGROUND",
-      "03 · SECURITY",
-      "04 · WHAT I DO",
-      "05 · HOW I WORK",
-      "06 · CONTACT",
+describe("About field manual content", () => {
+  it("describes the approved evolution and capability pipeline", () => {
+    expect(EVOLUTION.map((stage) => stage.id)).toEqual([
+      "builder",
+      "researcher",
+      "operator",
+    ]);
+    expect(CAPABILITY_PIPELINES.map((pipeline) => pipeline.id)).toEqual([
+      "build",
+      "secure",
+      "operate",
+      "automate",
     ]);
   });
 
-  it("fills every contract field", () => {
-    for (const s of SECTIONS) {
-      expect(s.id).toBeTruthy();
-      expect(s.label).toBeTruthy();
-      expect(s.title).toBeTruthy();
-      expect(s.paragraphs.length).toBeGreaterThan(0);
-      for (const p of s.paragraphs) {
-        expect(p.trim()).not.toBe("");
-      }
-      expect(["center", "left"]).toContain(s.align);
-    }
-  });
-
-  it("section 4 carries the four discipline cards", () => {
-    expect(SECTIONS[3].cards?.map((c) => c.id)).toEqual([
-      "appsec",
-      "devops",
-      "ai",
-      "product",
+  it("keeps the current role and verified public evidence", () => {
+    expect(PROFILE.role).toContain("Startise");
+    expect(PROFILE.context).toContain("xCloud");
+    expect(EVIDENCE.map((item) => item.label)).toEqual([
+      "Public repositories",
+      "Security research",
+      "Peer-reviewed research",
+      "AIFlowiz",
     ]);
+    expect(EVIDENCE.find((item) => item.id === "research")?.href).toBe(
+      "https://doi.org/10.1016/j.array.2026.100901",
+    );
   });
 
-  it("section 5 carries the method beats and three principles", () => {
-    expect(SECTIONS[4].beats?.map((b) => b.label)).toEqual([
-      "PLAN",
-      "BUILD",
-      "SECURE",
-      "AUTOMATE",
-    ]);
-    expect(SECTIONS[4].quotes?.map((q) => q.note)).toEqual([
-      "SYSTEMS THINKING",
-      "GROWTH MINDSET",
-      "THE LONG GAME",
-    ]);
+  it("contains no em dashes in About-page content", () => {
+    const content = JSON.stringify({
+      CAPABILITY_PIPELINES,
+      EVIDENCE,
+      EVOLUTION,
+      LINKS,
+      PROFILE,
+    });
+
+    expect(content).not.toContain("—");
   });
 
-  it("names the current role at Startise and xCloud in section 1", () => {
-    const text = SECTIONS[0].paragraphs.join(" ");
-    expect(text).toContain("Startise");
-    expect(text).toContain("xCloud");
-  });
-
-  it("keeps contact links", () => {
-    expect(LINKS.github).toBe("https://github.com/mrx-arafat");
-    expect(LINKS.linkedin).toBe("https://www.linkedin.com/in/e4rafat");
+  it("keeps the primary navigation destinations", () => {
+    expect(LINKS.projects).toBe("/projects");
+    expect(LINKS.security).toBe("/security-research");
     expect(LINKS.contact).toBe("/contact");
+    expect(LINKS.aiflowiz).toBe("https://aiflowiz.com/");
   });
 });
