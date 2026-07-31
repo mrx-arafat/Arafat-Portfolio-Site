@@ -14,6 +14,7 @@ import {
   Pause,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ClientWorkArchive } from "@/components/client-work/client-work-archive";
 import projectsData from "@/data/projects.json";
 
 interface GithubRepo {
@@ -279,6 +280,17 @@ export default function Projects() {
               </Button>
             </div>
           </div>
+        </div>
+
+        <ClientWorkArchive />
+
+        <div className="mb-6 mt-16 border-b border-terminal-green/25 pb-5 sm:mt-20">
+          <p className="font-mono text-xs text-terminal-green/60">
+            PUBLIC BUILD LOG
+          </p>
+          <h2 className="mt-2 text-2xl font-bold text-terminal-green sm:text-3xl">
+            Open-source project archive
+          </h2>
         </div>
 
         {loading ? (
