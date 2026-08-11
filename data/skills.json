@@ -3,63 +3,63 @@
     {
       "id": "security",
       "label": "Security",
-      "tagline": "I break things so they can't be broken",
+      "tagline": "Find the risky assumption before it ships",
       "color": "#e5484d",
       "order": 1
     },
     {
       "id": "development",
       "label": "Development",
-      "tagline": "Ideas turned into working products",
+      "tagline": "Product systems with inspectable delivery",
       "color": "#22d3ee",
       "order": 2
     },
     {
       "id": "devops",
       "label": "DevOps",
-      "tagline": "Keeping the machines humming",
+      "tagline": "Operate the release path under pressure",
       "color": "#f59e0b",
       "order": 3
     },
     {
       "id": "ai",
       "label": "AI",
-      "tagline": "Teaching software to think",
+      "tagline": "Harness models with tools, context, and boundaries",
       "color": "#a78bfa",
       "order": 4
     },
     {
       "id": "automation",
       "label": "Automation",
-      "tagline": "If I do it twice, a robot does it next",
+      "tagline": "Automate the repeatable; keep impact reviewable",
       "color": "#fb923c",
       "order": 5
     },
     {
       "id": "database",
       "label": "Database",
-      "tagline": "Where the data lives, safely",
+      "tagline": "Data systems and ownership boundaries",
       "color": "#2dd4bf",
       "order": 6
     },
     {
       "id": "testing",
       "label": "Testing",
-      "tagline": "Trust, but verify — automatically",
+      "tagline": "Verify from code to live behavior",
       "color": "#a3e635",
       "order": 7
     },
     {
       "id": "business",
       "label": "Business",
-      "tagline": "Building things people actually need",
+      "tagline": "Turn real needs into sequenced delivery",
       "color": "#eab308",
       "order": 8
     },
     {
       "id": "soft-skill",
       "label": "Soft Skills",
-      "tagline": "The human side of engineering",
+      "tagline": "Explain, coordinate, and decide clearly",
       "color": "#fb7185",
       "order": 9
     }
@@ -264,10 +264,11 @@
     },
     {
       "id": "cloudflare",
-      "name": "Cloudflare",
+      "name": "Cloudflare Enterprise Operations",
       "icon": "Cloud",
       "category": "devops",
-      "description": "Implementing Cloudflare services for security, performance optimization, and CDN capabilities"
+      "description": "Managing enterprise domain activation, DNS verification, cache, analytics, security events, and edge controls across production sites",
+      "flagship": true
     },
     {
       "id": "api-security",
@@ -336,17 +337,17 @@
 ,
     {
       "id": "ai-ml",
-      "name": "AI/ML",
+      "name": "Applied AI Systems",
       "icon": "Brain",
       "category": "ai",
-      "description": "Machine learning and applied AI: building, fine-tuning, and integrating models for real-world use cases"
+      "description": "Integrating models into real technical workflows with bounded inputs, evaluation, and human control"
     },
     {
       "id": "ai-automations",
-      "name": "AI Automations",
+      "name": "AI Workflow Automation",
       "icon": "Bot",
       "category": "automation",
-      "description": "Designing AI-driven automations: LLM agents, workflow orchestration, and tool integration to streamline tasks"
+      "description": "Designing reviewable LLM workflows for research, development, QA, documentation, and operations"
     },
     {
       "id": "mail-delivery-smtp",
@@ -361,6 +362,190 @@
       "icon": "MessageSquareBot",
       "category": "ai",
       "description": "Building intelligent AI bots and virtual assistants using LLMs, conversational AI frameworks, and custom integrations"
+    },
+    {
+      "id": "agent-harnessing",
+      "name": "AI Agent Harnessing",
+      "icon": "Bot",
+      "category": "ai",
+      "description": "Coordinating coding agents, tool access, context, and verification without treating autonomy as a substitute for review",
+      "flagship": true
+    },
+    {
+      "id": "model-tool-integration",
+      "name": "Model & Tool Integration",
+      "icon": "PlugZap",
+      "category": "ai",
+      "description": "Connecting Claude, Codex, and other model runtimes to practical tools and scoped workflows"
+    },
+    {
+      "id": "context-and-prompt-design",
+      "name": "Context & Prompt Design",
+      "icon": "FileText",
+      "category": "ai",
+      "description": "Structuring instructions, evidence, and task context so model outputs remain useful and inspectable"
+    },
+    {
+      "id": "agent-workflow-orchestration",
+      "name": "Agent Workflow Orchestration",
+      "icon": "Workflow",
+      "category": "automation",
+      "description": "Sequencing agent tasks, approval gates, and handoffs for repeatable technical delivery"
+    },
+    {
+      "id": "qa-automation",
+      "name": "QA & Regression Automation",
+      "icon": "TestTube2",
+      "category": "automation",
+      "description": "Automating repeatable checks while keeping live verification and release decisions visible"
+    },
+    {
+      "id": "documentation-automation",
+      "name": "Documentation Automation",
+      "icon": "BookOpenCheck",
+      "category": "automation",
+      "description": "Turning delivery context, runbooks, and decisions into maintainable technical documentation"
+    },
+    {
+      "id": "threat-modeling",
+      "name": "Threat Modeling",
+      "icon": "ScanSearch",
+      "category": "security",
+      "description": "Mapping attack paths, trust boundaries, and failure modes before a system reaches production"
+    },
+    {
+      "id": "authorization-review",
+      "name": "Authorization & Access Control",
+      "icon": "KeyRound",
+      "category": "security",
+      "description": "Reviewing identity, ownership, permissions, and privilege boundaries in application workflows"
+    },
+    {
+      "id": "vulnerability-disclosure",
+      "name": "Responsible Vulnerability Disclosure",
+      "icon": "BadgeCheck",
+      "category": "security",
+      "description": "Reproducing findings, documenting impact, and coordinating safer remediation with maintainers"
+    },
+    {
+      "id": "production-validation",
+      "name": "Production Validation",
+      "icon": "CircleCheckBig",
+      "category": "testing",
+      "description": "Combining browser checks, API evidence, logs, and rollback awareness before calling a release ready"
+    },
+    {
+      "id": "multi-agent-orchestration",
+      "name": "Multi-Agent Orchestration",
+      "icon": "Network",
+      "category": "ai",
+      "description": "Coordinating specialized AI agents, scoped responsibilities, and review checkpoints across a larger delivery workflow"
+    },
+    {
+      "id": "mcp-tool-protocols",
+      "name": "MCP & Tool Protocols",
+      "icon": "Cable",
+      "category": "ai",
+      "description": "Giving AI runtimes controlled access to browser, terminal, search, and application tools through explicit interfaces"
+    },
+    {
+      "id": "terminal-workflow-automation",
+      "name": "Terminal Workflow Automation",
+      "icon": "SquareTerminal",
+      "category": "automation",
+      "description": "Building persistent terminal workflows that make coding sessions, checks, and recovery steps repeatable"
+    },
+    {
+      "id": "release-engineering",
+      "name": "Release Engineering",
+      "icon": "Rocket",
+      "category": "devops",
+      "description": "Making deployments repeatable with build checks, environment awareness, rollback context, and clear handoffs"
+    },
+    {
+      "id": "observability-incident-response",
+      "name": "Observability & Incident Response",
+      "icon": "Siren",
+      "category": "devops",
+      "description": "Using logs, health signals, and failure context to diagnose production symptoms and restore service safely"
+    },
+    {
+      "id": "technical-delivery-scrum",
+      "name": "Technical Delivery & Scrum",
+      "icon": "KanbanSquare",
+      "category": "business",
+      "description": "Breaking work into observable milestones, coordinating stakeholders, and keeping delivery moving without losing technical rigor"
+    },
+    {
+      "id": "multi-cloud-provisioning",
+      "name": "Multi-Cloud Provisioning",
+      "icon": "Cloud",
+      "category": "devops",
+      "description": "Designing and operating server lifecycles across cloud providers through a managed hosting control plane",
+      "flagship": true
+    },
+    {
+      "id": "one-click-app-platforms",
+      "name": "One-Click App Platforms",
+      "icon": "PanelsTopLeft",
+      "category": "devops",
+      "description": "Packaging repeatable application installs, configuration flows, and managed lifecycle operations"
+    },
+    {
+      "id": "docker-template-engineering",
+      "name": "Docker Template Engineering",
+      "icon": "Box",
+      "category": "devops",
+      "description": "Turning Docker Compose and repository-based application requirements into deployable templates"
+    },
+    {
+      "id": "laravel-platform-engineering",
+      "name": "Laravel Platform Engineering",
+      "icon": "Layers3",
+      "category": "development",
+      "description": "Building and maintaining Laravel application flows, queued jobs, APIs, and production recovery paths"
+    },
+    {
+      "id": "node-hosting-operations",
+      "name": "Node.js Hosting Operations",
+      "icon": "Server",
+      "category": "devops",
+      "description": "Supporting Node.js application deployment, domain changes, SSL, logs, and operational recovery"
+    },
+    {
+      "id": "ssl-domain-automation",
+      "name": "SSL & Domain Automation",
+      "icon": "LockKeyhole",
+      "category": "automation",
+      "description": "Automating domain verification, certificate workflows, status checks, and recovery-aware updates"
+    },
+    {
+      "id": "background-job-operations",
+      "name": "Queue & Background Job Operations",
+      "icon": "ListRestart",
+      "category": "devops",
+      "description": "Designing observable queued work, retries, status reporting, and recovery for long-running platform tasks"
+    },
+    {
+      "id": "agent-runtime-operations",
+      "name": "Agent Runtime Operations",
+      "icon": "Bot",
+      "category": "ai",
+      "description": "Deploying and operating agent runtimes such as OpenClaw with scoped tools, observability, and human checkpoints"
+    },
+    {
+      "id": "agent-memory-skills",
+      "name": "Agent Memory & Skills",
+      "icon": "BrainCircuit",
+      "category": "ai",
+      "description": "Designing reusable skills, project memory, and context boundaries so agent work remains consistent over time"
+    },
+    {
+      "id": "browser-computer-use-automation",
+      "name": "Browser & Computer-Use Automation",
+      "icon": "MonitorCog",
+      "category": "automation",
+      "description": "Building controlled browser and desktop workflows for repeatable validation and operator-assist tasks"
     }
   ]
 }

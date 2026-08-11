@@ -23,6 +23,7 @@ interface SkillsData {
 }
 
 const data = skillsData as unknown as SkillsData;
+const totalSkills = data.skills.length;
 
 const categories: CategoryMeta[] = [...(data.categories ?? [])].sort(
   (a, b) => a.order - b.order
@@ -39,6 +40,30 @@ const skillCounts: Record<string, number> = Object.fromEntries(
     skillsByCategory[category.id]?.length ?? 0,
   ])
 );
+
+const CAPABILITY_TRACKS = [
+  {
+    id: "secure",
+    label: "Secure the boundary",
+    description:
+      "Research, testing, and verification that make risk visible before it becomes production impact.",
+    categoryIds: ["security", "testing"],
+  },
+  {
+    id: "operate",
+    label: "Build and operate the platform",
+    description:
+      "Application development, infrastructure, and data systems that keep a release path understandable.",
+    categoryIds: ["development", "devops", "database"],
+  },
+  {
+    id: "automate",
+    label: "Automate with control",
+    description:
+      "AI workflows, automation, and human coordination for repeated technical work with clear approval points.",
+    categoryIds: ["ai", "automation", "business", "soft-skill"],
+  },
+] as const;
 
 /** Dark placeholder shown while the 3D chunk loads or capability is unknown. */
 function HeroPlaceholder(): ReactElement {
@@ -209,14 +234,14 @@ export default function SkillsPage(): ReactElement {
       <div className="relative z-10 mx-auto w-full max-w-7xl">
         <header className="mb-6">
           <p className="font-mono text-[11px] uppercase tracking-[0.4em] text-terminal-green/70">
-            Mission log · 42 modules
+            Capability map · {totalSkills} modules
           </p>
           <h1 className="mt-2 text-3xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-100 md:text-4xl">
-            Skill Universe
+            Skills, organized by the work they make possible.
           </h1>
           <p className="mt-2 max-w-xl text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
-            Nine planets, one orbit — drag to explore, click a planet to land
-            on its story.
+            Explore the universe, then scan the actual tools and practices by
+            the production outcome they support.
           </p>
         </header>
 
@@ -235,19 +260,95 @@ export default function SkillsPage(): ReactElement {
           )}
         </div>
 
-        <p className="mx-auto mb-12 max-w-2xl text-center text-sm leading-relaxed text-neutral-600 dark:text-neutral-400 md:text-base">
-          Every planet up there is a part of how I work — here is what each one
-          actually means.
-        </p>
+        <nav
+          aria-label="Orbit index"
+          className="mx-auto mb-12 w-full max-w-5xl border-y border-neutral-900/10 py-5 dark:border-white/[0.06]"
+        >
+          <div className="flex flex-col gap-2 border-b border-neutral-900/10 pb-4 dark:border-white/[0.06] sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-terminal-green">
+                $ orbit --index
+              </p>
+              <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-400">
+                Click a planet above or choose a domain here to land on its detail.
+              </p>
+            </div>
+            <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-500 dark:text-neutral-500">
+              9 domains
+            </span>
+          </div>
+          <div className="grid sm:grid-cols-3">
+            {categories.map((category) => (
+              <button
+                key={category.id}
+                type="button"
+                onClick={() => {
+                  playClickSound();
+                  scrollToCategory(category.id);
+                }}
+                className="flex min-h-12 items-center gap-3 border-b border-neutral-900/10 px-3 py-3 text-left transition-colors hover:bg-white/[0.03] focus:outline-none focus-visible:ring-2 focus-visible:ring-terminal-green dark:border-white/[0.06] sm:border-r sm:nth-[3n]:border-r-0"
+              >
+                <span
+                  aria-hidden="true"
+                  className="h-2.5 w-2.5 shrink-0 rounded-full"
+                  style={{ backgroundColor: category.color }}
+                />
+                <span className="text-sm font-medium text-neutral-800 dark:text-neutral-200">
+                  {category.label}
+                </span>
+                <span className="ml-auto font-mono text-[10px] text-neutral-500 dark:text-neutral-500">
+                  {String(skillCounts[category.id]).padStart(2, "0")}
+                </span>
+              </button>
+            ))}
+          </div>
+        </nav>
 
-        {/* Story sections */}
-        <div className="flex flex-col gap-16 md:gap-24">
-          {categories.map((category) => (
-            <CategorySection
-              key={category.id}
-              category={category}
-              skills={skillsByCategory[category.id] ?? []}
-            />
+        <div className="mx-auto mb-12 max-w-3xl text-center">
+          <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-terminal-green">
+            How the work connects
+          </p>
+          <p className="mt-3 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400 md:text-base">
+            The planets are the detail. These three tracks show how those
+            capabilities connect when the work has to ship, stay safe, and be
+            explainable.
+          </p>
+        </div>
+
+        <div className="flex flex-col gap-20 md:gap-28">
+          {CAPABILITY_TRACKS.map((track) => (
+            <section key={track.id} aria-labelledby={`track-${track.id}`}>
+              <header className="mx-auto mb-4 w-full max-w-5xl border-b border-neutral-900/10 pb-6 dark:border-white/[0.06]">
+                <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-terminal-green">
+                  $ track --{track.id}
+                </p>
+                <h2
+                  id={`track-${track.id}`}
+                  className="mt-3 text-2xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-100 md:text-3xl"
+                >
+                  {track.label}
+                </h2>
+                <p className="mt-2 max-w-2xl text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+                  {track.description}
+                </p>
+              </header>
+              <div className="flex flex-col gap-10 md:gap-14">
+                {track.categoryIds.map((categoryId) => {
+                  const category = categories.find(
+                    (item) => item.id === categoryId
+                  );
+                  if (!category) return null;
+
+                  return (
+                    <CategorySection
+                      key={category.id}
+                      category={category}
+                      skills={skillsByCategory[category.id] ?? []}
+                    />
+                  );
+                })}
+              </div>
+            </section>
           ))}
         </div>
       </div>
