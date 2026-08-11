@@ -965,17 +965,14 @@
 }
 
 :global(.light) .page {
-  background:
-    radial-gradient(circle at 88% 8%, rgba(22, 122, 72, 0.13), transparent 28rem),
-    radial-gradient(circle at 5% 42%, rgba(22, 122, 72, 0.07), transparent 34rem),
-    #edf4ee;
+  background: #f9f8f6;
   color: #10281a;
 }
 
 :global(.light) .ambient {
-  background-image:
-    linear-gradient(rgba(16, 72, 43, 0.055) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(16, 72, 43, 0.055) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(24, 60, 39, 0.13) 0.65px, transparent 0.65px);
+  background-size: 4px 4px;
+  opacity: 0.12;
 }
 
 :global(.light) .backLink,
@@ -1113,8 +1110,8 @@
 
 :global(.light) .filterBar {
   border-color: rgba(18, 108, 62, 0.18);
-  background: rgba(248, 251, 247, 0.84);
-  box-shadow: 0 0.8rem 2.5rem rgba(20, 65, 39, 0.07);
+  background: #efe9e3;
+  box-shadow: none;
 }
 
 :global(.light) .filterLabel,
@@ -1134,8 +1131,8 @@
 }
 
 :global(.light) .ticket {
-  background: #fffdfa;
-  box-shadow: 0.45rem 0.45rem 0 #d6ccc3;
+  background: #fbf8f3;
+  box-shadow: 0.35rem 0.35rem 0 #d9cfc7;
 }
 
 /* The dossier follows the active site theme: dark file in dark mode, paper record in light mode. */
@@ -1201,6 +1198,16 @@
   color: #5c7766;
 }
 
+:global(.light) .ticketId,
+:global(.light) .ticketStub strong,
+:global(.light) .stubNumber {
+  color: #167a48;
+}
+
+:global(.light) .stubLabel {
+  color: #617065;
+}
+
 :global(.light) .ticketContent h3,
 :global(.light) .ticketMeta strong,
 :global(.light) .severity {
@@ -1215,7 +1222,7 @@
 
 :global(.light) .ticketStub {
   border-left-color: rgba(18, 108, 62, 0.28);
-  background: #e8e2db;
+  background: #d9cfc7;
 }
 
 :global(.light) .ticketMeta {
@@ -1228,6 +1235,10 @@
 
 :global(.light) .advisoryLink {
   color: #126c3e;
+}
+
+:global(.light) .severity::before {
+  box-shadow: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
