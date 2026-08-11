@@ -16,8 +16,8 @@
     },
     {
       "id": "devops",
-      "label": "DevOps",
-      "tagline": "Operate the release path under pressure",
+      "label": "Infrastructure & Cloud",
+      "tagline": "Size, deploy, diagnose, and recover production systems",
       "color": "#f59e0b",
       "order": 3
     },
@@ -528,10 +528,10 @@
     },
     {
       "id": "agent-runtime-operations",
-      "name": "Agent Runtime Operations",
+      "name": "Agent Runtime & Bot Operations",
       "icon": "Bot",
       "category": "ai",
-      "description": "Deploying and operating agent runtimes such as OpenClaw with scoped tools, observability, and human checkpoints"
+      "description": "Deploying and operating OpenClaw, Hermes, and personal agent bots with scoped tools, observability, and human checkpoints"
     },
     {
       "id": "agent-memory-skills",
@@ -546,6 +546,77 @@
       "icon": "MonitorCog",
       "category": "automation",
       "description": "Building controlled browser and desktop workflows for repeatable validation and operator-assist tasks"
+    },
+    {
+      "id": "infrastructure-capacity-planning",
+      "name": "Infrastructure Capacity Planning",
+      "icon": "ChartNoAxesCombined",
+      "category": "devops",
+      "description": "Matching application workloads to practical server CPU, memory, storage, and operational requirements",
+      "flagship": true
+    },
+    {
+      "id": "server-lifecycle-management",
+      "name": "Server Lifecycle Management",
+      "icon": "ServerCog",
+      "category": "devops",
+      "description": "Provisioning, configuring, re-provisioning, monitoring, and retiring managed server environments"
+    },
+    {
+      "id": "production-deployment-debugging",
+      "name": "Production Deployment Debugging",
+      "icon": "Bug",
+      "category": "devops",
+      "description": "Tracing failed builds, service configuration, logs, networking, and upstream errors to restore a live application"
+    },
+    {
+      "id": "reverse-proxy-routing",
+      "name": "Reverse Proxy & Traffic Routing",
+      "icon": "Route",
+      "category": "devops",
+      "description": "Configuring Nginx and edge-facing routing so applications, domains, SSL, and upstream services connect safely"
+    },
+    {
+      "id": "self-hosted-ai-platforms",
+      "name": "Self-Hosted AI Platforms",
+      "icon": "Cpu",
+      "category": "ai",
+      "description": "Deploying private AI interfaces and model services such as Ollama, Open WebUI, and LibreChat on owned infrastructure"
+    },
+    {
+      "id": "local-llm-operations",
+      "name": "Local LLM Operations",
+      "icon": "Brain",
+      "category": "ai",
+      "description": "Managing local model availability, pulls, service health, and practical resource constraints for self-hosted LLMs"
+    },
+    {
+      "id": "workflow-automation-hosting",
+      "name": "Workflow Automation Hosting",
+      "icon": "Workflow",
+      "category": "automation",
+      "description": "Deploying, updating, and operating workflow tools such as n8n with service-level visibility"
+    },
+    {
+      "id": "wireguard-vpn-integration",
+      "name": "WireGuard VPN Integration",
+      "icon": "ShieldCheck",
+      "category": "devops",
+      "description": "Integrating private network access and VPN workflows into a managed server platform"
+    },
+    {
+      "id": "supabase-platform-operations",
+      "name": "Supabase Platform Operations",
+      "icon": "DatabaseZap",
+      "category": "database",
+      "description": "Working with backend services, authentication, database workflows, and production-aware operational boundaries"
+    },
+    {
+      "id": "self-hosted-service-operations",
+      "name": "Self-Hosted Service Operations",
+      "icon": "HousePlug",
+      "category": "devops",
+      "description": "Deploying and maintaining owned services from application setup through updates, monitoring, and incident recovery"
     }
   ]
 }
