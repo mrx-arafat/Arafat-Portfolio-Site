@@ -14,7 +14,7 @@ import {
   Pause,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ClientWorkArchive } from "@/components/client-work/client-work-archive";
+import { CLIENT_PROJECTS } from "@/components/client-work/content";
 import projectsData from "@/data/projects.json";
 
 interface GithubRepo {
@@ -27,10 +27,27 @@ interface GithubRepo {
   stargazers_count: number;
   homepage?: string;
   preview_image?: string;
+  featured?: boolean;
 }
+
+const FEATURED_PROJECTS: readonly GithubRepo[] = [
+  { id: -1, name: "TermStream", description: CLIENT_PROJECTS[0].summary, html_url: "https://github.com/mrx-arafat/TermStream", homepage: CLIENT_PROJECTS[0].deploymentUrl, preview_image: "/images/client-work/termstream-overview.png", topics: ["ai-systems", "infrastructure", "terminal", "security"], language: "TypeScript", stargazers_count: 0, featured: true },
+  { id: -2, name: "AIflowiz", description: "A delivery system for bounded AI workflows across development, testing, documentation, and server operations.", html_url: "https://github.com/mrx-arafat/AIflowiz", homepage: "https://aiflowiz.com", preview_image: "/images/aiflowiz-home.png", topics: ["ai-automation", "workflows", "delivery"], language: "TypeScript", stargazers_count: 0, featured: true },
+  { id: -3, name: "Agentic Terminal", description: "An open-source, folder-scoped AI terminal that keeps shell, file, tool, and approval steps visible while work runs.", html_url: "https://github.com/mrx-arafat/agentic-terminal", preview_image: "/images/agentic-terminal-thumbnail.png", topics: ["agents", "terminal", "developer-tools"], language: "TypeScript", stargazers_count: 0, featured: true },
+  { id: -4, name: "Second Brain.Deck", description: "An Obsidian-compatible, queryable knowledge system for capture, retrieval, agent access, and Git-backed guardrails.", html_url: "https://github.com/mrx-arafat/second-brain", homepage: CLIENT_PROJECTS[1].deploymentUrl, preview_image: "/images/client-work/second-brain-deck.png", topics: ["knowledge-systems", "obsidian", "agents"], language: "TypeScript", stargazers_count: 0, featured: true },
+  { id: -5, name: "Social Blocker", description: "A privacy-first Chrome extension that creates a deliberate pause before distracting sites, with intentions, limits, and local-only tracking.", html_url: "https://github.com/mrx-arafat/social-blocker", preview_image: "/images/social-blocker-dashboard.png", topics: ["chrome-extension", "focus", "privacy"], language: "TypeScript", stargazers_count: 0, featured: true },
+  { id: -6, name: "AI Opportunity Map", description: "An interactive decision dashboard for exploring AI trends, opportunities, and strategic paths with evidence in view.", html_url: "https://github.com/mrx-arafat/AI-Opportunity-Map", homepage: "https://ai-opportunity-map-2025.streamlit.app/", preview_image: "/images/ai-opportunity-map.png", topics: ["ai", "strategy", "data-visualization"], language: "Python", stargazers_count: 0, featured: true },
+];
+
+const FEATURED_REPOSITORIES = new Set(FEATURED_PROJECTS.map((project) => project.html_url));
+const ORDERED_PROJECTS: GithubRepo[] = [
+  ...FEATURED_PROJECTS,
+  ...(projectsData as GithubRepo[]).filter((project) => !FEATURED_REPOSITORIES.has(project.html_url)),
+];
 
 const PROJECTS_PER_PAGE_DESKTOP = 10;
 const PROJECTS_PER_PAGE_MOBILE = 5;
+const AUTO_ADVANCE_SECONDS = 10;
 
 export default function Projects() {
   const [currentProject, setCurrentProject] = useState(0);
@@ -40,7 +57,7 @@ export default function Projects() {
   const [imageLoading, setImageLoading] = useState<{ [key: number]: boolean }>({});
   const [imageErrors, setImageErrors] = useState<{ [key: number]: boolean }>({});
   const [isEntering, setIsEntering] = useState(true);
-  const [countdown, setCountdown] = useState(5);
+  const [countdown, setCountdown] = useState(AUTO_ADVANCE_SECONDS);
   const [isAutoAdvancing, setIsAutoAdvancing] = useState(true);
   const [isHoverPaused, setIsHoverPaused] = useState(false);
   const clickSoundRef = useRef<HTMLAudioElement | null>(null);
@@ -68,12 +85,12 @@ export default function Projects() {
 
     // Use projects from JSON file
     setTimeout(() => {
-      setProjects(projectsData);
+      setProjects(ORDERED_PROJECTS);
       setLoading(false);
 
       // Initialize image loading states
       const initialImageLoading: { [key: number]: boolean } = {};
-      projectsData.forEach((_, index) => {
+      ORDERED_PROJECTS.forEach((_, index) => {
         initialImageLoading[index] = true;
       });
       setImageLoading(initialImageLoading);
@@ -86,7 +103,7 @@ export default function Projects() {
     };
   }, []);
 
-  // Countdown timer for auto-advance (3 seconds)
+  // Countdown timer for automatic carousel advancement.
   useEffect(() => {
     if (!isAutoAdvancing || isHoverPaused || projects.length === 0) {
       if (countdownTimerRef.current) {
@@ -103,17 +120,17 @@ export default function Projects() {
       clearInterval(countdownTimerRef.current);
     }
 
-    setCountdown(5);
+    setCountdown(AUTO_ADVANCE_SECONDS);
 
     countdownTimerRef.current = setInterval(() => {
       timeElapsed += 1;
-      setCountdown(5 - timeElapsed);
+      setCountdown(AUTO_ADVANCE_SECONDS - timeElapsed);
 
-      if (timeElapsed >= 5) {
+      if (timeElapsed >= AUTO_ADVANCE_SECONDS) {
         // Auto-advance to next project
         setCurrentProject((p) => (p + 1) % projects.length);
         timeElapsed = 0;
-        setCountdown(5);
+        setCountdown(AUTO_ADVANCE_SECONDS);
       }
     }, 1000);
 
@@ -146,13 +163,13 @@ export default function Projects() {
   const nextProject = () => {
     playClickSound();
     setCurrentProject((prev) => (prev + 1) % projects.length);
-    setCountdown(3);
+    setCountdown(AUTO_ADVANCE_SECONDS);
   };
 
   const prevProject = () => {
     playClickSound();
     setCurrentProject((prev) => (prev - 1 + projects.length) % projects.length);
-    setCountdown(3);
+    setCountdown(AUTO_ADVANCE_SECONDS);
   };
 
   const getLanguageColor = (language: string) => {
@@ -282,14 +299,12 @@ export default function Projects() {
           </div>
         </div>
 
-        <ClientWorkArchive />
-
         <div className="mb-6 mt-16 border-b border-terminal-green/25 pb-5 sm:mt-20">
           <p className="font-mono text-xs text-terminal-green/60">
-            PUBLIC BUILD LOG
+            SELECTED BUILDS + PUBLIC BUILD LOG
           </p>
           <h2 className="mt-2 text-2xl font-bold text-terminal-green sm:text-3xl">
-            Open-source project archive
+            Project carousel
           </h2>
         </div>
 
@@ -337,7 +352,7 @@ export default function Projects() {
                       src={projects[currentProject].preview_image}
                       alt={`${projects[currentProject].name} preview`}
                       fill
-                      className={`object-cover group-hover:scale-105 transition-all duration-500 ${
+                      className={`object-contain group-hover:scale-[1.02] transition-all duration-500 ${
                         imageLoading[currentProject] ? 'opacity-0' : 'opacity-100'
                       }`}
                       onLoad={() => handleImageLoad(currentProject)}
@@ -417,7 +432,7 @@ export default function Projects() {
                 <div className="flex items-center gap-2 mb-1">
                   <div className="w-2 h-2 rounded-full bg-terminal-green/40"></div>
                   <div className="text-terminal-green/60 text-xs font-mono">
-                    PROJECT #{currentProject + 1}
+                    {projects[currentProject].featured ? "SELECTED BUILD" : `PROJECT #${currentProject + 1}`}
                   </div>
                 </div>
                 <h2
@@ -540,7 +555,7 @@ export default function Projects() {
                         playClickSound();
                         const prevPage = Math.floor(currentProject / PROJECTS_PER_PAGE_DESKTOP) - 1;
                         setCurrentProject(prevPage * PROJECTS_PER_PAGE_DESKTOP);
-                        setCountdown(5);
+                        setCountdown(AUTO_ADVANCE_SECONDS);
                       }}
                       className="w-6 h-6 flex items-center justify-center rounded-md transition-colors text-xs font-medium bg-surface-raised text-terminal-green/70 hover:bg-surface-raised/80 hover:text-terminal-green"
                       aria-label="Previous page"
@@ -565,7 +580,7 @@ export default function Projects() {
                           onClick={() => {
                             playClickSound();
                             setCurrentProject(index);
-                            setCountdown(5);
+                            setCountdown(AUTO_ADVANCE_SECONDS);
                           }}
                           className={`w-8 h-8 flex items-center justify-center rounded-md transition-colors text-xs font-medium ${
                             currentProject === index
@@ -587,7 +602,7 @@ export default function Projects() {
                         playClickSound();
                         const nextPage = Math.floor(currentProject / PROJECTS_PER_PAGE_DESKTOP) + 1;
                         setCurrentProject(nextPage * PROJECTS_PER_PAGE_DESKTOP);
-                        setCountdown(5);
+                            setCountdown(AUTO_ADVANCE_SECONDS);
                       }}
                       className="w-6 h-6 flex items-center justify-center rounded-md transition-colors text-xs font-medium bg-surface-raised text-terminal-green/70 hover:bg-surface-raised/80 hover:text-terminal-green"
                       aria-label="Next page"

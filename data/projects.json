@@ -128,7 +128,7 @@
   {
     "id": 8,
     "name": "Daily Personal Planner",
-    "description": "Daily planner web application built with Next.js and TypeScript. Features include task management, calendar integration, and responsive design. Use this password : arafat69",
+    "description": "Daily planner web application built with Next.js and TypeScript. Features include task management, calendar integration, and responsive design.",
     "html_url": "https://github.com/mrx-arafat/daily-planner",
     "topics": [
       "nextjs",
