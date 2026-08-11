@@ -2,7 +2,6 @@ import Link from "next/link";
 import {
   ArrowLeft,
   ArrowUpRight,
-  FileSearch,
   ShieldCheck,
 } from "lucide-react";
 import cveData from "@/data/cve.json";
@@ -33,20 +32,29 @@ export default function SecurityResearch() {
 
         <div className={styles.heroGrid}>
           <div className={styles.heroCopy}>
-            <div className={styles.kicker}>
-              <FileSearch size={16} />
-              Vulnerability research / {cveData.researcher.handle}
+            <div className={styles.heroFileLine}>
+              <span>CASE ARCHIVE</span>
+              <span>RESEARCHER / {cveData.researcher.handle}</span>
             </div>
             <h1>
-              <span className={styles.statementLead}>A record of</span>
-              <span className={styles.statementFocus}>vulnerabilities</span>
-              <span className={styles.statementTail}>found and reported.</span>
+              <span className={styles.statementLead}>Security research</span>
+              <span className={styles.statementFocus}>with a paper trail.</span>
             </h1>
             <p>
               My work follows the evidence: reproduce the flaw, document the impact,
               coordinate disclosure, and stay on the case until users have a safer
               release.
             </p>
+
+            <div className={styles.methodStrip} aria-label="Research method">
+              <span>REPRODUCE</span>
+              <i />
+              <span>DOCUMENT</span>
+              <i />
+              <span>DISCLOSE</span>
+              <i />
+              <span>VERIFY</span>
+            </div>
 
             <a
               href={cveData.researcher.profile}
@@ -68,15 +76,21 @@ export default function SecurityResearch() {
           <div className={styles.dossier}>
             <div className={styles.dossierHeader}>
               <div>
-                <span>Disclosure dossier</span>
-                <strong>FIELD NOTES / 2025</strong>
+                <span>Evidence file</span>
+                <strong>DISCLOSURE REGISTER / 2025</strong>
               </div>
-              <span className={styles.dossierStatus}>verified record</span>
+              <span className={styles.dossierStatus}>record verified</span>
             </div>
 
-            <div className={styles.dossierCount} aria-hidden="true">
-              <span>09</span>
-              <small>findings</small>
+            <div className={styles.dossierIdentity}>
+              <div className={styles.dossierSeal} aria-hidden="true">
+                <ShieldCheck size={23} />
+              </div>
+              <div>
+                <span>Researcher of record</span>
+                <strong>{cveData.researcher.handle}</strong>
+              </div>
+              <b>{String(items.length).padStart(2, "0")}</b>
             </div>
 
             <div className={styles.caseList}>
