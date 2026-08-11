@@ -3,14 +3,14 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "About Easin Arafat",
   description:
-    "Easin Arafat is an Application Security Engineer at Startise, security researcher, systems builder, and founder of AIFlowiz. Explore his work across xCloud, application security, DevOps, and secure AI automation.",
+    "Easin Arafat builds security, infrastructure, and controlled AI automation for production systems. Explore his work across xCloud, application security research, platform operations, and AIFlowiz.",
   alternates: {
     canonical: "https://www.arafatops.com/about",
   },
   openGraph: {
     title: "About Easin Arafat | Application Security Engineer",
     description:
-      "Application security, product engineering, platform operations, and secure AI automation by Easin Arafat, founder of AIFlowiz.",
+      "Security, infrastructure, and controlled AI automation for production systems by Easin Arafat.",
     url: "https://www.arafatops.com/about",
   },
 };

@@ -1,6 +1,9 @@
 import HomeShell from "./components/HomeShell";
 
-export default function Home() {
+export default async function Home({ searchParams }: { searchParams: Promise<{ boot?: string }> }) {
+  const { boot } = await searchParams;
+  const initialBooted = boot === "1";
+
   return (
     <>
       {/* Pre-hydration: hide the boot overlay if this tab already booted,
@@ -8,10 +11,10 @@ export default function Home() {
       <script
         dangerouslySetInnerHTML={{
           __html:
-            'try{if(sessionStorage.getItem("arafat-booted")==="1")document.documentElement.setAttribute("data-booted","")}catch(e){}',
+            'try{if(new URLSearchParams(location.search).get("boot")==="1"||sessionStorage.getItem("arafat-booted")==="1")document.documentElement.setAttribute("data-booted","")}catch(e){}',
         }}
       />
-      <HomeShell />
+      <HomeShell initialBooted={initialBooted} />
       {/* SEO: Server-rendered content for search engine crawlers */}
       <div className="sr-only">
         <h1>Easin Arafat - Application Security Engineer</h1>

@@ -2,8 +2,7 @@ import type { LucideIcon } from "lucide-react";
 import {
   ArrowRight,
   Bot,
-  BookOpen,
-  Code2,
+  CheckCircle2,
   ExternalLink,
   Github,
   Mail,
@@ -14,113 +13,60 @@ import {
 import Link from "next/link";
 
 import {
-  CAPABILITY_PIPELINES,
-  EVIDENCE,
-  EVOLUTION,
   LINKS,
+  OPERATING_AREAS,
   OPERATING_PRINCIPLES,
   PROFILE,
-  type CapabilityPipeline,
-  type EvidenceItem,
+  PROOF,
+  WORK_TRACKS,
+  type ProofItem,
+  type WorkTrack,
 } from "@/components/about/content";
 
-const PIPELINE_ICONS: Record<CapabilityPipeline["id"], LucideIcon> = {
-  build: Code2,
+const labelClass =
+  "font-mono text-[10px] uppercase tracking-[0.24em] text-terminal-green";
+
+const TRACK_ICONS: Record<WorkTrack["id"], LucideIcon> = {
   secure: ShieldCheck,
   operate: ServerCog,
   automate: Bot,
 };
 
-const EVIDENCE_ICONS: Record<EvidenceItem["id"], LucideIcon> = {
-  github: Github,
+const PROOF_ICONS: Record<ProofItem["id"], LucideIcon> = {
   security: ShieldCheck,
-  research: BookOpen,
+  research: Search,
+  systems: Github,
   aiflowiz: Bot,
 };
 
-const SKYLINE = [
-  { height: 5.5, width: 3.5 },
-  { height: 8.5, width: 4.25 },
-  { height: 6.5, width: 3 },
-  { height: 11, width: 5 },
-  { height: 7.5, width: 3.75 },
-  { height: 13, width: 4.5 },
-  { height: 9, width: 3.25 },
-  { height: 6, width: 4.75 },
-  { height: 10, width: 3.5 },
-  { height: 7, width: 5.25 },
-] as const;
-
-const labelClass =
-  "font-mono text-[10px] uppercase tracking-[0.28em] text-terminal-green";
-
-function SkylineBackdrop(): React.ReactElement {
-  return (
-    <div
-      aria-hidden="true"
-      className="pointer-events-none absolute inset-x-0 top-0 h-[38rem] overflow-hidden"
-    >
-      <div className="absolute inset-0 bg-gradient-to-b from-surface-night via-surface-deep/95 to-surface-deep" />
-      <div className="absolute left-1/2 top-16 h-56 w-56 -translate-x-1/2 rounded-full bg-terminal-green/[0.06] blur-3xl" />
-      <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-1 px-2 opacity-50 dark:opacity-70">
-        {SKYLINE.map((building, index) => (
-          <span
-            key={`${building.height}-${index}`}
-            className="block bg-surface-night"
-            style={{
-              height: `${building.height}rem`,
-              width: `${building.width}rem`,
-            }}
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function EvidenceLink({ item }: { item: EvidenceItem }): React.ReactElement {
-  const Icon = EVIDENCE_ICONS[item.id];
-  const className =
-    "group flex min-h-20 items-center justify-between gap-4 border border-terminal-green/15 bg-surface-raised px-5 py-4 transition-colors duration-200 hover:border-terminal-green/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-terminal-green/60";
+function ProofLink({ item }: { item: ProofItem }): React.ReactElement {
+  const Icon = PROOF_ICONS[item.id];
   const content = (
     <>
-      <span className="flex min-w-0 items-center gap-4">
-        <span className="grid h-11 w-11 shrink-0 place-items-center border border-terminal-green/20 text-terminal-green">
-          <Icon size={18} aria-hidden="true" />
+      <span className="grid h-10 w-10 shrink-0 place-items-center border border-terminal-green/25 text-terminal-green">
+        <Icon size={17} aria-hidden="true" />
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block text-sm font-medium text-slate-950 dark:text-slate-100">
+          {item.label}
         </span>
-        <span className="min-w-0">
-          <span className="block text-sm font-medium text-slate-900 dark:text-slate-100">
-            {item.label}
-          </span>
-          <span className="mt-1 block text-xs leading-relaxed text-slate-600 dark:text-slate-400">
-            {item.description}
-          </span>
+        <span className="mt-1 block text-xs leading-5 text-slate-700 dark:text-slate-300">
+          {item.description}
         </span>
       </span>
       {item.isExternal ? (
-        <ExternalLink
-          size={16}
-          aria-hidden="true"
-          className="shrink-0 text-slate-500 transition-colors group-hover:text-terminal-green"
-        />
+        <ExternalLink size={15} aria-hidden="true" className="shrink-0 text-slate-500" />
       ) : (
-        <ArrowRight
-          size={16}
-          aria-hidden="true"
-          className="shrink-0 text-slate-500 transition-colors group-hover:text-terminal-green"
-        />
+        <ArrowRight size={15} aria-hidden="true" className="shrink-0 text-slate-500" />
       )}
     </>
   );
+  const className =
+    "group flex min-h-20 items-center gap-4 border border-terminal-green/15 bg-surface-raised p-4 transition-colors hover:border-terminal-green/55 focus:outline-none focus-visible:ring-2 focus-visible:ring-terminal-green/60";
 
   if (item.isExternal) {
     return (
-      <a
-        href={item.href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={className}
-      >
+      <a href={item.href} target="_blank" rel="noopener noreferrer" className={className}>
         {content}
       </a>
     );
@@ -133,257 +79,208 @@ function EvidenceLink({ item }: { item: EvidenceItem }): React.ReactElement {
   );
 }
 
+function OperatingAreas(): React.ReactElement {
+  return (
+    <div className="border border-terminal-green/20 bg-surface-raised">
+      <div className="flex items-center justify-between border-b border-terminal-green/15 px-5 py-4 sm:px-6">
+        <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-slate-600 dark:text-slate-400">
+          What I work across now
+        </span>
+        <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-terminal-green">Three areas</span>
+      </div>
+
+      <ol className="grid sm:grid-cols-3">
+        {OPERATING_AREAS.map((area, index) => (
+          <li
+            key={area.id}
+            className={`flex flex-col p-5 sm:p-6 ${index > 0 ? "border-t border-terminal-green/15 sm:border-l sm:border-t-0" : ""}`}
+          >
+            <p className="text-sm font-medium leading-5 text-slate-950 dark:text-slate-100">{area.title}</p>
+            <p className="mt-2 text-xs leading-5 text-slate-700 dark:text-slate-300">{area.description}</p>
+            <span className="mt-auto pt-5">
+              <span className="inline-block border border-terminal-green/20 px-2 py-1 font-mono text-[10px] leading-4 text-terminal-green">
+                {area.proof}
+              </span>
+            </span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
+function WorkTrackRow({ track, index }: { track: WorkTrack; index: number }): React.ReactElement {
+  const Icon = TRACK_ICONS[track.id];
+
+  return (
+    <article className="relative grid gap-6 border-t border-terminal-green/15 py-8 first:border-t-0 lg:grid-cols-[3.25rem_minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-8 lg:py-10">
+      <div className="flex items-start gap-3 lg:block">
+        <span className="grid h-9 w-9 shrink-0 place-items-center border border-terminal-green/30 font-mono text-[10px] text-terminal-green">
+          {String(index + 1).padStart(2, "0")}
+        </span>
+        <span className="mt-3 grid h-9 w-9 place-items-center border border-terminal-green/15 text-terminal-green lg:block lg:border-0 lg:pt-3">
+          <Icon size={19} aria-hidden="true" />
+        </span>
+      </div>
+
+      <div>
+        <p className="font-mono text-[10px] tracking-[0.18em] text-terminal-green">{track.command}</p>
+        <h3 className="mt-3 text-xl font-medium leading-snug tracking-tight text-slate-950 dark:text-slate-100">
+          {track.title}
+        </h3>
+        <p className="mt-5 border-l border-terminal-green/25 pl-4 text-sm leading-6 text-slate-700 dark:text-slate-300">
+          {track.input}
+        </p>
+      </div>
+
+      <div className="grid gap-px border border-terminal-green/15 bg-terminal-green/15 sm:grid-cols-2">
+        <div className="bg-surface-raised p-5 sm:p-6">
+          <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-500">What happens next</p>
+          <p className="mt-3 text-sm leading-6 text-slate-900 dark:text-slate-100">{track.action}</p>
+        </div>
+        <div className="bg-surface-deep p-5 sm:p-6">
+          <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-500">What stays visible</p>
+          <p className="mt-3 text-sm leading-6 text-slate-700 dark:text-slate-300">{track.outcome}</p>
+        </div>
+      </div>
+    </article>
+  );
+}
+
 export default function AboutMe(): React.ReactElement {
   return (
-    <main className="relative min-h-screen overflow-hidden bg-surface-deep text-slate-900 dark:text-slate-100">
-      <SkylineBackdrop />
-
-      <div className="relative z-10 mx-auto w-full max-w-6xl px-5 pb-24 pt-16 sm:px-8 lg:px-10">
-        <section
-          aria-labelledby="about-heading"
-          className="grid gap-10 pb-24 lg:grid-cols-12 lg:gap-12"
-        >
-          <div className="lg:col-span-7">
+    <main className="min-h-screen bg-surface-deep text-slate-900 dark:text-slate-100">
+      <div className="mx-auto w-full max-w-6xl px-5 pb-24 pt-16 sm:px-8 lg:px-10">
+        <section aria-labelledby="about-heading" className="grid gap-10 pb-20 lg:grid-cols-12 lg:items-stretch lg:gap-14">
+          <div className="lg:col-span-6">
             <p className={labelClass}>{PROFILE.command}</p>
-            <h1
-              id="about-heading"
-              className="mt-5 max-w-3xl text-4xl font-medium leading-[1.08] tracking-tight text-slate-950 dark:text-slate-50 sm:text-5xl lg:text-6xl"
-            >
+            <h1 id="about-heading" className="mt-5 max-w-3xl text-4xl font-medium leading-[1.08] tracking-tight text-slate-950 dark:text-slate-50 sm:text-5xl lg:text-6xl">
               {PROFILE.headline}
             </h1>
             <p className="mt-7 max-w-2xl text-lg leading-relaxed text-slate-700 dark:text-slate-300">
               {PROFILE.introduction}
             </p>
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <Link
-                href={LINKS.projects}
-                className="inline-flex min-h-11 items-center justify-center gap-2 bg-terminal-green px-5 py-3 font-mono text-xs font-semibold uppercase tracking-[0.16em] text-surface-deep transition-opacity hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-terminal-green focus-visible:ring-offset-2 focus-visible:ring-offset-surface-deep"
-              >
-                Inspect work <ArrowRight size={15} aria-hidden="true" />
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+              <Link href={LINKS.projects} className="inline-flex min-h-11 items-center justify-center gap-2 bg-terminal-green px-5 py-3 font-mono text-xs font-semibold uppercase tracking-[0.14em] text-surface-deep transition-opacity hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-terminal-green focus-visible:ring-offset-2 focus-visible:ring-offset-surface-deep">
+                Inspect selected systems <ArrowRight size={15} aria-hidden="true" />
               </Link>
-              <Link
-                href={LINKS.contact}
-                className="inline-flex min-h-11 items-center justify-center gap-2 border border-terminal-green/30 bg-surface-deep px-5 py-3 font-mono text-xs uppercase tracking-[0.16em] text-terminal-green transition-colors hover:border-terminal-green/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-terminal-green/60"
-              >
-                Start a conversation <Mail size={15} aria-hidden="true" />
+              <Link href={LINKS.security} className="inline-flex min-h-11 items-center justify-center gap-2 border border-terminal-green/30 px-5 py-3 font-mono text-xs uppercase tracking-[0.14em] text-terminal-green transition-colors hover:border-terminal-green/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-terminal-green/60">
+                Review security research <Search size={15} aria-hidden="true" />
               </Link>
             </div>
           </div>
 
-          <aside className="self-end border border-terminal-green/15 bg-surface-raised p-6 font-mono text-xs leading-relaxed lg:col-span-5">
-            <div className="flex items-center justify-between border-b border-terminal-green/15 pb-4">
-              <span className="text-slate-600 dark:text-slate-400">
-                Operational status
-              </span>
-              <span className="inline-flex items-center gap-2 text-terminal-green">
-                <span className="h-2 w-2 rounded-full bg-terminal-green" />
-                ACTIVE
-              </span>
-            </div>
-            <dl className="mt-4 space-y-4">
-              {[
-                ["CURRENT_ROLE", PROFILE.role],
-                ["CURRENT_CONTEXT", PROFILE.context],
-                ["FOCUS_AREA", PROFILE.focus],
-                ["PUBLIC_RECORD", PROFILE.research],
-              ].map(([label, value]) => (
-                <div
-                  key={label}
-                  className="grid gap-1 sm:grid-cols-[9rem_1fr] sm:gap-4"
-                >
-                  <dt className="text-slate-500">{label}</dt>
-                  <dd className="text-slate-800 dark:text-slate-200 sm:text-right">
-                    {value}
-                  </dd>
+          <aside className="flex lg:col-span-6 lg:h-full lg:flex-col">
+            <OperatingAreas />
+            <div className="mt-4 border border-terminal-green/15 bg-surface-raised p-5">
+              <p className={labelClass}>$ production --current</p>
+              <dl className="mt-4 grid gap-x-6 gap-y-4 sm:grid-cols-2">
+                <div>
+                  <dt className="font-mono text-[10px] uppercase tracking-[0.16em] text-slate-600 dark:text-slate-400">Role</dt>
+                  <dd className="mt-1 text-xs leading-5 text-slate-800 dark:text-slate-200">Application Security Engineer</dd>
                 </div>
-              ))}
-            </dl>
+                <div>
+                  <dt className="font-mono text-[10px] uppercase tracking-[0.16em] text-slate-600 dark:text-slate-400">Platform</dt>
+                  <dd className="mt-1 text-xs leading-5 text-slate-800 dark:text-slate-200">xCloud at Startise</dd>
+                </div>
+                <div>
+                  <dt className="font-mono text-[10px] uppercase tracking-[0.16em] text-slate-600 dark:text-slate-400">Public record</dt>
+                  <dd className="mt-1 text-xs leading-5 text-slate-800 dark:text-slate-200">9 Patchstack records</dd>
+                </div>
+                <div>
+                  <dt className="font-mono text-[10px] uppercase tracking-[0.16em] text-slate-600 dark:text-slate-400">Working rule</dt>
+                  <dd className="mt-1 text-xs leading-5 text-slate-800 dark:text-slate-200">Evidence and approval before impact</dd>
+                </div>
+              </dl>
+            </div>
           </aside>
         </section>
 
-        <section
-          aria-labelledby="evolution-heading"
-          className="border-t border-terminal-green/15 py-24"
-        >
-          <div className="grid gap-10 md:grid-cols-[15rem_1fr] md:gap-16">
+        <section aria-labelledby="proof-heading" className="border-y border-terminal-green/15 py-7">
+          <div className="grid gap-4 lg:grid-cols-[13rem_1fr] lg:items-center">
             <div>
-              <p className={labelClass}>$ history --three-shifts</p>
-              <h2
-                id="evolution-heading"
-                className="mt-4 text-3xl font-medium tracking-tight sm:text-4xl"
-              >
-                From building interfaces to operating secure systems.
-              </h2>
+              <p className={labelClass}>$ proof --openable</p>
+              <h2 id="proof-heading" className="mt-2 text-xl font-medium tracking-tight">Open the record.</h2>
             </div>
-            <div className="border-t border-terminal-green/15">
-              {EVOLUTION.map((stage) => (
-                <article
-                  key={stage.id}
-                  className="grid gap-4 border-b border-terminal-green/15 py-8 sm:grid-cols-[10rem_1fr] sm:gap-8"
-                >
-                  <div>
-                    <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-terminal-green">
-                      {stage.label}
-                    </p>
-                    <h3 className="mt-2 text-base font-medium text-slate-900 dark:text-slate-100">
-                      {stage.title}
-                    </h3>
-                  </div>
-                  <p className="text-sm leading-7 text-slate-700 dark:text-slate-300 sm:text-base">
-                    {stage.body}
-                  </p>
-                </article>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {PROOF.map((item) => (
+                <ProofLink key={item.id} item={item} />
               ))}
             </div>
           </div>
         </section>
 
-        <section
-          aria-labelledby="capabilities-heading"
-          className="border-t border-terminal-green/15 py-24"
-        >
-          <div className="max-w-2xl">
-            <p className={labelClass}>$ pipeline --capabilities</p>
-            <h2
-              id="capabilities-heading"
-              className="mt-4 text-3xl font-medium tracking-tight sm:text-4xl"
-            >
-              One problem, four connected disciplines.
-            </h2>
-            <p className="mt-4 text-base leading-relaxed text-slate-700 dark:text-slate-300">
-              I can follow a problem from product intent through implementation,
-              security review, production operations, and safe automation.
-            </p>
-          </div>
-
-          <div className="mt-12 border-y border-terminal-green/15">
-            {CAPABILITY_PIPELINES.map((pipeline) => {
-              const Icon = PIPELINE_ICONS[pipeline.id];
-              return (
-                <article
-                  key={pipeline.id}
-                  className="grid border-b border-terminal-green/15 last:border-b-0 md:grid-cols-12"
-                >
-                  <div className="flex gap-4 border-b border-terminal-green/15 p-6 md:col-span-3 md:border-b-0 md:border-r">
-                    <Icon
-                      size={20}
-                      aria-hidden="true"
-                      className="mt-0.5 shrink-0 text-terminal-green"
-                    />
-                    <div>
-                      <p className="font-mono text-[10px] tracking-[0.18em] text-terminal-green">
-                        {pipeline.command}
-                      </p>
-                      <h3 className="mt-2 text-sm font-semibold uppercase tracking-[0.08em] text-slate-900 dark:text-slate-100">
-                        {pipeline.title}
-                      </h3>
-                    </div>
-                  </div>
-                  <p className="border-b border-terminal-green/15 p-6 text-sm leading-7 text-slate-700 dark:text-slate-300 md:col-span-6 md:border-b-0 md:border-r">
-                    {pipeline.summary}
-                  </p>
-                  <div className="bg-surface-raised p-6 md:col-span-3">
-                    <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-500">
-                      Output
-                    </p>
-                    <p className="mt-2 text-xs leading-6 text-slate-700 dark:text-slate-300">
-                      {pipeline.output}
-                    </p>
-                  </div>
-                </article>
-              );
-            })}
-          </div>
-        </section>
-
-        <section className="border-t border-terminal-green/15 py-24">
-          <div className="grid gap-16 lg:grid-cols-2">
-            <div aria-labelledby="evidence-heading">
-              <p className={labelClass}>$ verify --public</p>
-              <h2
-                id="evidence-heading"
-                className="mt-4 text-3xl font-medium tracking-tight"
-              >
-                Inspectable evidence.
+        <section aria-labelledby="tracks-heading" className="py-24">
+          <div className="grid gap-8 lg:grid-cols-[17rem_1fr] lg:gap-16">
+            <div>
+              <p className={labelClass}>$ work --production</p>
+              <h2 id="tracks-heading" className="mt-4 text-3xl font-medium tracking-tight sm:text-4xl">
+                One operating model, shown as three readable paths.
               </h2>
-              <p className="mt-4 max-w-lg text-sm leading-7 text-slate-700 dark:text-slate-300">
-                The strongest claims on this page point to public work or a
-                record you can open directly.
+              <p className="mt-5 text-sm leading-7 text-slate-700 dark:text-slate-300">
+                Start with the signal. Follow what I do next. See the proof or operational outcome that should remain inspectable afterward.
               </p>
-              <div className="mt-8 space-y-3">
-                {EVIDENCE.map((item) => (
-                  <EvidenceLink key={item.id} item={item} />
-                ))}
-              </div>
             </div>
-
-            <div
-              aria-labelledby="principles-heading"
-              className="border border-terminal-green/15 bg-surface-raised p-7 sm:p-9"
-            >
-              <p className={labelClass}>$ policy --safe-by-default</p>
-              <h2
-                id="principles-heading"
-                className="mt-4 text-3xl font-medium tracking-tight"
-              >
-                Operating principles.
-              </h2>
-              <ol className="mt-9 space-y-7">
-                {OPERATING_PRINCIPLES.map((principle, index) => (
-                  <li key={principle.title} className="flex gap-4">
-                    <span className="font-mono text-xs text-terminal-green">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    <div>
-                      <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                        {principle.title}
-                      </h3>
-                      <p className="mt-1 text-xs leading-6 text-slate-700 dark:text-slate-300">
-                        {principle.body}
-                      </p>
-                    </div>
-                  </li>
-                ))}
-              </ol>
+            <div className="border-b border-terminal-green/15">
+              {WORK_TRACKS.map((track, index) => (
+                <WorkTrackRow key={track.id} track={track} index={index} />
+              ))}
             </div>
           </div>
         </section>
 
-        <section
-          aria-labelledby="contact-heading"
-          className="border-t border-terminal-green/15 py-24 text-center"
-        >
+        <section className="grid gap-12 border-t border-terminal-green/15 py-20 lg:grid-cols-[1.15fr_0.85fr]">
+          <div aria-labelledby="trajectory-heading">
+            <p className={labelClass}>$ trajectory --builder-to-operator</p>
+            <h2 id="trajectory-heading" className="mt-4 text-3xl font-medium tracking-tight">
+              A security foundation that grew into systems work.
+            </h2>
+            <div className="mt-9 grid gap-0 border-y border-terminal-green/15 sm:grid-cols-3">
+              {[
+                ["Builder", "Full-stack projects made the product context tangible."],
+                ["Researcher", "Offensive security and disclosure work made risk concrete."],
+                ["Operator", "Platform reliability and AI workflows made the delivery system the product."],
+              ].map(([title, body], index) => (
+                <article key={title} className="border-b border-terminal-green/15 p-5 last:border-b-0 sm:border-b-0 sm:border-r sm:last:border-r-0">
+                  <span className="font-mono text-[10px] text-terminal-green">{String(index + 1).padStart(2, "0")}</span>
+                  <h3 className="mt-4 text-sm font-semibold text-slate-950 dark:text-slate-100">{title}</h3>
+                  <p className="mt-2 text-xs leading-6 text-slate-700 dark:text-slate-300">{body}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+
+          <aside aria-labelledby="principles-heading" className="border border-terminal-green/15 bg-surface-raised p-6 sm:p-8">
+            <p className={labelClass}>$ safeguards --always-on</p>
+            <h2 id="principles-heading" className="mt-4 text-2xl font-medium tracking-tight">How the work stays trustworthy.</h2>
+            <ul className="mt-7 space-y-5">
+              {OPERATING_PRINCIPLES.map((principle) => (
+                <li key={principle.title} className="flex gap-3">
+                  <CheckCircle2 size={16} aria-hidden="true" className="mt-0.5 shrink-0 text-terminal-green" />
+                  <span>
+                    <strong className="text-sm text-slate-950 dark:text-slate-100">{principle.title}. </strong>
+                    <span className="text-sm leading-6 text-slate-700 dark:text-slate-300">{principle.body}</span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </aside>
+        </section>
+
+        <section aria-labelledby="contact-heading" className="border-t border-terminal-green/15 py-24 text-center">
           <p className={labelClass}>$ next --real-work</p>
-          <h2
-            id="contact-heading"
-            className="mx-auto mt-4 max-w-3xl text-3xl font-medium tracking-tight sm:text-4xl"
-          >
-            Bring the real problem. We can map the safest useful next step.
+          <h2 id="contact-heading" className="mx-auto mt-4 max-w-3xl text-3xl font-medium tracking-tight sm:text-4xl">
+            Bring the system, not just the symptom.
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-slate-700 dark:text-slate-300">
-            Start with the work itself, the tools involved, and what a correct
-            result looks like.
+            We can map what is failing, what needs to stay controlled, and the shortest useful path to a verified result.
           </p>
           <div className="mt-9 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
-            <Link
-              href={LINKS.security}
-              className="inline-flex min-h-11 items-center justify-center gap-2 border border-terminal-green/20 px-5 py-3 font-mono text-xs uppercase tracking-[0.14em] text-slate-800 transition-colors hover:border-terminal-green/60 hover:text-terminal-green focus:outline-none focus-visible:ring-2 focus-visible:ring-terminal-green/60 dark:text-slate-200"
-            >
-              <Search size={15} aria-hidden="true" /> Security research
-            </Link>
-            <a
-              href={LINKS.aiflowiz}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex min-h-11 items-center justify-center gap-2 border border-terminal-green/20 px-5 py-3 font-mono text-xs uppercase tracking-[0.14em] text-slate-800 transition-colors hover:border-terminal-green/60 hover:text-terminal-green focus:outline-none focus-visible:ring-2 focus-visible:ring-terminal-green/60 dark:text-slate-200"
-            >
-              <Bot size={15} aria-hidden="true" /> AIFlowiz
+            <a href={LINKS.aiflowiz} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center justify-center gap-2 border border-terminal-green/25 px-5 py-3 font-mono text-xs uppercase tracking-[0.14em] text-slate-800 transition-colors hover:border-terminal-green/60 hover:text-terminal-green focus:outline-none focus-visible:ring-2 focus-visible:ring-terminal-green/60 dark:text-slate-200">
+              <Bot size={15} aria-hidden="true" /> Explore AIFlowiz
             </a>
-            <Link
-              href={LINKS.contact}
-              className="inline-flex min-h-11 items-center justify-center gap-2 bg-terminal-green px-5 py-3 font-mono text-xs font-semibold uppercase tracking-[0.14em] text-surface-deep transition-opacity hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-terminal-green focus-visible:ring-offset-2 focus-visible:ring-offset-surface-deep"
-            >
-              <Mail size={15} aria-hidden="true" /> Contact
+            <Link href={LINKS.contact} className="inline-flex min-h-11 items-center justify-center gap-2 bg-terminal-green px-5 py-3 font-mono text-xs font-semibold uppercase tracking-[0.14em] text-surface-deep transition-opacity hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-terminal-green focus-visible:ring-offset-2 focus-visible:ring-offset-surface-deep">
+              <Mail size={15} aria-hidden="true" /> Start a conversation
             </Link>
           </div>
         </section>

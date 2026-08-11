@@ -16,8 +16,8 @@ const BOOT_FLAG = "arafat-booted";
  * (an inline script in page.tsx hides the overlay pre-hydration so it
  * never flashes).
  */
-export default function HomeShell() {
-  const [booted, setBooted] = useState(false);
+export default function HomeShell({ initialBooted = false }: { initialBooted?: boolean }) {
+  const [booted, setBooted] = useState(initialBooted);
 
   // Skip the show if this tab already booted.
   useEffect(() => {

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Volume2, VolumeX } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import { playClickSound, playKeyboardSound } from "@/utils/sound";
 
 /**
@@ -131,7 +131,8 @@ export default function HomeClient({ onEnter }: { onEnter: () => void }) {
           {/* Static subtle border underneath */}
           <div className="absolute inset-0 rounded-lg border border-terminal-green/15" />
 
-          <Button
+          <Link
+            href="/?boot=1"
             onClick={goToDashboard}
             className="relative bg-surface-input hover:bg-terminal-green/10 text-terminal-green flex items-center gap-3 px-10 py-5 font-mono tracking-wide transition-all duration-300 shadow-[0_0_20px_rgba(46,213,115,0.15)] hover:shadow-[0_0_35px_rgba(46,213,115,0.4)] hover:scale-105 group overflow-hidden rounded-[6px] border-0"
           >
@@ -145,7 +146,7 @@ export default function HomeClient({ onEnter }: { onEnter: () => void }) {
 
             {/* Blinking cursor */}
             <span className="relative z-10 animate-blink text-lg">|</span>
-          </Button>
+          </Link>
         </div>
       </div>
 

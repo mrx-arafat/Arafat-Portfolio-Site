@@ -1,22 +1,21 @@
 import { describe, expect, it } from "vitest";
 
 import {
-  CAPABILITY_PIPELINES,
-  EVIDENCE,
-  EVOLUTION,
   LINKS,
+  OPERATING_AREAS,
+  PROOF,
   PROFILE,
+  WORK_TRACKS,
 } from "@/components/about/content";
 
-describe("About field manual content", () => {
-  it("describes the approved evolution and capability pipeline", () => {
-    expect(EVOLUTION.map((stage) => stage.id)).toEqual([
-      "builder",
-      "researcher",
-      "operator",
+describe("About operational dossier content", () => {
+  it("describes the current operating areas and work tracks", () => {
+    expect(OPERATING_AREAS.map((area) => area.id)).toEqual([
+      "security",
+      "platform",
+      "automation",
     ]);
-    expect(CAPABILITY_PIPELINES.map((pipeline) => pipeline.id)).toEqual([
-      "build",
+    expect(WORK_TRACKS.map((track) => track.id)).toEqual([
       "secure",
       "operate",
       "automate",
@@ -26,24 +25,24 @@ describe("About field manual content", () => {
   it("keeps the current role and verified public evidence", () => {
     expect(PROFILE.role).toContain("Startise");
     expect(PROFILE.context).toContain("xCloud");
-    expect(EVIDENCE.map((item) => item.label)).toEqual([
-      "Public repositories",
-      "Security research",
-      "Peer-reviewed research",
-      "AIFlowiz",
+    expect(PROOF.map((item) => item.id)).toEqual([
+      "security",
+      "research",
+      "systems",
+      "aiflowiz",
     ]);
-    expect(EVIDENCE.find((item) => item.id === "research")?.href).toBe(
+    expect(PROOF.find((item) => item.id === "research")?.href).toBe(
       "https://doi.org/10.1016/j.array.2026.100901",
     );
   });
 
   it("contains no em dashes in About-page content", () => {
     const content = JSON.stringify({
-      CAPABILITY_PIPELINES,
-      EVIDENCE,
-      EVOLUTION,
       LINKS,
+      OPERATING_AREAS,
+      PROOF,
       PROFILE,
+      WORK_TRACKS,
     });
 
     expect(content).not.toContain("—");
