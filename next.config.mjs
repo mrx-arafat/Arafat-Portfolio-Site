@@ -1,7 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    formats: ['image/webp', 'image/avif'],
+    // AVIF first: smaller than WebP for the same quality; browsers that
+    // cannot decode it fall through to WebP.
+    formats: ['image/avif', 'image/webp'],
+    // Optimized images inherit this TTL (31 days) instead of Next's 60s
+    // default, so /_next/image responses stay cached at the edge.
+    minimumCacheTTL: 2678400,
     remotePatterns: [
       {
         protocol: 'https',
@@ -15,6 +20,22 @@ const nextConfig = {
     parallelServerCompiles: true,
   },
   compress: true,
+  async headers() {
+    // Files under /public otherwise ship with max-age=0 on Vercel and get
+    // revalidated on every visit. Fonts and JS chunks under /_next/static
+    // are already immutable.
+    const longCache = [
+      {
+        key: "Cache-Control",
+        value: "public, max-age=2678400, stale-while-revalidate=86400",
+      },
+    ];
+    return [
+      { source: "/images/:path*", headers: longCache },
+      { source: "/sounds/:path*", headers: longCache },
+      { source: "/favicon.png", headers: longCache },
+    ];
+  },
   async redirects() {
     return [
       {

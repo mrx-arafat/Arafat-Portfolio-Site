@@ -91,14 +91,10 @@ export default function DashboardClient() {
   const [cardEffectActive, setCardEffectActive] = useState(false);
   const [matrixModeActive, setMatrixModeActive] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [isEntering, setIsEntering] = useState(true);
 
   // Mark as mounted to enable client-only rendering
   useEffect(() => {
     setIsMounted(true);
-    // Remove entrance animation after it completes
-    const enterTimer = setTimeout(() => setIsEntering(false), 500);
-    return () => clearTimeout(enterTimer);
   }, []);
 
   useEffect(() => {
@@ -168,7 +164,7 @@ export default function DashboardClient() {
 
   return (
     <main className={`flex min-h-screen flex-col bg-surface-base p-4 md:p-8 relative grid-dots transition-all duration-1000 ${matrixModeActive ? "matrix-mode-active" : ""
-      } ${isEntering ? "animate-slideInRight" : ""}`}>
+      }`}>
       {/* ELITE SYSTEM INFILTRATION - Only render on client */}
       {isMounted && matrixModeActive && (
         <div className="fixed inset-0 z-50 pointer-events-none elite-infiltration-overlay">
@@ -455,8 +451,12 @@ export default function DashboardClient() {
                       alt="Profile Image"
                       width={500}
                       height={500}
+                      // LCP element: rendered at ~340px on phones and 320px in
+                      // the desktop sidebar column, so cap the srcset pick.
+                      sizes="(min-width: 1024px) 320px, calc(100vw - 70px)"
                       className="object-cover w-full h-full hacker-profile-image"
                       priority
+                      fetchPriority="high"
                     />
                   </div>
 

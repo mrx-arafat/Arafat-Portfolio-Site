@@ -1,20 +1,23 @@
 import HomeShell from "./components/HomeShell";
 
-export default async function Home({ searchParams }: { searchParams: Promise<{ boot?: string }> }) {
-  const { boot } = await searchParams;
-  const initialBooted = boot === "1";
-
+/**
+ * Static route: no request-time data (searchParams, cookies, headers) is read
+ * here, so the page prerenders once and is served from the edge cache.
+ * The `?boot=1` query is handled client-side in HomeShell.
+ */
+export default function Home() {
   return (
     <>
-      {/* Pre-hydration: hide the boot overlay if this tab already booted,
-          so reloads don't flash the intro (state catches up in HomeShell). */}
+      {/* Pre-hydration: hide the boot overlay if this tab already booted or
+          the URL carries ?boot=1, so reloads don't flash the intro
+          (state catches up in HomeShell). */}
       <script
         dangerouslySetInnerHTML={{
           __html:
             'try{if(new URLSearchParams(location.search).get("boot")==="1"||sessionStorage.getItem("arafat-booted")==="1")document.documentElement.setAttribute("data-booted","")}catch(e){}',
         }}
       />
-      <HomeShell initialBooted={initialBooted} />
+      <HomeShell />
       {/* SEO: Server-rendered content for search engine crawlers */}
       <div className="sr-only">
         <h1>Easin Arafat - Application Security Engineer</h1>

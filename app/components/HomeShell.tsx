@@ -12,17 +12,24 @@ const BOOT_FLAG = "arafat-booted";
  * 4s auto-boot finishes or the visitor clicks through.
  *
  * The boot sequence plays once per tab: completing it sets a
- * sessionStorage flag, and later visits skip straight to the dashboard
- * (an inline script in page.tsx hides the overlay pre-hydration so it
- * never flashes).
+ * sessionStorage flag, and later visits (or a `?boot=1` URL) skip straight
+ * to the dashboard. An inline script in page.tsx hides the overlay
+ * pre-hydration so it never flashes; the effect below syncs React state.
+ * Reading the query string here, not from server searchParams, keeps the
+ * route static and edge-cacheable.
  */
-export default function HomeShell({ initialBooted = false }: { initialBooted?: boolean }) {
-  const [booted, setBooted] = useState(initialBooted);
+export default function HomeShell() {
+  const [booted, setBooted] = useState(false);
 
-  // Skip the show if this tab already booted.
+  // Skip the show if this tab already booted or the URL asks to.
   useEffect(() => {
     try {
-      if (sessionStorage.getItem(BOOT_FLAG) === "1") setBooted(true);
+      if (
+        new URLSearchParams(window.location.search).get("boot") === "1" ||
+        sessionStorage.getItem(BOOT_FLAG) === "1"
+      ) {
+        setBooted(true);
+      }
     } catch {
       // sessionStorage unavailable (e.g. blocked storage) - keep the show
     }
