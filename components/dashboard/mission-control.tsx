@@ -227,14 +227,17 @@ export function MissionControl(): ReactElement {
   const timers = useRef<number[]>([]);
 
   useEffect(() => {
-    router.prefetch("/skills");
     const pending = timers.current;
     return () => pending.forEach((t) => window.clearTimeout(t));
-  }, [router]);
+  }, []);
 
   const launch = useCallback((): void => {
     if (phase !== "idle") return;
     playClickSound();
+    // Warm /skills now, not on mount: the countdown leaves ~4s of lead time,
+    // and an eager prefetch pulled the three.js galaxy bundle (~140KB gzip)
+    // into every home page load.
+    router.prefetch("/skills");
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       router.push("/skills");
