@@ -10,7 +10,7 @@ import styles from "./security-research.module.css";
 
 const items = cveData.items as CveItem[];
 
-export default function SecurityResearch() {
+export default function SecurityResearch(): React.ReactElement {
   const published = items.filter((item) => item.status === "published").length;
   const highest = Math.max(...items.map((item) => item.cvss));
   const categories = new Set(items.map((item) => item.type)).size;
@@ -37,7 +37,7 @@ export default function SecurityResearch() {
               <span>RESEARCHER / {cveData.researcher.handle}</span>
             </div>
             <h1>
-              <span className={styles.statementLead}>Security research</span>
+              <span className={styles.statementLead}>Security research</span>{" "}
               <span className={styles.statementFocus}>with a paper trail.</span>
             </h1>
             <p>
@@ -157,26 +157,6 @@ export default function SecurityResearch() {
 
         <CveExplorer items={items} />
       </section>
-
-      <div className="sr-only">
-        <h2>CVEs Discovered by Easin Arafat (n0_arafat_n0)</h2>
-        <p>
-          Easin Arafat, Application Security Engineer at Startise, is a security
-          researcher credited on the Patchstack Vulnerability Disclosure Program
-          under the handle n0_arafat_n0. He has responsibly disclosed security
-          vulnerabilities spanning Broken Access Control, Insecure Direct Object
-          Reference, and Sensitive Data Exposure.
-        </p>
-        <ul>
-          {items.map((item) => (
-            <li key={item.id}>
-              {item.cve !== "Reserved" ? `${item.cve}: ` : ""}
-              {item.software} {item.affected}: {item.type} (CVSS {item.cvss},{" "}
-              {item.severity}) reported by Easin Arafat via Patchstack.
-            </li>
-          ))}
-        </ul>
-      </div>
     </main>
   );
 }

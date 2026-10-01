@@ -80,7 +80,7 @@ curl -X POST https://www.arafatops.com/api/blog/publish \
 
 ```json
 { "ok": true, "slug": "hunting-idors-in-wordpress-plugins",
-  "url": "/blog/security/hunting-idors-in-wordpress-plugins", "draft": true }
+  "url": "/blogs/security/hunting-idors-in-wordpress-plugins", "draft": true }
 ```
 
 Notes return `"url": "/notes"`.

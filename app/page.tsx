@@ -1,13 +1,76 @@
+import type { Metadata } from "next";
+import type { ReactElement } from "react";
+
+import { CLIENT_PROJECTS } from "@/components/client-work/content";
+import {
+  CaseStudiesPanel,
+  LatestPostsPanel,
+} from "@/components/dashboard/home-links";
+import { JsonLd } from "@/components/seo/json-ld";
+import cveData from "@/data/cve.json";
+import { getAllPosts, type Post } from "@/lib/blog";
+import {
+  SITE_NAME,
+  SITE_URL,
+  absoluteUrl,
+  isoDateTime,
+  ogImageUrl,
+  pageMetadata,
+} from "@/lib/seo";
+
 import HomeShell from "./components/HomeShell";
 
 /**
- * Static route: no request-time data (searchParams, cookies, headers) is read
- * here, so the page prerenders once and is served from the edge cache.
+ * Static route with hourly ISR: no request-time data (searchParams, cookies,
+ * headers) is read here, so the page prerenders and is served from the edge
+ * cache; the hourly refresh only picks up newly published posts.
  * The `?boot=1` query is handled client-side in HomeShell.
  */
-export default function Home() {
+export const revalidate = 3600;
+
+export const metadata: Metadata = pageMetadata({
+  title: "Easin Arafat - Application Security Engineer | Startise",
+  description: `Easin Arafat is an Application Security Engineer at Startise, working on the xCloud hosting platform, and a security researcher with ${cveData.items.length} disclosed CVEs.`,
+  path: "/",
+  // The card reads as `$ whoami` -> name, so it keeps the short name as its
+  // title instead of the full page title.
+  ogImage: ogImageUrl({
+    title: SITE_NAME,
+    meta: "Application Security Engineer",
+    path: "home",
+    prompt: "whoami",
+    category: "portfolio",
+  }),
+});
+
+/** Home is the profile page for the sitewide Person node. Bump dateModified when the profile content changes. */
+const profilePageSchema = {
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "@id": `${SITE_URL}/#profilepage`,
+  url: absoluteUrl("/"),
+  name: "Easin Arafat - Application Security Engineer",
+  dateCreated: isoDateTime("2025-04-08"),
+  dateModified: isoDateTime("2026-10-01"),
+  mainEntity: { "@id": `${SITE_URL}/#person` },
+};
+
+/** Published posts for the dashboard links; a failed fetch must not take the home page down. */
+async function loadPosts(): Promise<Post[]> {
+  try {
+    return await getAllPosts();
+  } catch (error) {
+    console.error("Home: blog posts unavailable, rendering without them", error);
+    return [];
+  }
+}
+
+export default async function Home(): Promise<ReactElement> {
+  const posts = await loadPosts();
+
   return (
     <>
+      <JsonLd data={profilePageSchema} />
       {/* Pre-hydration: hide the boot overlay if this tab already booted or
           the URL carries ?boot=1, so reloads don't flash the intro
           (state catches up in HomeShell). */}
@@ -17,73 +80,10 @@ export default function Home() {
             'try{if(new URLSearchParams(location.search).get("boot")==="1"||sessionStorage.getItem("arafat-booted")==="1")document.documentElement.setAttribute("data-booted","")}catch(e){}',
         }}
       />
-      <HomeShell />
-      {/* SEO: Server-rendered content for search engine crawlers */}
-      <div className="sr-only">
-        <h1>Easin Arafat - Application Security Engineer</h1>
-        <p>
-          Easin Arafat is an Application Security Engineer at Startise, working
-          on the xCloud cloud hosting platform. He is a graduate of the Military
-          Institute of Science and Technology (MIST) and the Former President of
-          MIST Cyber Security Club.
-        </p>
-        <h2>About Easin Arafat</h2>
-        <p>
-          Easin Arafat specializes in application security, penetration testing,
-          DevSecOps, and secure coding practices. He works at the intersection of
-          product features, infrastructure systems, and real-world operational
-          constraints. His expertise spans Docker security, Nginx and networking,
-          multi-tenant isolation, and CI/CD pipeline security.
-        </p>
-        <h2>Security Research and CVEs</h2>
-        <p>
-          Easin Arafat is a security researcher credited on the Patchstack
-          Vulnerability Disclosure Program under the handle n0_arafat_n0. He has
-          responsibly disclosed 9 CVEs in WordPress plugins, including
-          CVE-2025-62039 (Sensitive Data Exposure, CVSS 7.5), CVE-2025-58680,
-          CVE-2025-64277, CVE-2025-59562, CVE-2025-58981, CVE-2025-62932, and
-          CVE-2025-62931 — covering Broken Access Control, Insecure Direct Object
-          Reference (IDOR), and Sensitive Data Exposure.
-        </p>
-        <h2>Published Research and Recognition</h2>
-        <p>
-          Easin Arafat (Sheikh Easin Arafat) is a co-author of the peer-reviewed
-          paper &quot;Adaptive User Interface for Mobile Banking Apps: Enhancing UX
-          through Machine Learning&quot;, published in Array (Elsevier, Q1 journal,
-          open access), DOI 10.1016/j.array.2026.100901. He was featured in The
-          Daily Star for cybersecurity education and the events of the MIST Cyber
-          Security Club, organized MIST LEETCON 2023 (Bangladesh&apos;s first
-          international cybersecurity conference, 3,500+ participants), and was a
-          2021 University Rover Challenge Global Champion with Team MIST Mongol
-          Barota.
-        </p>
-        <h2>Professional Experience</h2>
-        <ul>
-          <li>Application Security Engineer at Startise (xCloud)</li>
-          <li>Former President of MIST Cyber Security Club</li>
-          <li>
-            Graduate of Military Institute of Science and Technology (MIST),
-            Bangladesh
-          </li>
-        </ul>
-        <h2>Areas of Expertise</h2>
-        <ul>
-          <li>Application Security and Penetration Testing</li>
-          <li>DevSecOps and Automation</li>
-          <li>Web Development (React, Next.js, TypeScript)</li>
-          <li>Cloud Security (Docker, Nginx, Multi-Tenant Isolation)</li>
-          <li>AI, Machine Learning, and Large Language Models</li>
-          <li>Cybersecurity Research and Offensive Security</li>
-        </ul>
-        <h2>Connect with Easin Arafat</h2>
-        <nav>
-          <a href="https://github.com/mrx-arafat">GitHub</a>
-          <a href="https://www.linkedin.com/in/e4rafat">LinkedIn</a>
-          <a href="https://medium.com/@easinxarafat">Medium Blog</a>
-          <a href="https://www.facebook.com/e4rafat">Facebook</a>
-          <a href="https://www.instagram.com/e4rafat/">Instagram</a>
-        </nav>
-      </div>
+      <HomeShell
+        caseStudies={<CaseStudiesPanel projects={CLIENT_PROJECTS} />}
+        latestPosts={<LatestPostsPanel posts={posts} />}
+      />
     </>
   );
 }

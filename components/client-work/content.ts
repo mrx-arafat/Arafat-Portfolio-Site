@@ -13,6 +13,8 @@ export interface ClientProject {
   deploymentLabel: string;
   deploymentUrl: string;
   summary: string;
+  /** Search-snippet description for the case-study page, about 150 characters. */
+  metaDescription: string;
   need: string;
   delivery: readonly string[];
   slides: readonly ClientWorkSlide[];
@@ -36,6 +38,8 @@ export const CLIENT_PROJECTS: readonly ClientProject[] = [
     deploymentUrl: "https://ts.arafatops.com",
     summary:
       "A secure browser and mobile control plane for persistent AI coding sessions on infrastructure the user owns.",
+    metaDescription:
+      "TermStream case study: a secure browser and mobile control plane for persistent AI coding sessions on servers you own, from SSH setup to resuming work.",
     need:
       "Keep long-running engineering work available across devices without losing control of the server, repository, branch, or active session.",
     delivery: [
@@ -95,6 +99,8 @@ export const CLIENT_PROJECTS: readonly ClientProject[] = [
     deploymentUrl: "https://obsidian.arafatops.com",
     summary:
       "A browser control deck for an interconnected Markdown vault, built to keep useful knowledge close to the moment it matters.",
+    metaDescription:
+      "Second Brain.Deck case study: a browser control deck for an interconnected Markdown vault, with quick capture, Tree view, Mind Map and a command palette.",
     need:
       "Capture an idea before it disappears, retrieve it when it becomes useful, navigate a growing vault, and see relationships across the whole knowledge base.",
     delivery: [

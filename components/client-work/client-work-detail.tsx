@@ -27,7 +27,6 @@ function ProjectWalkthrough({
 }: ProjectWalkthroughProps): React.ReactElement {
   const [currentIndex, setCurrentIndex] = useState(0);
   const gestureStartX = useRef<number | null>(null);
-  const currentSlide = project.slides[currentIndex];
 
   const move = (step: -1 | 1): void => {
     setCurrentIndex((index) =>
@@ -78,15 +77,23 @@ function ProjectWalkthrough({
     >
       <div className="flex flex-col gap-3 border-b border-terminal-green/20 px-4 py-4 sm:flex-row sm:items-end sm:justify-between sm:px-6">
         <div>
-          <p className="font-mono text-xs text-terminal-green/65">
-            {project.title.toUpperCase()} / SYSTEM WALKTHROUGH
-          </p>
           <h2
             id={`${project.id}-walkthrough-heading`}
-            className="mt-1 text-xl font-semibold text-terminal-green"
+            className="font-mono text-xs uppercase text-terminal-green/65"
           >
-            {currentSlide.title}
+            {project.title} / System walkthrough
           </h2>
+          {/* Every slide is in the document; only the active one is shown. */}
+          {project.slides.map((slide, index) => (
+            <h3
+              key={slide.id}
+              id={`${project.id}-slide-${slide.id}`}
+              hidden={index !== currentIndex}
+              className="mt-1 text-xl font-semibold text-terminal-green"
+            >
+              {slide.title}
+            </h3>
+          ))}
         </div>
         <p className="font-mono text-sm text-terminal-green" aria-live="polite">
           {String(currentIndex + 1).padStart(2, "0")} /{" "}
@@ -111,23 +118,28 @@ function ProjectWalkthrough({
           gestureStartX.current = null;
         }}
       >
-        <figure>
-          <div className="relative aspect-[2/1] overflow-hidden bg-[#10111a]">
-            <Image
-              key={currentSlide.id}
-              src={currentSlide.image}
-              alt={currentSlide.alt}
-              draggable={false}
-              fill
-              sizes="(min-width: 1024px) 960px, (min-width: 640px) 90vw, 100vw"
-              className="object-contain motion-safe:animate-[fadeIn_250ms_ease-out]"
-              priority={currentIndex === 0}
-            />
-          </div>
-          <figcaption className="min-h-28 border-t border-terminal-green/20 px-4 py-4 text-base leading-relaxed text-terminal-green/75 sm:min-h-24 sm:px-6">
-            {currentSlide.caption}
-          </figcaption>
-        </figure>
+        {project.slides.map((slide, index) => (
+          <figure
+            key={slide.id}
+            hidden={index !== currentIndex}
+            aria-labelledby={`${project.id}-slide-${slide.id}`}
+          >
+            <div className="relative aspect-[2/1] overflow-hidden bg-[#10111a]">
+              <Image
+                src={slide.image}
+                alt={slide.alt}
+                draggable={false}
+                fill
+                sizes="(min-width: 1024px) 960px, (min-width: 640px) 90vw, 100vw"
+                className="object-contain motion-safe:animate-[fadeIn_250ms_ease-out]"
+                priority={index === 0}
+              />
+            </div>
+            <figcaption className="min-h-28 border-t border-terminal-green/20 px-4 py-4 text-base leading-relaxed text-terminal-green/75 sm:min-h-24 sm:px-6">
+              {slide.caption}
+            </figcaption>
+          </figure>
+        ))}
 
         <div className="flex flex-col gap-4 border-t border-terminal-green/20 p-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
           <div
@@ -185,7 +197,7 @@ export function ClientWorkDetail({
       <div className="mx-auto max-w-6xl">
         <div className="mb-8 flex flex-wrap items-center justify-between gap-4 border-b border-terminal-green/25 pb-5">
           <Link
-            href="/projects#client-work"
+            href="/projects"
             className="inline-flex min-h-12 items-center gap-2 font-mono text-sm text-terminal-green/70 transition-colors hover:text-terminal-green focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terminal-green motion-reduce:transition-none"
           >
             <ArrowLeft size={16} aria-hidden="true" />
@@ -225,17 +237,17 @@ export function ClientWorkDetail({
 
           <div className="mb-10 grid border-y border-terminal-green/20 lg:grid-cols-[0.8fr_1.2fr]">
             <div className="py-7 lg:border-r lg:border-terminal-green/20 lg:pr-10">
-              <p className="font-mono text-xs text-terminal-green/60">
-                THE NEED
-              </p>
+              <h2 className="font-mono text-xs uppercase text-terminal-green/60">
+                The need
+              </h2>
               <p className="mt-3 text-base leading-relaxed text-terminal-green/75">
                 {project.need}
               </p>
             </div>
             <div className="border-t border-terminal-green/20 py-7 lg:border-t-0 lg:pl-10">
-              <p className="font-mono text-xs text-terminal-green/60">
-                DELIVERED WORKFLOW
-              </p>
+              <h2 className="font-mono text-xs uppercase text-terminal-green/60">
+                Delivered workflow
+              </h2>
               <ol className="mt-3 divide-y divide-terminal-green/15">
                 {project.delivery.map((item, index) => (
                   <li

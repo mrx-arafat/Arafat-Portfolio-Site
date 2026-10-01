@@ -1,56 +1,72 @@
-import { MetadataRoute } from "next";
-import { getAllPosts, getAllNotes, getCategories } from "@/lib/blog";
+import type { MetadataRoute } from "next";
+import { CLIENT_PROJECTS } from "@/components/client-work/content";
+import { getAllNotes, getAllPosts, type Note, type Post } from "@/lib/blog";
+import { absoluteUrl, isoDateTime } from "@/lib/seo";
 
 export const revalidate = 3600;
 
+/** Newest `YYYY-MM-DD` date in a list, or undefined when the list is empty. */
+function newestDate(dates: string[]): string | undefined {
+  return dates.reduce<string | undefined>(
+    (newest, date) => (newest === undefined || date > newest ? date : newest),
+    undefined,
+  );
+}
+
+/**
+ * One sitemap entry. `lastModified` is set only when `date` comes from the
+ * content itself: Google trusts lastmod only while it is consistently
+ * accurate, so a page with no real modification date carries none rather
+ * than a build or request timestamp. The date-only value is passed through
+ * as a site-local datetime string, never as a Date, so serialising it cannot
+ * move it across a day boundary.
+ */
+function entry(path: string, date?: string): MetadataRoute.Sitemap[number] {
+  return {
+    url: absoluteUrl(path),
+    ...(date && { lastModified: isoDateTime(date) }),
+  };
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://www.arafatops.com";
-
-  const staticRoutes: MetadataRoute.Sitemap = [
-    { url: baseUrl, lastModified: new Date(), changeFrequency: "weekly", priority: 1 },
-    { url: `${baseUrl}/about`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.9 },
-    { url: `${baseUrl}/faq`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${baseUrl}/projects`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/projects/client-work/termstream`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
-    { url: `${baseUrl}/projects/client-work/second-brain-deck`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
-    { url: `${baseUrl}/security-research`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.9 },
-    { url: `${baseUrl}/featured`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.9 },
-    { url: `${baseUrl}/articles`, lastModified: new Date(), changeFrequency: "daily", priority: 0.8 },
-    { url: `${baseUrl}/blogs`, lastModified: new Date(), changeFrequency: "daily", priority: 0.9 },
-    { url: `${baseUrl}/notes`, lastModified: new Date(), changeFrequency: "daily", priority: 0.7 },
-    { url: `${baseUrl}/skills`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${baseUrl}/contact`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.6 },
-  ];
-
-  // Blog content — resilient: an empty sitemap section beats a 500
+  let posts: Post[] = [];
+  let notes: Note[] = [];
   try {
-    const [posts, notes, categories] = await Promise.all([
-      getAllPosts(),
-      getAllNotes(),
-      getCategories(),
-    ]);
-
-    const categoryRoutes: MetadataRoute.Sitemap = categories.map((cat) => ({
-      url: `${baseUrl}/blogs/${cat.name}`,
-      lastModified: new Date(),
-      changeFrequency: "daily",
-      priority: 0.8,
-    }));
-
-    const postRoutes: MetadataRoute.Sitemap = posts.map((post) => ({
-      url: `${baseUrl}/blogs/${post.category}/${post.slug}`,
-      lastModified: new Date(post.date),
-      changeFrequency: "monthly",
-      priority: 0.8,
-    }));
-
-    // Notes render on /notes — freshest note bumps its lastModified
-    const notesLastModified = notes[0] ? new Date(notes[0].date) : new Date();
-    const notesRoute = staticRoutes.find((r) => r.url === `${baseUrl}/notes`);
-    if (notesRoute) notesRoute.lastModified = notesLastModified;
-
-    return [...staticRoutes, ...categoryRoutes, ...postRoutes];
-  } catch {
-    return staticRoutes;
+    [posts, notes] = await Promise.all([getAllPosts(), getAllNotes()]);
+  } catch (error) {
+    // Resilient on purpose: a sitemap without the blog section beats a 500.
+    console.error(
+      "[sitemap] blog content unavailable, listing static pages only",
+      error,
+    );
   }
+
+  const newestPost = newestDate(posts.map((post) => post.date));
+  const postDatesByCategory = new Map<string, string[]>();
+  for (const post of posts) {
+    const dates = postDatesByCategory.get(post.category) ?? [];
+    dates.push(post.date);
+    postDatesByCategory.set(post.category, dates);
+  }
+
+  return [
+    entry("/"),
+    entry("/about"),
+    entry("/faq"),
+    entry("/projects"),
+    ...CLIENT_PROJECTS.map((project) => entry(project.detailPath)),
+    entry("/security-research"),
+    entry("/featured"),
+    entry("/articles", newestPost),
+    entry("/blogs", newestPost),
+    entry("/notes", newestDate(notes.map((note) => note.date))),
+    entry("/skills"),
+    entry("/contact"),
+    ...Array.from(postDatesByCategory, ([category, dates]) =>
+      entry(`/blogs/${category}`, newestDate(dates)),
+    ),
+    ...posts.map((post) =>
+      entry(`/blogs/${post.category}/${post.slug}`, post.date),
+    ),
+  ];
 }

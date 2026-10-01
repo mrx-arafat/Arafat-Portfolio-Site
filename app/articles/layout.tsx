@@ -1,24 +1,20 @@
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
+import { pageMetadata } from "@/lib/seo";
+
+import { ARTICLES_DESCRIPTION } from "./seo";
+
+export const metadata: Metadata = pageMetadata({
   title: "Articles",
-  description:
-    "Read articles by Easin Arafat on cybersecurity, application security, penetration testing, DevSecOps, and web development.",
-  alternates: {
-    canonical: "https://www.arafatops.com/articles",
-  },
-  openGraph: {
-    title: "Articles | Easin Arafat",
-    description:
-      "Read articles by Easin Arafat on cybersecurity, application security, penetration testing, and DevSecOps.",
-    url: "https://www.arafatops.com/articles",
-  },
-};
+  description: ARTICLES_DESCRIPTION,
+  path: "/articles",
+  ogCard: { prompt: "./view_articles.sh --display=latest" },
+});
 
 export default function ArticlesLayout({
   children,
 }: {
   children: React.ReactNode;
-}) {
+}): React.ReactNode {
   return children;
 }

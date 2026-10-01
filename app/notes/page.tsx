@@ -2,17 +2,17 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { ArrowLeft, Calendar } from "lucide-react";
 import { getAllNotes } from "@/lib/blog";
+import { pageMetadata } from "@/lib/seo";
 import { MdxContent } from "@/components/mdx-content";
 import { TerminalHeader } from "@/components/blog/terminal-header";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Daily Notes",
   description:
-    "Short daily notes — raw thoughts on security, philosophy, business, and life by Easin Arafat.",
-  alternates: {
-    canonical: "https://www.arafatops.com/notes",
-  },
-};
+    "Daily notes by Easin Arafat: short, unpolished entries on security, philosophy, business and life, logged between the longer essays on the blog.",
+  path: "/notes",
+  ogCard: { category: "notes", prompt: "tail -f daily.log" },
+});
 
 export const revalidate = 300;
 
@@ -32,10 +32,10 @@ export default async function NotesPage() {
             <ArrowLeft size={16} className="mr-2" />
             <span className="text-sm">cd ../blog</span>
           </Link>
-          <h1 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-terminal-green to-terminal-soft">
-            <span className="text-terminal-green/70">[</span>
-            DAILY_NOTES
-            <span className="text-terminal-green/70">]</span>
+          <h1 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-terminal-green to-terminal-soft uppercase">
+            <span aria-hidden="true" className="bracket-open text-terminal-green/70" />
+            Daily notes
+            <span aria-hidden="true" className="bracket-close text-terminal-green/70" />
           </h1>
         </div>
 
@@ -71,7 +71,7 @@ export default async function NotesPage() {
                   ))}
                 </header>
                 <div className="blog-prose text-sm">
-                  <MdxContent source={note.content} />
+                  <MdxContent source={note.content} title={note.title} />
                 </div>
               </article>
             ))}

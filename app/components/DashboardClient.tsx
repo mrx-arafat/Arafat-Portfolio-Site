@@ -1,6 +1,13 @@
 "use client";
 
-import { useState, useEffect, useRef, useMemo } from "react";
+import {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  type ReactElement,
+  type ReactNode,
+} from "react";
 import { useRouter } from "next/navigation";
 import {
   Volume2,
@@ -76,9 +83,18 @@ const CODE_RAIN_DURATIONS = generateStableRandoms(20, 23);
 const MATRIX_RAIN_VALUES = generateStableRandoms(100, 31);
 const FLOATING_CODE_POSITIONS = generateStableRandoms(10, 55);
 
-export default function DashboardClient() {
+interface DashboardClientProps {
+  /** Server-rendered panel of case-study links, shown in the ~/work zone. */
+  caseStudies: ReactNode;
+  /** Server-rendered panel of latest-post links, shown in the ~/write zone. */
+  latestPosts: ReactNode;
+}
+
+export default function DashboardClient({
+  caseStudies,
+  latestPosts,
+}: DashboardClientProps): ReactElement {
   const { isMuted, toggleMute } = useMusicContext();
-  const [isMounted, setIsMounted] = useState(false);
   const [skills, setSkills] = useState({
     security: true,
     business: true,
@@ -91,11 +107,6 @@ export default function DashboardClient() {
   const [cardEffectActive, setCardEffectActive] = useState(false);
   const [matrixModeActive, setMatrixModeActive] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-
-  // Mark as mounted to enable client-only rendering
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -165,8 +176,8 @@ export default function DashboardClient() {
   return (
     <main className={`flex min-h-screen flex-col bg-surface-base p-4 md:p-8 relative grid-dots transition-all duration-1000 ${matrixModeActive ? "matrix-mode-active" : ""
       }`}>
-      {/* ELITE SYSTEM INFILTRATION - Only render on client */}
-      {isMounted && matrixModeActive && (
+      {/* ELITE SYSTEM INFILTRATION - client only: matrixModeActive is set solely by a click */}
+      {matrixModeActive && (
         <div className="fixed inset-0 z-50 pointer-events-none elite-infiltration-overlay">
           {/* Neural Network Visualization */}
           <div className="absolute inset-0 neural-network">
@@ -514,6 +525,37 @@ export default function DashboardClient() {
                   <div className="absolute bottom-0 left-0 w-4 h-4 border-b border-l border-terminal-green"></div>
                   <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-terminal-green"></div>
                 </div>
+              </div>
+
+              {/* Identity: the page's only H1, plain visible text */}
+              <div className="mt-3">
+                <h1 className="text-terminal-green">
+                  <span className="block font-mono text-xl font-bold tracking-wide">
+                    Easin Arafat
+                  </span>{" "}
+                  <span className="block text-sm font-medium mt-0.5">
+                    Application Security Engineer at Startise
+                  </span>
+                </h1>
+                {/* Bio stays collapsed until asked for; native disclosure, no JS */}
+                <details className="group mt-2">
+                  <summary className="inline-flex cursor-pointer list-none items-center gap-1.5 rounded-sm font-mono text-xs text-terminal-green/70 transition-colors hover:text-terminal-green focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-terminal-green [&::-webkit-details-marker]:hidden">
+                    <span
+                      aria-hidden="true"
+                      className="inline-block transition-transform duration-200 group-open:rotate-90"
+                    >
+                      &gt;
+                    </span>
+                    cat bio.txt
+                  </summary>
+                  <p className="text-terminal-green/80 text-xs leading-relaxed mt-2">
+                    I work on the xCloud hosting platform and research WordPress
+                    plugin security as n0_arafat_n0, with {cveData.items.length}{" "}
+                    CVEs disclosed through Patchstack. Graduate of the Military
+                    Institute of Science and Technology (MIST), Bangladesh, and
+                    former President of MIST Cyber Security Club.
+                  </p>
+                </details>
               </div>
             </div>
           </div>
@@ -898,9 +940,9 @@ export default function DashboardClient() {
               <div className="flex-1 p-5 flex flex-col relative z-10">
                 <div className="mb-4">
                   <div className="text-terminal-green/70 text-xs font-mono mb-1">peer-reviewed · published 2026</div>
-                  <h3 className="text-xl md:text-2xl font-bold text-terminal-green mb-2 leading-tight">
-                    Adaptive UI for Mobile Banking — Enhancing UX through Machine Learning
-                  </h3>
+                  <h2 className="text-xl md:text-2xl font-bold text-terminal-green mb-2 leading-tight">
+                    Adaptive UI for Mobile Banking - Enhancing UX through Machine Learning
+                  </h2>
                   <div className="flex flex-wrap gap-2 mb-3">
                     <span className="text-[10px] font-mono font-bold uppercase tracking-wide px-2 py-1 rounded bg-terminal-green/10 text-terminal-green border border-terminal-green/20">Q1 Journal</span>
                     <span className="text-[10px] font-mono font-bold uppercase tracking-wide px-2 py-1 rounded bg-terminal-green/10 text-terminal-green border border-terminal-green/20">Impact Factor 4.5</span>
@@ -1030,6 +1072,8 @@ export default function DashboardClient() {
               </div>
             </div>
 
+            {/* Case studies: server-rendered links to each client-work page */}
+            <div className="md:col-span-2">{caseStudies}</div>
           </div>
 
           {/* ZONE: ~/write — articles, blog, notes */}
@@ -1058,7 +1102,7 @@ export default function DashboardClient() {
                   </div>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-terminal-green font-semibold text-sm">What I Write About</h3>
+                  <h2 className="text-terminal-green font-semibold text-sm">What I Write About</h2>
                   <p className="text-terminal-green/60 text-xs leading-relaxed">
                     Security, building businesses, psychology, and how the world works.
                   </p>
@@ -1069,6 +1113,9 @@ export default function DashboardClient() {
                 </div>
               </div>
             </div>
+
+            {/* Latest posts: server-rendered links to individual essays */}
+            {latestPosts}
           </div>
 
           {/* ZONE: ~/etc — extracurricular & misc */}
@@ -1124,9 +1171,9 @@ export default function DashboardClient() {
 
                   {/* Hover tooltip with details */}
                   <div className="absolute inset-0 bg-surface-raised/90 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-4 text-center">
-                    <h4 className="text-terminal-green font-bold mb-2">
+                    <h3 className="text-terminal-green font-bold mb-2">
                       {item.title}
-                    </h4>
+                    </h3>
                     <p className="text-terminal-green/80 text-xs">
                       {item.description}
                     </p>

@@ -80,7 +80,7 @@ export default function GalaxyFallback({
             }}
           />
           <p className="text-xs uppercase tracking-[0.35em] text-[#eef1f5]/75">
-            Arafat — core star
+            Arafat - core star
           </p>
         </div>
 

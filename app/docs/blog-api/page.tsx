@@ -5,14 +5,17 @@ import type { Metadata } from "next";
 import { ArrowLeft } from "lucide-react";
 import { MdxContent } from "@/components/mdx-content";
 import { TerminalHeader } from "@/components/blog/terminal-header";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+// Operator reference for the token-protected publish endpoint, not content
+// meant to rank: kept out of the index, links still followed.
+export const metadata: Metadata = pageMetadata({
   title: "Blog Publish API",
   description:
-    "API reference for publishing posts to arafatops.com — endpoints, auth, fields, and examples.",
-  alternates: { canonical: "https://www.arafatops.com/docs/blog-api" },
-  robots: { index: false, follow: false },
-};
+    "API reference for publishing posts to arafatops.com - endpoints, auth, fields, and examples.",
+  path: "/docs/blog-api",
+  noindex: true,
+});
 
 export default function BlogApiDocsPage() {
   // Single source of truth: the repo markdown doc, read at build time

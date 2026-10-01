@@ -2,8 +2,20 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, Calendar, Clock } from "lucide-react";
-import { getAllPosts, getAdjacentPosts, getPost, isPreviewMode } from "@/lib/blog";
+import {
+  countWords,
+  getAllPosts,
+  getAdjacentPosts,
+  getCategoryInfo,
+  getPost,
+  getRelatedPosts,
+  isPreviewMode,
+  type Post,
+} from "@/lib/blog";
+import { SITE_URL, absoluteUrl, isoDateTime, ogImageUrl, pageMetadata } from "@/lib/seo";
 import { MdxContent } from "@/components/mdx-content";
+import { JsonLd, PERSON_REF, breadcrumbSchema } from "@/components/seo/json-ld";
+import { RelatedPosts } from "@/components/blog/related-posts";
 import { TerminalHeader } from "@/components/blog/terminal-header";
 
 interface Props {
@@ -18,33 +30,33 @@ export async function generateStaticParams() {
 export const revalidate = 300;
 export const dynamicParams = true;
 
+/** Uploaded cover, or the generated terminal card when the post has none. */
+function socialImage(post: Post): string {
+  return (
+    post.cover ??
+    ogImageUrl({
+      title: post.title,
+      category: post.category,
+      path: `blogs/${post.category}`,
+    })
+  );
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category, slug } = await params;
   const post = await getPost(category, slug);
   if (!post) return {};
-  const ogImage =
-    post.cover ??
-    `/api/og?title=${encodeURIComponent(post.title)}&category=${encodeURIComponent(category)}`;
-  return {
+  // No "updated" column yet, so the publish date doubles as the modified date.
+  const publishedAt = isoDateTime(post.date);
+  return pageMetadata({
     title: post.title,
     description: post.description,
-    alternates: {
-      canonical: `https://www.arafatops.com/blogs/${category}/${slug}`,
-    },
-    openGraph: {
-      title: post.title,
-      description: post.description,
-      type: "article",
-      publishedTime: post.date,
-      images: [{ url: ogImage, width: 1200, height: 630 }],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: post.title,
-      description: post.description,
-      images: [ogImage],
-    },
-  };
+    path: `/blogs/${category}/${slug}`,
+    ogImage: socialImage(post),
+    type: "article",
+    publishedTime: publishedAt,
+    modifiedTime: publishedAt,
+  });
 }
 
 export default async function PostPage({ params }: Props) {
@@ -56,9 +68,12 @@ export default async function PostPage({ params }: Props) {
 
   const published = await getAllPosts();
   const { older, newer } = getAdjacentPosts(published, category, slug);
+  const related = getRelatedPosts(published, post, { avoid: [older, newer] });
 
-  const baseUrl = "https://www.arafatops.com";
-  const postUrl = `${baseUrl}/blogs/${category}/${slug}`;
+  const categoryInfo = getCategoryInfo(category);
+  const postPath = `/blogs/${category}/${slug}`;
+  const postUrl = absoluteUrl(postPath);
+  const publishedAt = isoDateTime(post.date);
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -67,43 +82,30 @@ export default async function PostPage({ params }: Props) {
         headline: post.title,
         description: post.description,
         url: postUrl,
-        datePublished: post.date,
+        datePublished: publishedAt,
+        dateModified: publishedAt,
+        inLanguage: "en",
+        wordCount: countWords(post.content),
         keywords: post.tags.join(", "),
-        articleSection: category,
-        image:
-          post.cover ??
-          `${baseUrl}/api/og?title=${encodeURIComponent(post.title)}&category=${encodeURIComponent(category)}`,
-        author: {
-          "@type": "Person",
-          "@id": `${baseUrl}/#person`,
-          name: "Easin Arafat",
-          url: baseUrl,
-        },
-        publisher: {
-          "@type": "Person",
-          "@id": `${baseUrl}/#person`,
-          name: "Easin Arafat",
-          url: baseUrl,
-        },
+        articleSection: categoryInfo.label,
+        // Covers may be stored as site-relative paths; structured data needs absolute URLs.
+        image: new URL(socialImage(post), SITE_URL).href,
+        author: PERSON_REF,
+        publisher: PERSON_REF,
         mainEntityOfPage: { "@type": "WebPage", "@id": postUrl },
       },
-      {
-        "@type": "BreadcrumbList",
-        itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Blog", item: `${baseUrl}/blogs` },
-          { "@type": "ListItem", position: 2, name: category, item: `${baseUrl}/blogs/${category}` },
-          { "@type": "ListItem", position: 3, name: post.title, item: postUrl },
-        ],
-      },
+      breadcrumbSchema([
+        { name: "Home", path: "/" },
+        { name: "Blog", path: "/blogs" },
+        { name: categoryInfo.label, path: `/blogs/${category}` },
+        { name: post.title, path: postPath },
+      ]),
     ],
   };
 
   return (
     <main className="min-h-screen bg-surface-base text-terminal-green p-4 md:p-8 grid-dots">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={jsonLd} />
       <div className="max-w-4xl mx-auto">
         {preview && (
           <div className="mb-4 flex flex-wrap items-center justify-between gap-2 rounded-md border border-amber-400/40 bg-amber-400/10 px-3 py-2 font-mono text-xs text-amber-300">
@@ -160,7 +162,7 @@ export default async function PostPage({ params }: Props) {
           </header>
 
           <div className="blog-prose">
-            <MdxContent source={post.content} />
+            <MdxContent source={post.content} title={post.title} />
           </div>
 
           {post.tags.length > 0 && (
@@ -209,6 +211,8 @@ export default async function PostPage({ params }: Props) {
             </Link>
           )}
         </div>
+
+        <RelatedPosts posts={related} />
       </div>
     </main>
   );

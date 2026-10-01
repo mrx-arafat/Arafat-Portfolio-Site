@@ -19,13 +19,16 @@ export default function HomeClient({ onEnter }: { onEnter: () => void }) {
   const [isTimerPaused, setIsTimerPaused] = useState(false);
 
   useEffect(() => {
-    if (countdown > 0 && !isRedirecting && !isTimerPaused) {
-      const timer = setTimeout(() => setCountdown((prev) => prev - 1), 1000);
-      return () => clearTimeout(timer);
-    } else if (countdown === 0 && !isRedirecting && !isTimerPaused) {
-      setIsRedirecting(true);
-      onEnter();
-    }
+    if (countdown <= 0 || isRedirecting || isTimerPaused) return;
+    const timer = setTimeout(() => {
+      setCountdown(countdown - 1);
+      // The tick that reaches zero is the auto-boot itself.
+      if (countdown === 1) {
+        setIsRedirecting(true);
+        onEnter();
+      }
+    }, 1000);
+    return () => clearTimeout(timer);
   }, [countdown, isRedirecting, isTimerPaused, onEnter]);
 
   const screens = [
@@ -72,7 +75,7 @@ export default function HomeClient({ onEnter }: { onEnter: () => void }) {
   };
 
   return (
-    <main className="boot-overlay fixed inset-0 z-[100] min-h-screen bg-surface-night text-white flex flex-col items-center justify-center p-8">
+    <div className="boot-overlay fixed inset-0 z-[100] min-h-screen bg-surface-night text-white flex flex-col items-center justify-center p-8">
       {/* Power button */}
       <button
         onClick={handleToggle}
@@ -168,6 +171,6 @@ export default function HomeClient({ onEnter }: { onEnter: () => void }) {
           <span className="text-terminal-green/90" aria-hidden="true">&gt;</span> SYSTEM.AUTO_BOOT {isTimerPaused ? <span className="text-terminal-amber">PAUSED</span> : <>IN <span className="text-terminal-green">00:{countdown >= 10 ? countdown : `0${countdown}`}</span></>}
         </div>
       </div>
-    </main>
+    </div>
   );
 }

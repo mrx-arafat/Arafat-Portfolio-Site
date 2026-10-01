@@ -52,5 +52,5 @@ export async function GET(req: NextRequest): Promise<NextResponse | never> {
     previewTargetKey(type as "essay" | "note", type === "essay" ? category : null, slug),
     { httpOnly: true, secure: true, sameSite: "lax", path: "/" }
   );
-  redirect(type === "essay" ? `/blog/${category}/${slug}` : "/notes");
+  redirect(type === "essay" ? `/blogs/${category}/${slug}` : "/notes");
 }

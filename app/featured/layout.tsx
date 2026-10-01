@@ -1,92 +1,88 @@
 import type { Metadata } from "next";
+import type { ReactElement, ReactNode } from "react";
 
-export const metadata: Metadata = {
-  title: "Featured — Research, Press & Recognition",
+import { JsonLd, breadcrumbSchema } from "@/components/seo/json-ld";
+import { SITE_URL, absoluteUrl, pageMetadata } from "@/lib/seo";
+
+const PAGE_URL = absoluteUrl("/featured");
+const PAPER_URL = "https://doi.org/10.1016/j.array.2026.100901";
+
+export const metadata: Metadata = pageMetadata({
+  title: "Published Research, Press & Recognition",
   description:
-    "Published research, press features, and recognition of Easin Arafat — Application Security Engineer at Startise. Peer-reviewed Elsevier (Array, Q1) publication on Adaptive UI for mobile banking, The Daily Star feature, MIST LEETCON, and University Rover Challenge global championship.",
-  keywords:
-    "Easin Arafat research, Sheikh Easin Arafat, Easin Arafat Array Elsevier, Adaptive User Interface mobile banking, Easin Arafat Daily Star, Easin Arafat MIST LEETCON, University Rover Challenge MIST, Easin Arafat publications, Easin Arafat press, n0_arafat_n0",
-  alternates: {
-    canonical: "https://www.arafatops.com/featured",
+    "Co-authored research in Array (Elsevier, Q1), a feature in The Daily Star, organizing MIST LEETCON 2023 and a University Rover Challenge 2021 global title.",
+  path: "/featured",
+  ogCard: {
+    category: "featured",
+    meta: "Array (Elsevier) / The Daily Star / URC 2021",
+    prompt: "cat research.md press.md recognition.md",
   },
-  openGraph: {
-    title: "Featured — Research, Press & Recognition | Easin Arafat",
-    description:
-      "Peer-reviewed Elsevier (Array Q1) research, Daily Star feature, MIST LEETCON, and URC global championship.",
-    url: "https://www.arafatops.com/featured",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Featured — Research, Press & Recognition | Easin Arafat",
-    description:
-      "Peer-reviewed Elsevier research, press features, and recognition of Easin Arafat.",
-  },
+});
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      // Same node id as the sitewide paper entry, so the two merge.
+      // No datePublished: only the publication year is on record, and a bare
+      // year is not a valid datetime for structured data.
+      "@type": "ScholarlyArticle",
+      "@id": PAPER_URL,
+      headline:
+        "Adaptive User Interface for Mobile Banking Apps: Enhancing UX through Machine Learning",
+      name: "Adaptive User Interface for Mobile Banking Apps: Enhancing UX through Machine Learning",
+      author: [
+        { "@type": "Person", name: "Khaled Hasan" },
+        { "@type": "Person", name: "Md Rashid Ul Islam" },
+        { "@id": `${SITE_URL}/#person` },
+        { "@type": "Person", name: "Iyolita Islam" },
+      ],
+      isPartOf: {
+        "@type": "Periodical",
+        name: "Array",
+        publisher: { "@type": "Organization", name: "Elsevier" },
+      },
+      identifier: {
+        "@type": "PropertyValue",
+        propertyID: "DOI",
+        value: "10.1016/j.array.2026.100901",
+      },
+      sameAs: PAPER_URL,
+      isAccessibleForFree: true,
+      about: [
+        "Machine Learning",
+        "Adaptive User Interface",
+        "Mobile Banking",
+        "User Experience",
+      ],
+    },
+    {
+      "@type": "NewsArticle",
+      headline:
+        "The need for cybersecurity education in Bangladeshi universities",
+      url: "https://www.thedailystar.net/campus/skills/news/the-need-cybersecurity-education-bangladeshi-universities-3580471",
+      publisher: { "@type": "Organization", name: "The Daily Star" },
+      about: { "@id": `${SITE_URL}/#person` },
+      mentions: { "@id": `${SITE_URL}/#person` },
+    },
+    {
+      "@id": `${PAGE_URL}/#breadcrumb`,
+      ...breadcrumbSchema([
+        { name: "Home", path: "/" },
+        { name: "Featured", path: "/featured" },
+      ]),
+    },
+  ],
 };
-
-function StructuredData() {
-  const scholarlyArticle = {
-    "@context": "https://schema.org",
-    "@type": "ScholarlyArticle",
-    "@id": "https://doi.org/10.1016/j.array.2026.100901",
-    headline:
-      "Adaptive User Interface for Mobile Banking Apps: Enhancing UX through Machine Learning",
-    name: "Adaptive User Interface for Mobile Banking Apps: Enhancing UX through Machine Learning",
-    author: [
-      { "@type": "Person", name: "Khaled Hasan" },
-      { "@type": "Person", name: "Md Rashid Ul Islam" },
-      { "@type": "Person", name: "Sheikh Easin Arafat", sameAs: "https://www.arafatops.com" },
-      { "@type": "Person", name: "Iyolita Islam" },
-    ],
-    isPartOf: {
-      "@type": "Periodical",
-      name: "Array",
-      publisher: { "@type": "Organization", name: "Elsevier" },
-    },
-    identifier: {
-      "@type": "PropertyValue",
-      propertyID: "DOI",
-      value: "10.1016/j.array.2026.100901",
-    },
-    sameAs: "https://doi.org/10.1016/j.array.2026.100901",
-    datePublished: "2026",
-    isAccessibleForFree: true,
-    about: ["Machine Learning", "Adaptive User Interface", "Mobile Banking", "User Experience"],
-  };
-
-  const newsArticle = {
-    "@context": "https://schema.org",
-    "@type": "NewsArticle",
-    headline:
-      "The need for cybersecurity education in Bangladeshi universities",
-    url: "https://www.thedailystar.net/campus/skills/news/the-need-cybersecurity-education-bangladeshi-universities-3580471",
-    publisher: { "@type": "Organization", name: "The Daily Star" },
-    about: { "@id": "https://www.arafatops.com/#person" },
-    mentions: { "@id": "https://www.arafatops.com/#person" },
-  };
-
-  return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(scholarlyArticle) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(newsArticle) }}
-      />
-    </>
-  );
-}
 
 export default function FeaturedLayout({
   children,
 }: {
-  children: React.ReactNode;
-}) {
+  children: ReactNode;
+}): ReactElement {
   return (
     <>
-      <StructuredData />
+      <JsonLd data={structuredData} />
       {children}
     </>
   );

@@ -121,7 +121,7 @@ https://images.unsplash.com/photo-{ID}?w=1100&h=600&fit=crop
    setCountdown(5);  // Replace all instances (was 3)
    ```
 
-#### Projects Page (`app/projects/page.tsx`):
+#### Projects Page (`app/projects/projects-client.tsx`):
 - Apply same changes as blogs page
 
 **Command for verification:**
@@ -148,7 +148,7 @@ jq '.[] | select(.preview_image | contains("/images/")) | .name' data/projects.j
 
 # 4. Timer verification
 grep "useState(5)" app/blogs/page.tsx
-grep "useState(5)" app/projects/page.tsx
+grep "useState(5)" app/projects/projects-client.tsx
 ```
 
 ---
@@ -158,7 +158,7 @@ grep "useState(5)" app/projects/page.tsx
 - `/data/blogs.json` - Blog sequence and image URLs
 - `/data/projects.json` - Project image URLs
 - `/app/blogs/page.tsx` - Timer configuration
-- `/app/projects/page.tsx` - Timer configuration
+- `/app/projects/projects-client.tsx` - Timer configuration
 
 ---
 
@@ -177,7 +177,7 @@ When adding new content:
    - Test preview on portfolio
 
 3. **Timer Adjustment:**
-   - Edit both `app/blogs/page.tsx` and `app/projects/page.tsx`
+   - Edit both `app/blogs/page.tsx` and `app/projects/projects-client.tsx`
    - Replace `5` with new value in both files
    - Verify with grep command
 

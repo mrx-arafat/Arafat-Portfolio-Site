@@ -131,7 +131,7 @@ function Section({
   );
 }
 
-export default function Featured() {
+export default function Featured(): React.ReactElement {
   return (
     <main className="min-h-screen bg-surface-base text-terminal-green p-4 md:p-8 grid-dots overflow-hidden">
       {/* Terminal header */}
@@ -152,7 +152,7 @@ export default function Featured() {
       <div className="max-w-6xl mx-auto">
         {/* Title row */}
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
-          <div className="flex items-center">
+          <div className="grid grid-cols-[auto_1fr] items-center">
             <Link
               href="/"
               className="inline-flex items-center text-terminal-green hover:text-terminal-green/80 mr-4 bg-surface-night px-3 py-2 rounded-md border border-terminal-green/20 hover:border-terminal-green/40 transition-colors"
@@ -160,10 +160,16 @@ export default function Featured() {
               <ArrowLeft size={16} className="mr-2" />
               <span className="text-sm">cd ..</span>
             </Link>
-            <h1 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-terminal-green to-terminal-soft">
-              <span className="text-terminal-green/70">[</span>
-              FEATURED
-              <span className="text-terminal-green/70">]</span>
+            {/* Subgrid: the label shares the back link's row, the subtitle sits on a row of its own. */}
+            <h1 className="row-span-2 grid grid-rows-subgrid items-center text-2xl md:text-3xl font-bold">
+              <span className="w-fit bg-clip-text text-transparent bg-gradient-to-r from-terminal-green to-terminal-soft">
+                <span aria-hidden="true" className="bracket-open text-terminal-green/70" />
+                FEATURED
+                <span aria-hidden="true" className="bracket-close text-terminal-green/70" />
+              </span>{" "}
+              <span className="mt-1 text-sm font-normal text-[#8b949e] md:text-base">
+                Research, press and recognition
+              </span>
             </h1>
           </div>
         </div>
@@ -222,22 +228,6 @@ export default function Featured() {
             ))}
           </div>
         </section>
-
-        {/* SEO crawler block */}
-        <div className="sr-only">
-          <h2>Easin Arafat — Research, Press &amp; Recognition</h2>
-          <p>
-            Sheikh Easin Arafat is a co-author of the peer-reviewed paper
-            &quot;Adaptive User Interface for Mobile Banking Apps: Enhancing UX
-            through Machine Learning&quot;, published in Array (Elsevier, Q1
-            journal, open access), DOI 10.1016/j.array.2026.100901. He was
-            featured in The Daily Star for cybersecurity education and the events
-            led by the MIST Cyber Security Club. He organized MIST LEETCON 2023,
-            Bangladesh&apos;s first international cybersecurity conference with
-            3,500+ participants, and was a 2021 University Rover Challenge Global
-            Champion with Team MIST Mongol Barota.
-          </p>
-        </div>
       </div>
     </main>
   );

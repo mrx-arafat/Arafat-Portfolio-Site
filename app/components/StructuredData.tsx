@@ -1,8 +1,34 @@
-export default function StructuredData() {
-  const personSchema = {
-    "@context": "https://schema.org",
+import type { ReactElement } from "react";
+import { JsonLd } from "@/components/seo/json-ld";
+import cveData from "@/data/cve.json";
+import { SITE_NAME, SITE_URL } from "@/lib/seo";
+
+/** Stable node ids. Per-page structured data references these, so keep them fixed. */
+const PERSON_ID = `${SITE_URL}/#person`;
+const WEBSITE_ID = `${SITE_URL}/#website`;
+const PROFILE_PAGE_ID = `${SITE_URL}/#profilepage`;
+
+const CVE_ID_PATTERN = /^CVE-\d{4}-\d+$/;
+
+/**
+ * One award line per disclosure, derived from data/cve.json so the list
+ * cannot drift from the rest of the site. Entries whose CVE id has not been
+ * published yet are labelled as reserved instead of carrying an id.
+ */
+const cveAwards: string[] = cveData.items.map((item) => {
+  const id = CVE_ID_PATTERN.test(item.cve) ? item.cve : "CVE reserved";
+  return `${id} - ${item.software} ${item.affected} ${item.type} (CVSS ${item.cvss.toFixed(1)})`;
+});
+
+/**
+ * Sitewide structured data: only the entities that are true on every URL
+ * (the person, the website, and the works that credit the person). Page-specific nodes such as ProfilePage and
+ * BreadcrumbList belong to the route that renders them.
+ */
+export default function StructuredData(): ReactElement {
+  const person = {
     "@type": "Person",
-    "@id": "https://www.arafatops.com/#person",
+    "@id": PERSON_ID,
     name: "Easin Arafat",
     givenName: "Easin",
     familyName: "Arafat",
@@ -13,20 +39,14 @@ export default function StructuredData() {
       "easinxarafat",
       "n0_arafat_n0",
     ],
-    url: "https://www.arafatops.com",
-    image: "https://www.arafatops.com/images/profile.webp",
+    url: SITE_URL,
+    image: `${SITE_URL}/images/profile.webp`,
     jobTitle: "Application Security Engineer",
     worksFor: {
       "@type": "Organization",
       name: "Startise",
       url: "https://startise.com/",
       description: "Technology company building xCloud hosting platform",
-    },
-    founder: {
-      "@type": "Organization",
-      name: "AIFlowiz",
-      url: "https://aiflowiz.com/",
-      description: "AI automation agency founded by Easin Arafat",
     },
     alumniOf: {
       "@type": "EducationalOrganization",
@@ -52,10 +72,7 @@ export default function StructuredData() {
       "https://vdp.patchstack.com/database/researchers/c4d8ecc2-c599-4f6f-bfca-2d2d755117e8",
       "https://aiflowiz.com/",
     ],
-    mainEntityOfPage: {
-      "@type": "ProfilePage",
-      "@id": "https://www.arafatops.com/",
-    },
+    mainEntityOfPage: { "@id": PROFILE_PAGE_ID },
     subjectOf: [
       {
         "@type": "NewsArticle",
@@ -65,16 +82,6 @@ export default function StructuredData() {
         publisher: { "@type": "Organization", name: "The Daily Star" },
       },
     ],
-    workExample: {
-      "@type": "ScholarlyArticle",
-      name: "Adaptive User Interface for Mobile Banking Apps: Enhancing UX through Machine Learning",
-      sameAs: "https://doi.org/10.1016/j.array.2026.100901",
-      isPartOf: {
-        "@type": "Periodical",
-        name: "Array",
-        publisher: { "@type": "Organization", name: "Elsevier" },
-      },
-    },
     description:
       "Easin Arafat is an Application Security Engineer at Startise, working on the xCloud hosting platform. MIST graduate and Former President of MIST Cyber Security Club. Specializing in application security, penetration testing, DevSecOps, web development, and AI/ML.",
     knowsAbout: [
@@ -97,15 +104,7 @@ export default function StructuredData() {
       "@type": "Country",
       name: "Bangladesh",
     },
-    award: [
-      "CVE-2025-62039 — AI ChatBot with ChatGPT and Content Generator by AYS ≤ 2.6.6 Sensitive Data Exposure (CVSS 7.5)",
-      "CVE-2025-58680 — Gutentor ≤ 3.5.2 Broken Access Control (CVSS 6.5)",
-      "CVE-2025-64277 — ChatBot ≤ 7.3.9 Broken Access Control (CVSS 5.3)",
-      "CVE-2025-59562 — Academy LMS ≤ 3.3.4 IDOR (CVSS 5.5)",
-      "CVE-2025-58981 — Accessibility Checker by Equalize Digital ≤ 1.30.0 IDOR (CVSS 5.4)",
-      "CVE-2025-62932 — Table Block by RioVizual ≤ 3.0.1 Broken Access Control (CVSS 4.3)",
-      "CVE-2025-62931 — MSN Partner Hub ≤ 2.9 Broken Access Control (CVSS 4.3)",
-    ],
+    award: cveAwards,
     knowsLanguage: ["English", "Bengali"],
     seeks: {
       "@type": "Demand",
@@ -113,109 +112,46 @@ export default function StructuredData() {
     },
   };
 
-  const websiteSchema = {
-    "@context": "https://schema.org",
+  const website = {
     "@type": "WebSite",
-    "@id": "https://www.arafatops.com/#website",
-    url: "https://www.arafatops.com",
-    name: "Easin Arafat - Portfolio",
+    "@id": WEBSITE_ID,
+    url: SITE_URL,
+    name: SITE_NAME,
+    alternateName: "arafatops",
     description:
       "Official portfolio website of Easin Arafat, Application Security Engineer at Startise.",
-    publisher: {
-      "@id": "https://www.arafatops.com/#person",
+    inLanguage: "en",
+    publisher: { "@id": PERSON_ID },
+  };
+
+  // `founder` and `author` are properties of the organization and the paper,
+  // not of a Person, so these facts live on their own nodes pointing back.
+  const agency = {
+    "@type": "Organization",
+    "@id": "https://aiflowiz.com/#organization",
+    name: "AIFlowiz",
+    url: "https://aiflowiz.com/",
+    description: "AI automation agency founded by Easin Arafat",
+    founder: { "@id": PERSON_ID },
+  };
+
+  const paper = {
+    "@type": "ScholarlyArticle",
+    "@id": "https://doi.org/10.1016/j.array.2026.100901",
+    name: "Adaptive User Interface for Mobile Banking Apps: Enhancing UX through Machine Learning",
+    url: "https://doi.org/10.1016/j.array.2026.100901",
+    author: { "@id": PERSON_ID },
+    isPartOf: {
+      "@type": "Periodical",
+      name: "Array",
+      publisher: { "@type": "Organization", name: "Elsevier" },
     },
   };
 
-  const profilePageSchema = {
+  const graph = {
     "@context": "https://schema.org",
-    "@type": "ProfilePage",
-    "@id": "https://www.arafatops.com/#profilepage",
-    url: "https://www.arafatops.com",
-    name: "Easin Arafat — Application Security Engineer",
-    dateModified: "2026-06-15",
-    mainEntity: { "@id": "https://www.arafatops.com/#person" },
-    about: { "@id": "https://www.arafatops.com/#person" },
+    "@graph": [person, website, agency, paper],
   };
 
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: "https://www.arafatops.com",
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "About",
-        item: "https://www.arafatops.com/about",
-      },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: "Projects",
-        item: "https://www.arafatops.com/projects",
-      },
-      {
-        "@type": "ListItem",
-        position: 4,
-        name: "Security Research",
-        item: "https://www.arafatops.com/security-research",
-      },
-      {
-        "@type": "ListItem",
-        position: 5,
-        name: "Featured",
-        item: "https://www.arafatops.com/featured",
-      },
-      {
-        "@type": "ListItem",
-        position: 6,
-        name: "Articles",
-        item: "https://www.arafatops.com/articles",
-      },
-      {
-        "@type": "ListItem",
-        position: 7,
-        name: "Skills",
-        item: "https://www.arafatops.com/skills",
-      },
-      {
-        "@type": "ListItem",
-        position: 8,
-        name: "Contact",
-        item: "https://www.arafatops.com/contact",
-      },
-      {
-        "@type": "ListItem",
-        position: 9,
-        name: "FAQ",
-        item: "https://www.arafatops.com/faq",
-      },
-    ],
-  };
-
-  return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(profilePageSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-    </>
-  );
+  return <JsonLd data={graph} />;
 }

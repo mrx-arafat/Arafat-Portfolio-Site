@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { supabaseAdmin } from "@/lib/supabase";
-import { ROW_COLUMNS, isValidCategorySlug } from "@/lib/blog";
+import {
+  ROW_COLUMNS,
+  blogRevalidationPaths,
+  isValidCategorySlug,
+} from "@/lib/blog";
 
 interface PublishImage {
   name: string;
@@ -54,12 +58,8 @@ function slugify(title: string): string {
 }
 
 function revalidateBlog(category: string | null, slug: string): void {
-  revalidatePath("/blog");
-  revalidatePath("/articles");
-  revalidatePath("/notes");
-  if (category) {
-    revalidatePath(`/blog/${category}`);
-    revalidatePath(`/blog/${category}/${slug}`);
+  for (const path of blogRevalidationPaths(category, slug)) {
+    revalidatePath(path);
   }
 }
 
@@ -211,7 +211,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     if (error) throw new Error(error.message);
 
     revalidateBlog(category, slug);
-    const url = category ? `/blog/${category}/${slug}` : "/notes";
+    const url = category ? `/blogs/${category}/${slug}` : "/notes";
     return NextResponse.json({ ok: true, slug, url, draft: body.draft ?? true });
   } catch (e) {
     return NextResponse.json(

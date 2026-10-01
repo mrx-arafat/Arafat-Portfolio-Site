@@ -1,55 +1,50 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import Image from "next/image";
 import {
   ArrowLeft,
   ArrowRight,
-  BookOpen,
-  Calendar,
-  Clock,
+  Github,
   ExternalLink,
+  Eye,
+  Code,
+  FileText,
   Play,
   Pause,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-import { ArticleIndex } from "./article-index";
+import { ProjectIndex } from "./project-index";
+import type { GithubRepo } from "./projects-data";
 
-export interface UnifiedArticle {
-  id: string;
-  title: string;
-  description: string;
-  publishDate: string;
-  readTime: string;
-  /** External Medium URL, or internal /blogs/... path for native posts. */
-  url: string;
-  imageUrl: string;
-  tags: string[];
-  source: "native" | "medium";
+const PROJECTS_PER_PAGE_DESKTOP = 10;
+const PROJECTS_PER_PAGE_MOBILE = 5;
+const AUTO_ADVANCE_SECONDS = 10;
+
+interface ProjectsClientProps {
+  projects: readonly GithubRepo[];
 }
 
-const POSTS_PER_PAGE_DESKTOP = 10;
-const POSTS_PER_PAGE_MOBILE = 5;
-
-/** Auto-advancing article carousel plus the full article index, rendered from props so both are in the server HTML. */
-export default function ArticlesClient({
-  items: posts,
-}: {
-  items: UnifiedArticle[];
-}): React.ReactElement {
-  const router = useRouter();
+/** Auto-advancing project carousel plus the full project index, rendered from static data so both are in the server HTML. */
+export default function ProjectsClient({
+  projects,
+}: ProjectsClientProps): React.ReactElement {
+  const [currentProject, setCurrentProject] = useState(0);
   const [isMuted, setIsMuted] = useState(true);
-  const [currentPost, setCurrentPost] = useState(0);
+  // Every preview starts behind its spinner except the first: that one is in
+  // the server HTML and should paint without waiting for hydration.
+  const [imageLoading, setImageLoading] = useState<{ [key: number]: boolean }>(
+    () => Object.fromEntries(projects.map((_, index) => [index, index !== 0]))
+  );
+  const [imageErrors, setImageErrors] = useState<{ [key: number]: boolean }>({});
   const [isEntering, setIsEntering] = useState(true);
-  const [countdown, setCountdown] = useState(10);
-  const [isHoverPaused, setIsHoverPaused] = useState(false);
+  const [countdown, setCountdown] = useState(AUTO_ADVANCE_SECONDS);
   const [isAutoAdvancing, setIsAutoAdvancing] = useState(true);
+  const [isHoverPaused, setIsHoverPaused] = useState(false);
   const clickSoundRef = useRef<HTMLAudioElement | null>(null);
   const countdownTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const elapsedRef = useRef(0);
 
   useEffect(() => {
     // Initialize audio elements with proper error handling
@@ -74,6 +69,43 @@ export default function ArticlesClient({
     };
   }, []);
 
+  // Countdown timer for automatic carousel advancement.
+  useEffect(() => {
+    if (!isAutoAdvancing || isHoverPaused || projects.length === 0) {
+      if (countdownTimerRef.current) {
+        clearInterval(countdownTimerRef.current);
+        countdownTimerRef.current = null;
+      }
+      return;
+    }
+
+    let timeElapsed = 0;
+
+    // Clear any existing interval first
+    if (countdownTimerRef.current) {
+      clearInterval(countdownTimerRef.current);
+    }
+
+    countdownTimerRef.current = setInterval(() => {
+      timeElapsed += 1;
+      setCountdown(AUTO_ADVANCE_SECONDS - timeElapsed);
+
+      if (timeElapsed >= AUTO_ADVANCE_SECONDS) {
+        // Auto-advance to next project
+        setCurrentProject((p) => (p + 1) % projects.length);
+        timeElapsed = 0;
+        setCountdown(AUTO_ADVANCE_SECONDS);
+      }
+    }, 1000);
+
+    return () => {
+      if (countdownTimerRef.current) {
+        clearInterval(countdownTimerRef.current);
+        countdownTimerRef.current = null;
+      }
+    };
+  }, [currentProject, isAutoAdvancing, isHoverPaused, projects.length]);
+
   const playClickSound = () => {
     if (!isMuted && clickSoundRef.current) {
       try {
@@ -92,112 +124,94 @@ export default function ArticlesClient({
     }
   };
 
-  // Any change of post - auto-advance or manual (arrows/pagination) - restarts the 10s window.
-  const showPost = (index: number): void => {
-    if (index === currentPost) return;
-    elapsedRef.current = 0;
-    setCountdown(10);
-    setCurrentPost(index);
-  };
-
-  const nextPost = () => {
+  const nextProject = () => {
     playClickSound();
-    showPost((currentPost + 1) % posts.length);
+    setCurrentProject((prev) => (prev + 1) % projects.length);
+    setCountdown(AUTO_ADVANCE_SECONDS);
   };
 
-  const prevPost = () => {
+  const prevProject = () => {
     playClickSound();
-    showPost((currentPost - 1 + posts.length) % posts.length);
+    setCurrentProject((prev) => (prev - 1 + projects.length) % projects.length);
+    setCountdown(AUTO_ADVANCE_SECONDS);
   };
 
-  const openArticle = (article: UnifiedArticle) => {
-    playClickSound();
-    if (article.source === "native") {
-      router.push(article.url);
-    } else {
-      window.open(article.url, "_blank");
-    }
+  // The timer restarts from zero whenever a pause lifts, so the visible
+  // countdown restarts with it (project changes reset it where they happen).
+  const resumeAfterHover = (): void => {
+    setIsHoverPaused(false);
+    if (isHoverPaused && isAutoAdvancing) setCountdown(AUTO_ADVANCE_SECONDS);
   };
 
-  const articleShareUrl = (article: UnifiedArticle) =>
-    article.source === "native"
-      ? `${window.location.origin}${article.url}`
-      : article.url;
+  const toggleAutoAdvance = (): void => {
+    setIsAutoAdvancing(!isAutoAdvancing);
+    if (!isAutoAdvancing && !isHoverPaused) setCountdown(AUTO_ADVANCE_SECONDS);
+  };
 
-  // Countdown timer for auto-advance (10 seconds)
-  useEffect(() => {
-    if (!isAutoAdvancing || isHoverPaused || posts.length === 0) {
-      if (countdownTimerRef.current) {
-        clearInterval(countdownTimerRef.current);
-        countdownTimerRef.current = null;
-      }
-      return;
-    }
-
-    // Clear any existing interval first
-    if (countdownTimerRef.current) {
-      clearInterval(countdownTimerRef.current);
-    }
-
-    countdownTimerRef.current = setInterval(() => {
-      elapsedRef.current += 1;
-
-      if (elapsedRef.current < 10) {
-        setCountdown(10 - elapsedRef.current);
-        return;
-      }
-
-      // Auto-advance to next post and restart the 10s window
-      elapsedRef.current = 0;
-      setCountdown(10);
-      setCurrentPost((p) => (p + 1) % posts.length);
-    }, 1000);
-
-    return () => {
-      if (countdownTimerRef.current) {
-        clearInterval(countdownTimerRef.current);
-        countdownTimerRef.current = null;
-      }
+  const getLanguageColor = (language: string) => {
+    const colors: { [key: string]: string } = {
+      JavaScript: "#f1e05a",
+      TypeScript: "#2b7489",
+      Python: "#3572A5",
+      Java: "#b07219",
+      "C#": "#178600",
+      PHP: "#4F5D95",
+      Ruby: "#701516",
+      Go: "#00ADD8",
+      HTML: "#e34c26",
+      CSS: "#563d7c",
     };
-  }, [isAutoAdvancing, isHoverPaused, posts.length]);
 
-  // Simple preloading for adjacent article images
+    return colors[language] || "#6e7681";
+  };
+
+  const handleImageLoad = (index: number) => {
+    setImageLoading(prev => ({ ...prev, [index]: false }));
+  };
+
+  const handleImageError = (index: number) => {
+    setImageLoading(prev => ({ ...prev, [index]: false }));
+    setImageErrors(prev => ({ ...prev, [index]: true }));
+  };
+
+  // Simple preloading for adjacent images
   useEffect(() => {
-    if (posts.length > 0) {
+    if (projects.length > 0) {
       const preloadImage = (index: number) => {
-        if (posts[index]?.imageUrl) {
+        if (projects[index]?.preview_image) {
           const img = new window.Image();
-          img.src = posts[index].imageUrl;
+          img.src = projects[index].preview_image!;
         }
       };
 
       // Preload next and previous images
-      const nextIndex = (currentPost + 1) % posts.length;
-      const prevIndex = (currentPost - 1 + posts.length) % posts.length;
+      const nextIndex = (currentProject + 1) % projects.length;
+      const prevIndex = (currentProject - 1 + projects.length) % projects.length;
 
-      if (posts.length > 1) {
+      if (projects.length > 1) {
         preloadImage(nextIndex);
         preloadImage(prevIndex);
       }
     }
-  }, [currentPost, posts]);
+  }, [currentProject, projects]);
 
   return (
     <main className={`min-h-screen bg-surface-base text-terminal-green p-4 md:p-8 grid-dots overflow-hidden ${isEntering ? "animate-slideInRight" : ""}`}>
+
       {/* Terminal-style header */}
       <div className="mb-8 bg-surface-raised border border-terminal-green/30 rounded-lg p-3 shadow-[0_0_15px_rgba(46,213,115,0.2)]">
         <div className="flex items-center gap-2 mb-2">
           <div className="w-3 h-3 rounded-full bg-[#ff5f57]"></div>
           <div className="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
           <div className="w-3 h-3 rounded-full bg-[#28ca41]"></div>
-          <div className="ml-2 text-terminal-green/70 text-xs">~/articles</div>
+          <div className="ml-2 text-terminal-green/70 text-xs">~/projects</div>
         </div>
 
         <div className="flex items-center">
           <span className="text-terminal-green mr-2">$</span>
           <div className="relative">
             <span className="text-terminal-green">
-              ./view_articles.sh --display=latest
+              ./list_projects.sh --sort=latest
             </span>
             <span className="animate-blink ml-1">|</span>
           </div>
@@ -217,36 +231,38 @@ export default function ArticlesClient({
             </Link>
             <h1 className="text-2xl md:text-3xl font-bold uppercase bg-clip-text text-transparent bg-gradient-to-r from-terminal-green to-terminal-soft">
               <span aria-hidden="true" className="bracket-open text-terminal-green/70" />
-              Articles
+              Projects
               <span aria-hidden="true" className="bracket-close text-terminal-green/70" />
             </h1>
           </div>
 
           <div className="flex items-center gap-3">
-            <Link
-              href="/blogs"
+            <a
+              href="https://github.com/mrx-arafat"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-surface-raised text-sm bg-terminal-green px-3 py-2 rounded-md transform transition-all hover:translate-y-[-2px] hover:shadow-[0_5px_15px_rgba(46,213,115,0.4)] border border-terminal-green"
               onClick={() => playClickSound()}
             >
-              <BookOpen size={16} />
-              <span className="hidden sm:inline">View All Blogs</span>
-              <span className="sm:hidden">All Blogs</span>
-            </Link>
+              <Github size={16} />
+              <span className="hidden sm:inline">View All On GitHub</span>
+              <span className="sm:hidden">All Projects</span>
+            </a>
 
             <div className="flex gap-1">
               <Button
-                onClick={prevPost}
-                disabled={posts.length === 0}
+                onClick={prevProject}
+                disabled={projects.length === 0}
                 className="w-9 h-9 p-0 rounded-md bg-surface-night hover:bg-[#2a3942] border border-terminal-green/20"
-                aria-label="Previous post"
+                aria-label="Previous project"
               >
                 <ArrowLeft size={16} className="text-terminal-green" />
               </Button>
               <Button
-                onClick={nextPost}
-                disabled={posts.length === 0}
+                onClick={nextProject}
+                disabled={projects.length === 0}
                 className="w-9 h-9 p-0 rounded-md bg-surface-night hover:bg-[#2a3942] border border-terminal-green/20"
-                aria-label="Next post"
+                aria-label="Next project"
               >
                 <ArrowRight size={16} className="text-terminal-green" />
               </Button>
@@ -254,55 +270,75 @@ export default function ArticlesClient({
           </div>
         </div>
 
-        <p className="mb-6 font-mono text-xs text-terminal-green/60">
-          SECURITY WRITE-UPS + ENGINEERING NOTES + ESSAYS
-        </p>
+        <div className="mb-6 mt-16 border-b border-terminal-green/25 pb-5 sm:mt-20">
+          <p className="font-mono text-xs text-terminal-green/60">
+            SELECTED BUILDS + PUBLIC BUILD LOG
+          </p>
+          <h2 className="mt-2 text-2xl font-bold text-terminal-green sm:text-3xl">
+            Project carousel
+          </h2>
+        </div>
 
-        {posts.length > 0 ? (
+        {projects.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Left column - Article image */}
+            {/* Left column - Project image */}
             <div
-              className="md:col-span-1 h-[300px] md:h-[400px] bg-surface-night rounded-lg overflow-hidden cursor-pointer relative group shadow-[0_0_15px_rgba(46,213,115,0.1)] border border-terminal-green/10"
-              onClick={() => openArticle(posts[currentPost])}
+              className="md:col-span-1 h-[300px] md:h-[400px] bg-surface-night rounded-lg overflow-hidden relative group shadow-[0_0_15px_rgba(46,213,115,0.1)] border border-terminal-green/10"
               onMouseEnter={() => setIsHoverPaused(true)}
-              onMouseLeave={() => setIsHoverPaused(false)}
+              onMouseLeave={resumeAfterHover}
             >
               <div className="absolute inset-0 flex items-center justify-center bg-surface-raised/50 z-10">
-                {posts[currentPost].imageUrl ? (
-                  <Image
-                    src={posts[currentPost].imageUrl || "/placeholder.svg"}
-                    alt={`${posts[currentPost].title} preview`}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    priority
-                    // Generated cover cards carry a query string, which the
-                    // image optimizer rejects for local paths.
-                    unoptimized={posts[currentPost].imageUrl.startsWith("/api/")}
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
+                {projects[currentProject].preview_image && !imageErrors[currentProject] ? (
+                  <div className="relative w-full h-full">
+                    {/* Simple loading indicator */}
+                    {imageLoading[currentProject] && (
+                      <div className="absolute inset-0 bg-surface-night flex items-center justify-center z-10">
+                        <div className="w-8 h-8 border-2 border-terminal-green/30 border-t-terminal-green rounded-full animate-spin"></div>
+                      </div>
+                    )}
+
+                    <Image
+                      src={projects[currentProject].preview_image}
+                      alt={`${projects[currentProject].name} preview`}
+                      fill
+                      className={`object-contain group-hover:scale-[1.02] transition-all duration-500 ${
+                        imageLoading[currentProject] ? 'opacity-0' : 'opacity-100'
+                      }`}
+                      onLoad={() => handleImageLoad(currentProject)}
+                      onError={() => handleImageError(currentProject)}
+                      priority={true}
+                      unoptimized={true} // Skip optimization for faster loading
+                    />
+                  </div>
                 ) : (
                   <div className="flex flex-col items-center justify-center h-full w-full bg-surface-night text-terminal-green/30">
-                    <BookOpen size={64} className="mb-2" />
-                    <span className="text-sm">No preview available</span>
+                    <Code size={64} className="mb-2" />
+                    <span className="text-sm">
+                      {imageErrors[currentProject] ? 'Failed to load image' : 'No preview available'}
+                    </span>
                   </div>
                 )}
               </div>
+
+              {/* Overlay with code-like elements */}
               <div className="absolute inset-0 bg-gradient-to-t from-surface-raised/90 via-surface-raised/30 to-transparent opacity-80 group-hover:opacity-90 transition-opacity z-20"></div>
-              <div className="absolute bottom-0 left-0 right-0 p-4 z-30">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="flex items-center gap-1 bg-surface-raised/70 px-2 py-1 rounded text-xs text-terminal-green/80">
-                    <Calendar size={12} />
-                    <span>{posts[currentPost].publishDate}</span>
-                  </div>
-                  <div className="flex items-center gap-1 bg-surface-raised/70 px-2 py-1 rounded text-xs text-terminal-green/80">
-                    <Clock size={12} />
-                    <span>{posts[currentPost].readTime}</span>
-                  </div>
-                </div>
-                <div className="font-mono text-xs text-terminal-green/60 mb-1">
-                  $ cat article.md
+
+              {/* Language badge */}
+              <div className="absolute top-4 left-4 z-30">
+                <div className="bg-surface-raised/70 text-terminal-green px-2 py-1 rounded text-xs border border-terminal-green/20 flex items-center gap-1">
+                  <span
+                    className="w-2 h-2 rounded-full"
+                    style={{
+                      backgroundColor: getLanguageColor(
+                        projects[currentProject].language
+                      ),
+                    }}
+                  ></span>
+                  <span>{projects[currentProject].language}</span>
                 </div>
               </div>
+
+              {/* Star count and countdown timer */}
               <div className="absolute top-4 right-4 z-30 flex items-center gap-2">
                 {isAutoAdvancing && (
                   <div className="bg-surface-raised/70 text-terminal-green px-2 py-1 rounded text-xs border border-terminal-green/20 flex items-center gap-1">
@@ -310,54 +346,61 @@ export default function ArticlesClient({
                     <span>{countdown}s</span>
                   </div>
                 )}
-                <div className="bg-surface-raised/70 text-terminal-green px-2 py-1 rounded text-xs border border-terminal-green/20 flex items-center gap-1">
-                  {posts[currentPost].source === "medium" && (
-                    <ExternalLink size={10} />
-                  )}
-                  <span>
-                    {posts[currentPost].source === "native"
-                      ? "Read here"
-                      : "Read on Medium"}
-                  </span>
+                {projects[currentProject].stargazers_count > 0 && (
+                  <div className="bg-surface-raised/70 text-terminal-green px-2 py-1 rounded text-xs border border-terminal-green/20 flex items-center gap-1">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                    </svg>
+                    <span>{projects[currentProject].stargazers_count}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Bottom info */}
+              <div className="absolute bottom-0 left-0 right-0 p-4 z-30">
+                <div className="font-mono text-xs text-terminal-green/60 mb-1">
+                  $ git clone{" "}
+                  {projects[currentProject].html_url.split("/").pop()}
                 </div>
               </div>
             </div>
 
-            {/* Right column - Article content */}
+            {/* Right column - Project content */}
             <div className="md:col-span-2 bg-surface-night rounded-lg p-6 border border-terminal-green/10 shadow-[0_0_15px_rgba(46,213,115,0.1)] flex flex-col justify-between h-[300px] md:h-[400px]">
               <div className="overflow-y-auto pr-2 custom-scrollbar">
                 <div className="flex items-center gap-2 mb-1">
                   <div className="w-2 h-2 rounded-full bg-terminal-green/40"></div>
                   <div className="text-terminal-green/60 text-xs font-mono">
-                    ARTICLE #{currentPost + 1}
+                    {projects[currentProject].featured ? "SELECTED BUILD" : `PROJECT #${currentProject + 1}`}
                   </div>
-                  {posts[currentPost].source === "native" ? (
-                    <span className="text-[9px] font-mono font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-terminal-green/15 text-terminal-green border border-terminal-green/30">
-                      ⌂ On This Site
-                    </span>
-                  ) : (
-                    <span className="text-[9px] font-mono font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-surface-raised text-terminal-green/50 border border-terminal-green/15">
-                      ↗ Medium
-                    </span>
-                  )}
                 </div>
-                <h2
+                <h3
                   className="text-xl md:text-2xl font-bold mb-3 text-terminal-green inline-block"
                   onMouseEnter={() => setIsHoverPaused(true)}
-                  onMouseLeave={() => setIsHoverPaused(false)}
+                  onMouseLeave={resumeAfterHover}
                 >
-                  {posts[currentPost].title}
-                </h2>
+                  {projects[currentProject].name}
+                </h3>
                 <p className="text-terminal-green/80 mb-4 text-sm md:text-base">
-                  {posts[currentPost].description}
+                  {projects[currentProject].description}
                 </p>
                 <div className="flex flex-wrap gap-2 mb-6">
-                  {posts[currentPost].tags.map((tag, i) => (
+                  {projects[currentProject].topics.map((topic, i) => (
                     <span
                       key={i}
                       className="px-2 py-1 bg-surface-raised text-terminal-green/80 rounded text-xs border border-terminal-green/10 hover:border-terminal-green/30 transition-colors"
                     >
-                      #{tag}
+                      #{topic}
                     </span>
                   ))}
                 </div>
@@ -369,26 +412,51 @@ export default function ArticlesClient({
                   onClick={playClickSound}
                   className="inline-flex items-center gap-2 bg-terminal-green hover:bg-terminal-green/90 text-surface-raised px-4 py-2 rounded-md hover:translate-y-[-2px] transition-all hover:shadow-[0_5px_15px_rgba(46,213,115,0.4)]"
                 >
-                  {posts[currentPost].source === "native" ? (
-                    <Link href={posts[currentPost].url}>
-                      <BookOpen size={16} />
-                      <span className="font-medium">Read Full Article</span>
+                  <a
+                    href={projects[currentProject].html_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Github size={16} />
+                    <span className="font-medium">View on GitHub</span>
+                  </a>
+                </Button>
+
+                {projects[currentProject].caseStudyPath && (
+                  <Button
+                    asChild
+                    onClick={playClickSound}
+                    className="inline-flex items-center gap-2 bg-surface-raised hover:bg-surface-panel text-terminal-green border border-terminal-green/30 px-3 py-2 rounded-md transition-colors"
+                  >
+                    <Link href={projects[currentProject].caseStudyPath}>
+                      <FileText size={14} />
+                      <span className="text-sm">Case Study</span>
                     </Link>
-                  ) : (
+                  </Button>
+                )}
+
+                {projects[currentProject].homepage && (
+                  <Button
+                    asChild
+                    onClick={playClickSound}
+                    className="inline-flex items-center gap-2 bg-surface-raised hover:bg-surface-panel text-terminal-green border border-terminal-green/30 px-3 py-2 rounded-md transition-colors"
+                  >
                     <a
-                      href={posts[currentPost].url}
+                      href={projects[currentProject].homepage}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      <BookOpen size={16} />
-                      <span className="font-medium">Read Full Article</span>
+                      <ExternalLink size={14} />
+                      <span className="text-sm">Live Demo</span>
                     </a>
-                  )}
-                </Button>
+                  </Button>
+                )}
 
                 <Button
                   onClick={() => {
-                    navigator.clipboard.writeText(articleShareUrl(posts[currentPost]));
+                    navigator.clipboard.writeText(
+                      projects[currentProject].html_url
+                    );
                     playClickSound();
                   }}
                   className="inline-flex items-center gap-2 bg-surface-raised hover:bg-surface-panel text-terminal-green border border-terminal-green/30 px-3 py-2 rounded-md transition-colors"
@@ -416,49 +484,20 @@ export default function ArticlesClient({
                   </svg>
                   <span className="text-sm">Copy Link</span>
                 </Button>
-
-                <Button
-                  onClick={() => {
-                    const text = `Check out this article: ${posts[currentPost].title} - ${articleShareUrl(posts[currentPost])}`;
-                    window.open(
-                      `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                        text
-                      )}`,
-                      "_blank"
-                    );
-                    playClickSound();
-                  }}
-                  className="inline-flex items-center gap-2 bg-surface-raised hover:bg-surface-panel text-terminal-green border border-terminal-green/30 px-3 py-2 rounded-md transition-colors"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
-                  </svg>
-                  <span className="text-sm">Share</span>
-                </Button>
               </div>
             </div>
           </div>
         ) : (
           <div className="bg-surface-night rounded-lg p-8 flex flex-col items-center justify-center border border-terminal-green/20 shadow-[0_0_15px_rgba(46,213,115,0.1)]">
             <div className="font-mono text-terminal-green/70 text-sm mb-4">
-              $ cat /dev/articles
+              $ git fetch origin
             </div>
             <div className="bg-surface-raised p-4 rounded-md border border-terminal-green/10 mb-6 w-full max-w-md">
               <div className="text-terminal-green/80 font-mono text-sm mb-2">
-                Error: No articles found
+                Error: No repositories found
               </div>
               <div className="text-terminal-green/50 font-mono text-xs">
-                Unable to establish connection with Medium API
+                Unable to establish connection with GitHub API
               </div>
             </div>
             <Button
@@ -470,24 +509,25 @@ export default function ArticlesClient({
           </div>
         )}
 
-        {posts.length > 0 && (
+        {projects.length > 0 && (
           <div className="mt-8 bg-surface-night rounded-lg p-4 border border-terminal-green/10 shadow-[0_0_15px_rgba(46,213,115,0.1)]">
             {/* Desktop pagination - smart pagination showing only current page */}
             <div className="hidden md:flex items-center justify-between gap-4">
               <div className="flex items-center gap-3 flex-1">
                 <div className="text-terminal-green/60 text-xs font-mono whitespace-nowrap">
-                  $ navigate_posts.sh
+                  $ navigate_repos.sh
                 </div>
 
                 {/* Current page pagination controls */}
                 <div className="flex items-center gap-2">
                   {/* Previous page button */}
-                  {Math.floor(currentPost / POSTS_PER_PAGE_DESKTOP) > 0 && (
+                  {Math.floor(currentProject / PROJECTS_PER_PAGE_DESKTOP) > 0 && (
                     <button
                       onClick={() => {
                         playClickSound();
-                        const prevPage = Math.floor(currentPost / POSTS_PER_PAGE_DESKTOP) - 1;
-                        showPost(prevPage * POSTS_PER_PAGE_DESKTOP);
+                        const prevPage = Math.floor(currentProject / PROJECTS_PER_PAGE_DESKTOP) - 1;
+                        setCurrentProject(prevPage * PROJECTS_PER_PAGE_DESKTOP);
+                        setCountdown(AUTO_ADVANCE_SECONDS);
                       }}
                       className="w-6 h-6 flex items-center justify-center rounded-md transition-colors text-xs font-medium bg-surface-raised text-terminal-green/70 hover:bg-surface-raised/80 hover:text-terminal-green"
                       aria-label="Previous page"
@@ -496,29 +536,30 @@ export default function ArticlesClient({
                     </button>
                   )}
 
-                  {/* Current page post numbers */}
+                  {/* Current page project numbers */}
                   <div className="flex items-center gap-1">
                     {Array.from({
                       length: Math.min(
-                        POSTS_PER_PAGE_DESKTOP,
-                        posts.length - Math.floor(currentPost / POSTS_PER_PAGE_DESKTOP) * POSTS_PER_PAGE_DESKTOP
+                        PROJECTS_PER_PAGE_DESKTOP,
+                        projects.length - Math.floor(currentProject / PROJECTS_PER_PAGE_DESKTOP) * PROJECTS_PER_PAGE_DESKTOP
                       ),
                     }).map((_, i) => {
-                      const currentPageIndex = Math.floor(currentPost / POSTS_PER_PAGE_DESKTOP);
-                      const index = currentPageIndex * POSTS_PER_PAGE_DESKTOP + i;
+                      const currentPageIndex = Math.floor(currentProject / PROJECTS_PER_PAGE_DESKTOP);
+                      const index = currentPageIndex * PROJECTS_PER_PAGE_DESKTOP + i;
                       return (
                         <button
                           key={index}
                           onClick={() => {
                             playClickSound();
-                            showPost(index);
+                            setCurrentProject(index);
+                            setCountdown(AUTO_ADVANCE_SECONDS);
                           }}
                           className={`w-8 h-8 flex items-center justify-center rounded-md transition-colors text-xs font-medium ${
-                            currentPost === index
+                            currentProject === index
                               ? "bg-terminal-green text-surface-raised"
                               : "bg-surface-raised text-terminal-green/70 hover:bg-surface-raised/80 hover:text-terminal-green"
                           }`}
-                          aria-label={`Go to post ${index + 1}`}
+                          aria-label={`Go to project ${index + 1}`}
                         >
                           {index + 1}
                         </button>
@@ -527,12 +568,13 @@ export default function ArticlesClient({
                   </div>
 
                   {/* Next page button */}
-                  {Math.floor(currentPost / POSTS_PER_PAGE_DESKTOP) < Math.ceil(posts.length / POSTS_PER_PAGE_DESKTOP) - 1 && (
+                  {Math.floor(currentProject / PROJECTS_PER_PAGE_DESKTOP) < Math.ceil(projects.length / PROJECTS_PER_PAGE_DESKTOP) - 1 && (
                     <button
                       onClick={() => {
                         playClickSound();
-                        const nextPage = Math.floor(currentPost / POSTS_PER_PAGE_DESKTOP) + 1;
-                        showPost(nextPage * POSTS_PER_PAGE_DESKTOP);
+                        const nextPage = Math.floor(currentProject / PROJECTS_PER_PAGE_DESKTOP) + 1;
+                        setCurrentProject(nextPage * PROJECTS_PER_PAGE_DESKTOP);
+                            setCountdown(AUTO_ADVANCE_SECONDS);
                       }}
                       className="w-6 h-6 flex items-center justify-center rounded-md transition-colors text-xs font-medium bg-surface-raised text-terminal-green/70 hover:bg-surface-raised/80 hover:text-terminal-green"
                       aria-label="Next page"
@@ -546,7 +588,7 @@ export default function ArticlesClient({
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2">
                   <button
-                    onClick={() => setIsAutoAdvancing(!isAutoAdvancing)}
+                    onClick={toggleAutoAdvance}
                     className={`flex items-center gap-2 px-3 py-1 rounded-md text-xs font-mono transition-colors ${
                       isAutoAdvancing
                         ? "bg-terminal-green/20 text-terminal-green border border-terminal-green/40 hover:bg-terminal-green/30"
@@ -567,7 +609,7 @@ export default function ArticlesClient({
                   </button>
                 </div>
                 <div className="text-terminal-green/60 text-xs font-mono whitespace-nowrap">
-                  {currentPost + 1}/{posts.length}
+                  {currentProject + 1}/{projects.length}
                 </div>
               </div>
             </div>
@@ -576,10 +618,10 @@ export default function ArticlesClient({
             <div className="md:hidden">
               <div className="flex items-center justify-between mb-3 gap-2">
                 <div className="text-terminal-green/60 text-xs font-mono">
-                  $ navigate_posts.sh
+                  $ navigate_repos.sh
                 </div>
                 <button
-                  onClick={() => setIsAutoAdvancing(!isAutoAdvancing)}
+                  onClick={toggleAutoAdvance}
                   className={`flex items-center gap-1 px-2 py-1 rounded text-xs font-mono transition-colors whitespace-nowrap ${
                     isAutoAdvancing
                       ? "bg-terminal-green/20 text-terminal-green border border-terminal-green/40 hover:bg-terminal-green/30"
@@ -598,14 +640,14 @@ export default function ArticlesClient({
                   )}
                 </button>
                 <div className="text-terminal-green/60 text-xs font-mono">
-                  {currentPost + 1}/{posts.length}
+                  {currentProject + 1}/{projects.length}
                 </div>
               </div>
 
               <div className="flex items-center justify-between gap-2">
                 <Button
-                  onClick={prevPost}
-                  disabled={posts.length <= 1}
+                  onClick={prevProject}
+                  disabled={projects.length <= 1}
                   className="bg-surface-raised hover:bg-surface-panel text-terminal-green border border-terminal-green/30 px-3 py-2 rounded-md transition-colors flex-1 text-sm"
                 >
                   <div className="flex items-center justify-center">
@@ -615,8 +657,8 @@ export default function ArticlesClient({
                 </Button>
 
                 <Button
-                  onClick={nextPost}
-                  disabled={posts.length <= 1}
+                  onClick={nextProject}
+                  disabled={projects.length <= 1}
                   className="bg-surface-raised hover:bg-surface-panel text-terminal-green border border-terminal-green/30 px-3 py-2 rounded-md transition-colors flex-1 text-sm"
                 >
                   <div className="flex items-center justify-center">
@@ -629,7 +671,7 @@ export default function ArticlesClient({
           </div>
         )}
 
-        <ArticleIndex items={posts} />
+        <ProjectIndex projects={projects} />
       </div>
     </main>
   );

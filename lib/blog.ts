@@ -94,11 +94,89 @@ export interface PostRow {
   cover_url: string | null;
 }
 
+/** Whitespace-separated word count of raw text. */
+export function countWords(text: string): number {
+  return text.trim().split(/\s+/).filter(Boolean).length;
+}
+
 /** Compute "N min read" from raw text at 200 wpm, floor 1. */
 export function computeReadTime(text: string): string {
-  const words = text.trim().split(/\s+/).filter(Boolean).length;
-  const minutes = Math.max(1, Math.round(words / 200));
+  const minutes = Math.max(1, Math.round(countWords(text) / 200));
   return `${minutes} min read`;
+}
+
+/** Reader-facing copy for a category page. */
+export interface CategoryInfo {
+  /** Human name, e.g. "Engineering". */
+  label: string;
+  /** Page title without the brand suffix, e.g. "Engineering Essays". */
+  title: string;
+  /** One-line summary shown under the category heading. */
+  tagline: string;
+  /** Search-snippet description (120-160 chars). */
+  description: string;
+}
+
+const CATEGORY_INFO: Record<string, CategoryInfo> = {
+  engineering: {
+    label: "Engineering",
+    title: "Engineering Essays",
+    tagline:
+      "Engineering essays on system design, performance, DevOps and AI tooling.",
+    description:
+      "Engineering essays by Easin Arafat on system design and performance at scale, latency debugging, Nginx, CI/CD with GitHub Actions, MCP and AI coding agents.",
+  },
+  security: {
+    label: "Security",
+    title: "Security Research Essays",
+    tagline:
+      "Security research essays on vulnerabilities, exploitability and AI agent safety.",
+    description:
+      "Security research essays by Easin Arafat: WordPress CVE analysis, how exploitable a vulnerability really is, and what AI agents do when given server access.",
+  },
+  business: {
+    label: "Business",
+    title: "Business Essays",
+    tagline:
+      "Business essays on the tech industry, AI spending and the future of work.",
+    description:
+      "Business essays by Easin Arafat on the tech industry: AI spending, layoffs and the future of work, with sourced numbers behind the headlines.",
+  },
+  life: {
+    label: "Life",
+    title: "Life Essays",
+    tagline: "Essays on life, logical thinking, mental models and reasoning.",
+    description:
+      "Essays on life by Easin Arafat: logical thinking, mental models and philosophy, and which reasoning habits actually matter in everyday decisions.",
+  },
+  psychology: {
+    label: "Psychology",
+    title: "Psychology Essays",
+    tagline: "Psychology essays on confidence, purpose, influence and power.",
+    description:
+      "Psychology essays by Easin Arafat on confidence, people-pleasing, purpose, influence and the psychology of power, written as blunt, practical rules.",
+  },
+};
+
+/**
+ * Copy for a category page. Categories are open-ended (see
+ * isValidCategorySlug), so an unknown slug gets generic copy built from its
+ * humanized name instead of failing.
+ */
+export function getCategoryInfo(category: string): CategoryInfo {
+  if (Object.hasOwn(CATEGORY_INFO, category)) return CATEGORY_INFO[category];
+  const label = category
+    .split("-")
+    .filter(Boolean)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+  const topic = label.toLowerCase();
+  return {
+    label,
+    title: `${label} Essays`,
+    tagline: `Essays on ${topic} by Easin Arafat.`,
+    description: `Essays on ${topic} by Easin Arafat, an application security engineer writing about software, security and how things actually work. Newest posts first.`,
+  };
 }
 
 /** Map a posts row to a Post (essays). */
@@ -184,6 +262,55 @@ export function getAdjacentPosts(
   };
 }
 
+/**
+ * Posts to link from a post page, best match first: most shared tags, then
+ * same category, newest first (`published` is already newest first).
+ *
+ * Leftover slots go to unrelated posts, taken by how close they were
+ * published to `current` rather than by recency: filling with the newest
+ * posts would point every page at the same few and leave older posts with no
+ * inbound links at all.
+ *
+ * Posts in `avoid` (already linked elsewhere on the page, e.g. older/newer)
+ * are used only when nothing else is left. Never includes `current`.
+ */
+export function getRelatedPosts(
+  published: Post[],
+  current: Pick<Post, "category" | "slug" | "tags">,
+  { avoid = [], limit = 3 }: { avoid?: (Post | null)[]; limit?: number } = {}
+): Post[] {
+  const key = (p: Pick<Post, "category" | "slug">): string => `${p.category}/${p.slug}`;
+  const avoided = new Set(avoid.filter((p): p is Post => p !== null).map(key));
+  const tags = new Set(current.tags);
+  // -1 for an unpublished draft preview, which makes "closest" mean newest.
+  const currentIndex = published.findIndex((p) => key(p) === key(current));
+
+  return published
+    .map((post, index) => {
+      const sharedTags = post.tags.filter((tag) => tags.has(tag)).length;
+      const sameCategory = post.category === current.category;
+      return {
+        post,
+        index,
+        avoided: avoided.has(key(post)),
+        sharedTags,
+        sameCategory,
+        rank: sharedTags > 0 || sameCategory ? index : Math.abs(index - currentIndex),
+      };
+    })
+    .filter(({ post }) => key(post) !== key(current))
+    .sort(
+      (a, b) =>
+        Number(a.avoided) - Number(b.avoided) ||
+        b.sharedTags - a.sharedTags ||
+        Number(b.sameCategory) - Number(a.sameCategory) ||
+        a.rank - b.rank ||
+        a.index - b.index
+    )
+    .slice(0, limit)
+    .map(({ post }) => post);
+}
+
 /** All published notes, newest first. */
 export async function getAllNotes(): Promise<Note[]> {
   const { data, error } = await supabasePublic()
@@ -225,4 +352,19 @@ export async function getAllTags(): Promise<string[]> {
   const tags = new Set<string>();
   for (const post of posts) post.tags.forEach((t) => tags.add(t));
   return Array.from(tags).sort();
+}
+
+/**
+ * Every cached route that shows a post or note, so publishing can refresh
+ * them at once instead of waiting out each route's revalidate timer.
+ */
+export function blogRevalidationPaths(
+  category: string | null,
+  slug: string,
+): string[] {
+  const paths = ["/", "/blogs", "/articles", "/notes", "/sitemap.xml", "/blogs/rss.xml"];
+  if (category) {
+    paths.push(`/blogs/${category}`, `/blogs/${category}/${slug}`);
+  }
+  return paths;
 }

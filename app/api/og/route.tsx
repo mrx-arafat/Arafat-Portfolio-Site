@@ -1,16 +1,35 @@
 import { ImageResponse } from "next/og";
 import type { NextRequest } from "next/server";
+import { clampDescription } from "@/lib/seo";
 
 export const runtime = "edge";
 
-/** Terminal-styled cover image for posts without an uploaded cover. */
+/**
+ * The card is a pure function of its query string, so shared caches may keep
+ * it for a year (Vercel purges its CDN on every deploy, which is the only
+ * time the rendering changes). Browsers revalidate daily so a redesign still
+ * reaches returning visitors. ImageResponse alone ships `max-age=0`.
+ */
+const CACHE_CONTROL = "public, max-age=86400, s-maxage=31536000";
+
+/** A query param as display text: blank falls back, overlong is cut with an ellipsis. */
+function textParam(
+  params: URLSearchParams,
+  name: string,
+  fallback: string,
+  max: number,
+): string {
+  return clampDescription(params.get(name)?.trim() || fallback, max);
+}
+
+/** Terminal-styled social card; also the cover for posts without an uploaded one. */
 export async function GET(req: NextRequest): Promise<ImageResponse> {
   const { searchParams } = new URL(req.url);
-  const title = (searchParams.get("title") ?? "Untitled").slice(0, 120);
-  const category = (searchParams.get("category") ?? "blog").slice(0, 24);
-  const meta = (searchParams.get("meta") ?? "arafatops.com").slice(0, 48);
-  const path = (searchParams.get("path") ?? `blogs/${category}`).slice(0, 48);
-  const prompt = (searchParams.get("prompt") ?? "cat post.md").slice(0, 48);
+  const title = textParam(searchParams, "title", "Untitled", 120);
+  const category = textParam(searchParams, "category", "blog", 24);
+  const meta = textParam(searchParams, "meta", "arafatops.com", 48);
+  const path = textParam(searchParams, "path", `blogs/${category}`, 48);
+  const prompt = textParam(searchParams, "prompt", "cat post.md", 48);
   // "card" = portrait for article-carousel thumbnails; default = 1200x630 social OG
   const isCard = searchParams.get("size") === "card";
   const width = isCard ? 800 : 1200;
@@ -134,6 +153,6 @@ export async function GET(req: NextRequest): Promise<ImageResponse> {
         </div>
       </div>
     ),
-    { width, height }
+    { width, height, headers: { "Cache-Control": CACHE_CONTROL } }
   );
 }

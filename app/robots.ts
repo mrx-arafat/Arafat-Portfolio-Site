@@ -1,4 +1,5 @@
-import { MetadataRoute } from "next";
+import type { MetadataRoute } from "next";
+import { absoluteUrl } from "@/lib/seo";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -7,9 +8,9 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: "*",
         // /api/og stays crawlable - it serves the OG/social card images
         allow: ["/", "/api/og"],
-        disallow: ["/api/", "/private/"],
+        disallow: ["/api/"],
       },
     ],
-    sitemap: "https://www.arafatops.com/sitemap.xml",
+    sitemap: absoluteUrl("/sitemap.xml"),
   };
 }

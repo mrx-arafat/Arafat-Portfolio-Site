@@ -2421,6 +2421,16 @@ html:not(.dark) ::selection {
   }
 }
 
+/* Decorative terminal brackets around section headings. Drawn as generated
+   content so the heading's text stays the plain label ("Projects"). */
+.bracket-open::before {
+  content: "[";
+}
+
+.bracket-close::before {
+  content: "]";
+}
+
 /* Boot overlay: hidden pre-hydration when this tab already booted (see HomeShell) */
 html[data-booted] .boot-overlay {
   display: none;

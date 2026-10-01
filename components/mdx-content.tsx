@@ -4,12 +4,19 @@ import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrettyCode from "rehype-pretty-code";
 import type { ComponentPropsWithoutRef } from "react";
+import { rehypeSingleH1 } from "@/components/blog/rehype-single-h1";
 
 interface MdxContentProps {
   /** Raw MDX source (frontmatter already stripped). */
   source: string;
   /** URL prefix for resolving relative image refs, e.g. /blog-assets/security/2026-07-05-slug */
   assetBase?: string;
+  /**
+   * Title the surrounding page already renders as its heading. When set, the
+   * body never emits an `h1`: a leading heading repeating the title is dropped
+   * and any other `# heading` renders as an `h2`.
+   */
+  title?: string;
 }
 
 function resolveSrc(src: string | undefined, assetBase?: string): string {
@@ -19,7 +26,7 @@ function resolveSrc(src: string | undefined, assetBase?: string): string {
 }
 
 /** Server component rendering post MDX with the site's terminal styling. */
-export function MdxContent({ source, assetBase }: MdxContentProps) {
+export function MdxContent({ source, assetBase, title }: MdxContentProps) {
   const components = {
     img: (props: ComponentPropsWithoutRef<"img">) => (
       // eslint-disable-next-line @next/next/no-img-element
@@ -42,6 +49,8 @@ export function MdxContent({ source, assetBase }: MdxContentProps) {
         mdxOptions: {
           remarkPlugins: [remarkGfm],
           rehypePlugins: [
+            // Before rehype-slug so demoted headings still get ids and links.
+            [rehypeSingleH1, { title }],
             rehypeSlug,
             [rehypeAutolinkHeadings, { behavior: "wrap" }],
             [

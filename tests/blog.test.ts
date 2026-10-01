@@ -5,6 +5,8 @@ import {
   mapNote,
   getAllPosts,
   getAdjacentPosts,
+  getRelatedPosts,
+  getCategoryInfo,
   getPost,
   getAllNotes,
   getCategories,
@@ -13,7 +15,9 @@ import {
   previewTargetKey,
   PREVIEW_COOKIE,
   type PostRow,
+  blogRevalidationPaths,
 } from "@/lib/blog";
+import { rehypeSingleH1, type HastNode } from "@/components/blog/rehype-single-h1";
 import { supabasePublic, supabaseAdmin } from "@/lib/supabase";
 import { cookies, draftMode } from "next/headers";
 
@@ -217,6 +221,127 @@ describe("getAdjacentPosts", () => {
   });
 });
 
+describe("getRelatedPosts", () => {
+  // Newest first, as getAllPosts returns them.
+  const posts = [
+    mapPost(essayRow({ slug: "far-unrelated", category: "life", tags: ["logic"] })),
+    mapPost(essayRow({ slug: "same-category", category: "security", tags: ["xss"] })),
+    mapPost(essayRow({ slug: "near-unrelated", category: "business", tags: ["jobs"] })),
+    mapPost(essayRow({ slug: "current", category: "security", tags: ["npm", "supply-chain"] })),
+    mapPost(essayRow({ slug: "one-shared-tag", category: "engineering", tags: ["npm"] })),
+    mapPost(essayRow({ slug: "two-shared-tags", category: "engineering", tags: ["npm", "supply-chain"] })),
+    mapPost(essayRow({ slug: "older-same-category", category: "security", tags: ["sqli"] })),
+  ];
+  const current = posts[3];
+  const slugs = (related: { slug: string }[]) => related.map((p) => p.slug);
+
+  it("ranks shared tags, then same category newest first, then the unrelated posts published closest", () => {
+    expect(slugs(getRelatedPosts(posts, current, { limit: 10 }))).toEqual([
+      "two-shared-tags",
+      "one-shared-tag",
+      "same-category",
+      "older-same-category",
+      "near-unrelated",
+      "far-unrelated",
+    ]);
+  });
+
+  it("returns at most three posts by default", () => {
+    expect(slugs(getRelatedPosts(posts, current))).toEqual([
+      "two-shared-tags",
+      "one-shared-tag",
+      "same-category",
+    ]);
+  });
+
+  it("skips posts already linked as older/newer while other posts can fill the list", () => {
+    const avoid = [posts[4], posts[2], null];
+    expect(slugs(getRelatedPosts(posts, current, { avoid }))).toEqual([
+      "two-shared-tags",
+      "same-category",
+      "older-same-category",
+    ]);
+  });
+
+  it("falls back to the older/newer posts only when nothing else is left", () => {
+    const few = [posts[1], current, posts[4]];
+    expect(slugs(getRelatedPosts(few, current, { avoid: [posts[4]] }))).toEqual([
+      "same-category",
+      "one-shared-tag",
+    ]);
+  });
+});
+
+describe("getCategoryInfo", () => {
+  it("gives each known category its own snippet-sized description", () => {
+    const known = ["engineering", "security", "business", "life", "psychology"];
+    const descriptions = known.map((c) => getCategoryInfo(c).description);
+
+    expect(new Set(descriptions).size).toBe(known.length);
+    for (const description of descriptions) {
+      expect(description.length).toBeGreaterThanOrEqual(120);
+      expect(description.length).toBeLessThanOrEqual(160);
+    }
+    expect(getCategoryInfo("security").title).toBe("Security Research Essays");
+  });
+
+  it("builds readable copy for a category it has never seen", () => {
+    expect(getCategoryInfo("system-design")).toMatchObject({
+      label: "System Design",
+      title: "System Design Essays",
+      tagline: "Essays on system design by Easin Arafat.",
+    });
+  });
+});
+
+describe("rehypeSingleH1", () => {
+  const heading = (tagName: string, text: string): HastNode => ({
+    type: "element",
+    tagName,
+    properties: {},
+    children: [{ type: "text", value: text }],
+  });
+  const body = (...children: HastNode[]): HastNode => ({ type: "root", children });
+  const outline = (tree: HastNode) =>
+    (tree.children ?? [])
+      .filter((n) => n.type === "element")
+      .map((n) => `${n.tagName}:${n.children?.[0]?.value ?? ""}`);
+
+  it("drops a leading heading that repeats the page title and demotes every other h1", () => {
+    const tree = body(
+      { type: "text", value: "\n" },
+      heading("h1", "It's a Trap: Part 1"),
+      heading("p", "Intro"),
+      heading("h1", "A second top-level heading"),
+      heading("h2", "A section")
+    );
+
+    rehypeSingleH1({ title: "It\u2019s a trap - part 1" })(tree);
+
+    expect(outline(tree)).toEqual([
+      "p:Intro",
+      "h2:A second top-level heading",
+      "h2:A section",
+    ]);
+  });
+
+  it("keeps a leading heading that says something else, as an h2", () => {
+    const tree = body(heading("h1", "The Real Barrier"), heading("p", "Intro"));
+
+    rehypeSingleH1({ title: "CVE-2026-63030 Explained" })(tree);
+
+    expect(outline(tree)).toEqual(["h2:The Real Barrier", "p:Intro"]);
+  });
+
+  it("leaves the body alone when the page has no title of its own", () => {
+    const tree = body(heading("h1", "Blog Publish API"));
+
+    rehypeSingleH1({})(tree);
+
+    expect(outline(tree)).toEqual(["h1:Blog Publish API"]);
+  });
+});
+
 describe("getAllNotes", () => {
   it("returns mapped notes", async () => {
     const { from } = mockQuery([essayRow({ type: "note", category: null, slug: "day-one" })]);
@@ -265,5 +390,31 @@ describe("getAllTags", () => {
     vi.mocked(supabasePublic).mockReturnValue({ from } as never);
 
     expect(await getAllTags()).toEqual(["npm", "supply-chain", "web"]);
+  });
+});
+
+describe("blogRevalidationPaths", () => {
+  it("should cover every page that lists or renders a published essay", () => {
+    expect(blogRevalidationPaths("security", "my-post")).toEqual([
+      "/",
+      "/blogs",
+      "/articles",
+      "/notes",
+      "/sitemap.xml",
+      "/blogs/rss.xml",
+      "/blogs/security",
+      "/blogs/security/my-post",
+    ]);
+  });
+
+  it("should skip category and post pages for a note", () => {
+    expect(blogRevalidationPaths(null, "day-one")).toEqual([
+      "/",
+      "/blogs",
+      "/articles",
+      "/notes",
+      "/sitemap.xml",
+      "/blogs/rss.xml",
+    ]);
   });
 });

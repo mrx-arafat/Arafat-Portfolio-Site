@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
@@ -15,22 +15,32 @@ const NAV_LINKS = [
   { href: "/contact", label: "contact" },
 ] as const;
 
+/** The hydration flag never changes once the client has taken over, so there is nothing to listen for. */
+const subscribeToNothing = (): (() => void) => () => {};
+const clientIsHydrated = (): boolean => true;
+const serverIsHydrated = (): boolean => false;
+
 /** Persistent site header. The boot overlay on / covers it until boot completes. */
 export function SiteNav(): React.ReactElement | null {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  // False on the server and for the hydration render, so the theme toggle
+  // matches the server HTML before the stored theme is known.
+  const mounted = useSyncExternalStore(
+    subscribeToNothing,
+    clientIsHydrated,
+    serverIsHydrated
+  );
   const { resolvedTheme, setTheme } = useTheme();
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const isActive = (href: string): boolean =>
     pathname === href || pathname.startsWith(`${href}/`);
 
+  // Routes outside the nav links (blogs, faq, notes, skills) show their own
+  // first path segment; only the home route is the dashboard.
   const activeLabel =
-    NAV_LINKS.find((l) => isActive(l.href))?.label ?? "dashboard";
+    NAV_LINKS.find((l) => isActive(l.href))?.label ??
+    (pathname.split("/")[1]?.slice(0, 24) || "dashboard");
 
   return (
     <header className="site-header sticky top-0 z-50 border-b border-terminal-green/[0.12] bg-surface-deep/90 font-mono backdrop-blur supports-[backdrop-filter]:bg-surface-deep/70">

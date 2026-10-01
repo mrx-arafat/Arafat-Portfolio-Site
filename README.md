@@ -18,7 +18,7 @@ This repository contains the source code for my professional portfolio website, 
 
 - **Cybersecurity Focus**: Demonstrates my professional experience in application security and cybersecurity
 - **Interactive UI**: Features a dark, terminal-inspired interface with dynamic elements
-- **Modern Architecture**: Built with Next.js 15, TypeScript, and Tailwind CSS
+- **Modern Architecture**: Built with Next.js 16, TypeScript, and Tailwind CSS
 - **Performance Optimized**: Fast loading times with efficient code structure
 - **Self-Hosted Solution**: Complete control over data with no third-party dependencies
 
@@ -49,7 +49,7 @@ This repository contains the source code for my professional portfolio website, 
 
 | Aspect                    | Details                                                                                |
 | ------------------------- | -------------------------------------------------------------------------------------- |
-| **Frontend Architecture** | Built with Next.js 15 App Router, React 18 Server Components, and TypeScript           |
+| **Frontend Architecture** | Built with Next.js 16 App Router, React 19 Server Components, and TypeScript           |
 | **Styling System**        | Tailwind CSS with custom utility classes and responsive design principles              |
 | **Performance**           | Optimized asset loading, code splitting, and server-side rendering for fast page loads |
 | **Security**              | Input validation, CSRF protection, and secure form handling                            |

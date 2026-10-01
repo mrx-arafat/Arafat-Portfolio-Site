@@ -1,11 +1,18 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import {
+  JsonLd,
+  PERSON_REF,
+  breadcrumbSchema,
+} from "@/components/seo/json-ld";
 import { ClientWorkDetail } from "@/components/client-work/client-work-detail";
 import {
   CLIENT_PROJECTS,
+  type ClientProject,
   getClientProject,
 } from "@/components/client-work/content";
+import { absoluteUrl, pageMetadata } from "@/lib/seo";
 
 interface ClientWorkPageProps {
   params: Promise<{ projectId: string }>;
@@ -22,18 +29,44 @@ export async function generateMetadata({
   const project = getClientProject(projectId);
   if (!project) return {};
 
-  return {
+  return pageMetadata({
     title: `${project.title} Case Study`,
-    description: project.summary,
-    alternates: {
-      canonical: `https://www.arafatops.com${project.detailPath}`,
-    },
-    openGraph: {
-      title: `${project.title} Case Study | Easin Arafat`,
-      description: project.summary,
-      url: `https://www.arafatops.com${project.detailPath}`,
-      images: [{ url: project.slides[0].image }],
-    },
+    description: project.metaDescription,
+    path: project.detailPath,
+    ogImage: project.slides[0].image,
+    type: "article",
+  });
+}
+
+/** The case study as a creative work by the site's author, and its place under Projects. */
+function caseStudySchema(project: ClientProject): Record<string, unknown> {
+  const url = absoluteUrl(project.detailPath);
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CreativeWork",
+        "@id": `${url}#case-study`,
+        url,
+        name: `${project.title} Case Study`,
+        description: project.metaDescription,
+        image: project.slides.map((slide) => absoluteUrl(slide.image)),
+        inLanguage: "en",
+        author: PERSON_REF,
+        about: {
+          "@type": "Thing",
+          name: project.title,
+          description: project.summary,
+          url: project.deploymentUrl,
+        },
+        isPartOf: { "@id": absoluteUrl("/projects") },
+      },
+      breadcrumbSchema([
+        { name: "Home", path: "/" },
+        { name: "Projects", path: "/projects" },
+        { name: project.title, path: project.detailPath },
+      ]),
+    ],
   };
 }
 
@@ -44,5 +77,10 @@ export default async function ClientWorkPage({
   const project = getClientProject(projectId);
   if (!project) notFound();
 
-  return <ClientWorkDetail project={project} />;
+  return (
+    <>
+      <JsonLd data={caseStudySchema(project)} />
+      <ClientWorkDetail project={project} />
+    </>
+  );
 }

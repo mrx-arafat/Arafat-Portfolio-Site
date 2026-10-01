@@ -3,6 +3,16 @@
 import Link from "next/link";
 import { Github, Linkedin, BookOpen } from "lucide-react";
 
+interface FooterLink {
+  href: string;
+  label: string;
+  /** Not a page route (an XML feed): plain anchor, so the router never prefetches it. */
+  file?: boolean;
+}
+
+const LINK_CLASS =
+  "text-xs text-terminal-green/60 transition-colors hover:text-terminal-green";
+
 const EXPLORE_LINKS = [
   { href: "/", label: "dashboard" },
   { href: "/about", label: "about" },
@@ -15,6 +25,7 @@ const WRITING_LINKS = [
   { href: "/articles", label: "articles" },
   { href: "/blogs", label: "blog" },
   { href: "/notes", label: "notes" },
+  { href: "/blogs/rss.xml", label: "rss", file: true },
 ] as const;
 
 const MORE_LINKS = [
@@ -34,7 +45,7 @@ function LinkColumn({
   links,
 }: {
   title: string;
-  links: readonly { href: string; label: string }[];
+  links: readonly FooterLink[];
 }): React.ReactElement {
   return (
     <div>
@@ -44,12 +55,15 @@ function LinkColumn({
       <ul className="space-y-1.5">
         {links.map((link) => (
           <li key={link.href}>
-            <Link
-              href={link.href}
-              className="text-xs text-terminal-green/60 transition-colors hover:text-terminal-green"
-            >
-              {link.label}
-            </Link>
+            {link.file ? (
+              <a href={link.href} className={LINK_CLASS}>
+                {link.label}
+              </a>
+            ) : (
+              <Link href={link.href} className={LINK_CLASS}>
+                {link.label}
+              </Link>
+            )}
           </li>
         ))}
       </ul>
@@ -86,7 +100,7 @@ export function SiteFooter(): React.ReactElement | null {
         </div>
       </div>
       <div className="border-t border-terminal-green/10 px-4 py-4 text-center text-[11px] text-terminal-green/40">
-        <span className="text-terminal-green/30">&gt;</span> © {new Date().getFullYear()} Easin
+        <span className="text-terminal-green/30">&gt;</span> &copy; {new Date().getFullYear()} Easin
         Arafat - systems that survive production
       </div>
     </footer>

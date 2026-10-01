@@ -2,19 +2,22 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { ArrowLeft, ArrowRight, BookOpen, ExternalLink, PenLine } from "lucide-react";
 import { getAllPosts, getAllNotes, getCategories } from "@/lib/blog";
+import { pageMetadata } from "@/lib/seo";
+import { JsonLd } from "@/components/seo/json-ld";
+import { postListSchema } from "@/components/blog/json-ld";
 import { PostCard } from "@/components/blog/post-card";
 import { TerminalHeader } from "@/components/blog/terminal-header";
 import articlesData from "@/data/articles.json";
 
-export const metadata: Metadata = {
+const DESCRIPTION =
+  "Essays by Easin Arafat on security research, software engineering, business, psychology and life, plus short daily notes. New writing is published here first.";
+
+export const metadata: Metadata = pageMetadata({
   title: "Blog",
-  description:
-    "Security research, engineering, business, psychology, and life — essays and daily notes by Easin Arafat.",
-  alternates: {
-    canonical: "https://www.arafatops.com/blogs",
-    types: { "application/rss+xml": "https://www.arafatops.com/blogs/rss.xml" },
-  },
-};
+  description: DESCRIPTION,
+  path: "/blogs",
+  ogCard: { category: "blog", prompt: "./read.sh --all --sort=latest" },
+});
 
 export const revalidate = 300;
 
@@ -25,6 +28,19 @@ export default async function BlogIndex() {
 
   return (
     <main className="min-h-screen bg-surface-base text-terminal-green p-4 md:p-8 grid-dots">
+      <JsonLd
+        data={postListSchema({
+          type: "Blog",
+          name: "Easin Arafat - Blog",
+          description: DESCRIPTION,
+          path: "/blogs",
+          posts,
+          breadcrumbs: [
+            { name: "Home", path: "/" },
+            { name: "Blog", path: "/blogs" },
+          ],
+        })}
+      />
       <div className="max-w-5xl mx-auto">
         <TerminalHeader path="~/blogs" command="./read.sh --all --sort=latest" />
 
@@ -37,10 +53,10 @@ export default async function BlogIndex() {
               <ArrowLeft size={16} className="mr-2" />
               <span className="text-sm">cd ..</span>
             </Link>
-            <h1 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-terminal-green to-terminal-soft">
-              <span className="text-terminal-green/70">[</span>
-              BLOG
-              <span className="text-terminal-green/70">]</span>
+            <h1 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-terminal-green to-terminal-soft uppercase">
+              <span aria-hidden="true" className="bracket-open text-terminal-green/70" />
+              Blog
+              <span aria-hidden="true" className="bracket-close text-terminal-green/70" />
             </h1>
           </div>
           <Link

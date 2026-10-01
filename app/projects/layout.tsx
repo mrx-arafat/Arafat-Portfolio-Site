@@ -1,24 +1,20 @@
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
+import { pageMetadata } from "@/lib/seo";
+
+import { PROJECTS_DESCRIPTION } from "./projects-data";
+
+export const metadata: Metadata = pageMetadata({
   title: "Projects",
-  description:
-    "Explore projects by Easin Arafat - security tools, web applications, and open source contributions. Application Security Engineer at Startise.",
-  alternates: {
-    canonical: "https://www.arafatops.com/projects",
-  },
-  openGraph: {
-    title: "Projects | Easin Arafat",
-    description:
-      "Explore projects by Easin Arafat - security tools, web applications, and open source contributions.",
-    url: "https://www.arafatops.com/projects",
-  },
-};
+  description: PROJECTS_DESCRIPTION,
+  path: "/projects",
+  ogCard: { prompt: "./list_projects.sh --sort=latest" },
+});
 
 export default function ProjectsLayout({
   children,
 }: {
   children: React.ReactNode;
-}) {
+}): React.ReactNode {
   return children;
 }

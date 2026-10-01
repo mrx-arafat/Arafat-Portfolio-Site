@@ -1,69 +1,75 @@
 import type { Metadata } from "next";
+import type { ReactElement, ReactNode } from "react";
+
+import { JsonLd, breadcrumbSchema } from "@/components/seo/json-ld";
 import cveData from "@/data/cve.json";
+import { SITE_URL, absoluteUrl, pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Security Research & CVEs",
-  description:
-    "9 CVEs and security vulnerabilities discovered and disclosed by Easin Arafat (n0_arafat_n0), Application Security Engineer at Startise. Responsible disclosure via Patchstack VDP covering Broken Access Control, IDOR, and Sensitive Data Exposure in WordPress plugins.",
-  keywords:
-    "Easin Arafat CVE, n0_arafat_n0, Easin Arafat security researcher, Patchstack researcher, WordPress CVE, Broken Access Control, IDOR, Sensitive Data Exposure, CVE-2025-62039, CVE-2025-58680, CVE-2025-59562, CVE-2025-58981, CVE-2025-64277, CVE-2025-62932, CVE-2025-62931, responsible disclosure, Application Security Engineer Bangladesh",
-  alternates: {
-    canonical: "https://www.arafatops.com/security-research",
-  },
-  openGraph: {
-    title: "Security Research & CVEs | Easin Arafat (n0_arafat_n0)",
-    description:
-      "9 security findings disclosed by Easin Arafat via Patchstack, covering Broken Access Control, IDOR, and Sensitive Data Exposure in WordPress plugins.",
-    url: "https://www.arafatops.com/security-research",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Security Research & CVEs | Easin Arafat (n0_arafat_n0)",
-    description:
-      "9 published CVEs disclosed by Easin Arafat via Patchstack responsible disclosure.",
-  },
-};
+const PAGE_URL = absoluteUrl("/security-research");
 
-function StructuredData() {
-  const itemList = {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    "@id": "https://www.arafatops.com/security-research/#cve-collection",
-    name: "Security Research & CVEs by Easin Arafat",
-    description:
-      "Catalog of CVEs and security vulnerabilities discovered and responsibly disclosed by Easin Arafat (n0_arafat_n0).",
-    url: "https://www.arafatops.com/security-research",
-    author: { "@id": "https://www.arafatops.com/#person" },
-    about: { "@id": "https://www.arafatops.com/#person" },
-    mainEntity: {
-      "@type": "ItemList",
-      numberOfItems: cveData.items.length,
-      itemListElement: cveData.items.map((c, i) => ({
-        "@type": "ListItem",
-        position: i + 1,
-        name: `${c.cve !== "Reserved" ? c.cve + ": " : ""}${c.software} ${c.affected} ${c.type}`,
-        url: c.url,
-      })),
+// Counts come from data/cve.json so the title, description and social card
+// cannot drift from the archive the page renders.
+const findings = cveData.items;
+const totalFindings = findings.length;
+const publishedCves = findings.filter(
+  (item) => item.status === "published",
+).length;
+
+export const metadata: Metadata = pageMetadata({
+  title: `Security Research: ${publishedCves} WordPress Plugin CVEs`,
+  description: `${totalFindings} WordPress plugin vulnerabilities disclosed via Patchstack by Easin Arafat (${cveData.researcher.handle}), ${publishedCves} with published CVEs: access control, IDOR and data exposure.`,
+  path: "/security-research",
+  ogCard: {
+    category: "security",
+    meta: `${totalFindings} findings / ${publishedCves} published CVEs`,
+    prompt: `ls disclosures/ --researcher ${cveData.researcher.handle}`,
+  },
+});
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "@id": `${PAGE_URL}/#cve-collection`,
+      url: PAGE_URL,
+      name: "Security Research & CVEs by Easin Arafat",
+      description: `Catalog of CVEs and security vulnerabilities discovered and responsibly disclosed by Easin Arafat (${cveData.researcher.handle}).`,
+      isPartOf: { "@id": `${SITE_URL}/#website` },
+      breadcrumb: { "@id": `${PAGE_URL}/#breadcrumb` },
+      author: { "@id": `${SITE_URL}/#person` },
+      about: { "@id": `${SITE_URL}/#person` },
+      mainEntity: {
+        "@type": "ItemList",
+        numberOfItems: totalFindings,
+        itemListElement: findings.map((item, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          name: `${item.cve !== "Reserved" ? `${item.cve}: ` : ""}${item.software} ${item.affected} ${item.type}`,
+          // Reserved entries have no advisory yet and all point at the
+          // researcher profile; list URLs must be unique, so they carry none.
+          ...(item.status === "published" && { url: item.url }),
+        })),
+      },
     },
-  };
-
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(itemList) }}
-    />
-  );
-}
+    {
+      "@id": `${PAGE_URL}/#breadcrumb`,
+      ...breadcrumbSchema([
+        { name: "Home", path: "/" },
+        { name: "Security Research", path: "/security-research" },
+      ]),
+    },
+  ],
+};
 
 export default function SecurityResearchLayout({
   children,
 }: {
-  children: React.ReactNode;
-}) {
+  children: ReactNode;
+}): ReactElement {
   return (
     <>
-      <StructuredData />
+      <JsonLd data={structuredData} />
       {children}
     </>
   );
