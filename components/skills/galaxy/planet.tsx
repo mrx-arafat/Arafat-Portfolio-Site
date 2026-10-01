@@ -67,7 +67,7 @@ export function Planet({
   onSelect,
 }: PlanetProps): ReactElement {
   const anchorRef = useRef<THREE.Group>(null);
-  const meshRef = useRef<THREE.Mesh>(null);
+  const meshRef = useRef<THREE.Mesh<THREE.SphereGeometry, THREE.ShaderMaterial>>(null);
   const [hovered, setHovered] = useState(false);
 
   const color = useMemo(() => new THREE.Color(category.color), [category.color]);
@@ -131,10 +131,11 @@ export function Planet({
       0,
       Math.sin(angle) * orbitRadius,
     );
-    if (meshRef.current) {
-      meshRef.current.rotation.y += delta * 0.22;
-    }
-    const uniforms = surfaceMaterial.uniforms;
+    const mesh = meshRef.current;
+    if (!mesh) return;
+    mesh.rotation.y += delta * 0.22;
+    // Per-frame uniform writes go through the mounted mesh, not the render-time material value.
+    const uniforms = mesh.material.uniforms;
     uniforms.uTime.value = clock.elapsedTime;
     uniforms.uHover.value = THREE.MathUtils.lerp(
       uniforms.uHover.value as number,

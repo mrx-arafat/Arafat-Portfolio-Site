@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import type { ReactElement } from "react";
 import { SkillCard } from "@/components/skills/skill-card";
 import {
@@ -11,36 +11,59 @@ import {
 /** Per-row stagger delay for the fade-up reveal. */
 const STAGGER_MS = 70;
 
+const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
+
+function subscribeToReducedMotion(onChange: () => void): () => void {
+  const media = window.matchMedia(REDUCED_MOTION_QUERY);
+  media.addEventListener("change", onChange);
+  return () => media.removeEventListener("change", onChange);
+}
+
+function prefersReducedMotion(): boolean {
+  return window.matchMedia(REDUCED_MOTION_QUERY).matches;
+}
+
+/** IntersectionObserver support cannot change after load, so there is nothing to listen for. */
+function subscribeToNothing(): () => void {
+  return () => {};
+}
+
+function canObserveIntersection(): boolean {
+  return "IntersectionObserver" in window;
+}
+
+/** Server snapshots mirror the pre-hydration HTML: motion on, rows waiting for their reveal. */
+const serverReducedMotion = (): boolean => false;
+const serverCanObserveIntersection = (): boolean => true;
+
 /** Planet dossier for one skill category: ordinal rule, orb header, instrument-panel skill rows. */
 export function CategorySection({
   category,
   skills,
 }: CategorySectionProps): ReactElement {
   const sectionRef = useRef<HTMLElement | null>(null);
-  const [isRevealed, setIsRevealed] = useState(false);
-  const [reducedMotion, setReducedMotion] = useState(false);
+  const reducedMotion = useSyncExternalStore(
+    subscribeToReducedMotion,
+    prefersReducedMotion,
+    serverReducedMotion
+  );
+  const canObserve = useSyncExternalStore(
+    subscribeToNothing,
+    canObserveIntersection,
+    serverCanObserveIntersection
+  );
+  const [hasEnteredView, setHasEnteredView] = useState(false);
+  // Rows that can never be observed scrolling into view are shown outright.
+  const isRevealed = hasEnteredView || !canObserve;
 
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-
-    if (prefersReducedMotion || !("IntersectionObserver" in window)) {
-      setReducedMotion(prefersReducedMotion);
-      setIsRevealed(true);
-      return;
-    }
-
     const node = sectionRef.current;
-    if (!node) {
-      setIsRevealed(true);
-      return;
-    }
+    if (reducedMotion || !canObserve || !node) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries.some((entry) => entry.isIntersecting)) {
-          setIsRevealed(true);
+          setHasEnteredView(true);
           observer.disconnect();
         }
       },
@@ -49,7 +72,7 @@ export function CategorySection({
 
     observer.observe(node);
     return () => observer.disconnect();
-  }, []);
+  }, [reducedMotion, canObserve]);
 
   const { color } = category;
   const ordinal = String(category.order).padStart(2, "0");

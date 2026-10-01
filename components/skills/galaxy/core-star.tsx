@@ -12,7 +12,7 @@ export interface CoreStarProps {
 
 /** Central star: boiling plasma shader surface + additive sprite halo + point light. */
 export function CoreStar({ haloTexture }: CoreStarProps): ReactElement {
-  const coreRef = useRef<THREE.Mesh>(null);
+  const coreRef = useRef<THREE.Mesh<THREE.SphereGeometry, THREE.ShaderMaterial>>(null);
   const haloRef = useRef<THREE.Sprite>(null);
 
   const sunMaterial = useMemo(
@@ -34,9 +34,13 @@ export function CoreStar({ haloTexture }: CoreStarProps): ReactElement {
 
   useFrame(({ clock }) => {
     const pulse = 1 + Math.sin(clock.elapsedTime * 1.4) * 0.03;
-    coreRef.current?.scale.setScalar(pulse);
+    const core = coreRef.current;
+    if (core) {
+      core.scale.setScalar(pulse);
+      // Per-frame uniform writes go through the mounted mesh, not the render-time material value.
+      core.material.uniforms.uTime.value = clock.elapsedTime;
+    }
     haloRef.current?.scale.set(5.5 * pulse, 5.5 * pulse, 1);
-    sunMaterial.uniforms.uTime.value = clock.elapsedTime;
   });
 
   return (
