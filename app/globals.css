@@ -2039,6 +2039,7 @@ body {
   border-radius: 4px;
   padding: 0.15em 0.4em;
   color: #7bed9f;
+  overflow-wrap: anywhere;
 }
 .blog-prose pre {
   background: #0a0a0a !important;
@@ -2064,6 +2065,11 @@ body {
   margin: 1.5rem 0;
   font-size: 0.9rem;
 }
+.blog-prose .blog-table-scroll {
+  margin: 1.5rem 0;
+  overflow-x: auto;
+}
+.blog-prose .blog-table-scroll > table { margin: 0; }
 .blog-prose th,
 .blog-prose td {
   border: 1px solid rgba(46, 213, 115, 0.15);

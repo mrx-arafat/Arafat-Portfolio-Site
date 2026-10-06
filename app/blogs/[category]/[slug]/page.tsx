@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, Calendar, Clock } from "lucide-react";
+import { ArrowLeft, ArrowRight, Calendar, Clock, User } from "lucide-react";
 import {
   countWords,
   getAllPosts,
@@ -12,7 +12,7 @@ import {
   isPreviewMode,
   type Post,
 } from "@/lib/blog";
-import { SITE_URL, absoluteUrl, isoDateTime, ogImageUrl, pageMetadata } from "@/lib/seo";
+import { SITE_NAME, SITE_URL, absoluteUrl, isoDateTime, ogImageUrl, pageMetadata } from "@/lib/seo";
 import { MdxContent } from "@/components/mdx-content";
 import { JsonLd, PERSON_REF, breadcrumbSchema } from "@/components/seo/json-ld";
 import { RelatedPosts } from "@/components/blog/related-posts";
@@ -152,6 +152,14 @@ export default async function PostPage({ params }: Props) {
                 <Clock size={11} />
                 {post.readTime}
               </span>
+              <Link
+                href="/about"
+                rel="author"
+                className="flex items-center gap-1 text-terminal-green/60 hover:text-terminal-green text-xs font-mono transition-colors"
+              >
+                <User size={11} />
+                by {SITE_NAME}
+              </Link>
             </div>
             <h1 className="text-2xl md:text-4xl font-bold text-terminal-green leading-tight mb-3">
               {post.title}

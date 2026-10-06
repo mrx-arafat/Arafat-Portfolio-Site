@@ -39,6 +39,12 @@ export function MdxContent({ source, assetBase, title }: MdxContentProps) {
         className="rounded-xl border border-terminal-green/20 my-6 max-w-full"
       />
     ),
+    // Wide tables scroll inside this box instead of widening the page on mobile.
+    table: (props: ComponentPropsWithoutRef<"table">) => (
+      <div className="blog-table-scroll">
+        <table {...props} />
+      </div>
+    ),
   };
 
   return (
