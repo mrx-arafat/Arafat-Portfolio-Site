@@ -1,17 +1,18 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
+import type { ReactElement } from "react";
 import { getAllTags, getPostsByTag } from "@/lib/blog";
 import { pageMetadata } from "@/lib/seo";
 import { PostCard } from "@/components/blog/post-card";
-import { TerminalHeader } from "@/components/blog/terminal-header";
+import { Chip, CircuitTrace, Keycap, PageHeader, SectionHeading } from "@/components/open-circuit";
+import styles from "../../reading.module.css";
 
 interface Props {
   params: Promise<{ tag: string }>;
 }
 
-export async function generateStaticParams() {
+export async function generateStaticParams(): Promise<{ tag: string }[]> {
   const tags = await getAllTags();
   return tags.map((tag) => ({ tag }));
 }
@@ -33,43 +34,40 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
 }
 
-export default async function TagPage({ params }: Props) {
+export default async function TagPage({ params }: Props): Promise<ReactElement> {
   const { tag } = await params;
   const decoded = decodeURIComponent(tag);
   const posts = await getPostsByTag(decoded);
   if (posts.length === 0) notFound();
 
   return (
-    <main className="min-h-screen bg-surface-base text-terminal-green p-4 md:p-8 grid-dots">
-      <div className="max-w-5xl mx-auto">
-        <TerminalHeader path="~/blogs" command={`grep -r "#${decoded}" ./`} />
-
-        <div className="flex items-center mb-3">
-          <Link
-            href="/blogs"
-            className="inline-flex items-center text-terminal-green hover:text-terminal-green/80 mr-4 bg-surface-raised px-3 py-2 rounded-md border border-terminal-green/20 hover:border-terminal-green/40 transition-colors"
-          >
-            <ArrowLeft size={16} className="mr-2" />
-            <span className="text-sm">cd ..</span>
-          </Link>
-          <h1 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-terminal-green to-terminal-soft">
-            <span aria-hidden="true" className="bracket-open text-terminal-green/70" />#{decoded}
-            <span aria-hidden="true" className="bracket-close text-terminal-green/70" />
-          </h1>
-          <span className="ml-3 text-terminal-green/40 font-mono text-sm">
-            {posts.length} post{posts.length === 1 ? "" : "s"}
-          </span>
-        </div>
-        <p className="text-terminal-green/60 text-sm leading-relaxed mb-8">
-          Posts tagged {decoded}, newest first.
-        </p>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {posts.map((post) => (
-            <PostCard key={`${post.category}/${post.slug}`} post={post} />
-          ))}
-        </div>
-      </div>
+    <main className={`oc-shell oc-page ${styles.page}`}>
+      <nav className={styles.breadcrumbs} aria-label="Breadcrumb">
+        <Link href="/blogs">cd ..</Link><span aria-hidden="true">/</span><span aria-current="page">tag / {decoded}</span>
+      </nav>
+      <PageHeader
+        command={`$ grep -r "#${decoded}" ~/blogs`}
+        title="I tagged my opinions."
+        description="Even my tangents have an index. I made it easy to keep up."
+        note="my words, with labels"
+      />
+      <CircuitTrace>
+        <section className="oc-zone" aria-labelledby="tag-posts-heading">
+          <SectionHeading path="write/connections" title="I have receipts for that." note="my posts, connected" id="tag-posts-heading" />
+          <div className={styles.thread}>
+            <Chip>{posts.length} post{posts.length === 1 ? "" : "s"}</Chip>
+            <p>These are my <strong>#{decoded}</strong> posts. I made the connection; you get the links.</p>
+          </div>
+          <ol className={styles.postList}>
+            {posts.map((post) => (
+              <li key={`${post.category}/${post.slug}`}><PostCard post={post} highlightTag={decoded} /></li>
+            ))}
+          </ol>
+          <div className={styles.actions}>
+            <Keycap href="/blogs" command="$ cd ~/blogs">Back to all writing</Keycap>
+          </div>
+        </section>
+      </CircuitTrace>
     </main>
   );
 }

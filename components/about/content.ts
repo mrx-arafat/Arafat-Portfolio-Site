@@ -30,41 +30,41 @@ export interface OperatingPrinciple {
 export const PROFILE = {
   command: "$ whoami --production-context",
   headline:
-    "Security, infrastructure, and AI automation that stays inspectable under production pressure.",
+    "Nine disclosed CVEs. An Elsevier Q1 paper. My confidence has references.",
   introduction:
-    "I am Easin Arafat, an Application Security Engineer at Startise working on xCloud. I build and harden the systems around a product, from the application boundary and release path to controlled AI workflows that keep important decisions visible.",
+    "I'm Easin Arafat, Application Security Engineer at Startise, working on xCloud. I build AI tooling and turn research, QA, documentation and operations into review-gated automation through AIFlowiz. If it cannot survive production, it does not get to impress me.",
   role: "Application Security Engineer at Startise",
   context: "xCloud at Startise",
-  focus: "Security, platform reliability, and controlled AI workflows",
+  focus: "AI tooling, review-gated automation and systems that survive production",
   research: "9 Patchstack records and an Elsevier Q1 paper",
 } as const;
 
 export const OPERATING_AREAS: OperatingArea[] = [
   {
     id: "security",
-    title: "Security research & testing",
-    description: "Attack paths, authorization boundaries, and reproducible verification.",
+    title: "I question the permissions.",
+    description: "I trace attack paths, test authorization boundaries and make the findings reproducible. A reassuring checkbox is not evidence.",
     proof: "9 Patchstack records",
   },
   {
     id: "platform",
-    title: "Cloud & platform operations",
-    description: "Release paths, server symptoms, reliability, and recovery context.",
+    title: "I stay for production.",
+    description: "I work on release paths, reliability and recovery. The launch is the part where the system starts answering back.",
     proof: "xCloud at Startise",
   },
   {
     id: "automation",
-    title: "Controlled AI automation",
-    description: "Bounded research, developer, QA, and documentation workflows.",
-    proof: "AIFlowiz and agent tools",
+    title: "I give AI a job description.",
+    description: "I build execution harnesses, policy gates and shared context. Generating an answer is the easy part; I want work I can inspect.",
+    proof: "Yoke, Herdr setup and agent tools",
   },
 ];
 
 export const WORK_TRACKS: WorkTrack[] = [
   {
     id: "secure",
-    command: "[SECURE THE BOUNDARY]",
-    title: "Find the assumption before it becomes an incident.",
+    command: "[SECURITY / I CHECK THE BOUNDARY]",
+    title: "I make assumptions uncomfortable.",
     input: "Application behavior, identities, permissions, and exposed attack surface.",
     action:
       "Threat modeling, authorization review, vulnerability research, and reproducible security verification.",
@@ -73,8 +73,8 @@ export const WORK_TRACKS: WorkTrack[] = [
   },
   {
     id: "operate",
-    command: "[OPERATE THE PLATFORM]",
-    title: "Keep the release path explainable when production gets noisy.",
+    command: "[PLATFORM / I KEEP THE CONTEXT]",
+    title: "I expect production to have opinions.",
     input: "Infrastructure changes, deployment procedures, server symptoms, and operational handoffs.",
     action:
       "Build deployment and recovery paths with logs, health checks, visible failure modes, and practical documentation.",
@@ -83,20 +83,20 @@ export const WORK_TRACKS: WorkTrack[] = [
   },
   {
     id: "automate",
-    command: "[AUTOMATE WITH CONTROL]",
-    title: "Turn repeated engineering work into bounded, reviewable systems.",
-    input: "Repeated development, QA, research, documentation, and terminal workflows.",
+    command: "[AI / I CHECK THE WORK]",
+    title: "I read the work before the victory speech.",
+    input: "Coding agents, engineering workflows, project knowledge and execution boundaries.",
     action:
-      "Harness approved AI tools with constrained inputs, evidence capture, test checks, and explicit approval points.",
+      "Build harnesses, shared context, policy gates, independent review and resumable execution around coding agents.",
     outcome:
-      "Faster technical work without pretending that the human decision-maker has disappeared.",
+      "Agent work that can be inspected, reviewed and continued, with the human decision-maker in control.",
   },
 ];
 
 export const PROOF: ProofItem[] = [
   {
     id: "security",
-    label: "Security research record",
+    label: "I have nine disclosures to point to.",
     description:
       "9 Patchstack vulnerability records spanning access control, IDOR, and sensitive-data exposure.",
     href: "/security-research",
@@ -104,7 +104,7 @@ export const PROOF: ProofItem[] = [
   },
   {
     id: "research",
-    label: "Peer-reviewed research",
+    label: "I made it into the journal, too.",
     description:
       "Co-author of an Array paper on machine-learning-driven adaptive interfaces for mobile banking.",
     href: "https://doi.org/10.1016/j.array.2026.100901",
@@ -112,15 +112,15 @@ export const PROOF: ProofItem[] = [
   },
   {
     id: "systems",
-    label: "Agentic systems and developer tools",
+    label: "I leave the code where you can see it.",
     description:
-      "Public experiments in agent harnessing, AI-assisted terminal work, and technical automation.",
+      "Explore the public code behind my agent harnesses, local policy gates, orchestration tools and technical automation.",
     href: "https://github.com/mrx-arafat",
     isExternal: true,
   },
   {
     id: "aiflowiz",
-    label: "AIFlowiz",
+    label: "I put the repetition to work at AIFlowiz.",
     description:
       "A review-gated automation practice for repeated technical work: research, QA, documentation, and operations.",
     href: "https://aiflowiz.com/",
@@ -130,22 +130,22 @@ export const PROOF: ProofItem[] = [
 
 export const OPERATING_PRINCIPLES: OperatingPrinciple[] = [
   {
-    title: "Start bounded",
+    title: "I start with a boundary",
     body:
       "Establish one useful outcome, its failure modes, and the evidence needed to trust it before expanding scope.",
   },
   {
-    title: "Least privilege",
+    title: "I keep access on a short leash",
     body:
       "Give people, services, and AI workflows only the access that the current task actually requires.",
   },
   {
-    title: "Approval before impact",
+    title: "I approve before it matters",
     body:
       "External, destructive, or difficult-to-reverse actions stay behind an explicit human decision.",
   },
   {
-    title: "Evidence at delivery",
+    title: "I bring the evidence",
     body:
       "A result includes test evidence, operational context, and known limits, not only a claim that it works.",
   },

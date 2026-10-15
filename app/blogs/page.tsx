@@ -1,12 +1,15 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { ArrowLeft, ArrowRight, BookOpen, ExternalLink, PenLine } from "lucide-react";
+import { ArrowRight, ExternalLink } from "lucide-react";
+import type { ReactElement } from "react";
 import { getAllPosts, getAllNotes, getCategories } from "@/lib/blog";
+import { getMediumArticles } from "@/lib/medium-articles";
 import { pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/seo/json-ld";
 import { postListSchema } from "@/components/blog/json-ld";
 import { PostCard } from "@/components/blog/post-card";
-import { TerminalHeader } from "@/components/blog/terminal-header";
+import { Chip, CircuitTrace, Keycap, PageHeader, SectionHeading } from "@/components/open-circuit";
+import styles from "./reading.module.css";
 import articlesData from "@/data/articles.json";
 
 const DESCRIPTION =
@@ -21,13 +24,13 @@ export const metadata: Metadata = pageMetadata({
 
 export const revalidate = 300;
 
-export default async function BlogIndex() {
+export default async function BlogIndex(): Promise<ReactElement> {
   const posts = await getAllPosts();
   const notes = (await getAllNotes()).slice(0, 3);
   const categories = await getCategories();
 
   return (
-    <main className="min-h-screen bg-surface-base text-terminal-green p-4 md:p-8 grid-dots">
+    <main className={`oc-shell oc-page ${styles.page}`}>
       <JsonLd
         data={postListSchema({
           type: "Blog",
@@ -41,119 +44,71 @@ export default async function BlogIndex() {
           ],
         })}
       />
-      <div className="max-w-5xl mx-auto">
-        <TerminalHeader path="~/blogs" command="./read.sh --all --sort=latest" />
-
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4">
-          <div className="flex items-center">
-            <Link
-              href="/"
-              className="inline-flex items-center text-terminal-green hover:text-terminal-green/80 mr-4 bg-surface-raised px-3 py-2 rounded-md border border-terminal-green/20 hover:border-terminal-green/40 transition-colors"
-            >
-              <ArrowLeft size={16} className="mr-2" />
-              <span className="text-sm">cd ..</span>
-            </Link>
-            <h1 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-terminal-green to-terminal-soft uppercase">
-              <span aria-hidden="true" className="bracket-open text-terminal-green/70" />
-              Blog
-              <span aria-hidden="true" className="bracket-close text-terminal-green/70" />
-            </h1>
-          </div>
-          <Link
-            href="/notes"
-            className="inline-flex items-center gap-2 text-terminal-green text-sm bg-surface-raised px-3 py-2 rounded-md border border-terminal-green/30 hover:border-terminal-green/60 transition-colors"
-          >
-            <PenLine size={16} />
-            <span>Daily Notes</span>
-            <ArrowRight size={14} />
-          </Link>
+      <nav className={styles.breadcrumbs} aria-label="Breadcrumb">
+        <Link href="/">cd ~</Link><span aria-hidden="true">/</span><span aria-current="page">blogs</span>
+      </nav>
+      <PageHeader
+        command="$ ./read.sh --all --sort=latest"
+        title={<>I have opinions. Plural.<span className="oc-green" aria-hidden="true">_</span></>}
+        description="Security, engineering, business, life, psychology. I have range. The categories are for your convenience."
+      >
+        <div className={styles.actions}>
+          <Keycap href="/notes" command="$ cat ~/notes" variant="primary">Daily Notes</Keycap>
+          <Keycap href="/articles" command="$ ls ~/articles">All articles</Keycap>
         </div>
+      </PageHeader>
 
-        {/* Category chips */}
-        <div className="flex flex-wrap gap-2 mb-8">
-          {categories.map((cat) => (
-            <Link
-              key={cat.name}
-              href={`/blogs/${cat.name}`}
-              className="text-xs font-mono px-3 py-1.5 rounded-lg bg-surface-raised text-terminal-green/70 border border-terminal-green/20 hover:text-terminal-green hover:border-terminal-green/50 transition-colors"
-            >
-              cd {cat.name}/ <span className="text-terminal-green/40">({cat.count})</span>
-            </Link>
-          ))}
-        </div>
-
-        {/* Essays */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
-          {posts.map((post) => (
-            <PostCard key={`${post.category}/${post.slug}`} post={post} />
-          ))}
-        </div>
-
-        {/* Latest notes strip */}
-        {notes.length > 0 && (
-          <div className="mb-10 bg-surface-raised rounded-2xl border border-terminal-green/20 p-5">
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-terminal-green font-semibold tracking-wide text-sm">
-                LATEST NOTES
-              </span>
-              <Link
-                href="/notes"
-                className="flex items-center gap-1 text-terminal-green/60 hover:text-terminal-green text-xs font-mono transition-colors"
-              >
-                cd notes <ArrowRight size={12} />
+      <CircuitTrace>
+        <section className="oc-zone" aria-labelledby="writing-heading">
+          <SectionHeading path="write" title="I said what I said." note="my name is on it" id="writing-heading" />
+          <nav className={styles.directory} aria-label="Writing categories">
+            {categories.map((cat) => (
+              <Link key={cat.name} href={`/blogs/${cat.name}`}>
+                cd {cat.name}/ <span>{cat.count} {cat.count === 1 ? "post" : "posts"} <span aria-hidden="true">-&gt;</span></span>
               </Link>
-            </div>
-            <div className="space-y-2">
-              {notes.map((note) => (
-                <div
-                  key={note.slug}
-                  className="flex items-center gap-3 text-sm"
-                >
-                  <span className="text-terminal-green/40 font-mono text-xs whitespace-nowrap">
-                    {note.date}
-                  </span>
-                  <span className="text-terminal-green/80">{note.title}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Medium archive */}
-        <div className="bg-surface-raised rounded-2xl border border-terminal-green/20 p-5">
-          <div className="flex items-center gap-2 mb-1">
-            <BookOpen size={16} className="text-terminal-green/60" />
-            <span className="text-terminal-green font-semibold tracking-wide text-sm">
-              ARCHIVE — ON MEDIUM
-            </span>
-          </div>
-          <p className="text-terminal-green/40 text-xs font-mono mb-4">
-            older writing lives on Medium — new posts are native
-          </p>
-          <div className="space-y-1">
-            {articlesData.map((article) => (
-              <a
-                key={article.id}
-                href={article.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-terminal-green/5 transition-colors"
-              >
-                <span className="text-terminal-green/40 font-mono text-xs whitespace-nowrap">
-                  {article.publishDate}
-                </span>
-                <span className="text-terminal-green/70 group-hover:text-terminal-green text-sm flex-1 transition-colors">
-                  {article.title}
-                </span>
-                <ExternalLink
-                  size={12}
-                  className="text-terminal-green/30 group-hover:text-terminal-green/60 flex-shrink-0 transition-colors"
-                />
-              </a>
             ))}
-          </div>
+          </nav>
+          <ol className={`${styles.postList} ${styles.leadList}`}>
+            {posts.map((post) => (
+              <li key={`${post.category}/${post.slug}`}><PostCard post={post} /></li>
+            ))}
+          </ol>
+        </section>
+
+        <div className={styles.lowerSplit}>
+          {notes.length > 0 && (
+            <section className="oc-zone" aria-labelledby="latest-notes-heading">
+              <SectionHeading path="notes" title="I had another thought." note="I kept this one short" id="latest-notes-heading" />
+              <ul className={styles.notes}>
+                {notes.map((note) => (
+                  <li key={note.slug}>
+                    <time dateTime={note.date}>{note.date}</time>
+                    <span>{note.title}</span>
+                  </li>
+                ))}
+              </ul>
+              <Link href="/notes" className="oc-route">cd notes <ArrowRight size={16} aria-hidden="true" /></Link>
+            </section>
+          )}
+          <section className="oc-zone" aria-labelledby="medium-archive-heading">
+            <SectionHeading path="write/medium" title="I was already on Medium." note="I brought the links" id="medium-archive-heading" />
+            <p className={styles.intro}>My writing on Medium. Same name. Same lack of restraint. I publish new posts here first.</p>
+            <div className={styles.metadata}><Chip tone="muted">On Medium</Chip></div>
+            <ol className={styles.archive}>
+              {getMediumArticles(articlesData).map((article) => (
+                <li key={article.id}>
+                  <a href={article.url} target="_blank" rel="noopener noreferrer">
+                    <time dateTime={article.publishDate}>{article.publishDate}</time>
+                    <strong>{article.title}</strong>
+                    <ExternalLink size={18} aria-hidden="true" />
+                    <span className="oc-sr"> (opens in a new tab)</span>
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </section>
         </div>
-      </div>
+      </CircuitTrace>
     </main>
   );
 }

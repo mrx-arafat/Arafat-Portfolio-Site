@@ -163,6 +163,11 @@ export function Planet({
     [category.id, onSelect, planetRadius],
   );
 
+  const handleKeyboardSelect = (): void => {
+    const mesh = meshRef.current;
+    if (mesh) onSelect(category.id, mesh.getWorldPosition(new THREE.Vector3()), planetRadius);
+  };
+
   return (
     <group rotation={[tiltX, 0, tiltZ]}>
       <mesh rotation={[-Math.PI / 2, 0, 0]}>
@@ -233,22 +238,38 @@ export function Planet({
           zIndexRange={[40, 0]}
           style={{ pointerEvents: "none" }}
         >
-          <div
+          <button
+            type="button"
+            aria-label={`Explore ${category.label} skills`}
+            aria-controls={`category-${category.id}`}
+            onClick={(event) => { event.stopPropagation(); handleKeyboardSelect(); }}
+            onFocus={() => setHovered(true)}
+            onBlur={() => setHovered(false)}
             style={{
+              pointerEvents: "auto",
+              minWidth: "44px",
+              minHeight: "44px",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: 0,
+              border: 0,
+              background: "transparent",
+              cursor: "pointer",
               whiteSpace: "nowrap",
-              fontSize: "11px",
+              fontSize: "12px",
               letterSpacing: "0.32em",
               textTransform: "uppercase",
               fontWeight: 500,
-              color: hovered ? category.color : "rgba(226, 230, 242, 0.78)",
+              color: "#eef1f5",
               textShadow: hovered
                 ? `0 0 12px ${category.color}aa, 0 1px 3px rgba(0,0,0,0.9)`
                 : "0 1px 3px rgba(0,0,0,0.9)",
               transition: "color 200ms ease, text-shadow 200ms ease",
             }}
           >
-            {category.label}
-          </div>
+            <span aria-hidden="true" style={{ background: "#060913" }}>{category.label}</span>
+          </button>
         </Html>
       </group>
     </group>

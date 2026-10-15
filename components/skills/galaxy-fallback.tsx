@@ -79,18 +79,19 @@ export default function GalaxyFallback({
                 "0 0 30px rgba(245, 201, 107, 0.55), 0 0 90px rgba(245, 201, 107, 0.25)",
             }}
           />
-          <p className="text-xs uppercase tracking-[0.35em] text-[#eef1f5]/75">
+          <p aria-hidden="true" className="text-xs uppercase tracking-[0.35em] text-[#eef1f5]">
             Arafat - core star
           </p>
         </div>
 
         {/* Planet chips */}
-        <ul className="flex max-w-3xl flex-wrap items-start justify-center gap-x-6 gap-y-8">
+        <ul aria-label="Skill categories in the static galaxy" className="flex max-w-3xl flex-wrap items-start justify-center gap-x-6 gap-y-8">
           {categories.map((category) => (
             <li key={category.id}>
               <a
                 href={`#${categorySectionId(category.id)}`}
-                className="group flex w-20 flex-col items-center gap-2 rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[#060913]"
+                aria-label={`Explore ${category.label} skills`}
+                className="group flex min-h-11 w-20 flex-col items-center gap-2 rounded-lg focus-visible:outline-[#eef1f5] focus-visible:ring-2 focus-visible:ring-[#eef1f5] focus-visible:ring-offset-2 focus-visible:ring-offset-[#060913]"
               >
                 <span
                   aria-hidden="true"
@@ -100,7 +101,7 @@ export default function GalaxyFallback({
                     boxShadow: `0 0 18px ${category.color}66`,
                   }}
                 />
-                <span className="text-center text-xs font-medium text-[#f2f5f8]/90 group-hover:text-[#ffffff]">
+                <span className="text-center text-xs font-medium text-[#f2f5f8] group-hover:text-[#ffffff]">
                   {category.label}
                 </span>
               </a>
@@ -108,7 +109,7 @@ export default function GalaxyFallback({
           ))}
         </ul>
 
-        <p className="text-center text-sm text-[#eef1f5]/75">
+        <p className="text-center text-sm text-[#eef1f5]">
           Pick a planet to jump to its story.
         </p>
       </div>

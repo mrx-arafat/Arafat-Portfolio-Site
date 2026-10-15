@@ -219,10 +219,16 @@ The portfolio is designed with customization in mind. Here's how to adapt it to 
 
 | Content Type      | File Location            | Notes                                           |
 | ----------------- | ------------------------ | ----------------------------------------------- |
-| **Personal Info** | `app/dashboard/page.tsx` | Update profile information and social links     |
+| **Personal Info** | `components/about/content.ts`, `app/components/DashboardClient.tsx` | Keep the current focus, official role and supporting evidence aligned |
 | **Skills**        | `data/skills.json`       | Add/remove skills and adjust proficiency levels |
-| **Projects**      | `data/projects.json`     | Update project details, screenshots, and links  |
-| **Blog Posts**    | `app/blog/page.tsx`      | Connect to your own blog or modify sample posts |
+| **Projects**      | `components/agentic-work/content.ts`, `app/projects/projects-data.ts`, `data/projects.json` | Add verified current work, retain the archive, and link real screenshots and public destinations |
+| **Writing**       | `lib/medium-articles.ts`, `data/articles.json`, `lib/blog.ts` | Keep the Medium archive and native posts available through `/articles` and `/blogs` |
+
+Before each portfolio content refresh, check the current public [GitHub projects](https://github.com/mrx-arafat?tab=repositories) and [Medium feed](https://medium.com/feed/@easinxarafat) for new work.
+Verify public repository visibility, project websites, article URLs and publication dates against those sources.
+Keep private source private, label documentation and repository captures accurately, and add real product screenshots where a public view is available.
+Preserve existing archive entries and avoid duplicate article destinations.
+Image provenance and the latest source-check notes are recorded in [the portfolio source check](docs/portfolio-sources.md).
 
 ### Advanced Customization
 

@@ -1,0 +1,54 @@
+.introduction { max-width: 65ch; color: var(--oc-muted); font-size: 1.125rem; line-height: 1.75; margin-bottom: 2rem; }
+.archiveRecord { display: grid; gap: 2rem; align-items: center; border-top: 1px solid var(--oc-line); padding-block: 2.5rem; }
+.archiveRecord:last-child { border-bottom: 1px solid var(--oc-line); }
+.archiveCopy h3 { margin-block: 1rem; color: var(--oc-ink); font-size: clamp(2rem, 4vw, 3.2rem); }
+.archiveCopy h3 a { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; max-width: 100%; }
+.archiveCopy p { max-width: 55ch; color: var(--oc-muted); line-height: 1.75; font-size: 1.05rem; }
+.links { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1.5rem; margin-top: 1rem; }
+.archivePreview { display: block; border: 1px solid var(--oc-line); padding: .5rem; background: var(--oc-raised); }
+.screenshot { position: relative; aspect-ratio: 16/9; background: var(--oc-deep); }
+.previewCaption { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 44px; padding: .8rem; color: var(--oc-soft); font: var(--oc-text-label)/1.6 var(--oc-mono); }
+.schematic { margin: 1.5rem 0 0; padding: 1rem; border: 1px solid var(--oc-line); background: var(--oc-raised); }
+.schematicCaption { color: var(--oc-muted); font: var(--oc-text-label)/1.6 var(--oc-mono); margin-bottom: 1rem; }
+.signalChain { display: flex; flex-direction: column; list-style: none; padding: 0; margin: 0; gap: 1.5rem; }
+.signalChain li { position: relative; display: flex; align-items: center; gap: .75rem; padding: .8rem; border: 1px solid var(--oc-line); color: var(--oc-soft); background: var(--oc-deep); font: var(--oc-text-label)/1.6 var(--oc-mono); overflow-wrap: anywhere; }
+.signalChain li:not(:last-child)::after { content: "\2193"; position: absolute; top: 100%; left: 50%; height: 1.5rem; color: var(--oc-green); line-height: 1.5rem; }
+.signalNumber { color: var(--oc-amber); }
+.detailTopline { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
+.detailHeader { padding-bottom: 0; }
+.detailHeader :global(.oc-command), .detailPage :global(.oc-command) { white-space: normal; overflow-wrap: anywhere; }
+.detailHeader + .schematic { margin-block: 2rem 3rem; }
+.brief { display: grid; gap: 2rem; }
+.brief h3 { color: var(--oc-soft); font: 1rem/1.6 var(--oc-mono); }
+.brief p, .delivery { margin-top: 1rem; color: var(--oc-muted); font-size: 1.125rem; line-height: 1.75; }
+.delivery { padding-left: 1.5rem; }
+.delivery li { padding: .6rem 0; border-bottom: 1px solid var(--oc-line); }
+.walkthrough { border: 1px solid var(--oc-line); background: var(--oc-raised); }
+.walkthroughHeader, .walkthroughControls { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.2rem; border-bottom: 1px solid var(--oc-line); }
+.walkthroughHeader h3 { margin-top: .5rem; color: var(--oc-ink); font-size: clamp(1.2rem, 3vw, 1.7rem); }
+.slideImage { position: relative; aspect-ratio: 2/1; background: var(--oc-deep); }
+.slideCaption { border-top: 1px solid var(--oc-line); padding: 1.2rem; color: var(--oc-muted); font-size: 1rem; line-height: 1.75; }
+.walkthroughControls { border-top: 1px solid var(--oc-line); border-bottom: 0; }
+.slideMarkers { display: flex; gap: .4rem; flex: 1; max-width: 14rem; }
+.slideMarkers span { height: .25rem; flex: 1; background: var(--oc-line); }
+.slideMarkers span[data-active="true"] { background: var(--oc-green); }
+.walkthroughButtons { display: flex; flex-wrap: wrap; gap: .5rem; }
+.cta { display: grid; gap: 1.5rem; padding: clamp(1rem, 4vw, 3rem); border: 1px solid var(--oc-green); background: var(--oc-raised); }
+.cta h2 { color: var(--oc-ink); font-size: clamp(2rem, 4vw, 3.5rem); margin-block: 1rem; }
+.cta p { color: var(--oc-muted); font-size: 1.125rem; line-height: 1.75; max-width: 65ch; }
+.ctaKey { max-width: 25rem; margin-bottom: .5rem; }
+@media (min-width: 40rem) {
+  .archiveRecord { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .archiveRecord:nth-of-type(even) .archivePreview { order: -1; }
+  .signalChain { flex-direction: row; gap: 1rem; }
+  .signalChain li { flex: 1; flex-direction: column; align-items: flex-start; padding: .65rem; font-size: var(--oc-text-label); }
+  .signalChain li:not(:last-child)::after { content: "\2192"; left: 100%; top: 50%; width: 1rem; text-align: center; transform: translateY(-50%); }
+  .archiveCopy .signalChain { flex-direction: column; }
+  .archiveCopy .signalChain li { flex-direction: row; }
+  .archiveCopy .signalChain li:not(:last-child)::after { content: "\2193"; top: 100%; left: 50%; transform: none; height: 1rem; line-height: 1rem; }
+  .brief { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 3rem; }
+}
+@media (min-width: 70rem) {
+  .archiveRecord { gap: 4rem; padding-block: 3rem; }
+  .cta { grid-template-columns: minmax(0, 1fr) minmax(0, .65fr); align-items: end; gap: 3rem; }
+}

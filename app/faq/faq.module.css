@@ -1,0 +1,21 @@
+.page { color: var(--oc-ink); }
+.page :global(.oc-command) { white-space: normal; overflow-wrap: anywhere; }
+.page :global(.oc-page-note) { display: block; margin-top: .5rem; }
+.manual { display: grid; gap: 2rem; }
+.manualNote { align-self: start; padding-top: 1.25rem; border-top: 1px solid var(--oc-line); }
+.manualNote > p:nth-child(2) { font-size: 1.375rem; line-height: 1.6; letter-spacing: -.025em; margin-block: 1.25rem; }
+.entries { border-top: 1px solid var(--oc-line); }
+.entry { border-bottom: 1px solid var(--oc-line); }
+.entry summary { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 4.5rem; padding: 1.25rem .25rem; cursor: pointer; list-style: none; font-size: clamp(1.125rem, 2.1vw, 1.5rem); font-weight: 650; line-height: 1.4; letter-spacing: -.025em; }
+.entry summary::-webkit-details-marker { display: none; }
+.entry summary:hover { color: var(--oc-green); }
+.entry summary:focus-visible { outline: 3px solid var(--oc-amber); outline-offset: 4px; }
+.indicator { width: 1.75rem; flex-shrink: 0; text-align: center; color: var(--oc-green); font: 1.5rem/1 var(--oc-mono); }
+.indicator::after { content: "+"; }
+.entry[open] .indicator::after { content: "-"; }
+.answer { padding: .25rem 2.5rem 1.75rem .25rem; }
+.entryLabel { display: block; margin-bottom: .75rem; color: var(--oc-soft); font: var(--oc-text-label)/1.7 var(--oc-mono); }
+.answer p { max-width: 70ch; color: var(--oc-muted); font-size: 1.125rem; line-height: 1.8; overflow-wrap: anywhere; }
+.keys { display: grid; gap: 1.25rem; max-width: 48rem; padding: 0 .5rem .5rem 0; }
+@media (min-width: 40rem) { .keys { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 70rem) { .manual { grid-template-columns: minmax(0, .75fr) minmax(0, 2fr); gap: 4rem; } }

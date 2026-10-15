@@ -1,0 +1,58 @@
+.page { color: var(--oc-ink); }
+.page :global(.oc-command) { white-space: normal; overflow-wrap: anywhere; }
+.page :global(.oc-page-note) { display: block; margin-top: .5rem; }
+.introduction { display: grid; gap: 3rem; padding-bottom: 3rem; }
+.introduction :global(.oc-page-header) { padding-bottom: 1.5rem; }
+.statement { max-width: 44ch; font-size: 1.125rem; line-height: 1.75; color: var(--oc-soft); }
+.keys { display: grid; gap: 1.25rem; padding: 0 .5rem .5rem 0; margin-top: 2rem; }
+.identity { align-self: start; }
+.identityRecord { display: grid; gap: 1rem; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--oc-line); }
+.identityRecord dt, .trackStory dt { font: .8125rem/1.6 var(--oc-mono); color: var(--oc-soft); }
+.identityRecord dd { margin-top: .25rem; font-size: 1rem; line-height: 1.6; }
+.areas { padding: 0; list-style: none; border-top: 1px solid var(--oc-line); }
+.areas li { display: grid; gap: .75rem; padding: 1.5rem 0; border-bottom: 1px solid var(--oc-line); align-items: start; }
+.areas h3 { font-size: 1.375rem; line-height: 1.3; font-weight: 700; letter-spacing: -.035em; }
+.areas p { color: var(--oc-muted); font-size: 1rem; line-height: 1.7; }
+.areas :global(.oc-chip) { justify-self: start; }
+.sectionIntro { max-width: 65ch; font-size: 1.125rem; line-height: 1.75; color: var(--oc-muted); margin-bottom: 2rem; }
+.tracks { border-bottom: 1px solid var(--oc-line); }
+.track { display: grid; gap: 1.5rem; padding-block: 2rem; border-top: 1px solid var(--oc-line); }
+.trackHeading h3 { font-size: clamp(1.5rem, 3vw, 2.125rem); font-weight: 750; line-height: 1.2; letter-spacing: -.04em; margin-top: 1rem; max-width: 28ch; }
+.input { margin-top: 1.25rem; line-height: 1.75; color: var(--oc-muted); }
+.trackStory { display: grid; border: 1px solid var(--oc-line); background: var(--oc-raised); }
+.trackStory > div { padding: 1.25rem; }
+.trackStory > div + div { border-top: 1px solid var(--oc-line); background: var(--oc-deep); }
+.trackStory dd { margin-top: .75rem; line-height: 1.75; font-size: 1rem; }
+.proof { padding: 0; list-style: none; border-top: 1px solid var(--oc-line); }
+.proofLink { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .5rem 1rem; padding-block: 1.5rem; border-bottom: 1px solid var(--oc-line); }
+.proofLink strong { font-size: 1.25rem; line-height: 1.4; letter-spacing: -.025em; }
+.proofLink > span { grid-column: 1; color: var(--oc-muted); line-height: 1.7; max-width: 65ch; }
+.proofLink svg { grid-column: 2; grid-row: 1 / 3; align-self: center; color: var(--oc-green); }
+.proofLink:hover strong { color: var(--oc-green); }
+.trajectory { display: grid; gap: 3rem; }
+.timeline { padding: 0; list-style: none; }
+.timeline li { display: grid; gap: .5rem; border-top: 1px solid var(--oc-line); padding-block: 1.25rem; }
+.timeline h3 { color: var(--oc-soft); font-weight: 600; }
+.timeline p { color: var(--oc-muted); line-height: 1.7; }
+.principles { padding: clamp(1.25rem, 3vw, 2rem); border: 1px solid var(--oc-line); background: var(--oc-raised); align-self: start; }
+.principles h2 { font-size: clamp(1.75rem, 3vw, 2.5rem); line-height: 1.15; letter-spacing: -.045em; font-weight: 750; margin-block: 1.5rem 2rem; }
+.principles ul { display: grid; gap: 1.5rem; list-style: none; padding: 0; }
+.principles li { display: flex; align-items: start; gap: .75rem; }
+.principles li svg { color: var(--oc-green); flex-shrink: 0; margin-top: .25rem; }
+.principles p { color: var(--oc-muted); line-height: 1.75; }
+.principles strong { color: var(--oc-ink); }
+@media (min-width: 40rem) {
+  .keys { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 48rem; }
+  .areas li { grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 1rem 2rem; }
+  .areas :global(.oc-chip) { grid-column: 2; }
+  .trackStory { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .trackStory > div + div { border-top: 0; border-left: 1px solid var(--oc-line); }
+  .timeline li { grid-template-columns: 7rem minmax(0, 1fr); gap: 1rem; }
+}
+@media (min-width: 70rem) {
+  .introduction { grid-template-columns: minmax(0, 1.5fr) minmax(0, .85fr); gap: 5rem; align-items: center; }
+  .introduction :global(.oc-page-header h1) { font-size: clamp(3rem, 5.75vw, 5.5rem); }
+  .identity { padding-top: 3rem; }
+  .track { grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 3rem; padding-block: 2.5rem; }
+  .trajectory { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 4rem; }
+}

@@ -1,52 +1,40 @@
+import type { ReactElement } from "react";
 import Link from "next/link";
-import { ArrowRight, Calendar, Clock } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { Chip } from "@/components/open-circuit";
 import type { Post } from "@/lib/blog";
+import styles from "@/app/blogs/reading.module.css";
 
-/** Essay card for blog index / category / tag listings. */
-export function PostCard({ post }: { post: Post }) {
+interface PostCardProps {
+  post: Post;
+  highlightTag?: string;
+}
+
+/** A readable index entry with one stretched title link and independent tag links. */
+export function PostCard({ post, highlightTag }: PostCardProps): ReactElement {
   return (
-    <Link
-      href={`/blogs/${post.category}/${post.slug}`}
-      className="group block bg-surface-raised rounded-2xl border border-terminal-green/20 hover:border-terminal-green/50 hover:shadow-[0_0_18px_rgba(46,213,115,0.2)] transition-all duration-300 p-5"
-    >
-      <div className="flex items-center gap-2 mb-3">
-        <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-1 rounded bg-terminal-green/10 text-terminal-green border border-terminal-green/20">
-          {post.category}
-        </span>
-        <span className="flex items-center gap-1 text-terminal-green/40 text-xs font-mono">
-          <Calendar size={11} />
-          {post.date}
-        </span>
-        <span className="flex items-center gap-1 text-terminal-green/40 text-xs font-mono">
-          <Clock size={11} />
-          {post.readTime}
-        </span>
+    <article className={styles.post}>
+      <div className={styles.metadata}>
+        <Chip>{post.category}</Chip>
+        <time dateTime={post.date}>{post.date}</time>
+        <span>{post.readTime}</span>
       </div>
-      <h2 className="text-lg font-bold text-terminal-green mb-2 leading-snug group-hover:text-terminal-soft transition-colors">
-        {post.title}
-      </h2>
-      <p className="text-terminal-green/60 text-sm leading-relaxed mb-3">
-        {post.description}
-      </p>
-      <div className="flex items-center justify-between">
-        <div className="flex flex-wrap gap-1.5">
-          {post.tags.slice(0, 4).map((tag) => (
-            <span
-              key={tag}
-              className="text-[10px] font-mono text-terminal-green/50 bg-surface-deep border border-terminal-green/10 rounded px-1.5 py-0.5"
-            >
-              #{tag}
-            </span>
-          ))}
-        </div>
-        <span className="flex items-center gap-1 text-terminal-green/50 text-xs font-mono group-hover:text-terminal-green transition-colors">
-          cat post.md
-          <ArrowRight
-            size={12}
-            className="transform group-hover:translate-x-1 transition-transform"
-          />
-        </span>
+      <h3>
+        <Link className="oc-stretched" href={`/blogs/${post.category}/${post.slug}`}>
+          {post.title}
+        </Link>
+      </h3>
+      <p>{post.description}</p>
+      <div className={styles.tags}>
+        {post.tags.slice(0, 4).map((tag) => (
+          <Link key={tag} href={`/blogs/tag/${encodeURIComponent(tag)}`}>
+            {tag === highlightTag ? <mark>#{tag}</mark> : `#${tag}`}
+          </Link>
+        ))}
       </div>
-    </Link>
+      <span className={styles.readPrompt} aria-hidden="true">
+        cat post.md <ArrowRight size={16} />
+      </span>
+    </article>
   );
 }

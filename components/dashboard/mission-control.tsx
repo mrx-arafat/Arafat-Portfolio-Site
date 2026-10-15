@@ -1,48 +1,20 @@
 "use client";
 
-import {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-  type ReactElement,
-} from "react";
+import { useEffect, useId, useRef, useState, type ReactElement } from "react";
 import { useRouter } from "next/navigation";
-
-import type { CategoryMeta } from "@/components/skills/types";
+import { useMotion } from "@/components/open-circuit/motion-provider";
 import skillsData from "@/data/skills.json";
-import { playClickSound } from "@/utils/sound";
+import Link from "next/link";
 
-type LaunchPhase = "idle" | "count3" | "count2" | "count1" | "ignition" | "liftoff";
+const SIGNALS = [
+  { key: "security", label: "I FIND THE CRACKS", short: "SECURITY", body: "I find broken access control, IDOR and data exposure. I disclose responsibly through Patchstack.", href: "/security-research", command: "cd security-research" },
+  { key: "entrepreneur", label: "I SHIP MY IDEAS", short: "BUILDING", body: "I have shipped 40+ projects. I prefer my ideas running in production.", href: "/projects", command: "cd projects" },
+  { key: "finance", label: "I FOLLOW THE MONEY", short: "BUSINESS", body: "I write about business because code is only part of what makes the world work.", href: "/blogs/business", command: "cd business" },
+  { key: "web", label: "I BUILD THE THING", short: "WEB", body: "I build security tools, DevSecOps automation and web apps I actually want to use.", href: "/projects", command: "cd projects" },
+] as const;
+type SignalKey = typeof SIGNALS[number]["key"];
 
-const COUNT_STEP_MS = 450;
-const IGNITION_MS = 650;
-const LIFTOFF_NAV_MS = 2350;
-
-const categories: CategoryMeta[] = [
-  ...((skillsData as unknown as { categories?: CategoryMeta[] }).categories ??
-    []),
-].sort((a, b) => a.order - b.order);
-
-const skillCount = (
-  (skillsData as unknown as { skills?: unknown[] }).skills ?? []
-).length;
-
-const COUNTDOWN_LABEL: Record<LaunchPhase, string> = {
-  idle: "T-00:00:03",
-  count3: "T-00:00:03",
-  count2: "T-00:00:02",
-  count1: "T-00:00:01",
-  ignition: "IGNITION",
-  liftoff: "LIFTOFF",
-};
-
-/**
- * Night launch-pad matte scene. Realism comes from light, not outlines:
- * silhouetted structures, floodlight cones, side-lit vehicle, vapor, wet-pad
- * reflection. Ignition/liftoff visuals are driven by wrapper phase classes.
- */
-function PadScene(): ReactElement {
+function PadScene({ isMotionEnabled }: { isMotionEnabled: boolean }): ReactElement {
   return (
     <svg
       viewBox="0 0 1200 520"
@@ -97,7 +69,7 @@ function PadScene(): ReactElement {
         );
       })}
 
-      {/* Horizon glow — distant facility lights */}
+      {/* Horizon glow - distant facility lights */}
       <ellipse cx="620" cy="432" rx="560" ry="60" fill="#3d6a99" opacity="0.1" filter="url(#mcxBlurL)" />
       <ellipse cx="620" cy="436" rx="300" ry="36" fill="#ffb35c" opacity="0.08" filter="url(#mcxBlurL)" />
 
@@ -106,10 +78,10 @@ function PadScene(): ReactElement {
       <path d="M990 432 L997 232 L1004 432 Z" fill="#060b12" />
       <path d="M1106 432 L1111 288 L1116 432 Z" fill="#05090f" />
       <circle cx="186" cy="203" r="2" fill="#ff5f56" opacity="0.9">
-        <animate attributeName="opacity" values="0.9;0.2;0.9" dur="2.4s" repeatCount="indefinite" />
+        {isMotionEnabled && <animate attributeName="opacity" values="0.9;0.2;0.9" dur="2.4s" repeatCount="indefinite" />}
       </circle>
       <circle cx="997" cy="230" r="2" fill="#ff5f56" opacity="0.7">
-        <animate attributeName="opacity" values="0.7;0.15;0.7" dur="3.1s" repeatCount="indefinite" />
+        {isMotionEnabled && <animate attributeName="opacity" values="0.7;0.15;0.7" dur="3.1s" repeatCount="indefinite" />}
       </circle>
 
       {/* Floodlight beams (crossed, aimed at vehicle) */}
@@ -118,7 +90,7 @@ function PadScene(): ReactElement {
       <circle cx="318" cy="433" r="5" fill="#f4f8ff" opacity="0.95" filter="url(#mcxBlurS)" />
       <circle cx="925" cy="433" r="5" fill="#f4f8ff" opacity="0.95" filter="url(#mcxBlurS)" />
 
-      {/* Service tower — dark lattice silhouette */}
+      {/* Service tower - dark lattice silhouette */}
       <g>
         <rect x="655" y="88" width="46" height="348" fill="#0a1017" />
         <rect x="655" y="88" width="46" height="348" fill="url(#mcxLattice)" opacity="0.7" />
@@ -128,11 +100,11 @@ function PadScene(): ReactElement {
         <rect x="632" y="252" width="24" height="6" fill="#0c1219" />
         {/* Aircraft warning light */}
         <circle cx="678" cy="80" r="2.4" fill="#ff5f56">
-          <animate attributeName="opacity" values="1;0.15;1" dur="1.8s" repeatCount="indefinite" />
+          {isMotionEnabled && <animate attributeName="opacity" values="1;0.15;1" dur="1.8s" repeatCount="indefinite" />}
         </circle>
       </g>
 
-      {/* ——— Vehicle (side-lit from left floodlight) ——— */}
+      {/* --- Vehicle (side-lit from left floodlight) --- */}
       {/* Outer group: ascent translation. Inner group: ignition shake. */}
       <g className="mcx-lift">
       <g className="mcx-vehicle">
@@ -177,7 +149,7 @@ function PadScene(): ReactElement {
         {/* Sticker accent tick above the wordmark */}
         <rect x="616" y="302" width="8" height="2" fill="#2ed573" opacity="0.7" transform="rotate(90 620 303)" />
 
-        {/* Ascent flame — ignites small, stretches at liftoff */}
+        {/* Ascent flame - ignites small, stretches at liftoff */}
         <g className="mcx-ascent-flame" opacity="0">
           <path d="M604 428 Q620 440 636 428 Q646 500 620 560 Q594 500 604 428 Z" fill="url(#mcxFlame)" filter="url(#mcxBlurM)" />
           <path d="M610 428 Q620 436 630 428 Q634 470 620 500 Q606 470 610 428 Z" fill="#ffffff" opacity="0.85" filter="url(#mcxBlurS)" />
@@ -220,122 +192,72 @@ function PadScene(): ReactElement {
   );
 }
 
-/** Cinematic night-launch panel: click → countdown → ignition → liftoff → /skills. */
+type LaunchPhase = "idle" | "count3" | "count2" | "count1" | "ignition" | "liftoff";
+const COUNT_STEP_MS = 450;
+const IGNITION_MS = 650;
+const LIFTOFF_NAV_MS = 2350;
+const COUNTDOWN_LABEL: Record<LaunchPhase, string> = {
+  idle: "T-00:00:03", count3: "T-00:00:03", count2: "T-00:00:02", count1: "T-00:00:01", ignition: "IGNITION", liftoff: "LIFTOFF",
+};
+const LAUNCH_STATUS: Record<LaunchPhase, string> = {
+  idle: "Launch pad ready.",
+  count3: "Launching to the Skill Universe... T-minus 3.",
+  count2: "Launching to the Skill Universe... T-minus 2.",
+  count1: "Launching to the Skill Universe... T-minus 1.",
+  ignition: "Launching to the Skill Universe... Ignition.",
+  liftoff: "Launching to the Skill Universe... Liftoff.",
+};
+
+/** Launch through the original countdown, ignition and liftoff, then navigate to /skills. */
 export function MissionControl(): ReactElement {
   const router = useRouter();
+  const { isMotionEnabled } = useMotion();
   const [phase, setPhase] = useState<LaunchPhase>("idle");
-  const timers = useRef<number[]>([]);
+  const launching = useRef(false);
+  const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const [signals, setSignals] = useState<Record<SignalKey, boolean>>({ security: true, entrepreneur: true, finance: true, web: true });
+  const id = useId();
+  const count = Object.values(signals).filter(Boolean).length;
 
   useEffect(() => {
     const pending = timers.current;
-    return () => pending.forEach((t) => window.clearTimeout(t));
+    return () => pending.forEach(timer => clearTimeout(timer));
   }, []);
 
-  const launch = useCallback((): void => {
-    if (phase !== "idle") return;
-    playClickSound();
-    // Warm /skills now, not on mount: the countdown leaves ~4s of lead time,
-    // and an eager prefetch pulled the three.js galaxy bundle (~140KB gzip)
-    // into every home page load.
-    router.prefetch("/skills");
-
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  // A pause during countdown finishes the route immediately rather than leaving a frozen pad.
+  useEffect(() => {
+    if (!isMotionEnabled && launching.current) {
+      timers.current.forEach(timer => clearTimeout(timer));
       router.push("/skills");
-      return;
     }
+  }, [isMotionEnabled, router]);
 
-    const at = (ms: number, fn: () => void): void => {
-      timers.current.push(window.setTimeout(fn, ms));
+  function launch(): void {
+    if (launching.current) return;
+    launching.current = true;
+    router.prefetch("/skills");
+    if (!isMotionEnabled) { router.push("/skills"); return; }
+    const at = (ms: number, action: () => void): void => {
+      timers.current.push(setTimeout(action, ms));
     };
     setPhase("count3");
     at(COUNT_STEP_MS, () => setPhase("count2"));
     at(COUNT_STEP_MS * 2, () => setPhase("count1"));
     at(COUNT_STEP_MS * 3, () => setPhase("ignition"));
     at(COUNT_STEP_MS * 3 + IGNITION_MS, () => setPhase("liftoff"));
-    at(COUNT_STEP_MS * 3 + IGNITION_MS + LIFTOFF_NAV_MS, () =>
-      router.push("/skills")
-    );
-  }, [phase, router]);
+    at(COUNT_STEP_MS * 3 + IGNITION_MS + LIFTOFF_NAV_MS, () => router.push("/skills"));
+  }
 
-  return (
-    <div className="bg-surface-deep rounded-2xl border border-terminal-green/30 relative overflow-hidden group hover:border-terminal-green/60 hover:shadow-[0_0_30px_rgba(46,213,115,0.15)] transition-all duration-500">
-      {/* Terminal header */}
-      <div className="flex items-center gap-2 px-4 py-2.5 border-b border-terminal-green/15 bg-surface-raised">
-        <div className="flex gap-1.5">
-          <div className="w-2.5 h-2.5 rounded-full bg-[#ff5f56]/80"></div>
-          <div className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]/80"></div>
-          <div className="w-2.5 h-2.5 rounded-full bg-[#27c93f]/80"></div>
-        </div>
-        <span className="text-terminal-green/50 text-[10px] font-mono ml-2 tracking-wider">
-          ~/missions/skill-universe/launch.sh
-        </span>
-        <div className="flex-1"></div>
-        <span className="text-terminal-green/20 text-[10px] font-mono">
-          stream: live
-        </span>
-      </div>
-
-      {/* Launch cam */}
-      <button
-        type="button"
-        onClick={launch}
-        disabled={phase !== "idle"}
-        aria-label="Launch to the Skill Universe"
-        className={`mcx-stage mcx-${phase} relative block h-[440px] w-full cursor-pointer overflow-hidden border-0 bg-transparent p-0 text-left outline-none focus-visible:ring-2 focus-visible:ring-terminal-green/60 md:h-[500px]`}
-      >
-        <PadScene />
-
-        {/* White-out at the end of liftoff — z-30 so it washes over the OSD text too */}
-        <span aria-hidden="true" className="mcx-whiteout absolute inset-0 z-30"></span>
-
-        {/* ——— Camera OSD ——— */}
-        {/* Frame corners */}
-        <span aria-hidden="true" className="pointer-events-none absolute left-3 top-3 h-5 w-5 border-l-2 border-t-2 border-white/25"></span>
-        <span aria-hidden="true" className="pointer-events-none absolute right-3 top-3 h-5 w-5 border-r-2 border-t-2 border-white/25"></span>
-        <span aria-hidden="true" className="pointer-events-none absolute bottom-3 left-3 h-5 w-5 border-b-2 border-l-2 border-white/25"></span>
-        <span aria-hidden="true" className="pointer-events-none absolute bottom-3 right-3 h-5 w-5 border-b-2 border-r-2 border-white/25"></span>
-
-        {/* Top-left: REC */}
-        <span className="pointer-events-none absolute left-6 top-5 flex items-center gap-2 font-mono text-[10px] tracking-[0.25em] text-[#f2f5f8]/90">
-          <span className="h-2 w-2 rounded-full bg-[#ff3b30] animate-pulse"></span>
-          REC · LAUNCH_CAM_03
-        </span>
-
-        {/* Top-right: pad id */}
-        <span className="pointer-events-none absolute right-6 top-5 font-mono text-[10px] tracking-[0.25em] text-white/75">
-          PAD 04-ARAFAT · NIGHT OPS
-        </span>
-
-        {/* Bottom-left: mission data */}
-        <span className="pointer-events-none absolute bottom-6 left-6 flex flex-col gap-1 font-mono text-[10px] leading-relaxed tracking-[0.18em] text-white/85">
-          <span className="text-[#ffffff]">MISSION · SKILL-UNIVERSE</span>
-          <span>DEST /skills</span>
-          <span>
-            PAYLOAD {skillCount} modules → {categories.length} planets
-          </span>
-        </span>
-
-        {/* Bottom-right: countdown */}
-        <span className="pointer-events-none absolute bottom-6 right-6 flex flex-col items-end gap-1.5 font-mono">
-          <span
-            key={phase}
-            className={`mcx-count-swap text-xl tracking-[0.2em] md:text-2xl ${
-              phase === "ignition"
-                ? "text-[#ffbd2e]"
-                : phase === "liftoff"
-                  ? "text-[#2ed573]"
-                  : "text-white/85"
-            }`}
-          >
-            {COUNTDOWN_LABEL[phase]}
-          </span>
-          {phase === "idle" && (
-            <span className="text-[10px] tracking-[0.3em] text-[#2ed573]/80 animate-pulse">
-              CLICK ANYWHERE TO LAUNCH
-            </span>
-          )}
-        </span>
-      </button>
+  return <>
+    <div className={"oc-launch-stage mcx-stage mcx-" + phase} data-motion={isMotionEnabled ? "on" : "off"}>
+      <PadScene isMotionEnabled={isMotionEnabled} />
+      <p className="oc-launch-scene-title" aria-hidden="true">My skills.<br /><em>I gave them<br />a universe.</em></p>
+      <div className="oc-hud oc-hud-top" aria-hidden="true"><span className="oc-rec">REC / LAUNCH_CAM_03</span><span>PAD 04-ARAFAT / NIGHT OPS</span></div>
+      <div className="oc-hud oc-hud-bottom" aria-hidden="true"><span>MISSION / SKILL-UNIVERSE<br />DEST /skills<br />PAYLOAD {skillsData.skills.length} modules -&gt; {skillsData.categories.length} planets</span><span className="mcx-count-swap" key={phase}>{COUNTDOWN_LABEL[phase]}</span></div>
+      <span className="mcx-whiteout absolute inset-0 z-30" aria-hidden="true" />
+      <button className="oc-launch-trigger" type="button" onClick={launch} aria-disabled={phase !== "idle"} aria-label="CLICK ANYWHERE TO LAUNCH - Launch to the Skill Universe"><span className="oc-launch-prompt"><span>CLICK ANYWHERE TO LAUNCH</span><b aria-hidden="true">-&gt;</b></span></button>
     </div>
-  );
+    <div className="oc-launch-route"><p className="oc-status-line" role="status" aria-live="polite" aria-atomic="true">{LAUNCH_STATUS[phase]}</p><Link className="oc-route" href="/skills" prefetch={false}>cd skills -&gt;</Link></div>
+    <div className="oc-skills-console"><div><h3 className="oc-console-label">Pick a side of me.</h3><div className="oc-skill-switches">{SIGNALS.map(signal => <button className="oc-skill-switch" key={signal.key} type="button" role="switch" aria-checked={signals[signal.key]} aria-controls={id + "-" + signal.key} onClick={() => setSignals(previous => ({ ...previous, [signal.key]: !previous[signal.key] }))}><span>{signal.label}</span><span className="oc-switch-state"><span>{signals[signal.key] ? "ON" : "OFF"}</span><span className="oc-switch-track" aria-hidden="true" /></span></button>)}</div><p className="oc-status-line" role="status">{count} {count === 1 ? "side of me connected." : "sides of me connected."}</p></div><div><p className="oc-console-label">I have receipts for that.</p><ul className="oc-skill-output">{SIGNALS.map(signal => <li key={signal.key} id={id + "-" + signal.key} hidden={!signals[signal.key]}><strong>{signal.label}</strong><p>{signal.body}</p><Link href={signal.href}>{signal.command} -&gt;</Link></li>)}</ul>{count === 0 && <p className="oc-small oc-muted">I contain multitudes. Pick one above.</p>}</div></div>
+  </>;
 }

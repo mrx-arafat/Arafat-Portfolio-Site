@@ -1,11 +1,13 @@
 import fs from "node:fs";
 import path from "node:path";
-import Link from "next/link";
 import type { Metadata } from "next";
-import { ArrowLeft } from "lucide-react";
+import type { ReactElement } from "react";
+
 import { MdxContent } from "@/components/mdx-content";
-import { TerminalHeader } from "@/components/blog/terminal-header";
+import { Chip, CircuitTrace, Keycap, PageHeader, Prose, SectionHeading } from "@/components/open-circuit";
 import { pageMetadata } from "@/lib/seo";
+
+import styles from "./blog-api.module.css";
 
 // Operator reference for the token-protected publish endpoint, not content
 // meant to rank: kept out of the index, links still followed.
@@ -17,7 +19,8 @@ export const metadata: Metadata = pageMetadata({
   noindex: true,
 });
 
-export default function BlogApiDocsPage() {
+/** Render the repository's publishing manual as a readable operator reference. */
+export default function BlogApiDocsPage(): ReactElement {
   // Single source of truth: the repo markdown doc, read at build time
   const doc = fs.readFileSync(
     path.join(process.cwd(), "docs", "api", "blog-publish.md"),
@@ -25,26 +28,32 @@ export default function BlogApiDocsPage() {
   );
 
   return (
-    <main className="min-h-screen bg-surface-base text-terminal-green p-4 md:p-8 grid-dots">
-      <div className="max-w-4xl mx-auto">
-        <TerminalHeader path="~/docs/blog-api" command="man blog-publish" />
-
-        <div className="flex items-center mb-8">
-          <Link
-            href="/blogs"
-            className="inline-flex items-center text-terminal-green hover:text-terminal-green/80 bg-surface-raised px-3 py-2 rounded-md border border-terminal-green/20 hover:border-terminal-green/40 transition-colors"
-          >
-            <ArrowLeft size={16} className="mr-2" />
-            <span className="text-sm">cd ../blog</span>
-          </Link>
-        </div>
-
-        <article className="bg-surface-raised rounded-2xl border border-terminal-green/20 p-6 md:p-10">
-          <div className="blog-prose">
-            <MdxContent source={doc} />
+    <main className={`oc-shell oc-page ${styles.page}`}>
+      <PageHeader command="$ man blog-publish" note="my blog / my publishing instructions" title={<>I write.<br /><span className="oc-green">I ship.</span></>} description="My publishing routine: draft, read back, preview, publish. Token authentication gets you in. Good prose is still your problem.">
+        <div className={styles.chips}><Chip>My API uses tokens</Chip><Chip tone="amber">I start with drafts</Chip></div>
+      </PageHeader>
+      <CircuitTrace>
+        <section className="oc-zone" aria-labelledby="reference-heading">
+          <SectionHeading path="docs/blog-api" title="Read my fine print." id="reference-heading" note="my routine / draft / read back / preview / publish" />
+          <div className={styles.reference}>
+            <div className={styles.index}>
+              <h3 id="index-heading">My section shortcuts</h3>
+              <nav aria-label="Blog API reference sections">
+                <a href="#authentication">Authentication <span aria-hidden="true">-&gt;</span></a>
+                <a href="#the-full-workflow">The full workflow <span aria-hidden="true">-&gt;</span></a>
+                <a href="#errors">Errors <span aria-hidden="true">-&gt;</span></a>
+                <a href="#draft-preview">Draft preview <span aria-hidden="true">-&gt;</span></a>
+                <a href="#recommended-ai-workflow">Recommended AI workflow <span aria-hidden="true">-&gt;</span></a>
+              </nav>
+              <Keycap href="/blogs" command="$ cd ~/blogs">Read what I published</Keycap>
+            </div>
+            <article className={styles.document}>
+              <div className={styles.fileLabel}><span>docs/api/blog-publish.md</span><span>MY REFERENCE / READ ONLY</span></div>
+              <Prose className={styles.body}><MdxContent source={doc} title="Blog Publish API" /></Prose>
+            </article>
           </div>
-        </article>
-      </div>
+        </section>
+      </CircuitTrace>
     </main>
   );
 }

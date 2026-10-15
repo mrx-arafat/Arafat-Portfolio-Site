@@ -8,8 +8,10 @@ import StructuredData from "./components/StructuredData";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { SITE_NAME, SITE_URL } from "@/lib/seo";
+import { MotionProvider } from "@/components/open-circuit/motion-provider";
+import { BOOT_FIRST_PAINT_CSS, BOOT_SESSION_SCRIPT } from "./components/boot-session";
 
-const inter = Inter({ subsets: ["latin"], display: "swap" });
+const inter = Inter({ subsets: ["latin"], display: "swap", variable: "--font-inter" });
 
 const SITE_TITLE = "Easin Arafat - Application Security Engineer | Startise";
 const SITE_DESCRIPTION =
@@ -94,23 +96,29 @@ export default function RootLayout({
   children: React.ReactNode;
 }>): React.ReactElement {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className={`oc-enhanced ${inter.variable}`} suppressHydrationWarning>
       <head>
+        <style dangerouslySetInnerHTML={{ __html: BOOT_FIRST_PAINT_CSS }} />
+        <script dangerouslySetInnerHTML={{ __html: BOOT_SESSION_SCRIPT }} />
         <link rel="icon" href="/favicon.png" />
         <StructuredData />
+        <script dangerouslySetInnerHTML={{ __html: 'try{document.documentElement.dataset.motion=localStorage.getItem("open-circuit-motion")==="off"||matchMedia("(prefers-reduced-motion: reduce)").matches?"off":"on"}catch(e){document.documentElement.dataset.motion=matchMedia("(prefers-reduced-motion: reduce)").matches?"off":"on"}' }} />
       </head>
-      <body className={inter.className}>
+      <body className={`${inter.className} ${inter.variable}`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
+          <MotionProvider>
           <MusicProvider>
+            <a className="oc-skip" href="#main-content">Skip to content</a>
             <SiteNav />
-            {children}
+            <div id="main-content" tabIndex={-1}>{children}</div>
             <SiteFooter />
           </MusicProvider>
+          </MotionProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -1,0 +1,37 @@
+.page { color: var(--oc-ink); }
+.page :global(.oc-command) { white-space: normal; overflow-wrap: anywhere; }
+.page :global(.oc-page-note) { display: block; margin-top: .5rem; }
+.channel { display: grid; gap: 3rem; }
+.transmission { border: 1px solid var(--oc-line); background: var(--oc-raised); align-self: start; }
+.formHeader { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .75rem 1rem; padding: 1rem 1.25rem; border-bottom: 1px solid var(--oc-line); color: var(--oc-soft); background: var(--oc-deep); }
+.formBody { padding: clamp(1.25rem, 3vw, 2.5rem); }
+.notification:empty { display: none; }
+.notification:not(:empty) { margin-bottom: 1.5rem; padding: 1rem; border: 1px solid var(--oc-line); line-height: 1.7; }
+.form { display: grid; gap: 1.5rem; }
+.required { color: var(--oc-muted); font: .8125rem/1.6 var(--oc-mono); }
+.sender { display: grid; gap: 1.5rem; }
+.field { display: grid; align-content: start; gap: .625rem; }
+.field label { color: var(--oc-soft); font: .875rem/1.6 var(--oc-mono); }
+.field input, .field textarea { width: 100%; min-width: 0; min-height: 3rem; padding: .875rem 1rem; border: 1px solid var(--oc-line); background: var(--oc-deep); color: var(--oc-ink); font: 1rem/1.6 var(--oc-sans); border-radius: 0; }
+.field textarea { resize: vertical; min-height: 10rem; }
+.field input::placeholder, .field textarea::placeholder { color: var(--oc-muted); opacity: 1; }
+.field input:hover, .field textarea:hover { border-color: var(--oc-green); }
+.field input:focus-visible, .field textarea:focus-visible { outline: 3px solid var(--oc-amber); outline-offset: 4px; }
+.field [aria-invalid="true"] { border-color: var(--oc-red); }
+.error { color: var(--oc-red); font-size: var(--oc-text-body); line-height: 1.7; }
+.successText { color: var(--oc-soft); }
+.form > :global(.oc-keycap) { margin-right: .375rem; margin-bottom: .375rem; text-align: left; }
+.sendLabel { display: inline-flex; align-items: center; gap: .75rem; }
+.receipt { display: grid; gap: 1.5rem; padding-block: 1rem; }
+.receipt > svg { color: var(--oc-green); }
+.receipt h3 { font-size: clamp(1.75rem, 4vw, 2.75rem); line-height: 1.15; letter-spacing: -.04em; font-weight: 750; }
+.receipt p { font-size: 1.125rem; line-height: 1.75; color: var(--oc-muted); }
+.receipt :global(.oc-keycap) { margin: 1rem .375rem .375rem 0; text-align: left; }
+.channelNotes h3 { font-size: clamp(1.75rem, 3vw, 2.5rem); line-height: 1.2; letter-spacing: -.04em; font-weight: 750; margin-block: 1.5rem; }
+.context { font-size: 1.125rem; line-height: 1.75; color: var(--oc-muted); }
+.delivery { display: flex; align-items: start; gap: 1rem; padding-block: 1.5rem; margin-block: 2rem; border-block: 1px solid var(--oc-line); }
+.delivery svg { flex-shrink: 0; color: var(--oc-amber); }
+.delivery p { color: var(--oc-muted); line-height: 1.75; }
+.directLinks { display: grid; gap: 1.25rem; padding: 0 .375rem .375rem 0; margin-top: 1rem; }
+@media (min-width: 40rem) { .sender { grid-template-columns: repeat(2, minmax(0, 1fr)); } .directLinks { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 70rem) { .channel { grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 4rem; } .channelNotes { padding-top: 1rem; } .directLinks { grid-template-columns: minmax(0, 1fr); } }

@@ -4,6 +4,7 @@ import {
   breadcrumbSchema,
 } from "@/components/seo/json-ld";
 import { getAllPosts } from "@/lib/blog";
+import { getMediumArticles } from "@/lib/medium-articles";
 import { SITE_URL, absoluteUrl } from "@/lib/seo";
 import ArticlesClient, { type UnifiedArticle } from "./articles-client";
 import { ARTICLES_DESCRIPTION } from "./seo";
@@ -67,7 +68,7 @@ export default async function ArticlesPage(): Promise<React.ReactElement> {
     source: "native",
   }));
 
-  const medium: UnifiedArticle[] = articlesData.map((article) => ({
+  const medium: UnifiedArticle[] = getMediumArticles(articlesData).map((article) => ({
     ...article,
     source: "medium" as const,
   }));

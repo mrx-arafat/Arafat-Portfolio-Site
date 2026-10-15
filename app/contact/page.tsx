@@ -1,363 +1,136 @@
 "use client";
 
-import type React from "react";
-import { useState, useRef, useEffect } from "react";
-import Link from "next/link";
+import { useRef, useState } from "react";
+import type { FocusEvent, FormEvent, KeyboardEvent, ReactElement } from "react";
+import { ArrowUpRight, CheckCheck, Send } from "lucide-react";
 
-import { playKeyboardSound, playClickSound } from "@/utils/sound";
+import { CircuitTrace, Keycap, PageHeader, SectionHeading, StatusTag } from "@/components/open-circuit";
+import { playClickSound, playKeyboardSound } from "@/utils/sound";
 
-export default function Contact() {
+import styles from "./contact.module.css";
+
+/** Open a channel through the existing inbox form or a direct profile link. */
+export default function Contact(): ReactElement {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
-  const [toastType, setToastType] = useState<"success" | "error">("success");
-  const [animateForm, setAnimateForm] = useState(false);
   const [emailError, setEmailError] = useState<string | null>(null);
+  const [notification, setNotification] = useState("");
   const formRef = useRef<HTMLFormElement>(null);
 
-  // Add entrance animation
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setAnimateForm(true);
-    }, 300);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  const handleKeyPress = (
-    e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    if (
-      e.key.length === 1 || // Printable characters
-      e.key === "Backspace" ||
-      e.key === "Enter" ||
-      e.key === " "
-    ) {
+  const handleKeyPress = (event: KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
+    if (event.key.length === 1 || event.key === "Backspace" || event.key === "Enter" || event.key === " ") {
       playKeyboardSound();
     }
   };
 
-  const showToastNotification = (
-    message: string,
-    type: "success" | "error"
-  ) => {
-    setToastMessage(message);
-    setToastType(type);
-    setShowToast(true);
-
-    // Hide toast after 5 seconds
-    const timer = setTimeout(() => {
-      setShowToast(false);
-    }, 5000);
-
-    return () => clearTimeout(timer);
-  };
-
-  // Email validation function
   const validateEmail = (email: string): boolean => {
-    // RFC 5322 compliant email regex
-    const emailRegex =
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return emailRegex.test(email);
   };
 
-  // Handle email validation on blur (when user leaves the field)
-  const handleEmailBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    const email = e.target.value;
-    if (email && !validateEmail(email)) {
-      setEmailError("Please enter a valid email address");
-    } else {
-      setEmailError(null);
-    }
+  const handleEmailBlur = (event: FocusEvent<HTMLInputElement>): void => {
+    const email = event.target.value;
+    setEmailError(email && !validateEmail(email) ? "Please enter a valid email address" : null);
   };
 
-  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleFormSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
+    event.preventDefault();
     playClickSound();
-
     if (isSubmitting) return;
 
-    const formData = new FormData(e.currentTarget);
+    const formData = new FormData(event.currentTarget);
     const email = formData.get("email") as string;
-
-    // Validate email before submission
     if (!validateEmail(email)) {
       setEmailError("Please enter a valid email address");
-      showToastNotification("Please enter a valid email address", "error");
+      setNotification("Please enter a valid email address");
+      formRef.current?.querySelector<HTMLInputElement>("#email")?.focus();
       return;
     }
 
     setIsSubmitting(true);
-
+    setNotification("");
     try {
-      const data = {
-        name: formData.get("name"),
-        email: email,
-        message: formData.get("message"),
-      };
-
       const response = await fetch("/api/contact", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: formData.get("name"), email, message: formData.get("message") }),
       });
-
-      const result = await response.json();
-
+      const result: { error?: string } = await response.json();
       if (response.ok) {
         setIsSuccess(true);
         setEmailError(null);
-        showToastNotification(
-          "Message sent successfully! We'll get back to you soon.",
-          "success"
-        );
-        if (formRef.current) {
-          formRef.current.reset();
-        }
+        setNotification("Message sent successfully. It's in my inbox.");
+        formRef.current?.reset();
       } else {
         throw new Error(result.error || "Failed to send message");
       }
     } catch (error) {
       console.error("Error sending message:", error);
-      showToastNotification(
-        "Failed to send message. Please try again.",
-        "error"
-      );
+      setNotification("Failed to send message. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <main className="min-h-screen bg-surface-base text-terminal-green p-4 md:p-8 relative overflow-hidden grid-dots">
-      {/* Matrix rain effect background */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-10">
-        {[...Array(20)].map((_, i) => {
-          // Seeded pseudo-random keeps server and client render identical
-          const rand = (n: number) => ((n * 9301 + 49297) % 233280) / 233280;
-          return (
-            <div
-              key={i}
-              className="absolute text-terminal-green text-xs font-mono animate-matrix-fall"
-              style={{
-                left: `${rand(i + 1) * 100}%`,
-                animationDelay: `${rand(i + 5) * 5}s`,
-                animationDuration: `${5 + rand(i + 11) * 10}s`
-              }}
-            >
-              {rand(i + 3) > 0.5 ? '01' : '10'}
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Terminal-style Toast Notification */}
-      {showToast && (
-        <div
-          className={`fixed top-4 right-4 p-4 bg-surface-raised border ${
-            toastType === "success"
-              ? "border-terminal-green/60"
-              : "border-red-500/60"
-          } shadow-[0_0_20px_rgba(46,213,115,0.2)] z-50 transition-all duration-300 font-mono text-sm max-w-md`}
-        >
-          <div className="flex items-start gap-3">
-            <span className={toastType === "success" ? "text-terminal-green" : "text-red-500"}>
-              [{toastType === "success" ? "SUCCESS" : "ERROR"}]
-            </span>
-            <p className={toastType === "success" ? "text-terminal-green/80" : "text-red-400/80"}>
-              {toastMessage}
-            </p>
-            <button
-              onClick={() => setShowToast(false)}
-              className="ml-auto text-terminal-green/60 hover:text-terminal-green"
-            >
-              [X]
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Back to Dashboard Button */}
-      <div className="max-w-4xl mx-auto mb-6">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 text-terminal-green/70 hover:text-terminal-green font-mono text-sm transition-all duration-300 group"
-          onClick={playClickSound}
-        >
-          <span className="text-terminal-green/50 group-hover:text-terminal-green/70">[</span>
-          <span className="group-hover:translate-x-[-2px] transition-transform duration-300">←</span>
-          <span>cd ~</span>
-          <span className="text-terminal-green/50 group-hover:text-terminal-green/70">]</span>
-        </Link>
-      </div>
-
-      {/* Terminal header */}
-      <div className="mb-8 bg-surface-raised border border-terminal-green/30 rounded-lg p-3 shadow-[0_0_15px_rgba(46,213,115,0.2)] max-w-4xl mx-auto relative z-10">
-        <div className="flex items-center gap-2 mb-2">
-          <div className="w-3 h-3 rounded-full bg-[#ff5f57]"></div>
-          <div className="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
-          <div className="w-3 h-3 rounded-full bg-[#28ca41]"></div>
-          <div className="ml-2 text-terminal-green/70 text-xs">arafat@K1NGB0B:~/contact</div>
-        </div>
-        <div className="flex items-center">
-          <span className="text-terminal-green mr-2">$</span>
-          <span className="text-terminal-green">contact --arafat</span>
-          <span className="animate-blink ml-1">|</span>
-        </div>
-      </div>
-
-      <div className="max-w-2xl mx-auto">
-        <div className="bg-surface-raised border border-terminal-green/30 rounded-lg shadow-[0_0_20px_rgba(46,213,115,0.1)] relative overflow-hidden">
-          {/* Terminal-style header inside form */}
-          <div className="bg-surface-night border-b border-terminal-green/20 px-6 py-3">
-            <div className="flex items-center gap-2">
-              <span className="text-terminal-green text-sm font-mono">&gt;_</span>
-              <span className="text-terminal-green/70 text-sm font-mono">Contact Form</span>
-            </div>
-          </div>
-
-          <div className="p-8 md:p-10">
-            <div className="mb-8">
-              <h1 className="text-2xl text-terminal-green font-mono mb-2">
-                Anything on your mind?
-              </h1>
-              <div className="text-terminal-green/60 text-sm font-mono">
-                Feel free to reach out - I&apos;m always open to meaningful conversations.
-              </div>
-            </div>
-
-            {isSuccess ? (
-              <div className="text-center py-8">
-                <div className="mb-6 font-mono">
-                  <div className="text-terminal-green text-lg mb-2">Message Sent Successfully!</div>
-                  <div className="text-terminal-green/60 text-sm">
-                    Thank you for reaching out. I&apos;ll get back to you soon.
+    <main className={`oc-shell oc-page ${styles.page}`}>
+      <PageHeader command="$ ./connect.sh --secure" note="my inbox / make your entrance" title={<>My inbox.<br /><span className="oc-green">Make it count.</span></>} description="I secure xCloud at Startise and have disclosed 9 CVEs. Bring me a problem worth solving. A little context will get you further than a very enthusiastic hello." />
+      <CircuitTrace>
+        <section className="oc-zone" aria-labelledby="channel-heading">
+          <SectionHeading path="contact" title="Give me the good part." id="channel-heading" note="my inbox / your best pitch" />
+          <div className={styles.channel}>
+            <div className={styles.transmission}>
+              <div className={styles.formHeader}><span className="oc-small">My inbox / Easin Arafat</span><StatusTag tone="neutral">{isSuccess ? "SENT" : isSubmitting ? "SENDING" : "READY"}</StatusTag></div>
+              <div className={styles.formBody}>
+                <div className={styles.notification} role="status" aria-live="polite" aria-atomic="true">
+                  {notification && <p className={isSuccess ? styles.successText : styles.error}>{notification}</p>}
+                </div>
+                {isSuccess ? (
+                  <div className={styles.receipt}>
+                    <CheckCheck size={48} aria-hidden="true" />
+                    <h3>You made it to my inbox.</h3>
+                    <p>I&apos;ve got your message. Good entrance.</p>
+                    <Keycap command="$ ./connect.sh --new" onClick={() => { playClickSound(); setIsSuccess(false); setNotification(""); }}>Send Another Message</Keycap>
                   </div>
-                </div>
-                <div className="my-8">
-                  <pre className="text-terminal-green text-xs font-mono">
-{`    _____ _   _  ____ ____ _____ ____ ____
-   / ____| | | |/ ___/ ___| ____/ ___/ ___|
-  | (___ | | | | |  | |   |  _| \\___ \\___ \\
-   \\___ \\| | | | |  | |   | |___ ___) |__) |
-   ____) | |_| | |__| |___|_____|____/____/
-  |_____/ \\___/ \\____\\____|               `}
-                  </pre>
-                </div>
-                <button
-                  onClick={() => {
-                    playClickSound();
-                    setIsSuccess(false);
-                  }}
-                  className="bg-surface-input border border-terminal-green/30 hover:border-terminal-green/60 hover:bg-terminal-green/10 text-terminal-green px-6 py-3 font-mono transition-all duration-300"
-                >
-                  <span className="mr-2">&gt;_</span>
-                  Send Another Message
-                </button>
-              </div>
-            ) : (
-              <form
-                ref={formRef}
-                onSubmit={handleFormSubmit}
-                className={`space-y-6 transition-all duration-500 ${
-                  animateForm
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-4"
-                }`}
-              >
-                <div className="space-y-1">
-                  <label className="text-terminal-green text-sm font-mono block">
-                    <span className="text-terminal-green/60">&gt;</span> Your Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    required
-                    onKeyDown={handleKeyPress}
-                    className="w-full px-4 py-3 bg-surface-night border border-terminal-green/20 text-terminal-green font-mono
-                    focus:outline-none focus:border-terminal-green/60 focus:bg-surface-input
-                    transition-all duration-300 hover:border-terminal-green/40 placeholder-terminal-green/30"
-                    placeholder="Ingrid Bergman"
-                  />
-                </div>
-
-                <div className="space-y-1">
-                  <label className="text-terminal-green text-sm font-mono block">
-                    <span className="text-terminal-green/60">&gt;</span> Your Email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    required
-                    onKeyDown={handleKeyPress}
-                    onBlur={handleEmailBlur}
-                    className={`w-full px-4 py-3 bg-surface-night border ${
-                      emailError ? "border-red-500" : "border-terminal-green/20"
-                    } text-terminal-green font-mono
-                    focus:outline-none ${
-                      emailError ? "focus:border-red-500" : "focus:border-terminal-green/60"
-                    } focus:bg-surface-input
-                    transition-all duration-300 hover:border-terminal-green/40 placeholder-terminal-green/30`}
-                    placeholder="ingrid@example.com"
-                  />
-                  {emailError && (
-                    <p className="text-red-500 text-xs mt-1 font-mono">
-                      {emailError}
-                    </p>
-                  )}
-                </div>
-
-                <div className="space-y-1">
-                  <label className="text-terminal-green text-sm font-mono block">
-                    <span className="text-terminal-green/60">&gt;</span> Your Message
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows={6}
-                    required
-                    onKeyDown={handleKeyPress}
-                    className="w-full px-4 py-3 bg-surface-night border border-terminal-green/20 text-terminal-green font-mono
-                    focus:outline-none focus:border-terminal-green/60 focus:bg-surface-input
-                    transition-all duration-300 hover:border-terminal-green/40 resize-none placeholder-terminal-green/30"
-                    placeholder="Hello Arafat, I wanna reach out to you for..."
-                  ></textarea>
-                </div>
-
-                <div className="pt-6">
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full py-4 px-6 bg-surface-input border border-terminal-green/30 text-terminal-green font-mono
-                    transition-all duration-300 hover:border-terminal-green/60 hover:bg-terminal-green/10
-                    disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group"
-                  >
-                    <div className="flex items-center justify-center gap-3">
-                      <span className="text-lg">&gt;_</span>
-                      <span className="uppercase tracking-wider">
-                        {isSubmitting ? "Sending..." : "Send Message"}
-                      </span>
-                      {isSubmitting && (
-                        <div className="flex gap-1">
-                          <span className="animate-pulse">.</span>
-                          <span className="animate-pulse" style={{ animationDelay: "0.2s" }}>.</span>
-                          <span className="animate-pulse" style={{ animationDelay: "0.4s" }}>.</span>
-                        </div>
-                      )}
+                ) : (
+                  <form ref={formRef} onSubmit={handleFormSubmit} className={styles.form} aria-busy={isSubmitting}>
+                    <p className={styles.required}>All fields are required.</p>
+                    <div className={styles.sender}>
+                      <div className={styles.field}>
+                        <label htmlFor="name">Your Name</label>
+                        <input id="name" name="name" type="text" autoComplete="name" required onKeyDown={handleKeyPress} placeholder="Ingrid Bergman" />
+                      </div>
+                      <div className={styles.field}>
+                        <label htmlFor="email">Your Email</label>
+                        <input id="email" name="email" type="email" autoComplete="email" required onKeyDown={handleKeyPress} onBlur={handleEmailBlur} aria-invalid={emailError ? true : undefined} aria-describedby={emailError ? "email-error" : undefined} placeholder="ingrid@example.com" />
+                        {emailError && <p id="email-error" className={styles.error}>{emailError}</p>}
+                      </div>
                     </div>
-                    <div className="absolute inset-0 bg-terminal-green/5 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-                  </button>
-                </div>
-              </form>
-            )}
+                    <div className={styles.field}>
+                      <label htmlFor="message">Your Message</label>
+                      <textarea id="message" name="message" rows={7} required onKeyDown={handleKeyPress} placeholder="Hello Arafat, I wanna reach out to you for..." />
+                    </div>
+                    <Keycap type="submit" disabled={isSubmitting} variant="primary" command={isSubmitting ? "Sending to the inbox..." : "$ ./connect.sh --send"}>
+                      <span className={styles.sendLabel}><Send size={18} aria-hidden="true" />{isSubmitting ? "Sending..." : "Send Message"}</span>
+                    </Keycap>
+                  </form>
+                )}
+              </div>
+            </div>
+            <section className={styles.channelNotes} aria-labelledby="context-heading">
+              <p className="oc-command">$ cat brief.txt</p>
+              <h3 id="context-heading">I like a challenge. Include details.</h3>
+              <p className={styles.context}>I work across application security, xCloud and vulnerability research. Tell me what you&apos;re building, what&apos;s broken or what you think I should take on next.</p>
+              <div className={styles.delivery}><ArrowUpRight size={24} aria-hidden="true" /><p>I need the goal, the constraints and enough context to skip the guessing game. My inbox accepts ambition. Attach specifics.</p></div>
+              <p className="oc-small oc-soft">Find me here, too</p>
+              <div className={styles.directLinks}>
+                <Keycap href="https://www.linkedin.com/in/e4rafat" command="linkedin.com/in/e4rafat">LinkedIn</Keycap>
+                <Keycap href="https://github.com/mrx-arafat" command="github.com/mrx-arafat">GitHub</Keycap>
+              </div>
+            </section>
           </div>
-        </div>
-      </div>
+        </section>
+      </CircuitTrace>
     </main>
   );
 }

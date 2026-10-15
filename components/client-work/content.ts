@@ -10,6 +10,8 @@ export interface ClientProject {
   id: string;
   title: string;
   detailPath: string;
+  headline: string;
+  intro: string;
   deploymentLabel: string;
   deploymentUrl: string;
   summary: string;
@@ -34,6 +36,9 @@ export const CLIENT_PROJECTS: readonly ClientProject[] = [
     id: "termstream",
     title: "TermStream",
     detailPath: "/projects/client-work/termstream",
+    headline: "I keep the work running.",
+    intro:
+      "I built TermStream so a disconnect doesn't get the last word. My server, my workspace, my sessions, back in reach from a browser or phone.",
     deploymentLabel: "ts.arafatops.com",
     deploymentUrl: "https://ts.arafatops.com",
     summary:
@@ -51,7 +56,7 @@ export const CLIENT_PROJECTS: readonly ClientProject[] = [
     slides: [
       {
         id: "overview",
-        title: "Control plane overview",
+        title: "My dashboard. My call.",
         caption:
           "See the active server, choose a workspace, launch the right tool, and return to running work from one dashboard.",
         image: "/images/client-work/termstream-overview.png",
@@ -59,7 +64,7 @@ export const CLIENT_PROJECTS: readonly ClientProject[] = [
       },
       {
         id: "servers",
-        title: "Connect and verify the server",
+        title: "I check the server first.",
         caption:
           "Move from SSH setup to a readiness check before an agent or repository touches the execution host.",
         image: "/images/client-work/termstream-servers.png",
@@ -67,7 +72,7 @@ export const CLIENT_PROJECTS: readonly ClientProject[] = [
       },
       {
         id: "workspace",
-        title: "Choose the exact workspace",
+        title: "I pick the exact workspace.",
         caption:
           "Attach the intended project and branch so each session starts in the right working context.",
         image: "/images/client-work/termstream-workspace.png",
@@ -75,7 +80,7 @@ export const CLIENT_PROJECTS: readonly ClientProject[] = [
       },
       {
         id: "launch",
-        title: "Launch the operator you need",
+        title: "I choose what runs.",
         caption:
           "Start Shell, Claude, Antigravity, Codex, or Python with the project context and remote-control options visible.",
         image: "/images/client-work/termstream-launch.png",
@@ -83,7 +88,7 @@ export const CLIENT_PROJECTS: readonly ClientProject[] = [
       },
       {
         id: "resume",
-        title: "Resume persistent work",
+        title: "I pick up where I left off.",
         caption:
           "Reattach to a running terminal from the browser instead of rebuilding the session after every disconnect.",
         image: "/images/client-work/termstream-running-session.png",
@@ -95,6 +100,9 @@ export const CLIENT_PROJECTS: readonly ClientProject[] = [
     id: "second-brain-deck",
     title: "Second Brain.Deck",
     detailPath: "/projects/client-work/second-brain-deck",
+    headline: "I gave my memory a search bar.",
+    intro:
+      "I built Second Brain.Deck because writing things down was only half the job. Capture, search, folders and a Mind Map, all around a connected Markdown vault.",
     deploymentLabel: "obsidian.arafatops.com",
     deploymentUrl: "https://obsidian.arafatops.com",
     summary:
@@ -112,7 +120,7 @@ export const CLIENT_PROJECTS: readonly ClientProject[] = [
     slides: [
       {
         id: "deck",
-        title: "Capture what matters",
+        title: "I catch the thought.",
         caption:
           "Quick capture puts a thought into the vault before context switching makes it disappear.",
         image: "/images/client-work/second-brain-deck.png",
@@ -120,7 +128,7 @@ export const CLIENT_PROJECTS: readonly ClientProject[] = [
       },
       {
         id: "tree",
-        title: "Navigate the growing vault",
+        title: "I keep the vault in order.",
         caption:
           "Tree view keeps folders and notes understandable when the archive becomes too large to hold in memory.",
         image: "/images/client-work/second-brain-tree.png",
@@ -128,7 +136,7 @@ export const CLIENT_PROJECTS: readonly ClientProject[] = [
       },
       {
         id: "mind-map",
-        title: "Reveal relationships",
+        title: "I connect the dots.",
         caption:
           "Mind Map turns links and tags into a navigable view of how ideas connect across the vault.",
         image: "/images/client-work/second-brain-mind-map.png",
@@ -136,7 +144,7 @@ export const CLIENT_PROJECTS: readonly ClientProject[] = [
       },
       {
         id: "search",
-        title: "Bring the right idea back",
+        title: "I find it when I need it.",
         caption:
           "The command palette searches notes, tags, and folders while keeping high-value actions within reach.",
         image: "/images/client-work/second-brain-search.png",
@@ -148,10 +156,10 @@ export const CLIENT_PROJECTS: readonly ClientProject[] = [
 
 /** Approved conversion block using the site's existing contact destination. */
 export const CLIENT_WORK_CTA: ClientWorkCta = {
-  eyebrow: "Engineering consultation",
-  title: "Have a system you need to ship?",
+  eyebrow: "I've shipped 40+ projects.",
+  title: "Bring me a better problem.",
   body:
-    "Bring the workflow, constraints, and ownership requirements. We can map the smallest dependable path from idea to a system your team can operate.",
+    "I've built persistent terminals and connected knowledge systems. Bring me the workflow, the constraints, and the parts everyone keeps working around.",
   label: "Schedule Engineering Review",
   href: "/contact",
 };

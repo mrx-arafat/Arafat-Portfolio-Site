@@ -1,10 +1,11 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { ArrowLeft, Calendar } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { getAllNotes } from "@/lib/blog";
 import { pageMetadata } from "@/lib/seo";
 import { MdxContent } from "@/components/mdx-content";
-import { TerminalHeader } from "@/components/blog/terminal-header";
+import { Chip, CircuitTrace, PageHeader, Prose, StatusTag } from "@/components/open-circuit";
+import styles from "./notes.module.css";
 
 export const metadata: Metadata = pageMetadata({
   title: "Daily Notes",
@@ -16,68 +17,36 @@ export const metadata: Metadata = pageMetadata({
 
 export const revalidate = 300;
 
-export default async function NotesPage() {
+/** Keep the daily log quiet, chronological and comfortable to read. */
+export default async function NotesPage(): Promise<React.ReactElement> {
   const notes = await getAllNotes();
 
   return (
-    <main className="min-h-screen bg-surface-base text-terminal-green p-4 md:p-8 grid-dots">
-      <div className="max-w-4xl mx-auto">
-        <TerminalHeader path="~/notes" command="tail -f daily.log" />
-
-        <div className="flex items-center mb-8">
-          <Link
-            href="/blogs"
-            className="inline-flex items-center text-terminal-green hover:text-terminal-green/80 mr-4 bg-surface-raised px-3 py-2 rounded-md border border-terminal-green/20 hover:border-terminal-green/40 transition-colors"
-          >
-            <ArrowLeft size={16} className="mr-2" />
-            <span className="text-sm">cd ../blog</span>
-          </Link>
-          <h1 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-terminal-green to-terminal-soft uppercase">
-            <span aria-hidden="true" className="bracket-open text-terminal-green/70" />
-            Daily notes
-            <span aria-hidden="true" className="bracket-close text-terminal-green/70" />
-          </h1>
+    <main className={`oc-shell oc-page ${styles.page}`}>
+      <PageHeader command="$ tail -f daily.log" title={<>I have thoughts.<br /><span className="oc-green">Obviously.</span></>} description="I write about security, philosophy, business and life. These are the shorter entries. I didn't think every opinion needed a full essay.">
+        <Link href="/blogs" className="oc-route mt-5"><ArrowLeft size={16} aria-hidden="true" />cd ../blog</Link>
+      </PageHeader>
+      {notes.length === 0 ? (
+        <div className={styles.empty}>
+          <StatusTag tone="neutral">I&apos;M THINKING</StatusTag>
+          <p className="oc-command mt-4">$ cat /dev/notes</p>
+          <p className="oc-muted mt-3">Nothing logged here yet. I have plenty to say on the blog.</p>
         </div>
-
-        {notes.length === 0 ? (
-          <div className="bg-surface-raised rounded-2xl border border-terminal-green/20 p-8 text-center">
-            <div className="font-mono text-terminal-green/60 text-sm mb-2">
-              $ cat /dev/notes
-            </div>
-            <div className="text-terminal-green/40 font-mono text-xs">
-              No notes yet — first one lands soon.
-            </div>
-          </div>
-        ) : (
-          <div className="space-y-6">
-            {notes.map((note) => (
-              <article
-                key={`${note.date}-${note.slug}`}
-                className="bg-surface-raised rounded-2xl border border-terminal-green/20 p-6"
-              >
-                <header className="flex flex-wrap items-center gap-3 mb-4 border-b border-terminal-green/10 pb-3">
-                  <span className="flex items-center gap-1 text-terminal-green/40 text-xs font-mono">
-                    <Calendar size={11} />
-                    {note.date}
-                  </span>
-                  <h2 className="text-terminal-green font-bold">{note.title}</h2>
-                  {note.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="text-[10px] font-mono text-terminal-green/50 bg-surface-deep border border-terminal-green/10 rounded px-1.5 py-0.5"
-                    >
-                      #{tag}
-                    </span>
-                  ))}
-                </header>
-                <div className="blog-prose text-sm">
-                  <MdxContent source={note.content} title={note.title} />
-                </div>
-              </article>
-            ))}
-          </div>
-        )}
-      </div>
+      ) : (
+        <CircuitTrace className={styles.log}>
+          {notes.map((note) => (
+            <article key={`${note.date}-${note.slug}`} className={`oc-zone ${styles.entry}`} aria-labelledby={`note-${note.date}-${note.slug}`}>
+              <header className={styles.entryHeader}>
+                <p className="oc-command">$ ls ~/notes/<time dateTime={note.date}>{note.date}</time></p>
+                <h2 id={`note-${note.date}-${note.slug}`}>{note.title}</h2>
+                {note.tags.length > 0 && <ul className={styles.tags} aria-label="Note tags">{note.tags.map((tag) => <li key={tag}><Chip tone="muted">#{tag}</Chip></li>)}</ul>}
+              </header>
+              <Prose className={styles.reading}><MdxContent source={note.content} title={note.title} /></Prose>
+              <p className={styles.endmark} aria-hidden="true">[ end of entry ]</p>
+            </article>
+          ))}
+        </CircuitTrace>
+      )}
     </main>
   );
 }

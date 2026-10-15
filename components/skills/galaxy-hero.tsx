@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState, type ReactElement } from "react";
 import { Canvas } from "@react-three/fiber";
 
+import { useMotion } from "@/components/open-circuit/motion-provider";
+import GalaxyFallback from "./galaxy-fallback";
 import type { GalaxyHeroProps } from "./types";
 import { GalaxyScene } from "./galaxy/galaxy-scene";
 
@@ -16,6 +18,7 @@ export default function GalaxyHero({
   skillCounts,
   onPlanetSelect,
 }: GalaxyHeroProps): ReactElement {
+  const { isMotionEnabled } = useMotion();
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [frameloop, setFrameloop] = useState<"always" | "never">("always");
   const [isMobile] = useState<boolean>(
@@ -36,12 +39,16 @@ export default function GalaxyHero({
     );
     observer.observe(wrapper);
     return () => observer.disconnect();
-  }, []);
+  }, [isMotionEnabled]);
+
+  if (!isMotionEnabled) return <GalaxyFallback categories={categories} />;
 
   return (
     <div ref={wrapperRef} className="relative h-[80vh] w-full overflow-hidden">
       <Canvas
-        aria-hidden="true"
+        role="group"
+        aria-label="Skill Universe. Choose a category planet or use the orbit index below."
+        onCreated={({ gl }) => gl.domElement.setAttribute("aria-hidden", "true")}
         frameloop={frameloop}
         dpr={[1, 2]}
         camera={{ position: [0, 9.5, 20.5], fov: 50, near: 0.1, far: 220 }}

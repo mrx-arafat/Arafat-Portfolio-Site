@@ -1,11 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useState, type ReactElement } from "react";
+import { useCallback, useEffect, useState, useSyncExternalStore, type ReactElement } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { ArrowLeft, Volume2, VolumeX } from "lucide-react";
 
 import { useMusicContext } from "@/components/music-provider";
+import { useMotion } from "@/components/open-circuit/motion-provider";
 import { CategorySection } from "@/components/skills/category-section";
 import GalaxyFallback from "@/components/skills/galaxy-fallback";
 import {
@@ -65,20 +66,9 @@ const CAPABILITY_TRACKS = [
   },
 ] as const;
 
-/** Dark placeholder shown while the 3D chunk loads or capability is unknown. */
-function HeroPlaceholder(): ReactElement {
-  return (
-    <div className="flex h-[80vh] w-full items-center justify-center rounded-2xl border border-white/10 bg-[#060913]">
-      <p className="text-xs uppercase tracking-[0.35em] text-[#eef1f5]/65 motion-safe:animate-pulse">
-        initializing universe…
-      </p>
-    </div>
-  );
-}
-
 const GalaxyHero = dynamic(() => import("@/components/skills/galaxy-hero"), {
   ssr: false,
-  loading: () => <HeroPlaceholder />,
+  loading: () => <GalaxyFallback categories={categories} />,
 });
 
 /** Deterministic PRNG so the starfield is stable across renders. */
@@ -126,48 +116,40 @@ function PageStarfield(): ReactElement {
   );
 }
 
-/** Runtime WebGL capability check (WebGL2 with WebGL1 fallback). */
+let webglSupported: boolean | undefined;
+
+/** Cache the runtime capability check; the scene needs WebGL2 in Three.js. */
 function supportsWebgl(): boolean {
+  if (webglSupported !== undefined) return webglSupported;
   try {
-    const canvas = document.createElement("canvas");
-    return Boolean(
-      canvas.getContext("webgl2") ?? canvas.getContext("webgl")
-    );
+    const context = document.createElement("canvas").getContext("webgl2");
+    webglSupported = Boolean(context);
+    context?.getExtension("WEBGL_lose_context")?.loseContext();
   } catch {
-    return false;
+    webglSupported = false;
   }
+  return webglSupported;
 }
 
-type HeroMode = "pending" | "3d" | "static";
+function subscribeToCapability(): () => void { return () => {}; }
+const serverSupportsWebgl = (): boolean => false;
 
 export default function SkillsPage(): ReactElement {
   const { isMuted, toggleMute } = useMusicContext();
-  const [heroMode, setHeroMode] = useState<HeroMode>("pending");
-  const [reducedMotion, setReducedMotion] = useState(false);
+  const { isMotionEnabled } = useMotion();
+  const hasWebgl = useSyncExternalStore(subscribeToCapability, supportsWebgl, serverSupportsWebgl);
   const [activeSectionId, setActiveSectionId] = useState<string | null>(null);
-
-  // Capability gate: 3D hero only with WebGL AND no reduced-motion preference.
-  useEffect(() => {
-    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const decide = (): void => {
-      const prefersReduced = media.matches;
-      setReducedMotion(prefersReduced);
-      setHeroMode(!prefersReduced && supportsWebgl() ? "3d" : "static");
-    };
-    decide();
-    media.addEventListener("change", decide);
-    return () => media.removeEventListener("change", decide);
-  }, []);
 
   const scrollToCategory = useCallback(
     (categoryId: string): void => {
       const target = document.getElementById(categorySectionId(categoryId));
+      target?.focus({ preventScroll: true });
       target?.scrollIntoView({
-        behavior: reducedMotion ? "auto" : "smooth",
+        behavior: isMotionEnabled ? "smooth" : "auto",
         block: "start",
       });
     },
-    [reducedMotion]
+    [isMotionEnabled]
   );
 
   const handlePlanetSelect = useCallback(
@@ -180,6 +162,7 @@ export default function SkillsPage(): ReactElement {
 
   // Track which category section is in view for the side-nav dots.
   useEffect(() => {
+    if (typeof IntersectionObserver === "undefined") return;
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -202,38 +185,27 @@ export default function SkillsPage(): ReactElement {
       <PageStarfield />
       {/* Sound toggle */}
       <button
+        type="button"
         onClick={toggleMute}
-        className="absolute right-4 top-4 z-50 text-terminal-green/50 transition-colors hover:text-terminal-green"
-        aria-label={isMuted ? "Unmute" : "Mute"}
+        className="absolute right-4 top-4 z-50 flex h-11 w-11 items-center justify-center text-terminal-green transition-colors hover:text-terminal-green"
+        aria-label={isMuted ? "Unmute sound" : "Mute sound"}
+        aria-pressed={isMuted}
       >
-        {isMuted ? <VolumeX size={24} /> : <Volume2 size={24} />}
+        {isMuted ? <VolumeX size={24} aria-hidden="true" /> : <Volume2 size={24} aria-hidden="true" />}
       </button>
 
       <Link
         href="/"
-        className="mb-8 inline-flex items-center text-terminal-green hover:text-terminal-green/80"
+        className="mb-8 inline-flex min-h-11 items-center self-start pr-12 text-terminal-green hover:text-terminal-green/80"
         onClick={() => playClickSound()}
       >
-        <ArrowLeft size={20} className="mr-2" />
+        <ArrowLeft size={20} className="mr-2" aria-hidden="true" />
         Back to Dashboard
       </Link>
 
-      {/* Screen-reader navigation mirroring the planets (works with canvas hidden) */}
-      <nav aria-label="Skill categories" className="sr-only">
-        <ul>
-          {categories.map((category) => (
-            <li key={category.id}>
-              <a href={`#${categorySectionId(category.id)}`}>
-                {category.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
-
       <div className="relative z-10 mx-auto w-full max-w-7xl">
         <header className="mb-6">
-          <p className="font-mono text-[11px] uppercase tracking-[0.4em] text-terminal-green/70">
+          <p aria-hidden="true" className="font-mono text-[13px] uppercase tracking-[0.4em] text-terminal-green/70">
             Capability map · {totalSkills} modules
           </p>
           <h1 className="mt-2 text-3xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-100 md:text-4xl">
@@ -247,16 +219,14 @@ export default function SkillsPage(): ReactElement {
 
         {/* Galaxy hero: 3D when capable, static starfield otherwise — always a dark space window */}
         <div className="mb-16 overflow-hidden rounded-2xl border border-neutral-900/10 bg-[#050810] dark:border-white/10">
-          {heroMode === "3d" ? (
+          {hasWebgl && isMotionEnabled ? (
             <GalaxyHero
               categories={categories}
               skillCounts={skillCounts}
               onPlanetSelect={handlePlanetSelect}
             />
-          ) : heroMode === "static" ? (
-            <GalaxyFallback categories={categories} />
           ) : (
-            <HeroPlaceholder />
+            <GalaxyFallback categories={categories} />
           )}
         </div>
 
@@ -266,14 +236,14 @@ export default function SkillsPage(): ReactElement {
         >
           <div className="flex flex-col gap-2 border-b border-neutral-900/10 pb-4 dark:border-white/[0.06] sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-terminal-green">
+              <p aria-hidden="true" className="font-mono text-[13px] uppercase tracking-[0.24em] text-terminal-green">
                 $ orbit --index
               </p>
               <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-400">
                 Click a planet above or choose a domain here to land on its detail.
               </p>
             </div>
-            <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-500 dark:text-neutral-500">
+            <span className="font-mono text-[13px] uppercase tracking-[0.18em] text-neutral-600 dark:text-neutral-400">
               9 domains
             </span>
           </div>
@@ -282,6 +252,8 @@ export default function SkillsPage(): ReactElement {
               <button
                 key={category.id}
                 type="button"
+                aria-label={`Explore ${category.label} skills`}
+                aria-controls={categorySectionId(category.id)}
                 onClick={() => {
                   playClickSound();
                   scrollToCategory(category.id);
@@ -296,7 +268,7 @@ export default function SkillsPage(): ReactElement {
                 <span className="text-sm font-medium text-neutral-800 dark:text-neutral-200">
                   {category.label}
                 </span>
-                <span className="ml-auto font-mono text-[10px] text-neutral-500 dark:text-neutral-500">
+                <span aria-hidden="true" className="ml-auto font-mono text-[13px] text-neutral-600 dark:text-neutral-400">
                   {String(skillCounts[category.id]).padStart(2, "0")}
                 </span>
               </button>
@@ -305,7 +277,7 @@ export default function SkillsPage(): ReactElement {
         </nav>
 
         <div className="mx-auto mb-12 max-w-3xl text-center">
-          <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-terminal-green">
+          <p className="font-mono text-[13px] uppercase tracking-[0.24em] text-terminal-green">
             How the work connects
           </p>
           <p className="mt-3 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400 md:text-base">
@@ -319,7 +291,7 @@ export default function SkillsPage(): ReactElement {
           {CAPABILITY_TRACKS.map((track) => (
             <section key={track.id} aria-labelledby={`track-${track.id}`}>
               <header className="mx-auto mb-4 w-full max-w-5xl border-b border-neutral-900/10 pb-6 dark:border-white/[0.06]">
-                <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-terminal-green">
+                <p aria-hidden="true" className="font-mono text-[13px] uppercase tracking-[0.24em] text-terminal-green">
                   $ track --{track.id}
                 </p>
                 <h2
@@ -356,7 +328,7 @@ export default function SkillsPage(): ReactElement {
       {/* Side nav dots (desktop only) */}
       <nav
         aria-label="Category quick navigation"
-        className="fixed right-4 top-1/2 z-40 hidden -translate-y-1/2 flex-col items-center gap-3 md:flex"
+        className="fixed right-0 top-1/2 z-40 hidden -translate-y-1/2 flex-col items-center md:flex"
       >
         {categories.map((category) => {
           const isActive =
@@ -365,28 +337,27 @@ export default function SkillsPage(): ReactElement {
             <button
               key={category.id}
               type="button"
-              aria-label={category.label}
+              aria-label={`Explore ${category.label} skills`}
+              aria-controls={categorySectionId(category.id)}
               aria-current={isActive ? "true" : undefined}
               onClick={() => {
                 playClickSound();
                 scrollToCategory(category.id);
               }}
-              className={`rounded-full outline-none focus-visible:ring-2 focus-visible:ring-terminal-green motion-safe:transition-all motion-safe:duration-200 ${
-                isActive
-                  ? "h-4 w-4"
-                  : "h-2.5 w-2.5 opacity-60 hover:opacity-100"
-              }`}
-              style={{
-                backgroundColor: category.color,
-                boxShadow: isActive ? `0 0 10px ${category.color}` : undefined,
-              }}
-            />
+              className="flex h-11 w-11 items-center justify-center rounded-full focus-visible:ring-2 focus-visible:ring-terminal-green"
+            >
+              <span
+                aria-hidden="true"
+                className={`rounded-full motion-safe:transition-all motion-safe:duration-200 ${isActive ? "h-4 w-4" : "h-2.5 w-2.5 opacity-60 hover:opacity-100"}`}
+                style={{ backgroundColor: category.color, boxShadow: isActive ? `0 0 10px ${category.color}` : undefined }}
+              />
+            </button>
           );
         })}
       </nav>
 
       {/* Footer */}
-      <div className="relative z-10 mx-auto mt-16 w-full max-w-7xl px-4 text-center text-xs tracking-widest text-neutral-500 dark:text-neutral-600">
+      <div className="relative z-10 mx-auto mt-16 w-full max-w-7xl px-4 text-center text-xs tracking-widest text-neutral-600 dark:text-neutral-400">
         <div className="border-t border-neutral-900/10 pt-4 dark:border-white/[0.06]">
           ARAFAT © {new Date().getFullYear()} - ALL RIGHTS RESERVED
         </div>

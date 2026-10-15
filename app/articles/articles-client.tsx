@@ -1,22 +1,13 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import {
-  ArrowLeft,
-  ArrowRight,
-  BookOpen,
-  Calendar,
-  Clock,
-  ExternalLink,
-  Play,
-  Pause,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-
+import { ArrowLeft, ArrowRight, BookOpen, Copy, Pause, Play, Share2 } from "lucide-react";
+import { Chip, CircuitTrace, Keycap, PageHeader, SectionHeading, useMotion } from "@/components/open-circuit";
 import { ArticleIndex } from "./article-index";
+import styles from "./articles.module.css";
+import reading from "../blogs/reading.module.css";
 
 export interface UnifiedArticle {
   id: string;
@@ -31,606 +22,187 @@ export interface UnifiedArticle {
   source: "native" | "medium";
 }
 
-const POSTS_PER_PAGE_DESKTOP = 10;
-const POSTS_PER_PAGE_MOBILE = 5;
-
-/** Auto-advancing article carousel plus the full article index, rendered from props so both are in the server HTML. */
-export default function ArticlesClient({
-  items: posts,
-}: {
-  items: UnifiedArticle[];
-}): React.ReactElement {
-  const router = useRouter();
-  const [isMuted, setIsMuted] = useState(true);
+/** An article reading desk and a complete, independently reachable archive. */
+export default function ArticlesClient({ items: posts }: { items: UnifiedArticle[] }): React.ReactElement {
+  const { isMotionEnabled } = useMotion();
   const [currentPost, setCurrentPost] = useState(0);
-  const [isEntering, setIsEntering] = useState(true);
   const [countdown, setCountdown] = useState(10);
   const [isHoverPaused, setIsHoverPaused] = useState(false);
+  const [isFocusPaused, setIsFocusPaused] = useState(false);
   const [isAutoAdvancing, setIsAutoAdvancing] = useState(true);
-  const clickSoundRef = useRef<HTMLAudioElement | null>(null);
-  const countdownTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const [copyMessage, setCopyMessage] = useState("");
   const elapsedRef = useRef(0);
+  const article = posts[currentPost];
+  const isAutoRunning = isAutoAdvancing && isMotionEnabled && !isHoverPaused && !isFocusPaused;
 
-  useEffect(() => {
-    // Initialize audio elements with proper error handling
-    try {
-      clickSoundRef.current = new Audio();
-
-      // Set sources after creating the elements
-      if (clickSoundRef.current) {
-        clickSoundRef.current.src = "/sounds/click.mp3";
-        clickSoundRef.current.preload = "auto";
-      }
-    } catch (error) {
-      console.error("Error initializing audio:", error);
-    }
-
-    const enterTimer = setTimeout(() => setIsEntering(false), 500);
-
-    return () => {
-      clearTimeout(enterTimer);
-      if (clickSoundRef.current) clickSoundRef.current.pause();
-      if (countdownTimerRef.current) clearInterval(countdownTimerRef.current);
-    };
-  }, []);
-
-  const playClickSound = () => {
-    if (!isMuted && clickSoundRef.current) {
-      try {
-        clickSoundRef.current.currentTime = 0;
-        const playPromise = clickSoundRef.current.play();
-
-        if (playPromise !== undefined) {
-          playPromise.catch((error) => {
-            console.log("Audio playback prevented:", error);
-            // Auto-play was prevented, we can safely ignore this error
-          });
-        }
-      } catch (error) {
-        console.error("Error playing sound:", error);
-      }
-    }
-  };
-
-  // Any change of post - auto-advance or manual (arrows/pagination) - restarts the 10s window.
   const showPost = (index: number): void => {
     if (index === currentPost) return;
     elapsedRef.current = 0;
     setCountdown(10);
+    setCopyMessage("");
     setCurrentPost(index);
   };
 
-  const nextPost = () => {
-    playClickSound();
-    showPost((currentPost + 1) % posts.length);
-  };
-
-  const prevPost = () => {
-    playClickSound();
-    showPost((currentPost - 1 + posts.length) % posts.length);
-  };
-
-  const openArticle = (article: UnifiedArticle) => {
-    playClickSound();
-    if (article.source === "native") {
-      router.push(article.url);
-    } else {
-      window.open(article.url, "_blank");
-    }
-  };
-
-  const articleShareUrl = (article: UnifiedArticle) =>
-    article.source === "native"
-      ? `${window.location.origin}${article.url}`
-      : article.url;
-
-  // Countdown timer for auto-advance (10 seconds)
   useEffect(() => {
-    if (!isAutoAdvancing || isHoverPaused || posts.length === 0) {
-      if (countdownTimerRef.current) {
-        clearInterval(countdownTimerRef.current);
-        countdownTimerRef.current = null;
-      }
-      return;
-    }
-
-    // Clear any existing interval first
-    if (countdownTimerRef.current) {
-      clearInterval(countdownTimerRef.current);
-    }
-
-    countdownTimerRef.current = setInterval(() => {
+    if (!isAutoRunning || posts.length < 2) return;
+    // The one-second tick is the visible ten-second rotation countdown.
+    const timer = setInterval(() => {
       elapsedRef.current += 1;
-
       if (elapsedRef.current < 10) {
         setCountdown(10 - elapsedRef.current);
         return;
       }
-
-      // Auto-advance to next post and restart the 10s window
       elapsedRef.current = 0;
       setCountdown(10);
-      setCurrentPost((p) => (p + 1) % posts.length);
+      setCopyMessage("");
+      setCurrentPost((index) => (index + 1) % posts.length);
     }, 1000);
+    return () => clearInterval(timer);
+  }, [isAutoRunning, posts.length]);
 
-    return () => {
-      if (countdownTimerRef.current) {
-        clearInterval(countdownTimerRef.current);
-        countdownTimerRef.current = null;
-      }
-    };
-  }, [isAutoAdvancing, isHoverPaused, posts.length]);
-
-  // Simple preloading for adjacent article images
   useEffect(() => {
-    if (posts.length > 0) {
-      const preloadImage = (index: number) => {
-        if (posts[index]?.imageUrl) {
-          const img = new window.Image();
-          img.src = posts[index].imageUrl;
-        }
-      };
-
-      // Preload next and previous images
-      const nextIndex = (currentPost + 1) % posts.length;
-      const prevIndex = (currentPost - 1 + posts.length) % posts.length;
-
-      if (posts.length > 1) {
-        preloadImage(nextIndex);
-        preloadImage(prevIndex);
+    if (posts.length < 2) return;
+    for (const index of [(currentPost + 1) % posts.length, (currentPost - 1 + posts.length) % posts.length]) {
+      if (posts[index]?.imageUrl) {
+        const image = new window.Image();
+        image.src = posts[index].imageUrl;
       }
     }
   }, [currentPost, posts]);
 
+  const articleShareUrl = (item: UnifiedArticle): string =>
+    item.source === "native" ? `${window.location.origin}${item.url}` : item.url;
+
+  const copyLink = async (): Promise<void> => {
+    if (!article) return;
+    try {
+      await navigator.clipboard.writeText(articleShareUrl(article));
+      setCopyMessage("Link copied.");
+    } catch (error) {
+      console.error("Could not copy article link:", error);
+      setCopyMessage("Could not copy. Open the article and copy its address.");
+    }
+  };
+
   return (
-    <main className={`min-h-screen bg-surface-base text-terminal-green p-4 md:p-8 grid-dots overflow-hidden ${isEntering ? "animate-slideInRight" : ""}`}>
-      {/* Terminal-style header */}
-      <div className="mb-8 bg-surface-raised border border-terminal-green/30 rounded-lg p-3 shadow-[0_0_15px_rgba(46,213,115,0.2)]">
-        <div className="flex items-center gap-2 mb-2">
-          <div className="w-3 h-3 rounded-full bg-[#ff5f57]"></div>
-          <div className="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
-          <div className="w-3 h-3 rounded-full bg-[#28ca41]"></div>
-          <div className="ml-2 text-terminal-green/70 text-xs">~/articles</div>
+    <main className={`oc-shell oc-page ${reading.page} ${styles.page}`}>
+      <nav className={reading.breadcrumbs} aria-label="Breadcrumb">
+        <Link href="/">cd ..</Link><span aria-hidden="true">/</span><span aria-current="page">articles</span>
+      </nav>
+      <PageHeader
+        command="$ ./view_articles.sh --display=latest"
+        title={<>I wrote it. You&apos;re welcome.<span className="oc-green" aria-hidden="true">_</span></>}
+        description="My essays live here and on Medium. My opinions were never going to fit in a bio."
+      >
+        <div className={reading.actions}>
+          <Keycap href="/blogs" command="$ cd ~/blogs" variant="primary">View All Blogs</Keycap>
+          <Keycap href="#article-index" command="$ ls --all">All articles</Keycap>
         </div>
-
-        <div className="flex items-center">
-          <span className="text-terminal-green mr-2">$</span>
-          <div className="relative">
-            <span className="text-terminal-green">
-              ./view_articles.sh --display=latest
-            </span>
-            <span className="animate-blink ml-1">|</span>
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-5xl mx-auto">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4">
-          <div className="flex items-center">
-            <Link
-              href="/"
-              className="inline-flex items-center text-terminal-green hover:text-terminal-green/80 mr-4 bg-surface-night px-3 py-2 rounded-md border border-terminal-green/20 hover:border-terminal-green/40 transition-colors"
-              onClick={playClickSound}
-            >
-              <ArrowLeft size={16} className="mr-2" />
-              <span className="text-sm">cd ..</span>
-            </Link>
-            <h1 className="text-2xl md:text-3xl font-bold uppercase bg-clip-text text-transparent bg-gradient-to-r from-terminal-green to-terminal-soft">
-              <span aria-hidden="true" className="bracket-open text-terminal-green/70" />
-              Articles
-              <span aria-hidden="true" className="bracket-close text-terminal-green/70" />
-            </h1>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <Link
-              href="/blogs"
-              className="inline-flex items-center gap-2 text-surface-raised text-sm bg-terminal-green px-3 py-2 rounded-md transform transition-all hover:translate-y-[-2px] hover:shadow-[0_5px_15px_rgba(46,213,115,0.4)] border border-terminal-green"
-              onClick={() => playClickSound()}
-            >
-              <BookOpen size={16} />
-              <span className="hidden sm:inline">View All Blogs</span>
-              <span className="sm:hidden">All Blogs</span>
-            </Link>
-
-            <div className="flex gap-1">
-              <Button
-                onClick={prevPost}
-                disabled={posts.length === 0}
-                className="w-9 h-9 p-0 rounded-md bg-surface-night hover:bg-[#2a3942] border border-terminal-green/20"
-                aria-label="Previous post"
-              >
-                <ArrowLeft size={16} className="text-terminal-green" />
-              </Button>
-              <Button
-                onClick={nextPost}
-                disabled={posts.length === 0}
-                className="w-9 h-9 p-0 rounded-md bg-surface-night hover:bg-[#2a3942] border border-terminal-green/20"
-                aria-label="Next post"
-              >
-                <ArrowRight size={16} className="text-terminal-green" />
-              </Button>
-            </div>
-          </div>
-        </div>
-
-        <p className="mb-6 font-mono text-xs text-terminal-green/60">
-          SECURITY WRITE-UPS + ENGINEERING NOTES + ESSAYS
-        </p>
-
-        {posts.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Left column - Article image */}
+      </PageHeader>
+      <CircuitTrace>
+        <section className="oc-zone" aria-labelledby="article-desk-heading">
+          <SectionHeading path="read" title="I picked the words. You pick the tab." note="my writing, your next read" id="article-desk-heading" />
+          {article ? (
             <div
-              className="md:col-span-1 h-[300px] md:h-[400px] bg-surface-night rounded-lg overflow-hidden cursor-pointer relative group shadow-[0_0_15px_rgba(46,213,115,0.1)] border border-terminal-green/10"
-              onClick={() => openArticle(posts[currentPost])}
+              className={styles.desk}
               onMouseEnter={() => setIsHoverPaused(true)}
               onMouseLeave={() => setIsHoverPaused(false)}
+              onFocusCapture={() => setIsFocusPaused(true)}
+              onBlurCapture={(event) => {
+                if (!event.currentTarget.contains(event.relatedTarget)) setIsFocusPaused(false);
+              }}
             >
-              <div className="absolute inset-0 flex items-center justify-center bg-surface-raised/50 z-10">
-                {posts[currentPost].imageUrl ? (
-                  <Image
-                    src={posts[currentPost].imageUrl || "/placeholder.svg"}
-                    alt={`${posts[currentPost].title} preview`}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    priority
-                    // Generated cover cards carry a query string, which the
-                    // image optimizer rejects for local paths.
-                    unoptimized={posts[currentPost].imageUrl.startsWith("/api/")}
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                ) : (
-                  <div className="flex flex-col items-center justify-center h-full w-full bg-surface-night text-terminal-green/30">
-                    <BookOpen size={64} className="mb-2" />
-                    <span className="text-sm">No preview available</span>
-                  </div>
-                )}
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-surface-raised/90 via-surface-raised/30 to-transparent opacity-80 group-hover:opacity-90 transition-opacity z-20"></div>
-              <div className="absolute bottom-0 left-0 right-0 p-4 z-30">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="flex items-center gap-1 bg-surface-raised/70 px-2 py-1 rounded text-xs text-terminal-green/80">
-                    <Calendar size={12} />
-                    <span>{posts[currentPost].publishDate}</span>
-                  </div>
-                  <div className="flex items-center gap-1 bg-surface-raised/70 px-2 py-1 rounded text-xs text-terminal-green/80">
-                    <Clock size={12} />
-                    <span>{posts[currentPost].readTime}</span>
-                  </div>
-                </div>
-                <div className="font-mono text-xs text-terminal-green/60 mb-1">
-                  $ cat article.md
-                </div>
-              </div>
-              <div className="absolute top-4 right-4 z-30 flex items-center gap-2">
-                {isAutoAdvancing && (
-                  <div className="bg-surface-raised/70 text-terminal-green px-2 py-1 rounded text-xs border border-terminal-green/20 flex items-center gap-1">
-                    <div className="w-1.5 h-1.5 rounded-full bg-terminal-green animate-pulse"></div>
-                    <span>{countdown}s</span>
-                  </div>
-                )}
-                <div className="bg-surface-raised/70 text-terminal-green px-2 py-1 rounded text-xs border border-terminal-green/20 flex items-center gap-1">
-                  {posts[currentPost].source === "medium" && (
-                    <ExternalLink size={10} />
-                  )}
-                  <span>
-                    {posts[currentPost].source === "native"
-                      ? "Read here"
-                      : "Read on Medium"}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Right column - Article content */}
-            <div className="md:col-span-2 bg-surface-night rounded-lg p-6 border border-terminal-green/10 shadow-[0_0_15px_rgba(46,213,115,0.1)] flex flex-col justify-between h-[300px] md:h-[400px]">
-              <div className="overflow-y-auto pr-2 custom-scrollbar">
-                <div className="flex items-center gap-2 mb-1">
-                  <div className="w-2 h-2 rounded-full bg-terminal-green/40"></div>
-                  <div className="text-terminal-green/60 text-xs font-mono">
-                    ARTICLE #{currentPost + 1}
-                  </div>
-                  {posts[currentPost].source === "native" ? (
-                    <span className="text-[9px] font-mono font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-terminal-green/15 text-terminal-green border border-terminal-green/30">
-                      ⌂ On This Site
-                    </span>
+              <article className={styles.spread} id="selected-article">
+                <Link
+                  className={styles.cover}
+                  href={article.url}
+                  target={article.source === "medium" ? "_blank" : undefined}
+                  rel={article.source === "medium" ? "noopener noreferrer" : undefined}
+                  aria-label={`Read Full Article: ${article.title}${article.source === "medium" ? " (opens in a new tab)" : ""}`}
+                >
+                  {article.imageUrl ? (
+                    <Image
+                      src={article.imageUrl}
+                      alt=""
+                      fill
+                      sizes="(min-width: 1120px) 35vw, 90vw"
+                      priority
+                      unoptimized={article.imageUrl.startsWith("/api/")}
+                    />
                   ) : (
-                    <span className="text-[9px] font-mono font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-surface-raised text-terminal-green/50 border border-terminal-green/15">
-                      ↗ Medium
-                    </span>
+                    <span className={styles.noCover}><BookOpen size={48} aria-hidden="true" />No preview available</span>
                   )}
-                </div>
-                <h2
-                  className="text-xl md:text-2xl font-bold mb-3 text-terminal-green inline-block"
-                  onMouseEnter={() => setIsHoverPaused(true)}
-                  onMouseLeave={() => setIsHoverPaused(false)}
-                >
-                  {posts[currentPost].title}
-                </h2>
-                <p className="text-terminal-green/80 mb-4 text-sm md:text-base">
-                  {posts[currentPost].description}
-                </p>
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {posts[currentPost].tags.map((tag, i) => (
-                    <span
-                      key={i}
-                      className="px-2 py-1 bg-surface-raised text-terminal-green/80 rounded text-xs border border-terminal-green/10 hover:border-terminal-green/30 transition-colors"
+                </Link>
+                <div>
+                  <div className={reading.metadata}>
+                    <Chip tone={article.source === "native" ? "green" : "amber"}>{article.source === "native" ? "On this site" : "Medium"}</Chip>
+                    <time dateTime={article.publishDate}>{article.publishDate}</time>
+                    <span>{article.readTime}</span>
+                  </div>
+                  <h3 className={styles.title}>{article.title}</h3>
+                  <p className={styles.description}>{article.description}</p>
+                  <div className={styles.tags}>
+                    {article.tags.map((tag) => <Chip key={tag} tone="muted">#{tag}</Chip>)}
+                  </div>
+                  <div className={styles.tools}>
+                    <Link
+                      href={article.url}
+                      className={`oc-keycap oc-primary ${styles.readKey}`}
+                      target={article.source === "medium" ? "_blank" : undefined}
+                      rel={article.source === "medium" ? "noopener noreferrer" : undefined}
                     >
-                      #{tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="flex flex-wrap gap-3 mt-4">
-                <Button
-                  asChild
-                  onClick={playClickSound}
-                  className="inline-flex items-center gap-2 bg-terminal-green hover:bg-terminal-green/90 text-surface-raised px-4 py-2 rounded-md hover:translate-y-[-2px] transition-all hover:shadow-[0_5px_15px_rgba(46,213,115,0.4)]"
-                >
-                  {posts[currentPost].source === "native" ? (
-                    <Link href={posts[currentPost].url}>
-                      <BookOpen size={16} />
-                      <span className="font-medium">Read Full Article</span>
+                      <strong>Read Full Article</strong>
+                      <code>{article.source === "native" ? "$ cat post.md" : "Read on Medium / new tab"}</code>
                     </Link>
-                  ) : (
-                    <a
-                      href={posts[currentPost].url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <BookOpen size={16} />
-                      <span className="font-medium">Read Full Article</span>
-                    </a>
-                  )}
-                </Button>
-
-                <Button
-                  onClick={() => {
-                    navigator.clipboard.writeText(articleShareUrl(posts[currentPost]));
-                    playClickSound();
-                  }}
-                  className="inline-flex items-center gap-2 bg-surface-raised hover:bg-surface-panel text-terminal-green border border-terminal-green/30 px-3 py-2 rounded-md transition-colors"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <rect
-                      x="9"
-                      y="9"
-                      width="13"
-                      height="13"
-                      rx="2"
-                      ry="2"
-                    ></rect>
-                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                  </svg>
-                  <span className="text-sm">Copy Link</span>
-                </Button>
-
-                <Button
-                  onClick={() => {
-                    const text = `Check out this article: ${posts[currentPost].title} - ${articleShareUrl(posts[currentPost])}`;
-                    window.open(
-                      `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                        text
-                      )}`,
-                      "_blank"
-                    );
-                    playClickSound();
-                  }}
-                  className="inline-flex items-center gap-2 bg-surface-raised hover:bg-surface-panel text-terminal-green border border-terminal-green/30 px-3 py-2 rounded-md transition-colors"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
-                  </svg>
-                  <span className="text-sm">Share</span>
-                </Button>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className="bg-surface-night rounded-lg p-8 flex flex-col items-center justify-center border border-terminal-green/20 shadow-[0_0_15px_rgba(46,213,115,0.1)]">
-            <div className="font-mono text-terminal-green/70 text-sm mb-4">
-              $ cat /dev/articles
-            </div>
-            <div className="bg-surface-raised p-4 rounded-md border border-terminal-green/10 mb-6 w-full max-w-md">
-              <div className="text-terminal-green/80 font-mono text-sm mb-2">
-                Error: No articles found
-              </div>
-              <div className="text-terminal-green/50 font-mono text-xs">
-                Unable to establish connection with Medium API
-              </div>
-            </div>
-            <Button
-              onClick={() => window.location.reload()}
-              className="bg-terminal-green hover:bg-terminal-green/90 text-surface-raised px-4 py-2 rounded-md hover:translate-y-[-2px] transition-all hover:shadow-[0_5px_15px_rgba(46,213,115,0.4)] font-medium"
-            >
-              Retry Connection
-            </Button>
-          </div>
-        )}
-
-        {posts.length > 0 && (
-          <div className="mt-8 bg-surface-night rounded-lg p-4 border border-terminal-green/10 shadow-[0_0_15px_rgba(46,213,115,0.1)]">
-            {/* Desktop pagination - smart pagination showing only current page */}
-            <div className="hidden md:flex items-center justify-between gap-4">
-              <div className="flex items-center gap-3 flex-1">
-                <div className="text-terminal-green/60 text-xs font-mono whitespace-nowrap">
-                  $ navigate_posts.sh
-                </div>
-
-                {/* Current page pagination controls */}
-                <div className="flex items-center gap-2">
-                  {/* Previous page button */}
-                  {Math.floor(currentPost / POSTS_PER_PAGE_DESKTOP) > 0 && (
+                    <button type="button" onClick={copyLink} className={styles.control}><Copy size={16} aria-hidden="true" />Copy Link</button>
                     <button
+                      type="button"
+                      className={styles.control}
                       onClick={() => {
-                        playClickSound();
-                        const prevPage = Math.floor(currentPost / POSTS_PER_PAGE_DESKTOP) - 1;
-                        showPost(prevPage * POSTS_PER_PAGE_DESKTOP);
+                        const text = `Check out this article: ${article.title} - ${articleShareUrl(article)}`;
+                        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, "_blank", "noopener,noreferrer");
                       }}
-                      className="w-6 h-6 flex items-center justify-center rounded-md transition-colors text-xs font-medium bg-surface-raised text-terminal-green/70 hover:bg-surface-raised/80 hover:text-terminal-green"
-                      aria-label="Previous page"
-                    >
-                      ‹
-                    </button>
-                  )}
-
-                  {/* Current page post numbers */}
-                  <div className="flex items-center gap-1">
-                    {Array.from({
-                      length: Math.min(
-                        POSTS_PER_PAGE_DESKTOP,
-                        posts.length - Math.floor(currentPost / POSTS_PER_PAGE_DESKTOP) * POSTS_PER_PAGE_DESKTOP
-                      ),
-                    }).map((_, i) => {
-                      const currentPageIndex = Math.floor(currentPost / POSTS_PER_PAGE_DESKTOP);
-                      const index = currentPageIndex * POSTS_PER_PAGE_DESKTOP + i;
-                      return (
-                        <button
-                          key={index}
-                          onClick={() => {
-                            playClickSound();
-                            showPost(index);
-                          }}
-                          className={`w-8 h-8 flex items-center justify-center rounded-md transition-colors text-xs font-medium ${
-                            currentPost === index
-                              ? "bg-terminal-green text-surface-raised"
-                              : "bg-surface-raised text-terminal-green/70 hover:bg-surface-raised/80 hover:text-terminal-green"
-                          }`}
-                          aria-label={`Go to post ${index + 1}`}
-                        >
-                          {index + 1}
-                        </button>
-                      );
-                    })}
+                    ><Share2 size={16} aria-hidden="true" />Share</button>
                   </div>
-
-                  {/* Next page button */}
-                  {Math.floor(currentPost / POSTS_PER_PAGE_DESKTOP) < Math.ceil(posts.length / POSTS_PER_PAGE_DESKTOP) - 1 && (
-                    <button
-                      onClick={() => {
-                        playClickSound();
-                        const nextPage = Math.floor(currentPost / POSTS_PER_PAGE_DESKTOP) + 1;
-                        showPost(nextPage * POSTS_PER_PAGE_DESKTOP);
-                      }}
-                      className="w-6 h-6 flex items-center justify-center rounded-md transition-colors text-xs font-medium bg-surface-raised text-terminal-green/70 hover:bg-surface-raised/80 hover:text-terminal-green"
-                      aria-label="Next page"
-                    >
-                      ›
-                    </button>
-                  )}
+                  <p role="status" className={styles.feedback}>{copyMessage}</p>
                 </div>
-              </div>
+              </article>
 
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => setIsAutoAdvancing(!isAutoAdvancing)}
-                    className={`flex items-center gap-2 px-3 py-1 rounded-md text-xs font-mono transition-colors ${
-                      isAutoAdvancing
-                        ? "bg-terminal-green/20 text-terminal-green border border-terminal-green/40 hover:bg-terminal-green/30"
-                        : "bg-surface-raised text-terminal-green/60 border border-terminal-green/20 hover:text-terminal-green hover:bg-surface-raised/50"
-                    }`}
-                  >
-                    {isAutoAdvancing ? (
-                      <>
-                        <Pause size={14} />
-                        <span>Auto ({countdown}s)</span>
-                      </>
-                    ) : (
-                      <>
-                        <Play size={14} />
-                        <span>Paused</span>
-                      </>
-                    )}
-                  </button>
-                </div>
-                <div className="text-terminal-green/60 text-xs font-mono whitespace-nowrap">
-                  {currentPost + 1}/{posts.length}
-                </div>
-              </div>
-            </div>
-
-            {/* Mobile pagination - simplified */}
-            <div className="md:hidden">
-              <div className="flex items-center justify-between mb-3 gap-2">
-                <div className="text-terminal-green/60 text-xs font-mono">
-                  $ navigate_posts.sh
+              <div className={styles.transport}>
+                <div className={styles.arrows}>
+                  <button type="button" className={styles.control} onClick={() => showPost((currentPost - 1 + posts.length) % posts.length)} disabled={posts.length < 2} aria-label="Previous post" aria-controls="selected-article"><ArrowLeft size={18} aria-hidden="true" />Prev</button>
+                  <span className={styles.position} aria-live={isAutoRunning ? "off" : "polite"}>{currentPost + 1} / {posts.length}</span>
+                  <button type="button" className={styles.control} onClick={() => showPost((currentPost + 1) % posts.length)} disabled={posts.length < 2} aria-label="Next post" aria-controls="selected-article">Next<ArrowRight size={18} aria-hidden="true" /></button>
                 </div>
                 <button
-                  onClick={() => setIsAutoAdvancing(!isAutoAdvancing)}
-                  className={`flex items-center gap-1 px-2 py-1 rounded text-xs font-mono transition-colors whitespace-nowrap ${
-                    isAutoAdvancing
-                      ? "bg-terminal-green/20 text-terminal-green border border-terminal-green/40 hover:bg-terminal-green/30"
-                      : "bg-surface-raised text-terminal-green/60 border border-terminal-green/20 hover:text-terminal-green hover:bg-surface-raised/50"
-                  }`}
+                  type="button"
+                  className={styles.control}
+                  disabled={!isMotionEnabled || posts.length < 2}
+                  aria-pressed={isAutoAdvancing && isMotionEnabled}
+                  onClick={() => setIsAutoAdvancing((value) => !value)}
                 >
-                  {isAutoAdvancing ? (
-                    <>
-                      <Pause size={12} />
-                      <span>{countdown}s</span>
-                    </>
-                  ) : (
-                    <>
-                      <Play size={12} />
-                    </>
-                  )}
+                  {isAutoAdvancing && isMotionEnabled ? <Pause size={16} aria-hidden="true" /> : <Play size={16} aria-hidden="true" />}
+                  {!isMotionEnabled ? "Motion paused" : isAutoAdvancing ? `Auto (${countdown}s)` : "Paused"}
                 </button>
-                <div className="text-terminal-green/60 text-xs font-mono">
-                  {currentPost + 1}/{posts.length}
-                </div>
               </div>
-
-              <div className="flex items-center justify-between gap-2">
-                <Button
-                  onClick={prevPost}
-                  disabled={posts.length <= 1}
-                  className="bg-surface-raised hover:bg-surface-panel text-terminal-green border border-terminal-green/30 px-3 py-2 rounded-md transition-colors flex-1 text-sm"
-                >
-                  <div className="flex items-center justify-center">
-                    <ArrowLeft size={14} className="mr-1" />
-                    <span>Prev</span>
-                  </div>
-                </Button>
-
-                <Button
-                  onClick={nextPost}
-                  disabled={posts.length <= 1}
-                  className="bg-surface-raised hover:bg-surface-panel text-terminal-green border border-terminal-green/30 px-3 py-2 rounded-md transition-colors flex-1 text-sm"
-                >
-                  <div className="flex items-center justify-center">
-                    <span>Next</span>
-                    <ArrowRight size={14} className="ml-1" />
-                  </div>
-                </Button>
+              <p className={styles.feedback}>Hover or focus here to pause rotation.</p>
+              <div className={styles.jump}>
+                <label htmlFor="article-select">Jump to article</label>
+                <select id="article-select" value={currentPost} onChange={(event) => showPost(Number(event.target.value))} aria-controls="selected-article">
+                  {posts.map((post, index) => <option key={post.id} value={index}>{index + 1}. {post.title}</option>)}
+                </select>
               </div>
             </div>
-          </div>
-        )}
-
+          ) : (
+            <div className={styles.empty}>
+              <h3>No articles found</h3>
+              <p>My articles aren&apos;t showing up. Try loading them again.</p>
+              <Keycap onClick={() => window.location.reload()} command="$ ./view_articles.sh --retry">Retry Connection</Keycap>
+            </div>
+          )}
+        </section>
         <ArticleIndex items={posts} />
-      </div>
+      </CircuitTrace>
     </main>
   );
 }

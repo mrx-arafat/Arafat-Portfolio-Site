@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import type { ReactElement } from "react";
+import { useMotion } from "@/components/open-circuit/motion-provider";
 import { SkillCard } from "@/components/skills/skill-card";
 import {
   categorySectionId,
@@ -10,18 +11,6 @@ import {
 
 /** Per-row stagger delay for the fade-up reveal. */
 const STAGGER_MS = 70;
-
-const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
-
-function subscribeToReducedMotion(onChange: () => void): () => void {
-  const media = window.matchMedia(REDUCED_MOTION_QUERY);
-  media.addEventListener("change", onChange);
-  return () => media.removeEventListener("change", onChange);
-}
-
-function prefersReducedMotion(): boolean {
-  return window.matchMedia(REDUCED_MOTION_QUERY).matches;
-}
 
 /** IntersectionObserver support cannot change after load, so there is nothing to listen for. */
 function subscribeToNothing(): () => void {
@@ -32,8 +21,7 @@ function canObserveIntersection(): boolean {
   return "IntersectionObserver" in window;
 }
 
-/** Server snapshots mirror the pre-hydration HTML: motion on, rows waiting for their reveal. */
-const serverReducedMotion = (): boolean => false;
+/** Mirror the pre-hydration intersection capability. */
 const serverCanObserveIntersection = (): boolean => true;
 
 /** Planet dossier for one skill category: ordinal rule, orb header, instrument-panel skill rows. */
@@ -42,11 +30,7 @@ export function CategorySection({
   skills,
 }: CategorySectionProps): ReactElement {
   const sectionRef = useRef<HTMLElement | null>(null);
-  const reducedMotion = useSyncExternalStore(
-    subscribeToReducedMotion,
-    prefersReducedMotion,
-    serverReducedMotion
-  );
+  const { isMotionEnabled } = useMotion();
   const canObserve = useSyncExternalStore(
     subscribeToNothing,
     canObserveIntersection,
@@ -54,11 +38,11 @@ export function CategorySection({
   );
   const [hasEnteredView, setHasEnteredView] = useState(false);
   // Rows that can never be observed scrolling into view are shown outright.
-  const isRevealed = hasEnteredView || !canObserve;
+  const isRevealed = !isMotionEnabled || hasEnteredView || !canObserve;
 
   useEffect(() => {
     const node = sectionRef.current;
-    if (reducedMotion || !canObserve || !node) return;
+    if (!isMotionEnabled || !canObserve || !node) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -72,7 +56,7 @@ export function CategorySection({
 
     observer.observe(node);
     return () => observer.disconnect();
-  }, [reducedMotion, canObserve]);
+  }, [isMotionEnabled, canObserve]);
 
   const { color } = category;
   const ordinal = String(category.order).padStart(2, "0");
@@ -80,6 +64,8 @@ export function CategorySection({
   return (
     <section
       id={categorySectionId(category.id)}
+      tabIndex={-1}
+      aria-labelledby={`${categorySectionId(category.id)}-heading`}
       ref={sectionRef}
       className="relative scroll-mt-24 px-4 py-12 md:px-8 md:py-16"
       style={{
@@ -90,8 +76,7 @@ export function CategorySection({
         <header className="mb-10">
           <div className="flex items-center gap-4">
             <span
-              className="font-mono text-xs tracking-[0.4em]"
-              style={{ color }}
+              className="font-mono text-xs tracking-[0.4em] text-neutral-600 dark:text-neutral-400"
               aria-hidden="true"
             >
               {ordinal}
@@ -123,10 +108,10 @@ export function CategorySection({
                 }}
               />
             </span>
-            <div>
-              <h2 className="text-xl font-semibold uppercase tracking-[0.18em] text-neutral-900 dark:text-neutral-100 md:text-2xl">
+            <div className="min-w-0">
+              <h3 id={`${categorySectionId(category.id)}-heading`} className="break-words text-xl font-semibold uppercase tracking-[0.18em] text-neutral-900 dark:text-neutral-100 md:text-2xl">
                 {category.label}
-              </h2>
+              </h3>
               <p className="mt-1.5 text-sm text-neutral-600 dark:text-neutral-400 md:text-[15px]">
                 {category.tagline}
               </p>
@@ -139,16 +124,16 @@ export function CategorySection({
             <div
               key={skill.id}
               className={
-                reducedMotion
+                !isMotionEnabled
                   ? ""
-                  : `transition-[opacity,transform] duration-700 ease-out ${
+                  : `transition-[opacity,transform] duration-500 ease-out ${
                       isRevealed
                         ? "translate-y-0 opacity-100"
                         : "translate-y-5 opacity-0"
                     }`
               }
               style={
-                reducedMotion
+                !isMotionEnabled
                   ? undefined
                   : { transitionDelay: `${index * STAGGER_MS}ms` }
               }

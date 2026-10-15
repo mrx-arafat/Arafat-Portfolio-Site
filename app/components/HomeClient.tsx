@@ -1,176 +1,141 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Volume2, VolumeX } from "lucide-react";
-import Link from "next/link";
-import { playClickSound, playKeyboardSound } from "@/utils/sound";
+import { memo, useCallback, useEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type ReactElement } from "react";
+import { MotionToggle, useMotion } from "@/components/open-circuit/motion-provider";
+import { FLEET_COMMAND, FLEET_EXIT_AT, FLEET_READY_AT, getFleetFrame } from "./fleet-timeline";
 
-/**
- * Boot-screen overlay. Instead of navigating to /dashboard it calls
- * onEnter, which reveals the dashboard already rendered underneath -
- * the crawler sees the full content at / with no client-side redirect.
- */
-export default function HomeClient({ onEnter }: { onEnter: () => void }) {
-  const [isOn, setIsOn] = useState(false);
-  const [currentScreen, setCurrentScreen] = useState(0);
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [isRedirecting, setIsRedirecting] = useState(false);
-  const [countdown, setCountdown] = useState(4);
-  const [isTimerPaused, setIsTimerPaused] = useState(false);
+const LANES = [12, 24, 36, 60, 72, 84];
+const COMPLETE_FRAME = getFleetFrame(FLEET_READY_AT);
 
-  useEffect(() => {
-    if (countdown <= 0 || isRedirecting || isTimerPaused) return;
-    const timer = setTimeout(() => {
-      setCountdown(countdown - 1);
-      // The tick that reaches zero is the auto-boot itself.
-      if (countdown === 1) {
-        setIsRedirecting(true);
-        onEnter();
-      }
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, [countdown, isRedirecting, isTimerPaused, onEnter]);
-
-  const screens = [
-    "Hi, I'm Arafat",
-    "Application Security Engineer at Startise",
-    "Aspiring Entrepreneur",
-    "Focused on creating impactful solutions",
-    "okay! that's enough :')",
-    "Let's Initialize the Dashboard...",
-  ];
-
-  useEffect(() => {
-    if (isOn) {
-      playKeyboardSound();
-      const timer = setTimeout(() => {
-        if (currentScreen < screens.length - 1) {
-          setIsAnimating(true);
-          setTimeout(() => {
-            setCurrentScreen(currentScreen + 1);
-            setIsAnimating(false);
-          }, 500);
-        }
-      }, 2000);
-      return () => clearTimeout(timer);
-    }
-  }, [isOn, currentScreen, screens.length]);
-
-  const handleToggle = () => {
-    playClickSound();
-    if (!isOn) {
-      setIsTimerPaused(true);
-      setIsOn(true);
-      setCurrentScreen(0);
-    } else {
-      setIsTimerPaused(false);
-      setIsOn(false);
-    }
-  };
-
-  const goToDashboard = () => {
-    playClickSound();
-    setIsRedirecting(true);
-    onEnter();
-  };
-
-  return (
-    <div className="boot-overlay fixed inset-0 z-[100] min-h-screen bg-surface-night text-white flex flex-col items-center justify-center p-8">
-      {/* Power button */}
-      <button
-        onClick={handleToggle}
-        type="button"
-        aria-pressed={isOn}
-        aria-label={isOn ? "Turn off terminal" : "Turn on terminal"}
-        className={`w-16 h-16 rounded-full border-4 ${isOn ? "border-terminal-green" : "border-terminal-green/30"
-          } flex items-center justify-center mb-8 transition-colors duration-300 hover:border-terminal-green`}
-      >
-        <div
-          className={`w-8 h-8 rounded-full ${isOn ? "bg-terminal-green" : "bg-terminal-green/30"
-            } transition-colors duration-300`}
-        />
-      </button>
-
-      {/* Terminal screen */}
-      <div
-        onClick={() => setIsTimerPaused(true)}
-        className={`w-full max-w-2xl h-48 bg-surface-panel rounded-lg p-6 font-mono relative overflow-hidden border border-terminal-green/10 shadow-[0_0_30px_rgba(46,213,115,0.08)] ${isAnimating ? "animate-glitch" : ""
-          }`}
-      >
-        <div className="flex items-center gap-2 mb-4">
-          <div className="w-3 h-3 rounded-full bg-red-500" />
-          <div className="w-3 h-3 rounded-full bg-yellow-500" />
-          <div className="w-3 h-3 rounded-full bg-green-500" />
-        </div>
-        <div className="text-terminal-green text-lg">
-          {isOn ? (
-            <>
-              <span className="text-terminal-green/90">{">"}</span>{" "}
-              {screens[currentScreen]}
-              <span className="animate-blink">_</span>
-            </>
-          ) : (
-            <span className="text-terminal-green/90">Turn on the terminal...</span>
-          )}
-        </div>
-      </div>
-
-      {/* Turn on your sound text */}
-      <div className="text-terminal-green/90 text-xs tracking-widest mt-6 flex items-center gap-2">
-        TURN ON YOUR <Volume2 size={16} aria-hidden="true" />
-      </div>
-
-      {/* Enter dashboard button with animated border */}
-      <div className="relative mt-8 mb-4 group/cta">
-        {/* Breathing glow background */}
-        <div className="absolute -inset-3 bg-terminal-green/8 blur-2xl rounded-2xl animate-cta-breathe" />
-
-        {/* Animated orbiting border container */}
-        <div className="relative rounded-lg p-[2px] overflow-hidden">
-          {/* Rotating conic gradient - oversized so rotation covers all edges */}
-          <div className="absolute top-1/2 left-1/2 w-[200%] h-[400%] -translate-x-1/2 -translate-y-1/2 animate-border-rotate" style={{
-            background: 'conic-gradient(from 0deg, transparent 0%, transparent 30%, #2ed573 50%, transparent 70%, transparent 100%)',
-          }} />
-          {/* Static subtle border underneath */}
-          <div className="absolute inset-0 rounded-lg border border-terminal-green/15" />
-
-          <Link
-            href="/?boot=1"
-            onClick={goToDashboard}
-            className="relative bg-surface-input hover:bg-terminal-green/10 text-terminal-green flex items-center gap-3 px-10 py-5 font-mono tracking-wide transition-all duration-300 shadow-[0_0_20px_rgba(46,213,115,0.15)] hover:shadow-[0_0_35px_rgba(46,213,115,0.4)] hover:scale-105 group overflow-hidden rounded-[6px] border-0"
-          >
-            {/* Shimmer sweep on hover */}
-            <div className="absolute inset-0 rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-terminal-green/20 to-transparent animate-shimmer" />
-            </div>
-
-            <span className="relative z-10 text-terminal-green text-lg">{'>_'}</span>
-            <span className="relative z-10 text-base">Initialize Dashboard</span>
-
-            {/* Blinking cursor */}
-            <span className="relative z-10 animate-blink text-lg">|</span>
-          </Link>
-        </div>
-      </div>
-
-      {/* Instruction text */}
-      <div className="text-center space-y-3 mt-2">
-        <div className="text-terminal-green/90 text-sm font-mono tracking-wide flex items-center justify-center gap-2">
-          <span className="text-terminal-green/90" aria-hidden="true">[</span>
-          {isTimerPaused ? (
-            <span> TERMINAL ACTIVE - CLICK TO ENTER </span>
-          ) : (
-            <>
-              <span> CLICK TO ENTER OR WAIT </span>
-              <span className="text-terminal-green">{countdown}s</span>
-            </>
-          )}
-          <span className="text-terminal-green/90" aria-hidden="true">]</span>
-        </div>
-        <div className="text-terminal-green/90 text-sm font-mono">
-          <span className="text-terminal-green/90" aria-hidden="true">&gt;</span> SYSTEM.AUTO_BOOT {isTimerPaused ? <span className="text-terminal-amber">PAUSED</span> : <>IN <span className="text-terminal-green">00:{countdown >= 10 ? countdown : `0${countdown}`}</span></>}
-        </div>
-      </div>
+const FleetReplay = memo(function FleetReplay({ frame, variant }: { frame: ReturnType<typeof getFleetFrame>; variant: "live" | "static" | "still" }): ReactElement {
+  const checks = frame.panes.find(pane => pane.id === "review")?.checks ?? 0;
+  const gate = frame.gate === "holding" ? "WARN: review gate: holding build until review verifies" : frame.gate === "verified" ? "Review verified. I release the build." : frame.gate === "released" ? "Six branches. My signature." : "I split the work. I keep the final say.";
+  return <div className={`oc-fleet-replay oc-fleet-replay-${variant}`} style={{ "--oc-border-flash": frame.borderFlash } as CSSProperties} aria-hidden="true">
+    <div className="oc-fleet-panes" aria-hidden="true">
+      {frame.panes.map(pane => <div key={pane.id} data-fleet-pane={pane.id} data-pane-state={pane.state} className="oc-fleet-pane" style={{ "--spawn": pane.spawn, "--log-pending": 10 - pane.scroll } as CSSProperties}>
+        <div className="oc-fleet-pane-title"><span>{pane.spinner} {pane.id}</span><span>{pane.engine}</span></div>
+        <div className="oc-fleet-output"><div className="oc-fleet-log-track">{pane.lines.map((line, index) => <p key={index} className={pane.state === "held" && index >= 13 ? "oc-fleet-held" : ""}><span className="oc-fleet-line-full">{line.full}</span><span className="oc-fleet-line-small">{line.compact}</span></p>)}</div></div>
+        <div className="oc-fleet-pane-stats"><span className="oc-fleet-added">+{pane.added}</span><span className="oc-fleet-removed">-{pane.removed}</span><span>{pane.checks}/3</span><span>{Math.round(pane.progress * 100)}%</span></div>
+        <div className="oc-fleet-progress"><span style={{ transform: `scaleX(${pane.progress})` }} /></div>
+      </div>)}
     </div>
-  );
+    <div className="oc-fleet-gate" data-gate={frame.gate}><span className="oc-fleet-line-full">{gate}{frame.gate === "holding" && ` / review ${checks}/3`}</span><span className="oc-fleet-line-small">{frame.gate === "holding" ? `WARN build held / review ${checks}/3` : frame.gate === "verified" ? "Review 3/3. Releasing build." : frame.gate === "released" ? "My signature. Ready to merge." : "I keep the final say."}</span></div>
+    <div className="oc-fleet-graph" data-merged={frame.merge === 1}>
+      <span>main</span>
+      <svg viewBox="0 0 1000 96" preserveAspectRatio="none">
+        <path d="M0 48H1000" className="oc-fleet-mainline" />
+        {frame.panes.map((pane, index) => {
+          const lane = LANES[index] * (1 - frame.merge) + 48 * frame.merge;
+          return <g key={pane.id}>
+            <path d={`M24 48C80 48 90 ${lane} 150 ${lane}H800C900 ${lane} 910 48 976 48`} pathLength={100} strokeDasharray="100" strokeDashoffset={(1 - pane.spawn) * 100} opacity={1 - frame.merge * .65} className={pane.state === "held" ? "oc-fleet-branch oc-fleet-held" : "oc-fleet-branch"} />
+            {Array.from({ length: pane.commits }, (_, commit) => <circle key={commit} cx={(290 + commit * 210) * (1 - frame.merge) + 976 * frame.merge} cy={lane} r={pane.state === "held" && commit === 1 ? 5 : 4} className={pane.state === "held" ? "oc-fleet-commit oc-fleet-held" : "oc-fleet-commit"} />)}
+          </g>;
+        })}
+        <path d="M0 48H1000" className="oc-fleet-main-pulse" pathLength={100} strokeDasharray="12 112" strokeDashoffset={12 - frame.mainPulse * 124} opacity={frame.mainPulse < 0 ? 0 : 1} />
+        <circle cx="976" cy="48" r={5 + frame.merge * 3} className="oc-fleet-commit" />
+      </svg>
+      <span>main</span>
+    </div>
+    <p className="oc-fleet-merge" data-merged={frame.merge === 1}>{frame.merge === 1 ? "[ MERGED ] six branches -> main, approved by me" : "parallel work / one final decision"}</p>
+  </div>;
+});
+
+/** Replay a parallel work session, then fold its pane borders into the real home circuit. */
+export default function HomeClient(): ReactElement {
+  const dialog = useRef<HTMLDialogElement>(null);
+  const animation = useRef(0);
+  const { isMotionEnabled } = useMotion();
+  const [elapsed, setElapsed] = useState(0);
+  const [fastForwarded, setFastForwarded] = useState(false);
+  const [entering, setEntering] = useState(false);
+  const ready = !isMotionEnabled || fastForwarded || elapsed >= FLEET_READY_AT;
+  const time = entering ? Math.max(FLEET_READY_AT, elapsed) : ready ? FLEET_READY_AT : elapsed;
+  const frame = getFleetFrame(time);
+
+  const closeIntro = useCallback((): void => {
+    cancelAnimationFrame(animation.current);
+    try { sessionStorage.setItem("arafat-booted", "1"); } catch { /* The document still remembers this visit if storage is blocked. */ }
+    document.documentElement.setAttribute("data-booted", "");
+    document.documentElement.removeAttribute("data-boot-pending");
+    dialog.current?.close();
+    document.getElementById("hero-title")?.focus({ preventScroll: true });
+  }, []);
+
+  useEffect(() => {
+    const element = dialog.current;
+    if (!element) return;
+    let skip = new URLSearchParams(window.location.search).get("boot") === "1";
+    try { skip = skip || sessionStorage.getItem("arafat-booted") === "1"; } catch { /* The intro works without storage. */ }
+    if (skip || document.documentElement.hasAttribute("data-booted")) { element.close(); document.documentElement.removeAttribute("data-boot-pending"); return; }
+    const previousOverflow = document.documentElement.style.overflow;
+    const restoreScroll = (): void => { document.documentElement.style.overflow = previousOverflow; };
+    // Upgrade the server-rendered open dialog to a modal within the same task, without a paint gap.
+    element.removeAttribute("open");
+    element.showModal();
+    element.addEventListener("close", restoreScroll);
+    document.documentElement.style.overflow = "hidden";
+    document.documentElement.removeAttribute("data-boot-pending");
+    if (!window.matchMedia("(pointer: coarse)").matches) element.querySelector<HTMLButtonElement>(".oc-boot-enter")?.focus({ preventScroll: true });
+    return () => { cancelAnimationFrame(animation.current); element.removeEventListener("close", restoreScroll); element.close(); restoreScroll(); };
+  }, []);
+
+  useEffect(() => {
+    if (!dialog.current?.open) return;
+    if (!isMotionEnabled) { if (entering) closeIntro(); return; }
+    if (fastForwarded && !entering) return;
+    const start = performance.now();
+    const from = entering ? FLEET_READY_AT : 0;
+    const end = entering ? FLEET_EXIT_AT : FLEET_READY_AT;
+    let previous = 0;
+    const tick = (now: number): void => {
+      const next = Math.min(end, from + now - start);
+      if (next - previous >= 32 || next === end) { setElapsed(next); previous = next; }
+      if (next < end) animation.current = requestAnimationFrame(tick);
+      else if (entering) closeIntro();
+    };
+    animation.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(animation.current);
+  }, [isMotionEnabled, fastForwarded, entering, closeIntro]);
+
+  function enter(): void {
+    if (entering) return;
+    if (!isMotionEnabled) { closeIntro(); return; }
+    const target = document.querySelector<HTMLElement>("[data-intro-trace]") ?? document.getElementById("hero-title");
+    const bounds = target?.getBoundingClientRect();
+    if (bounds) {
+      const top = Math.max(0, bounds.top);
+      const height = Math.max(60, Math.min(window.innerHeight - top, bounds.height));
+      dialog.current?.querySelectorAll<HTMLElement>(".oc-fleet-replay-live [data-fleet-pane]").forEach((pane, index) => {
+        const box = pane.getBoundingClientRect();
+        pane.style.setProperty("--fold-x", (bounds.left - box.left) + "px");
+        pane.style.setProperty("--fold-y", (top + height * index / 6 - box.top) + "px");
+        pane.style.setProperty("--fold-sx", String(2 / box.width));
+        pane.style.setProperty("--fold-sy", String(height / 6 / box.height));
+      });
+    }
+    setFastForwarded(true);
+    setEntering(true);
+  }
+
+  function handleKey(event: KeyboardEvent<HTMLDialogElement>): void {
+    setFastForwarded(true);
+    if (event.key === "Enter" && !(event.target instanceof Element && event.target.closest("button"))) { event.preventDefault(); enter(); }
+  }
+
+  const style = { "--oc-handoff": frame.handoff, "--oc-merge-flash": frame.flash, "--oc-key-pulse": frame.pulse } as CSSProperties;
+
+  return <dialog ref={dialog} open className="oc-boot" style={style} data-boot-state={entering ? "entering" : ready ? "ready" : "booting"} data-motion={isMotionEnabled ? "on" : "off"} aria-modal="true" aria-labelledby="boot-title" aria-describedby="boot-description" onKeyDownCapture={handleKey} onPointerDownCapture={() => setFastForwarded(true)} onCancel={event => { event.preventDefault(); closeIntro(); }}>
+    <h2 id="boot-title" className="oc-sr">Engage superintelligence mode</h2>
+    <p id="boot-description" className="oc-sr">I run Claude Code and Codex in six separate terminal panes across two tabs with the command fleet up 6 2 claude,codex. Each has its own task and git worktree. This replay illustrates research, build, review, security, memory and documentation working in parallel. Research links context, review verifies three example checks, security records my nine disclosed CVEs, memory mounts my second brain, and documentation prepares the handoff. The build waits until review verifies the change, then releases its commit and all six branches merge into main. The example filenames and test counters explain the workflow. Press Enter or Engage superintelligence mode to open my dashboard. Any other key or tap shows the completed replay. Skip intro and Escape enter immediately.</p>
+    <div className="oc-fleet-shell">
+      <header className="oc-fleet-chrome"><span>arafat / <b>I delegated. Keep up.</b></span><MotionToggle /></header>
+      <div className="oc-fleet-command" aria-hidden="true"><span>$ </span><span className="oc-fleet-command-reserve">{FLEET_COMMAND}</span><span className="oc-fleet-command-typed">{frame.command}<i style={{ opacity: ready || Math.floor(time / 180) % 2 === 0 ? 1 : 0 }} /></span></div>
+      <div className="oc-boot-screen" tabIndex={0} role="region" aria-label="Parallel work replay">
+        <FleetReplay frame={frame} variant={isMotionEnabled ? "live" : "static"} />
+        {isMotionEnabled && <FleetReplay frame={COMPLETE_FRAME} variant="still" />}
+      </div>
+      <div className="oc-fleet-action"><p className="oc-boot-instruction">{ready ? "Ready. Click the button to enter the site." : "Booting. Click the button to enter now, or press any key to skip ahead."}</p><form method="dialog" className="oc-boot-form"><button type="submit" className="oc-boot-enter" onClick={event => { event.preventDefault(); enter(); }} aria-busy={entering}><span className="oc-boot-enter-label">Enter the site</span><span className="oc-boot-enter-hint" aria-hidden="true">click or press Enter -&gt;</span></button></form></div>
+      <footer className="oc-fleet-status"><span aria-hidden="true">[work]<b> 1 </b><span className="oc-fleet-tab">2</span><span className="oc-fleet-status-detail"> / session replay</span></span><form method="dialog" className="oc-boot-form"><button type="submit" className="oc-boot-skip" onClick={event => { event.preventDefault(); closeIntro(); }}>Skip intro</button></form></footer>
+    </div>
+  </dialog>;
 }

@@ -19,6 +19,7 @@ import {
 } from "@/lib/seo";
 
 import HomeShell from "./components/HomeShell";
+import DashboardClient from "./components/DashboardClient";
 
 /**
  * Static route with hourly ISR: no request-time data (searchParams, cookies,
@@ -71,19 +72,19 @@ export default async function Home(): Promise<ReactElement> {
   return (
     <>
       <JsonLd data={profilePageSchema} />
-      {/* Pre-hydration: hide the boot overlay if this tab already booted or
-          the URL carries ?boot=1, so reloads don't flash the intro
-          (state catches up in HomeShell). */}
+      {/* Preserve the session/query skip decision before the native boot dialog mounts. */}
       <script
         dangerouslySetInnerHTML={{
           __html:
             'try{if(new URLSearchParams(location.search).get("boot")==="1"||sessionStorage.getItem("arafat-booted")==="1")document.documentElement.setAttribute("data-booted","")}catch(e){}',
         }}
       />
-      <HomeShell
-        caseStudies={<CaseStudiesPanel projects={CLIENT_PROJECTS} />}
-        latestPosts={<LatestPostsPanel posts={posts} />}
-      />
+      <HomeShell>
+        <DashboardClient
+          caseStudies={<CaseStudiesPanel projects={CLIENT_PROJECTS} />}
+          latestPosts={<LatestPostsPanel posts={posts} />}
+        />
+      </HomeShell>
     </>
   );
 }

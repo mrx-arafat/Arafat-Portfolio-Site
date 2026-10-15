@@ -2,9 +2,11 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
-import rehypePrettyCode from "rehype-pretty-code";
-import type { ComponentPropsWithoutRef } from "react";
+import rehypePrettyCode, { type Options as PrettyCodeOptions } from "rehype-pretty-code";
+import { Children, isValidElement, type ComponentPropsWithoutRef, type ReactElement, type ReactNode } from "react";
 import { rehypeSingleH1 } from "@/components/blog/rehype-single-h1";
+
+const SCROLL_REGION_FOCUS = "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-terminal-amber";
 
 interface MdxContentProps {
   /** Raw MDX source (frontmatter already stripped). */
@@ -17,6 +19,8 @@ interface MdxContentProps {
    * and any other `# heading` renders as an `h2`.
    */
   title?: string;
+  /** Optional syntax palette; paired themes emit CSS variables for the reading surface. */
+  codeTheme?: PrettyCodeOptions["theme"];
 }
 
 function resolveSrc(src: string | undefined, assetBase?: string): string {
@@ -25,8 +29,16 @@ function resolveSrc(src: string | undefined, assetBase?: string): string {
   return `${assetBase}/${src.replace(/^\.\//, "")}`;
 }
 
+function hasText(children: ReactNode): boolean {
+  return Children.toArray(children).some((child) =>
+    (typeof child === "string" && child.trim().length > 0) ||
+    typeof child === "number" ||
+    (isValidElement<{ children?: ReactNode }>(child) && hasText(child.props.children))
+  );
+}
+
 /** Server component rendering post MDX with the site's terminal styling. */
-export function MdxContent({ source, assetBase, title }: MdxContentProps) {
+export function MdxContent({ source, assetBase, title, codeTheme = "vitesse-black" }: MdxContentProps): ReactElement {
   const components = {
     img: (props: ComponentPropsWithoutRef<"img">) => (
       // eslint-disable-next-line @next/next/no-img-element
@@ -41,9 +53,24 @@ export function MdxContent({ source, assetBase, title }: MdxContentProps) {
     ),
     // Wide tables scroll inside this box instead of widening the page on mobile.
     table: (props: ComponentPropsWithoutRef<"table">) => (
-      <div className="blog-table-scroll">
+      <div className={`blog-table-scroll ${SCROLL_REGION_FOCUS}`} tabIndex={0} role="group" aria-label="Scrollable table">
         <table {...props} />
       </div>
+    ),
+    pre: (props: ComponentPropsWithoutRef<"pre">) => (
+      <pre
+        {...props}
+        tabIndex={0}
+        role="group"
+        aria-label="Scrollable code"
+        className={`${props.className ?? ""} ${SCROLL_REGION_FOCUS}`.trim()}
+      />
+    ),
+    th: ({ children, ...props }: ComponentPropsWithoutRef<"th">) => (
+      <th {...props}>
+        {children}
+        {!hasText(children) && <span className="sr-only">Row label</span>}
+      </th>
     ),
   };
 
@@ -61,7 +88,7 @@ export function MdxContent({ source, assetBase, title }: MdxContentProps) {
             [rehypeAutolinkHeadings, { behavior: "wrap" }],
             [
               rehypePrettyCode,
-              { theme: "vitesse-black", keepBackground: false },
+              { theme: codeTheme, keepBackground: false },
             ],
           ],
         },

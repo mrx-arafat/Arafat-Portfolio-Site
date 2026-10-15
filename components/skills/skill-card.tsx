@@ -46,12 +46,11 @@ export function SkillCard({ skill, color }: SkillCardProps): ReactElement {
           <span aria-hidden="true" style={{ color }}>
             <SkillIcon name={skill.icon} size={20} />
           </span>
-          <h3 className="text-lg font-medium text-neutral-900 dark:text-neutral-100">
+          <h4 className="text-lg font-medium text-neutral-900 dark:text-neutral-100">
             {skill.name}
-          </h3>
+          </h4>
           <span
-            className="ml-auto inline-flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-[0.3em]"
-            style={{ color }}
+            className="ml-auto inline-flex items-center gap-1.5 text-[13px] font-medium uppercase tracking-[0.3em] text-neutral-700 dark:text-neutral-300"
           >
             <span aria-hidden="true">★</span>
             Notable
@@ -69,18 +68,18 @@ export function SkillCard({ skill, color }: SkillCardProps): ReactElement {
       style={accentVars}
       className="group relative flex flex-col gap-1.5 border-l-2 border-transparent px-5 py-4 transition-colors duration-200 hover:border-[var(--accent)] hover:bg-[var(--accent-wash)] md:flex-row md:items-baseline md:gap-6 md:px-6"
     >
-      <div className="flex w-64 shrink-0 items-center gap-3">
+      <div className="flex w-64 max-w-full shrink-0 items-center gap-3">
         <span
           aria-hidden="true"
           className="text-neutral-500 transition-colors duration-200 group-hover:text-[var(--accent)]"
         >
           <SkillIcon name={skill.icon} size={16} />
         </span>
-        <h3 className="text-[15px] font-medium text-neutral-800 dark:text-neutral-200">
+        <h4 className="text-[15px] font-medium text-neutral-800 dark:text-neutral-200">
           {skill.name}
-        </h3>
+        </h4>
       </div>
-      <p className="pl-7 text-sm leading-relaxed text-neutral-500 transition-colors duration-200 group-hover:text-neutral-700 dark:group-hover:text-neutral-400 md:pl-0">
+      <p className="pl-7 text-sm leading-relaxed text-neutral-600 transition-colors duration-200 group-hover:text-neutral-700 dark:text-neutral-400 dark:group-hover:text-neutral-300 md:pl-0">
         {skill.description}
       </p>
     </article>

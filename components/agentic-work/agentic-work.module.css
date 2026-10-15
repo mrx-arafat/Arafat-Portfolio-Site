@@ -1,0 +1,29 @@
+.section { min-width: 0; }
+.operatorRail { display: grid; gap: 1.5rem; padding: 1.5rem; margin-bottom: 2rem; border: 1px solid var(--oc-green); background: var(--oc-raised); }
+.operatorRail p { margin: 0; }
+.operatorRail p > span { display: block; color: var(--oc-muted); font: max(13px, .8125rem)/1.6 var(--oc-mono); margin-bottom: .75rem; }
+.operatorRail strong { color: var(--oc-ink); font-size: clamp(1.4rem, 3vw, 2rem); line-height: 1.3; letter-spacing: -.03em; }
+.railLinks { display: flex; flex-wrap: wrap; gap: .6rem; align-self: center; }
+.railLinks span { padding: .5rem .7rem; border: 1px solid var(--oc-line); color: var(--oc-soft); font: max(13px, .8125rem)/1.6 var(--oc-mono); }
+.railLinks .reviewLabel { color: var(--oc-amber); border-color: var(--oc-amber); }
+.projects { border-top: 1px solid var(--oc-line); }
+.project { display: grid; align-items: center; gap: 2rem; min-width: 0; padding-block: 2.5rem; border-bottom: 1px solid var(--oc-line); }
+.project > * { min-width: 0; }
+.role { color: var(--oc-green); font: max(13px, .8125rem)/1.6 var(--oc-mono); margin: 0 0 .9rem; }
+.project h3 { color: var(--oc-ink); font-size: clamp(1.8rem, 4vw, 3rem); line-height: 1.15; margin: 0; overflow-wrap: anywhere; }
+.summary { max-width: 58ch; margin-top: 1.2rem; color: var(--oc-muted); font-size: 1rem; line-height: 1.75; }
+.projectLinks { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1.5rem; align-items: center; }
+.repositoryButton, .linkButton { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; min-height: 44px; min-width: 44px; max-width: 100%; padding: .7rem .8rem; font: max(13px, .8125rem)/1.6 var(--oc-mono); overflow-wrap: anywhere; }
+.repositoryButton { border: 1px solid var(--oc-green); box-shadow: 3px 3px 0 var(--oc-shadow); background: var(--oc-raised); color: var(--oc-green); margin-right: .2rem; }
+.linkButton { border: 1px solid var(--oc-line); color: var(--oc-soft); }
+.repositoryButton svg, .linkButton svg { flex-shrink: 0; }
+.section .repositoryButton:hover, .section .linkButton:hover { color: var(--oc-ink); border-color: var(--oc-soft); }
+@media (min-width: 40rem) {
+  .operatorRail { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 2rem; }
+}
+@media (min-width: 70rem) {
+  .project { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 3rem; padding-block: 3.5rem; }
+  .project:nth-child(even) { grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); }
+  .project:nth-child(even) .projectCopy { grid-column: 2; grid-row: 1; }
+  .project:nth-child(even) > :last-child { grid-column: 1; grid-row: 1; }
+}
