@@ -58,9 +58,9 @@ export default function DashboardClient({ caseStudies, latestPosts }: DashboardC
           </div>
 
           <div className={styles.portraitBay}>
-            <p className={styles.portraitNote}>Easin Arafat, at work.</p>
+            <p className={styles.portraitNote}>The operator behind the fleet.</p>
             <DecryptPhoto priority />
-            <p className={styles.portraitFootnote}>I find the weakness.<br />Then I build the fix.</p>
+            <p className={styles.portraitFootnote}>Security sets the guardrails.<br />The fleet carries the work.</p>
           </div>
         </div>
 
