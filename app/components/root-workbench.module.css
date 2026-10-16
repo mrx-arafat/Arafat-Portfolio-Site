@@ -86,7 +86,7 @@
 
 .home .heroTitle {
   margin: 0;
-  font-size: clamp(2.25rem, 4.05vw, 3.7rem);
+  font-size: clamp(2rem, 7vw, 6.5rem);
   font-weight: 900;
   line-height: 1.02;
   letter-spacing: -.06em;
@@ -106,7 +106,7 @@
 
 .heroThesis {
   margin-top: 2rem;
-  font-size: clamp(1.35rem, 2.3vw, 2.15rem);
+  font-size: clamp(1.45rem, 3.3vw, 3.1rem);
   font-weight: 650;
   letter-spacing: -.045em;
   line-height: 1.18;
@@ -576,8 +576,11 @@
 @media (min-width: 40rem) {
   .hero { padding-top: 2rem; }
   .identity p { display: flex; flex-wrap: wrap; gap: .5rem 1.25rem; align-items: baseline; }
-  .heroLayout { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); align-items: center; gap: 1.75rem; padding-top: 3rem; }
-  .portraitBay { margin-top: 1.5rem; }
+  .heroLayout { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); align-items: start; column-gap: 1.75rem; row-gap: 0; padding-top: 3rem; }
+  .heroType { display: contents; }
+  .heroTitle, .heroThesis { grid-column: 1 / -1; }
+  .heroCopy, .heroSignature { grid-column: 1; }
+  .portraitBay { grid-column: 2; grid-row: 3 / span 2; margin-top: 1.5rem; }
   .heroCopy { font-size: 1.05rem; }
   .signalChain { grid-template-columns: repeat(4, minmax(0, 1fr)); padding: 1.5rem 1.25rem; gap: 1.25rem; }
   .signalChain > div { display: block; padding: 0; }
@@ -599,7 +602,7 @@
 @media (min-width: 70rem) {
   .hero { padding-top: 2.5rem; }
   .currentFocus { text-align: right; }
-  .heroLayout { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 4rem; }
+  .heroLayout { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); column-gap: 4rem; }
   .portraitBay { margin: 2rem 1rem 0 0; }
   .portraitBay::before { content: ""; position: absolute; width: 2.5rem; height: 5rem; left: -3rem; top: 42%; border-top: 1px solid var(--oc-line); border-right: 1px solid var(--oc-line); pointer-events: none; }
   .heroThesis { margin-top: 2.25rem; }

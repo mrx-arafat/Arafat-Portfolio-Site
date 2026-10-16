@@ -2,6 +2,7 @@
 
 import { memo, useCallback, useEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type ReactElement } from "react";
 import { MotionToggle, useMotion } from "@/components/open-circuit/motion-provider";
+import { BOOT_TERMINALS, BootTerminalPane } from "./boot-terminal-pane";
 import { FLEET_COMMAND, FLEET_EXIT_AT, FLEET_READY_AT, getFleetFrame } from "./fleet-timeline";
 
 const LANES = [12, 24, 36, 60, 72, 84];
@@ -9,24 +10,19 @@ const COMPLETE_FRAME = getFleetFrame(FLEET_READY_AT);
 
 const FleetReplay = memo(function FleetReplay({ frame, variant }: { frame: ReturnType<typeof getFleetFrame>; variant: "live" | "static" | "still" }): ReactElement {
   const checks = frame.panes.find(pane => pane.id === "review")?.checks ?? 0;
-  const gate = frame.gate === "holding" ? "WARN: review gate: holding build until review verifies" : frame.gate === "verified" ? "Review verified. I release the build." : frame.gate === "released" ? "Six branches. My signature." : "I split the work. I keep the final say.";
-  return <div className={`oc-fleet-replay oc-fleet-replay-${variant}`} style={{ "--oc-border-flash": frame.borderFlash } as CSSProperties} aria-hidden="true">
+  const gate = frame.gate === "holding" ? "WARN: review gate: holding build until review verifies" : frame.gate === "verified" ? "Review verified. Build released." : frame.gate === "released" ? "All checks verified. Ready to merge." : "Six tasks / review before merge.";
+  return <div className={`oc-fleet-replay oc-fleet-replay-${variant}`} aria-hidden="true">
     <div className="oc-fleet-panes" aria-hidden="true">
-      {frame.panes.map(pane => <div key={pane.id} data-fleet-pane={pane.id} data-pane-state={pane.state} className="oc-fleet-pane" style={{ "--spawn": pane.spawn, "--log-pending": 10 - pane.scroll } as CSSProperties}>
-        <div className="oc-fleet-pane-title"><span>{pane.spinner} {pane.id}</span><span>{pane.engine}</span></div>
-        <div className="oc-fleet-output"><div className="oc-fleet-log-track">{pane.lines.map((line, index) => <p key={index} className={pane.state === "held" && index >= 13 ? "oc-fleet-held" : ""}><span className="oc-fleet-line-full">{line.full}</span><span className="oc-fleet-line-small">{line.compact}</span></p>)}</div></div>
-        <div className="oc-fleet-pane-stats"><span className="oc-fleet-added">+{pane.added}</span><span className="oc-fleet-removed">-{pane.removed}</span><span>{pane.checks}/3</span><span>{Math.round(pane.progress * 100)}%</span></div>
-        <div className="oc-fleet-progress"><span style={{ transform: `scaleX(${pane.progress})` }} /></div>
-      </div>)}
+      {frame.panes.map(pane => <BootTerminalPane key={pane.id} pane={pane} />)}
     </div>
-    <div className="oc-fleet-gate" data-gate={frame.gate}><span className="oc-fleet-line-full">{gate}{frame.gate === "holding" && ` / review ${checks}/3`}</span><span className="oc-fleet-line-small">{frame.gate === "holding" ? `WARN build held / review ${checks}/3` : frame.gate === "verified" ? "Review 3/3. Releasing build." : frame.gate === "released" ? "My signature. Ready to merge." : "I keep the final say."}</span></div>
+    <div className="oc-fleet-gate" data-gate={frame.gate}><span className="oc-fleet-line-full">{gate}{frame.gate === "holding" && ` / review ${checks}/3`}</span><span className="oc-fleet-line-small">{frame.gate === "holding" ? `WARN build held / review ${checks}/3` : frame.gate === "verified" ? "Review 3/3. Releasing build." : frame.gate === "released" ? "Checks verified. Ready to merge." : "Review before merge."}</span></div>
     <div className="oc-fleet-graph" data-merged={frame.merge === 1}>
-      <span>main</span>
+      <span>master</span>
       <svg viewBox="0 0 1000 96" preserveAspectRatio="none">
         <path d="M0 48H1000" className="oc-fleet-mainline" />
         {frame.panes.map((pane, index) => {
           const lane = LANES[index] * (1 - frame.merge) + 48 * frame.merge;
-          return <g key={pane.id}>
+          return <g key={pane.id} data-pane-theme={BOOT_TERMINALS[pane.id].theme}>
             <path d={`M24 48C80 48 90 ${lane} 150 ${lane}H800C900 ${lane} 910 48 976 48`} pathLength={100} strokeDasharray="100" strokeDashoffset={(1 - pane.spawn) * 100} opacity={1 - frame.merge * .65} className={pane.state === "held" ? "oc-fleet-branch oc-fleet-held" : "oc-fleet-branch"} />
             {Array.from({ length: pane.commits }, (_, commit) => <circle key={commit} cx={(290 + commit * 210) * (1 - frame.merge) + 976 * frame.merge} cy={lane} r={pane.state === "held" && commit === 1 ? 5 : 4} className={pane.state === "held" ? "oc-fleet-commit oc-fleet-held" : "oc-fleet-commit"} />)}
           </g>;
@@ -34,9 +30,9 @@ const FleetReplay = memo(function FleetReplay({ frame, variant }: { frame: Retur
         <path d="M0 48H1000" className="oc-fleet-main-pulse" pathLength={100} strokeDasharray="12 112" strokeDashoffset={12 - frame.mainPulse * 124} opacity={frame.mainPulse < 0 ? 0 : 1} />
         <circle cx="976" cy="48" r={5 + frame.merge * 3} className="oc-fleet-commit" />
       </svg>
-      <span>main</span>
+      <span>master</span>
     </div>
-    <p className="oc-fleet-merge" data-merged={frame.merge === 1}>{frame.merge === 1 ? "[ MERGED ] six branches -> main, approved by me" : "parallel work / one final decision"}</p>
+    <p className="oc-fleet-merge" data-merged={frame.merge === 1}>{frame.merge === 1 ? "[ MERGED ] six branches -> master, approved by me" : "six worktrees / review before merge"}</p>
   </div>;
 });
 
@@ -122,19 +118,19 @@ export default function HomeClient(): ReactElement {
     if (event.key === "Enter" && !(event.target instanceof Element && event.target.closest("button"))) { event.preventDefault(); enter(); }
   }
 
-  const style = { "--oc-handoff": frame.handoff, "--oc-merge-flash": frame.flash, "--oc-key-pulse": frame.pulse } as CSSProperties;
+  const style = { "--oc-handoff": frame.handoff, "--oc-merge-flash": frame.flash } as CSSProperties;
 
   return <dialog ref={dialog} open className="oc-boot" style={style} data-boot-state={entering ? "entering" : ready ? "ready" : "booting"} data-motion={isMotionEnabled ? "on" : "off"} aria-modal="true" aria-labelledby="boot-title" aria-describedby="boot-description" onKeyDownCapture={handleKey} onPointerDownCapture={() => setFastForwarded(true)} onCancel={event => { event.preventDefault(); closeIntro(); }}>
-    <h2 id="boot-title" className="oc-sr">Engage superintelligence mode</h2>
-    <p id="boot-description" className="oc-sr">I run Claude Code and Codex in six separate terminal panes across two tabs with the command fleet up 6 2 claude,codex. Each has its own task and git worktree. This replay illustrates research, build, review, security, memory and documentation working in parallel. Research links context, review verifies three example checks, security records my nine disclosed CVEs, memory mounts my second brain, and documentation prepares the handoff. The build waits until review verifies the change, then releases its commit and all six branches merge into main. The example filenames and test counters explain the workflow. Press Enter or Engage superintelligence mode to open my dashboard. Any other key or tap shows the completed replay. Skip intro and Escape enter immediately.</p>
+    <h2 id="boot-title" className="oc-sr">Terminal session / Arafat</h2>
+    <p id="boot-description" className="oc-sr">I run Claude Code and Codex in six separate terminal panes across two tabs with the command fleet up 6 2 claude,codex. Each has its own task and git worktree. This replay illustrates research, build, review, security, memory and documentation working in parallel. Research links context, review verifies three example checks, security records my nine disclosed CVEs, memory mounts my second brain, and documentation prepares the handoff. The build waits until review verifies the change, then releases its commit and all six branches merge into master, approved by me. The example filenames, commit hashes and test counters explain the workflow. Press Enter or choose Enter the site to open my dashboard. Any other key or tap shows the completed replay. Skip intro and Escape enter immediately.</p>
     <div className="oc-fleet-shell">
-      <header className="oc-fleet-chrome"><span>arafat / <b>I delegated. Keep up.</b></span><MotionToggle /></header>
+      <header className="oc-fleet-chrome"><span>arafat / <b>terminal session</b></span><MotionToggle /></header>
       <div className="oc-fleet-command" aria-hidden="true"><span>$ </span><span className="oc-fleet-command-reserve">{FLEET_COMMAND}</span><span className="oc-fleet-command-typed">{frame.command}<i style={{ opacity: ready || Math.floor(time / 180) % 2 === 0 ? 1 : 0 }} /></span></div>
       <div className="oc-boot-screen" tabIndex={0} role="region" aria-label="Parallel work replay">
         <FleetReplay frame={frame} variant={isMotionEnabled ? "live" : "static"} />
         {isMotionEnabled && <FleetReplay frame={COMPLETE_FRAME} variant="still" />}
       </div>
-      <div className="oc-fleet-action"><p className="oc-boot-instruction">{ready ? "Ready. Click the button to enter the site." : "Booting. Click the button to enter now, or press any key to skip ahead."}</p><form method="dialog" className="oc-boot-form"><button type="submit" className="oc-boot-enter" onClick={event => { event.preventDefault(); enter(); }} aria-busy={entering}><span className="oc-boot-enter-label">Enter the site</span><span className="oc-boot-enter-hint" aria-hidden="true">click or press Enter -&gt;</span></button></form></div>
+      <div className="oc-fleet-action"><p className="oc-boot-instruction">{ready ? "Ready. Click the button to enter the site." : "Booting. Click the button to enter now."}</p><form method="dialog" className="oc-boot-form"><button type="submit" className="oc-boot-enter" onClick={event => { event.preventDefault(); enter(); }} aria-busy={entering}><span className="oc-boot-enter-label">Enter the site</span><span className="oc-boot-enter-hint" aria-hidden="true">click or press Enter -&gt;</span></button></form></div>
       <footer className="oc-fleet-status"><span aria-hidden="true">[work]<b> 1 </b><span className="oc-fleet-tab">2</span><span className="oc-fleet-status-detail"> / session replay</span></span><form method="dialog" className="oc-boot-form"><button type="submit" className="oc-boot-skip" onClick={event => { event.preventDefault(); closeIntro(); }}>Skip intro</button></form></footer>
     </div>
   </dialog>;

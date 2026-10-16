@@ -7,6 +7,15 @@ import { resolveMotionPreference } from "@/components/open-circuit/motion-prefer
 const preference = vi.hoisted(() => ({ motion: "off", isMotionEnabled: false }));
 const launchControl = vi.hoisted(() => ({ activate: undefined as (() => void) | undefined, push: vi.fn(), prefetch: vi.fn() }));
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push: launchControl.push, prefetch: launchControl.prefetch }) }));
+// next/font is compiled by Next; SSR tests keep its public className contract without fetching fonts.
+vi.mock("next/font/google", () => ({
+  JetBrains_Mono: () => ({ className: "boot-jetbrains" }),
+  Fira_Code: () => ({ className: "boot-fira" }),
+  Source_Code_Pro: () => ({ className: "boot-source" }),
+  Space_Mono: () => ({ className: "boot-space" }),
+  IBM_Plex_Mono: () => ({ className: "boot-plex" }),
+  Ubuntu_Mono: () => ({ className: "boot-ubuntu" }),
+}));
 // Capture the native button's public activation handler without starting a browser or adding a DOM dependency.
 vi.mock("react/jsx-runtime", async importOriginal => {
   const actual = await importOriginal<typeof import("react/jsx-runtime")>();
@@ -51,7 +60,7 @@ it.each(["off", "reduced"])("shows the complete terminal boot immediately with m
   expect(html).toContain('data-boot-state="ready"');
   expect(html).toContain('data-motion="off"');
   expect(html).toContain("fleet up 6 2 claude,codex");
-  expect(html).toContain("Engage superintelligence mode");
+  expect(html).toContain("Terminal session / Arafat");
   expect(html.match(/data-pane-state="merged"/g)).toHaveLength(6);
   expect(html).toContain('data-merged="true"');
   expect(html).toContain('aria-describedby="boot-description"');
@@ -64,6 +73,15 @@ it.each(["off", "reduced"])("shows the complete terminal boot immediately with m
   expect(summary).toContain("six separate terminal panes");
   expect(summary).toContain("its own task and git worktree");
   expect(summary).toContain("build waits until review verifies");
+  expect({
+    merged: html.includes("[ MERGED ] six branches -&gt; master, approved by me"),
+    summary: summary?.includes("merge into master"),
+    themes: [...html.matchAll(/data-fleet-pane="([^"]+)" data-pane-theme="([^"]+)"/g)].map(([, pane, theme]) => [pane, theme]),
+    legacyBranch: /\bmain\b/.test(html.replace(/<[^>]*>/g, "")),
+  }).toEqual({
+    merged: true, summary: true, legacyBranch: false,
+    themes: [["research", "dracula"], ["build", "monokai"], ["review", "nord"], ["security", "tokyo-night"], ["memory", "one-dark"], ["docs", "catppuccin"]],
+  });
   expect(html).not.toContain("[  OK  ]");
   expect(html).not.toContain("oc-boot-banner");
 });
@@ -74,7 +92,7 @@ it("starts the optional boot at zero when motion is enabled", () => {
   const html = renderToStaticMarkup(createElement(HomeClient));
   expect(html).toContain('data-boot-state="booting"');
   expect(html).toContain('data-merged="false"');
-  expect(html).toContain("Engage superintelligence mode");
+  expect(html).toContain("Terminal session / Arafat");
   expect(html).toContain("Enter the site");
   expect(html).toContain("Click the button to enter now");
   expect(html).toContain("Skip intro");
