@@ -3,7 +3,11 @@ import { CLIENT_PROJECTS } from "@/components/client-work/content";
 import { getAllNotes, getAllPosts, type Note, type Post } from "@/lib/blog";
 import { absoluteUrl, isoDateTime } from "@/lib/seo";
 
-export const revalidate = 3600;
+// Rendered per request, never prerendered. With `revalidate = 3600` Vercel kept
+// serving the build-time sitemap for over a week, ignoring both the timer and
+// revalidatePath("/sitemap.xml") from the publish API, so new posts never
+// reached it. Crawlers fetch it a few times a day; one query each is cheap.
+export const dynamic = "force-dynamic";
 
 /** Newest `YYYY-MM-DD` date in a list, or undefined when the list is empty. */
 function newestDate(dates: string[]): string | undefined {
