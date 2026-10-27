@@ -2487,6 +2487,10 @@ body { background-color: var(--oc-deep); }
     .oc-decode:hover{color:var(--oc-ink)}
     .oc-decoded .oc-portrait-frame img{filter:none}
     .oc-decoded .oc-binary,.oc-decoded .oc-reticle,.oc-decoded .oc-scanlines,.oc-decoded .oc-scan-beam{visibility:hidden}
+    /* Revealing the operator clears the labels too, so the whole photograph shows. */
+    .oc-portrait-caption,.oc-photo-top{transition:opacity 220ms ease,transform 220ms ease,visibility 220ms}
+    .oc-decoded .oc-portrait-caption,.oc-decoded .oc-photo-top{opacity:0;visibility:hidden;transform:translateY(.4rem)}
+    @media (max-width:39.99rem){.oc-portrait-caption{left:.75rem;right:.75rem;bottom:.75rem;padding:.45rem .6rem}.oc-portrait-caption strong{font-size:1rem}.oc-photo-top{left:.75rem;top:.75rem}}
     .oc-portrait:not(.oc-decoded):has(.oc-decode:hover) .oc-portrait-frame img{animation:oc-glitch 350ms steps(1) 1}
     .oc-trace-entry{margin-top:2.5rem;display:flex;align-items:center;gap:1rem;color:var(--oc-muted);font:var(--oc-text-label)/1.6 var(--oc-mono)}
     .oc-trace-entry::after{content:"";height:1px;background:var(--oc-line);flex:1}
