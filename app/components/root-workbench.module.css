@@ -93,7 +93,7 @@
   overflow-wrap: anywhere;
 }
 
-.heroTitle > span {
+.heroTitle > span:not(:global(.oc-sr)) {
   display: block;
   text-wrap: balance;
 }

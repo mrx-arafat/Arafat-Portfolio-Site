@@ -7,7 +7,7 @@ import { MusicProvider } from "@/components/music-provider";
 import StructuredData from "./components/StructuredData";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
-import { SITE_NAME, SITE_URL } from "@/lib/seo";
+import { PROFILE_URLS, SITE_NAME, SITE_URL } from "@/lib/seo";
 import { MotionProvider } from "@/components/open-circuit/motion-provider";
 import { BOOT_FIRST_PAINT_CSS, BOOT_SESSION_SCRIPT } from "./components/boot-session";
 
@@ -101,6 +101,7 @@ export default function RootLayout({
         <style dangerouslySetInnerHTML={{ __html: BOOT_FIRST_PAINT_CSS }} />
         <script dangerouslySetInnerHTML={{ __html: BOOT_SESSION_SCRIPT }} />
         <link rel="icon" href="/favicon.png" />
+        {PROFILE_URLS.map((url) => <link rel="me" href={url} key={url} />)}
         <StructuredData />
         <script dangerouslySetInnerHTML={{ __html: 'try{document.documentElement.dataset.motion=localStorage.getItem("open-circuit-motion")==="off"||matchMedia("(prefers-reduced-motion: reduce)").matches?"off":"on"}catch(e){document.documentElement.dataset.motion=matchMedia("(prefers-reduced-motion: reduce)").matches?"off":"on"}' }} />
       </head>

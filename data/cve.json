@@ -51,17 +51,17 @@
     },
     {
       "id": 4,
-      "cve": "CVE-2025-58981",
+      "cve": "CVE-2025-57886",
       "status": "published",
       "software": "Accessibility Checker by Equalize Digital",
       "affected": "≤ 1.30.0",
-      "patched": "1.31.0",
+      "patched": "1.30.1",
       "type": "Insecure Direct Object Reference (IDOR)",
       "cvss": 5.4,
       "severity": "Medium",
       "reported": "2025-08-16",
       "platform": "WordPress",
-      "url": "https://patchstack.com/database/wordpress/plugin/accessibility-checker"
+      "url": "https://patchstack.com/database/wordpress/plugin/accessibility-checker/vulnerability/wordpress-accessibility-checker-by-equalize-digital-plugin-1-30-0-insecure-direct-object-references-idor-vulnerability"
     },
     {
       "id": 5,

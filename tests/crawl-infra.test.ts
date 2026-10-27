@@ -8,6 +8,7 @@ import { CLIENT_PROJECTS } from "@/components/client-work/content";
 import articles from "@/data/articles.json";
 import extracurricular from "@/data/extracurricular.json";
 import { getAllNotes, getAllPosts, type Note, type Post } from "@/lib/blog";
+import { PORTRAIT_URL } from "@/lib/seo";
 
 vi.mock("@/lib/blog", () => ({
   getAllPosts: vi.fn(),
@@ -70,6 +71,7 @@ describe("sitemap", () => {
 
     const entries = await sitemap();
     const urls = byUrl(entries);
+    expect(urls.get(SITE)?.images).toEqual([PORTRAIT_URL]);
     const lastModified = (path: string): string | Date | undefined =>
       urls.get(`${SITE}${path}`)?.lastModified;
 

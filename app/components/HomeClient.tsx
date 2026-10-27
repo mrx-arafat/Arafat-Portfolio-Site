@@ -121,7 +121,7 @@ export default function HomeClient(): ReactElement {
   const style = { "--oc-handoff": frame.handoff, "--oc-merge-flash": frame.flash } as CSSProperties;
 
   return <dialog ref={dialog} open className="oc-boot" style={style} data-boot-state={entering ? "entering" : ready ? "ready" : "booting"} data-motion={isMotionEnabled ? "on" : "off"} aria-modal="true" aria-labelledby="boot-title" aria-describedby="boot-description" onKeyDownCapture={handleKey} onPointerDownCapture={() => setFastForwarded(true)} onCancel={event => { event.preventDefault(); closeIntro(); }}>
-    <h2 id="boot-title" className="oc-sr">Terminal session / Arafat</h2>
+    <p id="boot-title" className="oc-sr">Terminal session / Arafat</p>
     <p id="boot-description" className="oc-sr">I run Claude Code and Codex in six separate terminal panes across two tabs with the command fleet up 6 2 claude,codex. Each has its own task and git worktree. This replay illustrates research, build, review, security, memory and documentation working in parallel. Research links context, review verifies three example checks, security records my nine disclosed CVEs, memory mounts my second brain, and documentation prepares the handoff. The build waits until review verifies the change, then releases its commit and all six branches merge into master, approved by me. The example filenames, commit hashes and test counters explain the workflow. Press Enter or choose Enter the site to open my dashboard. Any other key or tap shows the completed replay. Skip intro and Escape enter immediately.</p>
     <div className="oc-fleet-shell">
       <header className="oc-fleet-chrome"><span>arafat / <b>terminal session</b></span><MotionToggle /></header>

@@ -5,3 +5,7 @@
   min-height: 44px;
   padding-inline: .5rem;
 }
+
+.footer .identityLink {
+  padding-inline: 0;
+}

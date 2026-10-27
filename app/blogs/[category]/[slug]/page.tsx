@@ -91,7 +91,7 @@ export default async function PostPage({ params }: Props): Promise<ReactElement>
         articleSection: categoryInfo.label,
         // Covers may be stored as site-relative paths; structured data needs absolute URLs.
         image: new URL(socialImage(post), SITE_URL).href,
-        author: PERSON_REF,
+        author: { ...PERSON_REF, "@type": "Person", name: SITE_NAME, url: absoluteUrl("/about") },
         publisher: PERSON_REF,
         mainEntityOfPage: { "@type": "WebPage", "@id": postUrl },
       },

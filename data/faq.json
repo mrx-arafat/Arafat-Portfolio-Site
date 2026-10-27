@@ -9,11 +9,11 @@
   },
   {
     "q": "What CVEs has Easin Arafat discovered?",
-    "a": "Easin Arafat (handle n0_arafat_n0) has responsibly disclosed 9 CVEs through the Patchstack Vulnerability Disclosure Program, including CVE-2025-62039, CVE-2025-58680, CVE-2025-64277, CVE-2025-59562, CVE-2025-58981, CVE-2025-62932, and CVE-2025-62931 — covering Broken Access Control, Insecure Direct Object Reference (IDOR), and Sensitive Data Exposure."
+    "a": "Easin Arafat (handle n0_arafat_n0) has responsibly disclosed 9 CVEs through the Patchstack Vulnerability Disclosure Program, including CVE-2025-62039, CVE-2025-58680, CVE-2025-64277, CVE-2025-59562, CVE-2025-57886, CVE-2025-62932, and CVE-2025-62931 - covering Broken Access Control, Insecure Direct Object Reference (IDOR), and Sensitive Data Exposure."
   },
   {
     "q": "Has Easin Arafat published research?",
-    "a": "Yes. Easin Arafat (Sheikh Easin Arafat) is a co-author of the peer-reviewed paper \"Adaptive User Interface for Mobile Banking Apps: Enhancing UX through Machine Learning\", published in Array (Elsevier, a Q1 open-access journal), DOI 10.1016/j.array.2026.100901."
+    "a": "Yes. Easin Arafat is a co-author of the peer-reviewed paper \"Adaptive User Interface for Mobile Banking Apps: Enhancing UX through Machine Learning\", published in Array (Elsevier, a Q1 open-access journal), DOI 10.1016/j.array.2026.100901."
   },
   {
     "q": "Where is Easin Arafat based?",

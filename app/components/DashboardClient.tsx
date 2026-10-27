@@ -49,6 +49,7 @@ export default function DashboardClient({ caseStudies, latestPosts }: DashboardC
         <div className={styles.heroLayout}>
           <div className={styles.heroType}>
             <h1 id="hero-title" tabIndex={-1} className={styles.heroTitle}>
+              <span className="oc-sr">Easin Arafat: </span>
               <span>The future is agentic.</span>
               <span className={styles.root}>I&apos;m already running it.<span className="oc-cursor" aria-hidden="true" /></span>
             </h1>

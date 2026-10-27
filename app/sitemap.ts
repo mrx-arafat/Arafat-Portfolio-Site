@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { CLIENT_PROJECTS } from "@/components/client-work/content";
 import { getAllNotes, getAllPosts, type Note, type Post } from "@/lib/blog";
-import { absoluteUrl, isoDateTime } from "@/lib/seo";
+import { PORTRAIT_URL, absoluteUrl, isoDateTime } from "@/lib/seo";
 
 // Rendered per request, never prerendered. With `revalidate = 3600` Vercel kept
 // serving the build-time sitemap for over a week, ignoring both the timer and
@@ -54,8 +54,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   return [
-    entry("/"),
-    entry("/about"),
+    { ...entry("/"), images: [PORTRAIT_URL] },
+    { ...entry("/about"), images: [PORTRAIT_URL] },
     entry("/faq"),
     entry("/projects"),
     ...CLIENT_PROJECTS.map((project) => entry(project.detailPath)),

@@ -1,8 +1,17 @@
 import type { Metadata } from "next";
 import type { ReactElement, ReactNode } from "react";
 
+import { PERSON } from "@/app/components/StructuredData";
 import { JsonLd, breadcrumbSchema } from "@/components/seo/json-ld";
-import { SITE_URL, absoluteUrl, isoDateTime, pageMetadata } from "@/lib/seo";
+import {
+  PERSON_ID,
+  PORTRAIT_ID,
+  PORTRAIT_PATH,
+  SITE_URL,
+  absoluteUrl,
+  isoDateTime,
+  pageMetadata,
+} from "@/lib/seo";
 
 const PAGE_URL = absoluteUrl("/about");
 
@@ -12,11 +21,7 @@ export const metadata: Metadata = pageMetadata({
     "Easin Arafat is an Application Security Engineer at Startise working on xCloud. See how he approaches security research, platform operations and AI automation.",
   path: "/about",
   type: "profile",
-  ogCard: {
-    category: "about",
-    meta: "Application Security Engineer",
-    prompt: "cat about.md",
-  },
+  ogImage: PORTRAIT_PATH,
 });
 
 /** Bump dateModified when the About content or its metadata changes. */
@@ -31,9 +36,10 @@ const structuredData = {
       isPartOf: { "@id": `${SITE_URL}/#website` },
       breadcrumb: { "@id": `${PAGE_URL}/#breadcrumb` },
       dateCreated: isoDateTime("2025-04-08"),
-      dateModified: isoDateTime("2026-10-01"),
-      mainEntity: { "@id": `${SITE_URL}/#person` },
-      about: { "@id": `${SITE_URL}/#person` },
+      dateModified: isoDateTime("2026-10-27"),
+      mainEntity: PERSON,
+      primaryImageOfPage: { "@id": PORTRAIT_ID },
+      about: { "@id": PERSON_ID },
     },
     {
       "@id": `${PAGE_URL}/#breadcrumb`,

@@ -102,6 +102,7 @@ it("covers the dashboard with an open intro in the server-rendered first paint",
   preference.motion = "on";
   preference.isMotionEnabled = true;
   const html = renderToStaticMarkup(createElement(HomeShell, null, createElement("h1", {}, "Dashboard")));
+  expect(html).toMatch(/<div data-nosnippet="true"><dialog[\s\S]*<\/dialog><\/div><h1>Dashboard<\/h1>/);
   expect(html.match(/<dialog[^>]*>/)?.[0]).toContain('open=""');
   expect(html.indexOf("<dialog")).toBeLessThan(html.indexOf("<h1"));
 });

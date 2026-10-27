@@ -92,7 +92,7 @@ Put `oc-zone` sections containing `SectionHeading` inside it to align the circui
 ## DecryptPhoto
 
 Client component.
-Props: optional `src: string` (default `/images/profile.webp`), `alt: string`, `caption: string`, `className: string` and `priority: boolean` (default `false`).
+Props: optional `src: string` (default `/images/easin-arafat.webp`), `alt: string`, `caption: string`, `className: string` and `priority: boolean` (default `false`).
 Uses the existing profile photo with Next Image, decorative binary rain and scan lines. A "Reveal the operator" toggle removes the terminal treatment, and "Restore terminal view" brings it back.
 Supply `priority` only for an above-the-fold portrait.
 The motion policy stops its effects; the identity overlay stays legible in both themes.

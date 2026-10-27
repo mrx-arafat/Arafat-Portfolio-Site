@@ -33,6 +33,7 @@ describe("SEO metadata helpers", () => {
     ]);
     expect(meta.twitter).toMatchObject({
       card: "summary_large_image",
+      creator: "@easinxarafat",
       images: ["/api/og?title=Projects&category=portfolio&path=projects"],
     });
   });

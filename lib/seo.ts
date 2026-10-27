@@ -2,6 +2,23 @@ import type { Metadata } from "next";
 
 export const SITE_URL = "https://www.arafatops.com";
 export const SITE_NAME = "Easin Arafat";
+export const PERSON_ID = `${SITE_URL}/#person`;
+export const PORTRAIT_ID = `${SITE_URL}/#portrait`;
+export const PORTRAIT_PATH = "/images/easin-arafat.webp";
+export const PORTRAIT_URL = `${SITE_URL}${PORTRAIT_PATH}`;
+export const PORTRAIT_WIDTH = 1110;
+export const PORTRAIT_HEIGHT = 931;
+export const PROFILE_URLS = [
+  "https://github.com/mrx-arafat",
+  "https://www.linkedin.com/in/e4rafat",
+  "https://www.facebook.com/e4rafat",
+  "https://www.instagram.com/e4rafat/",
+  "https://medium.com/@easinxarafat",
+  "https://tryhackme.com/p/KingBOB",
+  "https://x.com/easinxarafat",
+  "https://www.goodreads.com/user/show/142331648-easin-arafat",
+  "https://patchstack.com/database/researchers/c4d8ecc2-c599-4f6f-bfca-2d2d755117e8",
+];
 
 const TITLE_SUFFIX = ` | ${SITE_NAME}`;
 const MAX_TITLE_LENGTH = 60;
@@ -125,6 +142,7 @@ export function pageMetadata(seo: PageSeo): Metadata {
     },
     twitter: {
       card: "summary_large_image",
+      creator: "@easinxarafat",
       title: seo.title,
       description,
       images: [image],

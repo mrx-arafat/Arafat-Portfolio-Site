@@ -6,6 +6,7 @@ const ALIAS_HOSTS = ["profile.arafatops.com", "arafatops.com"];
 // Paths that moved. Kept in one list so an old path on an alias host can be
 // sent straight to its final URL instead of hopping host first, path second.
 const MOVED_PATHS = [
+  { source: "/images/profile.webp", destination: "/images/easin-arafat.webp" },
   { source: "/about-me", destination: "/about" },
   { source: "/dashboard", destination: "/" },
   { source: "/blog", destination: "/blogs" },

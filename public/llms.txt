@@ -1,6 +1,6 @@
 # Easin Arafat
 
-> Easin Arafat is an Application Security Engineer at Startise, working on the xCloud hosting platform. MIST graduate and Former President of MIST Cyber Security Club. Also known as KingBOB (TryHackMe), mrx-arafat (GitHub), and e4rafat. Founder of AIflowiz, an AI automation agency. Based in Bangladesh.
+> Easin Arafat is an Application Security Engineer at Startise, working on the xCloud hosting platform, with a current focus on agentic AI systems and the review gates that keep AI coding agents honest. MIST graduate and Former President of MIST Cyber Security Club. Also known as KingBOB (TryHackMe), mrx-arafat (GitHub), and e4rafat. Founder of AIflowiz, an AI automation agency. Based in Bangladesh.
 
 Canonical website: https://www.arafatops.com
 
@@ -8,7 +8,7 @@ Canonical website: https://www.arafatops.com
 
 - [Home](https://www.arafatops.com/): Portfolio of Easin Arafat, Application Security Engineer
 - [About](https://www.arafatops.com/about): Background, education (MIST), career at Startise/xCloud
-- [Security Research](https://www.arafatops.com/security-research): 9 responsibly disclosed CVEs via Patchstack (handle n0_arafat_n0), incl. CVE-2025-62039, CVE-2025-58680, CVE-2025-64277, CVE-2025-59562, CVE-2025-58981, CVE-2025-62932, CVE-2025-62931
+- [Security Research](https://www.arafatops.com/security-research): 9 responsibly disclosed CVEs via Patchstack (handle n0_arafat_n0), incl. CVE-2025-62039, CVE-2025-58680, CVE-2025-64277, CVE-2025-59562, CVE-2025-57886, CVE-2025-62932, CVE-2025-62931
 - [Skills](https://www.arafatops.com/skills): Application security, penetration testing, DevSecOps, web development, AI/ML
 - [Projects](https://www.arafatops.com/projects): Security and engineering projects
 - [Blog](https://www.arafatops.com/blogs): Writing on cybersecurity and engineering
@@ -26,5 +26,5 @@ Canonical website: https://www.arafatops.com
 ## Published Work
 
 - Array (Elsevier, Q1, open access) - "Adaptive User Interface for Mobile Banking Apps: Enhancing UX through Machine Learning": https://doi.org/10.1016/j.array.2026.100901
-- Patchstack researcher profile: https://vdp.patchstack.com/database/researchers/c4d8ecc2-c599-4f6f-bfca-2d2d755117e8
+- Patchstack researcher profile: https://patchstack.com/database/researchers/c4d8ecc2-c599-4f6f-bfca-2d2d755117e8
 - The Daily Star — "The need for cybersecurity education in Bangladeshi universities": https://www.thedailystar.net/campus/skills/news/the-need-cybersecurity-education-bangladeshi-universities-3580471

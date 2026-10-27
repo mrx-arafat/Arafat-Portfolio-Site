@@ -10,16 +10,17 @@ import { JsonLd } from "@/components/seo/json-ld";
 import cveData from "@/data/cve.json";
 import { getAllPosts, type Post } from "@/lib/blog";
 import {
-  SITE_NAME,
+  PORTRAIT_ID,
+  PORTRAIT_PATH,
   SITE_URL,
   absoluteUrl,
   isoDateTime,
-  ogImageUrl,
   pageMetadata,
 } from "@/lib/seo";
 
 import HomeShell from "./components/HomeShell";
 import DashboardClient from "./components/DashboardClient";
+import { PERSON } from "./components/StructuredData";
 
 /**
  * Static route with hourly ISR: no request-time data (searchParams, cookies,
@@ -33,15 +34,7 @@ export const metadata: Metadata = pageMetadata({
   title: "Easin Arafat - Application Security Engineer | Startise",
   description: `Easin Arafat is an Application Security Engineer at Startise, working on the xCloud hosting platform, and a security researcher with ${cveData.items.length} disclosed CVEs.`,
   path: "/",
-  // The card reads as `$ whoami` -> name, so it keeps the short name as its
-  // title instead of the full page title.
-  ogImage: ogImageUrl({
-    title: SITE_NAME,
-    meta: "Application Security Engineer",
-    path: "home",
-    prompt: "whoami",
-    category: "portfolio",
-  }),
+  ogImage: PORTRAIT_PATH,
 });
 
 /** Home is the profile page for the sitewide Person node. Bump dateModified when the profile content changes. */
@@ -52,8 +45,10 @@ const profilePageSchema = {
   url: absoluteUrl("/"),
   name: "Easin Arafat - Application Security Engineer",
   dateCreated: isoDateTime("2025-04-08"),
-  dateModified: isoDateTime("2026-10-01"),
-  mainEntity: { "@id": `${SITE_URL}/#person` },
+  dateModified: isoDateTime("2026-10-27"),
+  mainEntity: PERSON,
+  primaryImageOfPage: { "@id": PORTRAIT_ID },
+  isPartOf: { "@id": `${SITE_URL}/#website` },
 };
 
 /** Published posts for the dashboard links; a failed fetch must not take the home page down. */

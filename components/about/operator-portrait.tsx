@@ -2,6 +2,7 @@
 
 import { useState, type ReactElement } from "react";
 import Image from "next/image";
+import { PORTRAIT_PATH } from "@/lib/seo";
 
 /** Decrypt Arafat's portrait from its terminal treatment, and encrypt it back. */
 export function OperatorPortrait(): ReactElement {
@@ -11,7 +12,7 @@ export function OperatorPortrait(): ReactElement {
     <figure className={`oc-portrait ${decoded ? "oc-decoded" : ""}`}>
       <figcaption className="oc-sr">Easin Arafat, Application Security Engineer at Startise working on xCloud, AI tooling and review-gated automation.</figcaption>
       <div className="oc-portrait-frame">
-        <Image src="/images/profile.webp" width={1110} height={931} alt="Easin Arafat working at a laptop beside a terminal display" priority sizes="(min-width: 1120px) 40vw, (min-width: 640px) 44vw, 90vw" />
+        <Image src={PORTRAIT_PATH} unoptimized width={1110} height={931} alt="Easin Arafat working at a laptop beside a terminal display" priority sizes="(min-width: 1120px) 40vw, (min-width: 640px) 44vw, 90vw" />
         <div className="oc-binary" aria-hidden="true">{Array.from({ length: 6 }, (_, index) => <span key={index}>01001010110100010101100101101001011010100110101001101001010101101010010110101001101010011010</span>)}</div>
         <div className="oc-scanlines" aria-hidden="true" />
         <div className="oc-scan-beam" aria-hidden="true" />

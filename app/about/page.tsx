@@ -14,7 +14,7 @@ export default function AboutMe(): ReactElement {
     <main className={`oc-shell oc-page ${styles.page}`}>
       <div className={styles.introduction}>
         <div>
-          <PageHeader command={PROFILE.command} note="my name / my receipts" title={<>I earned the ego.<br /><span className="oc-green">Here&apos;s the paperwork.</span></>} description={PROFILE.introduction} />
+          <PageHeader command={PROFILE.command} note="my name / my receipts" title={<><span className="oc-sr">Easin Arafat: </span>I earned the ego.<br /><span className="oc-green">Here&apos;s the paperwork.</span></>} description={PROFILE.introduction} />
           <p className={styles.statement}>{PROFILE.headline}</p>
           <div className={styles.keys}>
             <Keycap href={LINKS.projects} command="$ ls ~/projects" variant="primary">See what I built</Keycap>

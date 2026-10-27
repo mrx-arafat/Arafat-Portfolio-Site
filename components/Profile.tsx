@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { PORTRAIT_PATH } from "@/lib/seo";
 import {
   Github,
   Instagram,
@@ -49,7 +50,7 @@ export function Profile() {
     <div className="flex flex-col items-center space-y-4 p-6 bg-card rounded-lg shadow-lg">
       <div className="relative w-32 h-32 rounded-full overflow-hidden border-4 border-primary">
         <Image
-          src="/images/profile.webp"
+          src={PORTRAIT_PATH}
           alt="Arafat's Profile"
           width={128}
           height={128}
