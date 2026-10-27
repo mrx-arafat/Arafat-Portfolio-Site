@@ -149,6 +149,179 @@
   text-underline-offset: .3em;
 }
 
+/* A small live terminal under the hero copy: real status, latest disclosure, newest writing. */
+.nowPanel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  margin-top: 1.75rem;
+  border: 1px solid var(--oc-line);
+  background: var(--oc-raised);
+  box-shadow: 6px 6px 0 var(--oc-shadow);
+  font: var(--oc-text-label)/1.7 var(--oc-mono);
+}
+
+.nowChrome {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: .55rem 1rem;
+  border-bottom: 1px solid var(--oc-line);
+  color: var(--oc-muted);
+}
+
+.nowLive {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  color: var(--oc-green);
+}
+
+.nowLive::before {
+  content: "";
+  width: .45rem;
+  height: .45rem;
+  border-radius: 50%;
+  background: var(--oc-green);
+  animation: nowPulse 2.4s ease-in-out infinite;
+}
+
+.nowScreen {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: .35rem;
+  min-height: 0;
+  padding: 1rem 1rem 1.1rem;
+}
+
+.nowPrompt {
+  color: var(--oc-green);
+}
+
+/* The headline numbers: big figure first, its label underneath. */
+.nowStats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 0 0 .9rem;
+}
+
+.nowStats > div {
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+  min-width: 0;
+}
+
+.nowStats dd {
+  order: -1;
+  margin: 0;
+  color: var(--oc-green);
+  font: 800 clamp(1.5rem, 2.6vw, 2.25rem)/1 var(--oc-sans);
+  letter-spacing: -.04em;
+}
+
+.nowStats dt {
+  color: var(--oc-muted);
+  line-height: 1.35;
+}
+
+.nowWindow {
+  margin-left: .6rem;
+  color: var(--oc-soft);
+  white-space: nowrap;
+}
+
+/* Thirty days as a load monitor: one bar per day on a faint baseline, the peak day in full green. */
+.nowLoad {
+  margin: 0 0 .75rem;
+}
+
+.nowBars {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 4.25rem;
+  padding-bottom: 1px;
+  border-bottom: 1px solid var(--oc-line);
+}
+
+.nowBars span {
+  flex: 1;
+  height: var(--load);
+  min-height: 2px;
+  background: color-mix(in srgb, var(--oc-green) 45%, transparent);
+}
+
+.nowBars span[data-peak] {
+  background: var(--oc-green);
+}
+
+.nowLoad figcaption {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: .4rem;
+  color: var(--oc-muted);
+}
+
+.nowStream {
+  display: grid;
+  gap: .15rem;
+  margin: 0 0 .65rem;
+  padding: 0;
+  list-style: none;
+}
+
+.nowStream a {
+  display: grid;
+  grid-template-columns: 3.25rem minmax(0, 1fr);
+  column-gap: .75rem;
+  min-height: 36px;
+  align-content: center;
+  padding-block: .3rem;
+  color: var(--oc-ink);
+}
+
+.nowStream time {
+  grid-row: span 2;
+  color: var(--oc-muted);
+}
+
+.nowEvent {
+  color: var(--oc-soft);
+}
+
+.nowVerb {
+  color: var(--oc-green);
+}
+
+.nowText {
+  overflow: hidden;
+  color: var(--oc-ink);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nowStream a:hover .nowText {
+  color: var(--oc-green);
+  text-decoration: underline;
+  text-underline-offset: .3em;
+}
+
+@keyframes nowPulse {
+  50% { opacity: .3; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nowLive::before { animation: none; }
+}
+
+.nowScreen > .nowPrompt:last-child {
+  margin-top: auto;
+}
+
 .portraitBay {
   position: relative;
   align-self: center;
@@ -221,10 +394,55 @@
   color: var(--oc-green);
 }
 
-.sectionLead > p {
+/* Beside the tall heading: the tools themselves on top, the reason underneath, so the column has no dead space. */
+.leadAside {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.75rem;
+  align-self: stretch;
+}
+
+.leadAside > p {
   max-width: 42ch;
   color: var(--oc-muted);
   line-height: 1.8;
+}
+
+.toolRack {
+  font: var(--oc-text-label)/1.6 var(--oc-mono);
+}
+
+.toolRack ul {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .25rem 1.5rem;
+  margin: .6rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.toolRack a {
+  display: flex;
+  min-height: 36px;
+  align-items: center;
+  border-bottom: 1px solid var(--oc-line);
+  color: var(--oc-ink);
+}
+
+.toolRack b {
+  color: var(--oc-green);
+  font-weight: 400;
+}
+
+.toolRack a span + span {
+  margin-left: auto;
+  padding-left: .75rem;
+  color: var(--oc-muted);
+}
+
+.toolRack a:hover {
+  color: var(--oc-green);
 }
 
 .sectionLead strong {
@@ -576,10 +794,22 @@
 @media (min-width: 40rem) {
   .hero { padding-top: 2rem; }
   .identity p { display: flex; flex-wrap: wrap; gap: .5rem 1.25rem; align-items: baseline; }
-  .heroLayout { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); align-items: start; column-gap: 1.75rem; row-gap: 0; padding-top: 3rem; }
+  /* The last row is flexible, so a taller portrait grows the card's row instead of opening a gap under the copy. */
+  .heroLayout { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); grid-template-rows: auto auto auto 1fr; align-items: start; column-gap: 1.75rem; row-gap: 0; padding-top: 3rem; }
   .heroType { display: contents; }
   .heroTitle, .heroThesis { grid-column: 1 / -1; }
-  .heroCopy, .heroSignature { grid-column: 1; }
+  .heroBody { grid-column: 1; grid-row: 3; }
+  /*
+   * The card takes no height of its own (contain: size), so it ends exactly level with the portrait at every width.
+   * The activity list wraps any line that does not fit into a clipped second column, so only whole lines show.
+   */
+  .nowPanel { grid-column: 1; grid-row: 4; align-self: stretch; contain: size; min-height: 17.5rem; overflow: hidden; }
+  .nowStream { display: flex; flex: 1; flex-flow: column wrap; align-content: flex-start; min-height: 0; overflow: hidden; }
+  .nowStream li { width: 100%; }
+  /* Between tablet and laptop the card is short: the numbers and live activity stay, the chart gets lower and the closing prompt goes. */
+  .nowBars { height: 2rem; }
+  .nowScreen > .nowPrompt:last-child, .nowText { display: none; }
+  .nowStream a { min-height: 24px; padding-block: 0; }
   .portraitBay { grid-column: 2; grid-row: 3 / span 2; margin-top: 1.5rem; }
   .heroCopy { font-size: 1.05rem; }
   .signalChain { grid-template-columns: repeat(4, minmax(0, 1fr)); padding: 1.5rem 1.25rem; gap: 1.25rem; }
@@ -604,6 +834,10 @@
   .currentFocus { text-align: right; }
   .heroLayout { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); column-gap: 4rem; }
   .portraitBay { margin: 2rem 1rem 0 0; }
+  .nowPanel { min-height: 22rem; }
+  .nowBars { height: 4.25rem; }
+  .nowScreen > .nowPrompt:last-child, .nowText { display: block; }
+  .nowStream a { min-height: 36px; padding-block: .3rem; }
   .portraitBay::before { content: ""; position: absolute; width: 2.5rem; height: 5rem; left: -3rem; top: 42%; border-top: 1px solid var(--oc-line); border-right: 1px solid var(--oc-line); pointer-events: none; }
   .heroThesis { margin-top: 2.25rem; }
   .heroBaseline { margin-top: 3rem; }

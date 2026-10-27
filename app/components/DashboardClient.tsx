@@ -1,21 +1,45 @@
-import type { ReactElement, ReactNode } from "react";
+import type { CSSProperties, ReactElement, ReactNode } from "react";
 import Link from "next/link";
 
 import { AGENTIC_WORK_PROJECTS } from "@/components/agentic-work/content";
 import { AgenticProjectVisual } from "@/components/agentic-work/visuals";
 import { MissionControl } from "@/components/dashboard/mission-control";
 import { CircuitTrace, DecryptPhoto, Keycap, SectionHeading } from "@/components/open-circuit";
+import agentRuns from "@/data/agent-runs.json";
 import articlesData from "@/data/articles.json";
 import cveData from "@/data/cve.json";
 import extracurricularData from "@/data/extracurricular.json";
 import skillsData from "@/data/skills.json";
+import type { ActivityItem, ContributionDay, GithubStats } from "@/lib/github-activity";
 import { getMediumArticles, latestMediumArticle } from "@/lib/medium-articles";
 
+import { LiveActivity, type RecentPost } from "./live-activity";
 import styles from "./root-workbench.module.css";
 
 interface DashboardClientProps {
   caseStudies: ReactNode;
   latestPosts: ReactNode;
+  recentPosts: readonly RecentPost[];
+  activity: ActivityItem[];
+  /** Live GitHub totals; null when no token is configured, and the card then shows only measured local numbers. */
+  stats: GithubStats | null;
+}
+
+const count = (value: number): string => value.toLocaleString("en-US");
+
+const shortDate = (date: string): string => new Date(`${date}T00:00:00Z`).toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
+
+/** Thirty days of output as a load monitor: one bar per day, the peak day lit. The caption carries the data as text. */
+function ActivityBars({ days, activeDays }: { days: readonly ContributionDay[]; activeDays: number }): ReactElement {
+  const peak = days.reduce((top, day) => (day.count > top.count ? day : top), days[0]);
+  return (
+    <figure className={styles.nowLoad}>
+      <div className={styles.nowBars} aria-hidden="true">
+        {days.map(day => <span key={day.date} data-peak={day === peak || undefined} style={{ "--load": `${Math.max(3, Math.round((day.count / Math.max(1, peak.count)) * 100))}%` } as CSSProperties} />)}
+      </div>
+      <figcaption><span>{activeDays}/{days.length} days active</span><span>peak {count(peak.count)} on {shortDate(peak.date)}</span></figcaption>
+    </figure>
+  );
 }
 
 const MEDIUM_ARTICLE_COUNT = getMediumArticles(articlesData).length;
@@ -36,7 +60,7 @@ const SOCIALS = [
 ] as const;
 
 /** Present my work, evidence and writing in one server-rendered workbench. */
-export default function DashboardClient({ caseStudies, latestPosts }: DashboardClientProps): ReactElement {
+export default function DashboardClient({ caseStudies, latestPosts, recentPosts, activity, stats }: DashboardClientProps): ReactElement {
   return (
     <main className={`oc-shell oc-home ${styles.home}`}>
       <section className={styles.hero} aria-labelledby="hero-title">
@@ -53,9 +77,11 @@ export default function DashboardClient({ caseStudies, latestPosts }: DashboardC
               <span>The future is agentic.</span>
               <span className={styles.root}>I&apos;m already running it.<span className="oc-cursor" aria-hidden="true" /></span>
             </h1>
-            <p className={styles.heroThesis}>Smart is common. Smart and secure is rare.<br />That&apos;s the part I do.</p>
-            <p className={styles.heroCopy}>I&apos;m an Application Security Engineer at Startise. I run AI coding agents in parallel, design the review gates that keep them honest, and break my own systems before anyone else gets the chance. 40+ projects shipped while others were still choosing a tool.</p>
-            <div className={styles.heroSignature}><span>{cveData.items.length} CVEs disclosed / 40+ projects shipped / AI agents at work every day</span><Link href="/projects">See the work <span aria-hidden="true">-&gt;</span></Link></div>
+            <p className={styles.heroThesis}>I make it safe to ship.</p>
+            <div className={styles.heroBody}>
+              <p className={styles.heroCopy}>I&apos;m an Application Security Engineer at Startise. I run AI coding agents in parallel, design the review gates that keep them honest, and break my own systems before anyone else gets the chance.</p>
+              <div className={styles.heroSignature}><span>{cveData.items.length} CVEs disclosed / {stats ? count(stats.publicRepos) : "100+"} public repos / AI agents at work every day</span><Link href="/projects">See the work <span aria-hidden="true">-&gt;</span></Link></div>
+            </div>
           </div>
 
           <div className={styles.portraitBay}>
@@ -63,6 +89,22 @@ export default function DashboardClient({ caseStudies, latestPosts }: DashboardC
             <DecryptPhoto priority />
             <p className={styles.portraitFootnote}>Security sets the guardrails.<br />The fleet carries the work.</p>
           </div>
+
+          <section className={styles.nowPanel} aria-labelledby="now-title">
+            <p className={styles.nowChrome}><span id="now-title">arafat@ops:~/output <span className={styles.nowWindow}>last 30 days</span></span><span className={styles.nowLive}>live</span></p>
+            <div className={styles.nowScreen}>
+              <dl className={styles.nowStats}>
+                {stats && <div><dt>contributions</dt><dd>{count(stats.contributions)}</dd></div>}
+                {stats && <div><dt>pull requests</dt><dd>{count(stats.pullRequests)}</dd></div>}
+                <div><dt>AI agent runs</dt><dd>{count(agentRuns.runs)}</dd></div>
+                {!stats && <div><dt>CVEs disclosed</dt><dd>{cveData.items.length}</dd></div>}
+              </dl>
+              {stats && <ActivityBars days={stats.days} activeDays={stats.activeDays} />}
+              <p className={styles.nowPrompt} aria-hidden="true">$ tail -f ~/activity</p>
+              <LiveActivity initial={activity} posts={recentPosts} />
+              <p className={styles.nowPrompt} aria-hidden="true">$ <span className="oc-cursor" /></p>
+            </div>
+          </section>
         </div>
 
         <div className={styles.heroBaseline}><span>A finding is only done when the fix ships.</span><span aria-hidden="true">idea -&gt; build -&gt; verify -&gt; ship</span></div>
@@ -78,7 +120,13 @@ export default function DashboardClient({ caseStudies, latestPosts }: DashboardC
           <SectionHeading path="work" note="my answer to repetitive work" />
           <div className={styles.sectionLead}>
             <h2 className={styles.workTitle} id="work-title">I got tired of waiting.<br /><span>So I built it.</span></h2>
-            <p>I want context that sticks, sessions that survive, and changes I can inspect.<br /><strong>So I built the tools.</strong></p>
+            <div className={styles.leadAside}>
+              <nav className={styles.toolRack} aria-label="Tools I built">
+                <p className={styles.nowPrompt} aria-hidden="true">$ ls ~/tools</p>
+                <ul>{AGENTIC_WORK_PROJECTS.map(project => <li key={project.id}><a href={`#work-${project.id}`}><span>{project.name}<b aria-hidden="true">/</b></span><span>{project.language}</span></a></li>)}</ul>
+              </nav>
+              <p>I want context that sticks, sessions that survive, and changes I can inspect.<br /><strong>So I built the tools.</strong></p>
+            </div>
           </div>
 
           <figure className={styles.architecture}>

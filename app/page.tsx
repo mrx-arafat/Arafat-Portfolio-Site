@@ -9,6 +9,7 @@ import {
 import { JsonLd } from "@/components/seo/json-ld";
 import cveData from "@/data/cve.json";
 import { getAllPosts, type Post } from "@/lib/blog";
+import { getGithubActivity, getGithubStats } from "@/lib/github-activity";
 import {
   PORTRAIT_ID,
   PORTRAIT_PATH,
@@ -23,9 +24,10 @@ import DashboardClient from "./components/DashboardClient";
 import { PERSON } from "./components/StructuredData";
 
 /**
- * Static route with hourly ISR: no request-time data (searchParams, cookies,
+ * Static route with ISR: no request-time data (searchParams, cookies,
  * headers) is read here, so the page prerenders and is served from the edge
- * cache; the hourly refresh only picks up newly published posts.
+ * cache. The GitHub activity fetch revalidates every few minutes, which sets
+ * the effective refresh; the live card then keeps itself current client-side.
  * The `?boot=1` query is handled client-side in HomeShell.
  */
 export const revalidate = 3600;
@@ -62,7 +64,11 @@ async function loadPosts(): Promise<Post[]> {
 }
 
 export default async function Home(): Promise<ReactElement> {
-  const posts = await loadPosts();
+  const [posts, activity, stats] = await Promise.all([loadPosts(), getGithubActivity(), getGithubStats()]);
+  const recentPosts = [...posts]
+    .sort((a, b) => b.date.localeCompare(a.date))
+    .slice(0, 3)
+    .map(post => ({ title: post.title, href: `/blogs/${post.category}/${post.slug}`, date: post.date }));
 
   return (
     <>
@@ -78,6 +84,9 @@ export default async function Home(): Promise<ReactElement> {
         <DashboardClient
           caseStudies={<CaseStudiesPanel projects={CLIENT_PROJECTS} />}
           latestPosts={<LatestPostsPanel posts={posts} />}
+          recentPosts={recentPosts}
+          activity={activity}
+          stats={stats}
         />
       </HomeShell>
     </>
