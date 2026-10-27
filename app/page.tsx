@@ -12,7 +12,7 @@ import { getAllPosts, type Post } from "@/lib/blog";
 import { getGithubActivity, getGithubStats } from "@/lib/github-activity";
 import {
   PORTRAIT_ID,
-  PORTRAIT_PATH,
+  PORTRAIT_SHARE_PATH,
   SITE_URL,
   absoluteUrl,
   isoDateTime,
@@ -36,7 +36,7 @@ export const metadata: Metadata = pageMetadata({
   title: "Easin Arafat - Application Security Engineer | Startise",
   description: `Easin Arafat is an Application Security Engineer at Startise, working on the xCloud hosting platform, and a security researcher with ${cveData.items.length} disclosed CVEs.`,
   path: "/",
-  ogImage: PORTRAIT_PATH,
+  ogImage: PORTRAIT_SHARE_PATH,
 });
 
 /** Home is the profile page for the sitewide Person node. Bump dateModified when the profile content changes. */

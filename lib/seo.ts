@@ -5,6 +5,8 @@ export const SITE_NAME = "Easin Arafat";
 export const PERSON_ID = `${SITE_URL}/#person`;
 export const PORTRAIT_ID = `${SITE_URL}/#portrait`;
 export const PORTRAIT_PATH = "/images/easin-arafat.webp";
+/** The same portrait as a JPEG for link previews: LinkedIn and several chat apps do not render WebP share images. */
+export const PORTRAIT_SHARE_PATH = "/images/easin-arafat.jpg";
 export const PORTRAIT_URL = `${SITE_URL}${PORTRAIT_PATH}`;
 export const PORTRAIT_WIDTH = 1110;
 export const PORTRAIT_HEIGHT = 931;

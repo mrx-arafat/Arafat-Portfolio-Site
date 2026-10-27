@@ -6,7 +6,7 @@ import { JsonLd, breadcrumbSchema } from "@/components/seo/json-ld";
 import {
   PERSON_ID,
   PORTRAIT_ID,
-  PORTRAIT_PATH,
+  PORTRAIT_SHARE_PATH,
   SITE_URL,
   absoluteUrl,
   isoDateTime,
@@ -21,7 +21,7 @@ export const metadata: Metadata = pageMetadata({
     "Easin Arafat is an Application Security Engineer at Startise working on xCloud. See how he approaches security research, platform operations and AI automation.",
   path: "/about",
   type: "profile",
-  ogImage: PORTRAIT_PATH,
+  ogImage: PORTRAIT_SHARE_PATH,
 });
 
 /** Bump dateModified when the About content or its metadata changes. */
