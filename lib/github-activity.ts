@@ -136,13 +136,9 @@ export interface ContributionDay {
 export const STATS_WINDOW_DAYS = 30;
 
 export interface GithubStats {
-  /** All contributions in the window (commits, PRs, issues, reviews); private ones count, but only as numbers. */
-  contributions: number;
-  /** Pull requests opened in the window. */
+  /** Pull requests opened in the window that the token can see. */
   pullRequests: number;
-  /** Days in the window with at least one contribution. */
-  activeDays: number;
-  /** One entry per day of the window, oldest first. */
+  /** Contributions per day of the window, oldest first, as far as the token can see. */
   days: ContributionDay[];
   /** Public repositories he owns, forks excluded. */
   publicRepos: number;
@@ -199,9 +195,7 @@ export async function getGithubStats(): Promise<GithubStats | null> {
       .flatMap((week) => week.contributionDays.map((day) => ({ date: day.date, count: day.contributionCount })))
       .filter((day) => day.date >= firstDay && day.date <= to.slice(0, 10));
     return {
-      contributions: days.reduce((sum, day) => sum + day.count, 0),
       pullRequests: user.contributionsCollection.totalPullRequestContributions,
-      activeDays: days.filter((day) => day.count > 0).length,
       days,
       publicRepos: user.repositories.totalCount,
     };

@@ -31,7 +31,8 @@ const count = (value: number): string => value.toLocaleString("en-US");
  * Output only his own machine can measure (scripts/measure-output.mjs). Pull requests come from here
  * because the public site's token only sees public ones; the count may be absent if gh was unavailable.
  */
-const MEASURED: { agentRuns: number; pullRequests?: number } = outputStats;
+const MEASURED: { agentRuns: number; pullRequests?: number; contributionDays?: ContributionDay[] } = outputStats;
+const MEASURED_BY_DAY = new Map((MEASURED.contributionDays ?? []).map(day => [day.date, day.count]));
 
 const shortDate = (date: string): string => new Date(`${date}T00:00:00Z`).toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
 
@@ -69,6 +70,9 @@ const SOCIALS = [
 export default function DashboardClient({ caseStudies, latestPosts, recentPosts, activity, stats }: DashboardClientProps): ReactElement {
   // The larger of the two: the measured count includes private pull requests, the live one may be newer.
   const pullRequests = Math.max(MEASURED.pullRequests ?? 0, stats?.pullRequests ?? 0) || undefined;
+  // Each day keeps the larger count the same way: measured includes private work, live covers the newest days.
+  const days = (stats?.days ?? MEASURED.contributionDays ?? []).map(day => ({ date: day.date, count: Math.max(day.count, MEASURED_BY_DAY.get(day.date) ?? 0) }));
+  const contributions = days.reduce((sum, day) => sum + day.count, 0);
   return (
     <main className={`oc-shell oc-home ${styles.home}`}>
       <section className={styles.hero} aria-labelledby="hero-title">
@@ -102,12 +106,12 @@ export default function DashboardClient({ caseStudies, latestPosts, recentPosts,
             <p className={styles.nowChrome}><span id="now-title">arafat@ops:~/output <span className={styles.nowWindow}>last 30 days</span></span><span className={styles.nowLive}>live</span></p>
             <div className={styles.nowScreen}>
               <dl className={styles.nowStats}>
-                {stats && <div><dt>contributions</dt><dd>{count(stats.contributions)}</dd></div>}
+                {days.length > 0 && <div><dt>contributions</dt><dd>{count(contributions)}</dd></div>}
                 {pullRequests !== undefined && <div><dt>pull requests</dt><dd>{count(pullRequests)}</dd></div>}
                 <div><dt>AI agent runs</dt><dd>{count(MEASURED.agentRuns)}</dd></div>
-                {!stats && <div><dt>CVEs disclosed</dt><dd>{cveData.items.length}</dd></div>}
+                {days.length === 0 && <div><dt>CVEs disclosed</dt><dd>{cveData.items.length}</dd></div>}
               </dl>
-              {stats && <ActivityBars days={stats.days} activeDays={stats.activeDays} />}
+              {days.length > 0 && <ActivityBars days={days} activeDays={days.filter(day => day.count > 0).length} />}
               <p className={styles.nowPrompt} aria-hidden="true">$ tail -f ~/activity</p>
               <LiveActivity initial={activity} posts={recentPosts} />
               <p className={styles.nowPrompt} aria-hidden="true">$ <span className="oc-cursor" /></p>
