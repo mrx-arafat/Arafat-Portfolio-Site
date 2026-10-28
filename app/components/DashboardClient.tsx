@@ -5,7 +5,7 @@ import { AGENTIC_WORK_PROJECTS } from "@/components/agentic-work/content";
 import { AgenticProjectVisual } from "@/components/agentic-work/visuals";
 import { MissionControl } from "@/components/dashboard/mission-control";
 import { CircuitTrace, DecryptPhoto, Keycap, SectionHeading } from "@/components/open-circuit";
-import agentRuns from "@/data/agent-runs.json";
+import outputStats from "@/data/output-stats.json";
 import articlesData from "@/data/articles.json";
 import cveData from "@/data/cve.json";
 import extracurricularData from "@/data/extracurricular.json";
@@ -26,6 +26,12 @@ interface DashboardClientProps {
 }
 
 const count = (value: number): string => value.toLocaleString("en-US");
+
+/**
+ * Output only his own machine can measure (scripts/measure-output.mjs). Pull requests come from here
+ * because the public site's token only sees public ones; the count may be absent if gh was unavailable.
+ */
+const MEASURED: { agentRuns: number; pullRequests?: number } = outputStats;
 
 const shortDate = (date: string): string => new Date(`${date}T00:00:00Z`).toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
 
@@ -61,6 +67,8 @@ const SOCIALS = [
 
 /** Present my work, evidence and writing in one server-rendered workbench. */
 export default function DashboardClient({ caseStudies, latestPosts, recentPosts, activity, stats }: DashboardClientProps): ReactElement {
+  // The larger of the two: the measured count includes private pull requests, the live one may be newer.
+  const pullRequests = Math.max(MEASURED.pullRequests ?? 0, stats?.pullRequests ?? 0) || undefined;
   return (
     <main className={`oc-shell oc-home ${styles.home}`}>
       <section className={styles.hero} aria-labelledby="hero-title">
@@ -95,8 +103,8 @@ export default function DashboardClient({ caseStudies, latestPosts, recentPosts,
             <div className={styles.nowScreen}>
               <dl className={styles.nowStats}>
                 {stats && <div><dt>contributions</dt><dd>{count(stats.contributions)}</dd></div>}
-                {stats && <div><dt>pull requests</dt><dd>{count(stats.pullRequests)}</dd></div>}
-                <div><dt>AI agent runs</dt><dd>{count(agentRuns.runs)}</dd></div>
+                {pullRequests !== undefined && <div><dt>pull requests</dt><dd>{count(pullRequests)}</dd></div>}
+                <div><dt>AI agent runs</dt><dd>{count(MEASURED.agentRuns)}</dd></div>
                 {!stats && <div><dt>CVEs disclosed</dt><dd>{cveData.items.length}</dd></div>}
               </dl>
               {stats && <ActivityBars days={stats.days} activeDays={stats.activeDays} />}
