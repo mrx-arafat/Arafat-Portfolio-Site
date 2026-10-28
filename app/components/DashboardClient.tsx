@@ -5,7 +5,6 @@ import { AGENTIC_WORK_PROJECTS } from "@/components/agentic-work/content";
 import { AgenticProjectVisual } from "@/components/agentic-work/visuals";
 import { MissionControl } from "@/components/dashboard/mission-control";
 import { CircuitTrace, DecryptPhoto, Keycap, SectionHeading } from "@/components/open-circuit";
-import outputStats from "@/data/output-stats.json";
 import articlesData from "@/data/articles.json";
 import cveData from "@/data/cve.json";
 import extracurricularData from "@/data/extracurricular.json";
@@ -28,11 +27,11 @@ interface DashboardClientProps {
 const count = (value: number): string => value.toLocaleString("en-US");
 
 /**
- * Output only his own machine can measure (scripts/measure-output.mjs). Pull requests come from here
- * because the public site's token only sees public ones; the count may be absent if gh was unavailable.
+ * Agent runs live on his machine, out of the site's reach, so the card estimates them from the live pull
+ * request count. The ratio was measured over the 30 days to 2026-10-28: 1,178 Claude Code and Codex runs
+ * for 609 pull requests. The card marks the result with "~" because it is an estimate.
  */
-const MEASURED: { agentRuns: number; pullRequests?: number; contributionDays?: ContributionDay[] } = outputStats;
-const MEASURED_BY_DAY = new Map((MEASURED.contributionDays ?? []).map(day => [day.date, day.count]));
+const AGENT_RUNS_PER_PULL_REQUEST = 1178 / 609;
 
 const shortDate = (date: string): string => new Date(`${date}T00:00:00Z`).toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
 
@@ -68,11 +67,10 @@ const SOCIALS = [
 
 /** Present my work, evidence and writing in one server-rendered workbench. */
 export default function DashboardClient({ caseStudies, latestPosts, recentPosts, activity, stats }: DashboardClientProps): ReactElement {
-  // The larger of the two: the measured count includes private pull requests, the live one may be newer.
-  const pullRequests = Math.max(MEASURED.pullRequests ?? 0, stats?.pullRequests ?? 0) || undefined;
-  // Each day keeps the larger count the same way: measured includes private work, live covers the newest days.
-  const days = (stats?.days ?? MEASURED.contributionDays ?? []).map(day => ({ date: day.date, count: Math.max(day.count, MEASURED_BY_DAY.get(day.date) ?? 0) }));
+  const days = stats?.days ?? [];
   const contributions = days.reduce((sum, day) => sum + day.count, 0);
+  // Rounded to tens, so the estimate never reads as an exact count.
+  const agentRuns = stats ? Math.round((stats.pullRequests * AGENT_RUNS_PER_PULL_REQUEST) / 10) * 10 : 0;
   return (
     <main className={`oc-shell oc-home ${styles.home}`}>
       <section className={styles.hero} aria-labelledby="hero-title">
@@ -107,8 +105,8 @@ export default function DashboardClient({ caseStudies, latestPosts, recentPosts,
             <div className={styles.nowScreen}>
               <dl className={styles.nowStats}>
                 {days.length > 0 && <div><dt>contributions</dt><dd>{count(contributions)}</dd></div>}
-                {pullRequests !== undefined && <div><dt>pull requests</dt><dd>{count(pullRequests)}</dd></div>}
-                <div><dt>AI agent runs</dt><dd>{count(MEASURED.agentRuns)}</dd></div>
+                {stats && <div><dt>pull requests</dt><dd>{count(stats.pullRequests)}</dd></div>}
+                {agentRuns > 0 && <div><dt>AI agent runs</dt><dd>~{count(agentRuns)}</dd></div>}
                 {days.length === 0 && <div><dt>CVEs disclosed</dt><dd>{cveData.items.length}</dd></div>}
               </dl>
               {days.length > 0 && <ActivityBars days={days} activeDays={days.filter(day => day.count > 0).length} />}
